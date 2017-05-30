@@ -30,6 +30,11 @@
        <attribute name="title">
         <string>Visualisation</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QOpenGLWidget" name="glVisualisation"/>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -37,7 +42,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="QOpenGLWidget" name="openGLWidget_2"/>
+         <widget class="QOpenGLWidget" name="glMapEditor"/>
         </item>
        </layout>
       </widget>
@@ -47,7 +52,7 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
-         <widget class="QOpenGLWidget" name="openGLWidget"/>
+         <widget class="PathPlannerGLHost" name="glPathPlanner"/>
         </item>
        </layout>
       </widget>
@@ -88,6 +93,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>PathPlannerGLHost</class>
+   <extends>QOpenGLWidget</extends>
+   <header>PathPlannerGLHost.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="ParkingSimulator.qrc"/>
  </resources>

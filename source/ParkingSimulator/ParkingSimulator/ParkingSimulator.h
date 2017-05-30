@@ -1,7 +1,11 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QTimer>
+#include "glew.h"
 #include "ui_ParkingSimulator.h"
+
+using namespace Ui;
 
 class ParkingSimulator : public QMainWindow
 {
@@ -11,5 +15,9 @@ public:
 	ParkingSimulator(QWidget *parent = Q_NULLPTR);
 
 private:
-	Ui::ParkingSimulatorClass ui;
+	ParkingSimulatorClass ui;
+	QTimer *renderTimer;
+
+public slots:
+	void renderTimerCall();
 };
