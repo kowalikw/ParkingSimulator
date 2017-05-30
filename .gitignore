@@ -1,35 +1,56 @@
-# Prerequisites
-*.d
+# C++ objects and libs
 
-# Compiled Object files
 *.slo
 *.lo
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
-*.lib
+*.la
+*.lai
+*.so
+*.dll
+*.dylib
 
-# Executables
-*.exe
-*.out
-*.app
-/ParkingSimulator/.vs/ParkingSimulator/v14
+# Qt-es
+
+object_script.*.Release
+object_script.*.Debug
+*_plugin_import.cpp
+/.qmake.cache
+/.qmake.stash
+*.pro.user
+*.pro.user.*
+*.qbs.user
+*.qbs.user.*
+*.moc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+Makefile*
+*build-*
+
+
+# Qt unit tests
+target_wrapper.*
+
+
+# QtCreator
+
+*.autosave
+
+# QtCtreator Qml
+*.qmlproject.user
+*.qmlproject.user.*
+
+# QtCtreator CMake
+CMakeLists.txt.user*
+/source/ParkingSimulator/ParkingSimulator/x64/Debug/ParkingSimulator.tlog
+/source/ParkingSimulator/ParkingSimulator/x64/Debug/main.obj
+/source/ParkingSimulator/ParkingSimulator/x64/Debug/moc_ParkingSimulator.obj
+/source/ParkingSimulator/ParkingSimulator/x64/Debug/ParkingSimulator.log
+/source/ParkingSimulator/ParkingSimulator/x64/Debug/ParkingSimulator.obj
+/source/ParkingSimulator/ParkingSimulator/x64/Debug/vc140.pdb
+/source/ParkingSimulator/ParkingSimulator/x64/Debug/qrc_ParkingSimulator.obj
+/source/ParkingSimulator/x64/Debug
 *.db
-*.opendb
+*.suo
