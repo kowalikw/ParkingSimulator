@@ -54,3 +54,5 @@ CMakeLists.txt.user*
 /source/ParkingSimulator/x64/Debug
 *.db
 *.suo
+*.opendb
+/source/ParkingSimulator/ParkingSimulator/x64/Debug/ParkingSimulator.res
