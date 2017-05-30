@@ -69,6 +69,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Arc.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_OpenGLHost.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -93,6 +94,8 @@
     <ClCompile Include="GeneratedFiles\Release\moc_PathPlannerGLHost.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeometryHelper.cpp" />
+    <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapEditorGLHost.cpp" />
@@ -101,9 +104,11 @@
     <ClCompile Include="OpenGLHost.cpp" />
     <ClCompile Include="ParkingSimulator.cpp" />
     <ClCompile Include="ParkingSpace.cpp" />
+    <ClCompile Include="Path.cpp" />
     <ClCompile Include="PathElement.cpp" />
     <ClCompile Include="PathPlanner.cpp" />
     <ClCompile Include="PathPlannerGLHost.cpp" />
+    <ClCompile Include="Point.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="VisualisationGLHost.cpp" />
   </ItemGroup>
@@ -132,14 +137,19 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arc.h" />
     <ClInclude Include="GeneratedFiles\ui_ParkingSimulator.h" />
+    <ClInclude Include="GeometryHelper.h" />
+    <ClInclude Include="Line.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapEditorGLHost.h" />
     <ClInclude Include="MapElement.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="ParkingSpace.h" />
+    <ClInclude Include="Path.h" />
     <ClInclude Include="PathElement.h" />
     <ClInclude Include="PathPlanner.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="VisualisationGLHost.h" />
     <CustomBuild Include="OpenGLHost.h">
