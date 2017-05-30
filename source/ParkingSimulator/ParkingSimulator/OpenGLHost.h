@@ -21,11 +21,11 @@ class OpenGLHost : public QOpenGLWidget//, protected QOpenGLFunctions
 
 public:
 	OpenGLHost(QWidget *parent);
-	void mousePressEvent(QMouseEvent * event);
-	void mouseReleaseEvent(QMouseEvent * event);
-	void mouseMoveEvent(QMouseEvent * event);
-	void keyPressEvent(QKeyEvent *event);
-	void keyReleaseEvent(QKeyEvent * event);
+	virtual void mousePressEvent(QMouseEvent * event);
+	virtual void mouseReleaseEvent(QMouseEvent * event);
+	virtual void mouseMoveEvent(QMouseEvent * event);
+	virtual void keyPressEvent(QKeyEvent *event);
+	virtual void keyReleaseEvent(QKeyEvent * event);
 
 protected:
 	virtual void initializeGL();
