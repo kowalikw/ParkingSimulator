@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+/ParkingSimulator/.vs/ParkingSimulator/v14
+*.db
+*.opendb
