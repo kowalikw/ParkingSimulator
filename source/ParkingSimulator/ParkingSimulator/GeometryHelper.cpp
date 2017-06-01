@@ -24,6 +24,16 @@ glm::vec2 GeometryHelper::GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, g
 	return glm::vec2(x, z);
 }
 
+double GeometryHelper::CrossProduct(glm::vec2 v1, glm::vec2 v2)
+{
+	return v1.x * v2.y - v2.x * v1.y;
+}
+
+double GeometryHelper::DotProduct(glm::vec2 v1, glm::vec2 v2)
+{
+	return v1.x * v2.x + v1.y * v2.y;
+}
+
 double GeometryHelper::GetDistanceBetweenPoints(Point p1, Point p2)
 {
 	return sqrt((p1.GetX() - p2.GetX()) * (p1.GetX() - p2.GetX()) + (p1.GetY() - p2.GetY()) * (p1.GetY() - p2.GetY()) + (p1.GetZ() - p2.GetZ()) * (p1.GetZ() - p2.GetZ()));
@@ -43,12 +53,12 @@ double GeometryHelper::GetAngleVector(glm::vec2 p1, glm::vec2 p2, ArcType direct
 
 ArcType GeometryHelper::GetVectorsDirection(glm::vec2 v1, glm::vec2 v2)
 {
-	/*glm::vec2 crossProduct = glm::cross(v1, v2);
+	double crossProduct = CrossProduct(v1, v2);
 
-	if (crossProduct.y < 0)
+	if (crossProduct < 0)
 		return ArcType::Left1;
-	if (crossProduct.y > 0)
-		return ArcType::Right1;*/
+	if (crossProduct > 0)
+		return ArcType::Right1;
 	return ArcType::Undefined;
 }
 
