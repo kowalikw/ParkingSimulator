@@ -6,6 +6,10 @@
 #include "Map.h"
 #include "Vehicle.h"
 #include "Path.h"
+#include "Point.h"
+#include "Line.h"
+#include "Arc.h"
+#include "GeometryHelper.h"
 
 using namespace std;
 
@@ -21,7 +25,7 @@ public:
 	vector<glm::vec2> UserPoints();
 	vector<glm::vec2> VoronoiPoints();
 
-	Path CreateAdmissiblePath(vector<glm::vec2> points);
+	Path CreateAdmissiblePath(vector<Point> points);
 private:
 	Map map;
 	Vehicle vehicle;

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GEOMETRY_HELPER_H
+#define GEOMETRY_HELPER_H
 
 #include <glm.hpp>
 #include "Line.h"
@@ -8,12 +9,11 @@
 class GeometryHelper
 {
 public:
-	static bool LineIntersection();
-	static glm::vec3 GetLineIntersectionPoint(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec3 p4);
 	static double GetDistanceBetweenPoints(Point p1, Point p2);
-	static double GetAngleVector(glm::vec3 p1, glm::vec3 p2, ArcType direction);
-	static ArcType GetVectorsDirection(glm::vec3 v1, glm::vec3 v2);
-	static ArcType GetVectorsDirection(glm::vec3 p1, glm::vec3 p2, glm::vec3 commonPoint);
-	//static glm::vec3 GetLineIntersectionPoint(Line line1, Line line2);
+	static double GetAngleVector(glm::vec2 p1, glm::vec2 p2, ArcType direction);
+	static ArcType GetVectorsDirection(glm::vec2 v1, glm::vec2 v2);
+	static ArcType GetVectorsDirection(glm::vec2 p1, glm::vec2 p2, glm::vec2 commonPoint);
+	static glm::vec2 GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4);
 };
 
+#endif
