@@ -9,6 +9,7 @@
 #include "Point.h"
 #include "Line.h"
 #include "Arc.h"
+#include "BSpline.h"
 #include "GeometryHelper.h"
 
 using namespace std;

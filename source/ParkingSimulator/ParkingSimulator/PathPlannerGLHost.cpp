@@ -47,6 +47,8 @@ void PathPlannerGLHost::initializeGL()
 	pathPlanner.AddUserPoint(glm::vec2(200, 700));
 	pathPlanner.AddUserPoint(glm::vec2(900, 700));
 	pathPlanner.AddUserPoint(glm::vec2(900, 900));
+
+
 }
 
 void PathPlannerGLHost::resizeGL(int w, int h)
@@ -83,6 +85,8 @@ void PathPlannerGLHost::renderVehicle()
 void PathPlannerGLHost::nvgRenderFrame()
 {
 	pathAdmissible = pathPlanner.CreateAdmissiblePath(pathPlanner.UserPoints());
+	bspline = BSpline(pathPlanner.UserPoints());
+
 
 	nvgSave(vg);
 
@@ -104,7 +108,8 @@ void PathPlannerGLHost::nvgRenderFrame()
 	nvgStroke(vg);
 
 	renderPathPolyline();
-	renderPathAdmissible();
+	//renderPathAdmissible();
+	drawBSpline();
 }
 
 void PathPlannerGLHost::renderVoronoiGraph()
@@ -143,7 +148,7 @@ void PathPlannerGLHost::renderPathAdmissible()
 	nvgLineCap(vg, NVG_ROUND);
 	nvgLineJoin(vg, NVG_MITER);
 
-	nvgStrokeWidth(vg, 2.0f);
+	nvgStrokeWidth(vg, 1.0f);
 	nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
 
 	nvgBeginPath(vg);
@@ -172,6 +177,30 @@ void PathPlannerGLHost::renderPathAdmissible()
 				}
 			}
 		}
+	}
+
+	nvgStroke(vg);
+}
+
+void PathPlannerGLHost::drawBSpline()
+{
+	nvgSave(vg);
+
+	nvgLineCap(vg, NVG_ROUND);
+	nvgLineJoin(vg, NVG_MITER);
+
+	nvgStrokeWidth(vg, 1.0f);
+	nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
+
+	nvgBeginPath(vg);
+
+	auto p = bspline.CalculatePoint(0);
+	nvgMoveTo(vg, p.x, p.y);
+	for (double t = 0; t <= 1.0; t += 0.01)
+	{
+		auto p = bspline.CalculatePoint(t);
+
+		nvgLineTo(vg, p.x, p.y);
 	}
 
 	nvgStroke(vg);

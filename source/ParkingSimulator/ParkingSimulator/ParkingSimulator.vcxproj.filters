@@ -44,6 +44,12 @@
     <Filter Include="Source Files\OpenGLHosts">
       <UniqueIdentifier>{1c10bf5b-8e47-4f74-b381-cfbbd5e08a42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PathElements">
+      <UniqueIdentifier>{b227a7f4-5992-481d-80c1-f8b561511c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PathElements">
+      <UniqueIdentifier>{634c2946-8cdd-453f-a436-9b5467556879}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -103,9 +109,6 @@
     <ClCompile Include="ParkingSpace.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PathElement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -113,13 +116,19 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Arc.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\PathElements</Filter>
+    </ClCompile>
+    <ClCompile Include="BSpline.cpp">
+      <Filter>Source Files\PathElements</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\PathElements</Filter>
+    </ClCompile>
+    <ClCompile Include="PathElement.cpp">
+      <Filter>Source Files\PathElements</Filter>
     </ClCompile>
     <ClCompile Include="Point.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\PathElements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +176,6 @@
     <ClInclude Include="ParkingSpace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PathElement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -177,13 +183,19 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Arc.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\PathElements</Filter>
+    </ClInclude>
+    <ClInclude Include="BSpline.h">
+      <Filter>Header Files\PathElements</Filter>
     </ClInclude>
     <ClInclude Include="Line.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\PathElements</Filter>
+    </ClInclude>
+    <ClInclude Include="PathElement.h">
+      <Filter>Header Files\PathElements</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\PathElements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

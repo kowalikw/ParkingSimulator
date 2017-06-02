@@ -24,6 +24,7 @@ private:
 	PathPlanner pathPlanner;
 	Path pathPolyline;
 	Path pathAdmissible;
+	BSpline bspline;
 
 	void nvgRenderFrame();
 	void renderMap();
@@ -32,6 +33,7 @@ private:
 	void renderUserPoints();
 	void renderPathPolyline();
 	void renderPathAdmissible();
+	void drawBSpline();
 };
 
 #endif

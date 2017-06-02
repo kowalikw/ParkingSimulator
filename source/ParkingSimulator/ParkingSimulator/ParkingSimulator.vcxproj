@@ -70,6 +70,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arc.cpp" />
+    <ClCompile Include="BSpline.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_OpenGLHost.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Arc.h" />
+    <ClInclude Include="BSpline.h" />
     <ClInclude Include="GeneratedFiles\ui_ParkingSimulator.h" />
     <ClInclude Include="GeometryHelper.h" />
     <ClInclude Include="Line.h" />

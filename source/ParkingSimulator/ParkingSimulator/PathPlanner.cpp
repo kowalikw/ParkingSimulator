@@ -62,8 +62,6 @@ Path PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 		glm::vec2 n2(dir2.y, -dir2.x);
 
 		double length = l1 > l2 ? l2 : l1;
-		//length -= 2;
-
 		double radiusMin = vehicle.GetRMin(vehicle.GetMaxInsideAngle());
 		double radius;
 		glm::vec2 center;
