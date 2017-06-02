@@ -22,8 +22,16 @@ protected:
 private:
 	NVGcontext* vg = NULL;
 	PathPlanner pathPlanner;
+	Path pathPolyline;
+	Path pathAdmissible;
 
 	void nvgRenderFrame();
+	void renderMap();
+	void renderVehicle();
+	void renderVoronoiGraph();
+	void renderUserPoints();
+	void renderPathPolyline();
+	void renderPathAdmissible();
 };
 
 #endif

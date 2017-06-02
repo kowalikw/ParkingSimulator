@@ -56,9 +56,9 @@ ArcType GeometryHelper::GetVectorsDirection(glm::vec2 v1, glm::vec2 v2)
 	double crossProduct = CrossProduct(v1, v2);
 
 	if (crossProduct < 0)
-		return ArcType::Left1;
-	if (crossProduct > 0)
 		return ArcType::Right1;
+	if (crossProduct > 0)
+		return ArcType::Left1;
 	return ArcType::Undefined;
 }
 

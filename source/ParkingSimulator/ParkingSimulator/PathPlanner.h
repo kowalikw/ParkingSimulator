@@ -25,7 +25,7 @@ public:
 	vector<glm::vec2> UserPoints();
 	vector<glm::vec2> VoronoiPoints();
 
-	Path CreateAdmissiblePath(vector<Point> points);
+	Path CreateAdmissiblePath(vector<glm::vec2> points);
 private:
 	Map map;
 	Vehicle vehicle;
