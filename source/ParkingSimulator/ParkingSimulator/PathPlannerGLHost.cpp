@@ -43,11 +43,25 @@ void PathPlannerGLHost::initializeGL()
 
 	pathPlanner = PathPlanner(Map(), Vehicle(100, 50));
 
+	// normal path
 	pathPlanner.AddUserPoint(glm::vec2(200, 300));
 	pathPlanner.AddUserPoint(glm::vec2(200, 700));
 	pathPlanner.AddUserPoint(glm::vec2(900, 700));
 	pathPlanner.AddUserPoint(glm::vec2(900, 900));
 
+	// bezier path
+	pathPlanner.AddUserPoint(glm::vec2(1200, 900));
+	pathPlanner.AddUserPoint(glm::vec2(1150, 100));
+	pathPlanner.AddUserPoint(glm::vec2(1350, 100));
+	pathPlanner.AddUserPoint(glm::vec2(1300, 900));
+
+	pathPlanner.AddUserPoint(glm::vec2(1500, 900));
+
+	// path planner 2
+	pathPlanner2.AddUserPoint(glm::vec2(1200, 900));
+	pathPlanner2.AddUserPoint(glm::vec2(1100, 100));
+	pathPlanner2.AddUserPoint(glm::vec2(1400, 100));
+	pathPlanner2.AddUserPoint(glm::vec2(1300, 900));
 
 }
 
@@ -108,7 +122,7 @@ void PathPlannerGLHost::nvgRenderFrame()
 	nvgStroke(vg);
 
 	renderPathPolyline();
-	//renderPathAdmissible();
+	renderPathAdmissible();
 	drawBSpline();
 }
 

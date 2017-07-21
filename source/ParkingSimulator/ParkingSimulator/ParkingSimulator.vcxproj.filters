@@ -50,6 +50,12 @@
     <Filter Include="Source Files\PathElements">
       <UniqueIdentifier>{634c2946-8cdd-453f-a436-9b5467556879}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\MapElements">
+      <UniqueIdentifier>{41a55405-1d75-404b-9fc9-c606fe160b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MapElements">
+      <UniqueIdentifier>{f5bc0bb7-0779-4e6c-9414-3fa1ffa74fba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -100,15 +106,6 @@
     <ClCompile Include="Vehicle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MapElement.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Obstacle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParkingSpace.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,6 +126,15 @@
     </ClCompile>
     <ClCompile Include="Point.cpp">
       <Filter>Source Files\PathElements</Filter>
+    </ClCompile>
+    <ClCompile Include="MapElement.cpp">
+      <Filter>Source Files\MapElements</Filter>
+    </ClCompile>
+    <ClCompile Include="ParkingSpace.cpp">
+      <Filter>Source Files\MapElements</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>Source Files\MapElements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,15 +173,6 @@
     <ClInclude Include="Vehicle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapElement.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Obstacle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ParkingSpace.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -196,6 +193,15 @@
     </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>Header Files\PathElements</Filter>
+    </ClInclude>
+    <ClInclude Include="MapElement.h">
+      <Filter>Header Files\MapElements</Filter>
+    </ClInclude>
+    <ClInclude Include="ParkingSpace.h">
+      <Filter>Header Files\MapElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>Header Files\MapElements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

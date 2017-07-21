@@ -5,7 +5,8 @@
 
 enum ObstacleType
 {
-	Box,
+	Building,
+	Decoration,
 	Car
 };
 

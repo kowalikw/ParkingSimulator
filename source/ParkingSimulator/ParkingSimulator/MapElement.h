@@ -9,10 +9,6 @@ class MapElement
 {
 public:
 	virtual ~MapElement();
-	double GetPosX();
-	double GetPosY();
-	double GetLength(); // x
-	double GetWidth(); // y
 	glm::vec2 GetPosition();
 	glm::vec2 GetRotation();
 	glm::vec2 GetSize();

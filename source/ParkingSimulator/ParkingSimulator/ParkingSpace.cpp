@@ -18,5 +18,6 @@ ParkingSpaceType ParkingSpace::GetType()
 
 bool ParkingSpace::ContainVehicle(Vehicle vehicle)
 {
-	return vehicle.GetPosY() > (GetPosY() - GetSize().y); // TODO
+	return true;
+	//return vehicle.GetPosY() > (GetPosY() - GetSize().y); // TODO
 }
