@@ -13,6 +13,9 @@ class Map
 {
 public:
 	Map();
+	Map(int width, int height);
+	int GetWidth();
+	int GetHeight();
 	void AddMapElement(MapElement *mapElement);
 	vector<MapElement*> GetMapElements();
 private:

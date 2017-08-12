@@ -47,14 +47,22 @@ void OpenGLHost::mouseReleaseEvent(QMouseEvent * event)
 
 void OpenGLHost::mouseMoveEvent(QMouseEvent * event)
 {
-	if (mouseLeftPressed)
+	if (mouseLeftPressed || mouseMiddlePressed || mouseRightPressed)
 	{
-		float xOffset = event->x() - mouseLastX;
-		float yOffset = mouseLastY - event->y();
+		mouseOffsetX = event->x() - mouseLastX;
+		mouseOffsetY = event->y() - mouseLastY;
 
 		mouseLastX = event->x();
 		mouseLastY = event->y();
 	}
+}
+
+void OpenGLHost::wheelEvent(QWheelEvent * event)
+{
+	float numDegrees = event->delta() / 8.0f;
+	mouseWheelSteps = numDegrees / 15.0f;
+
+	event->accept();
 }
 
 void OpenGLHost::keyPressEvent(QKeyEvent * event)

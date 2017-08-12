@@ -6,8 +6,7 @@
 enum ObstacleType
 {
 	Building,
-	Decoration,
-	Car
+	Decoration
 };
 
 class Obstacle : public MapElement
@@ -15,6 +14,7 @@ class Obstacle : public MapElement
 public:
 	Obstacle();
 	Obstacle(glm::vec2 position, ObstacleType type);
+	Obstacle(glm::vec2 position, glm::vec2 size, ObstacleType type, std::string name);
 	ObstacleType GetType();
 private:
 	ObstacleType type;

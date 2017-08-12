@@ -4,6 +4,11 @@ MapElement::~MapElement()
 {
 }
 
+std::string MapElement::GetName()
+{
+	return this->name;
+}
+
 glm::vec2 MapElement::GetPosition()
 {
 	return this->position;

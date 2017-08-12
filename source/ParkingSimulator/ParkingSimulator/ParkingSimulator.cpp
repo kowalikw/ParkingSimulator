@@ -6,11 +6,20 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	ui.setupUi(this);
 	this->setStyleSheet("background-color: #2a2a2a;");
 
+	((MapEditorGLHost*)ui.glMapEditor)->SetMapEditor(&mapEditor);
+
 	renderTimer = new QTimer();
 	renderTimer->setInterval(20);
 	renderTimer->start();
 
 	connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderTimerCall()));
+	connect(ui.btnNewMap, SIGNAL(released()), this, SLOT(createMap()));
+	connect(ui.btnSaveMap, SIGNAL(released()), this, SLOT(saveMap()));
+	connect(ui.btnLoadMap, SIGNAL(released()), this, SLOT(loadMap()));
+	connect(ui.btnAddBuilding, SIGNAL(released()), this, SLOT(addBuilding()));
+	connect(ui.btnAddDecoration, SIGNAL(released()), this, SLOT(addDecoration()));
+	connect(ui.btnAddParkPlace, SIGNAL(released()), this, SLOT(addParkPlace()));
+	connect(ui.btnAddRoad, SIGNAL(released()), this, SLOT(addRoad()));
 
 	ui.treeMapElements->setColumnCount(1);
 	QList<QTreeWidgetItem *> items;
@@ -50,5 +59,132 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 
 void ParkingSimulator::renderTimerCall()
 {
+	ui.glMapEditor->repaint();
 	ui.glPathPlanner->repaint();
 }
+
+#pragma region Start.
+
+
+
+#pragma endregion
+
+#pragma region Map editor.
+
+void ParkingSimulator::createMap()
+{
+	CreateMap createMapWindow;
+	if (createMapWindow.exec())
+	{
+		int width = createMapWindow.GetMapWidth();
+		int height = createMapWindow.GetMapHeight();
+
+		mapEditor.CreateMap(width, height);
+	}
+}
+
+void ParkingSimulator::saveMap()
+{
+}
+
+void ParkingSimulator::loadMap()
+{
+}
+
+void ParkingSimulator::addBuilding()
+{
+	if (mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace() || mapEditor.GetAddRoad())
+		clearAddButtons();
+
+	if (!mapEditor.GetAddBuilding())
+	{
+		ui.btnAddBuilding->setStyleSheet("background-color: #d86a39;");
+		mapEditor.SetAddBuilding(true);
+	}
+	else
+	{
+		ui.btnAddBuilding->setStyleSheet("");
+		mapEditor.SetAddBuilding(false);
+	}
+}
+
+void ParkingSimulator::addDecoration()
+{
+	if (mapEditor.GetAddBuilding() || mapEditor.GetAddParkPlace() || mapEditor.GetAddRoad())
+		clearAddButtons();
+
+	if (!mapEditor.GetAddDecoration())
+	{
+		ui.btnAddDecoration->setStyleSheet("background-color: #d86a39;");
+		mapEditor.SetAddDecoration(true);
+	}
+	else
+	{
+		ui.btnAddDecoration->setStyleSheet("");
+		mapEditor.SetAddDecoration(false);
+	}
+}
+
+void ParkingSimulator::addRoad()
+{
+	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace())
+		clearAddButtons();
+
+	if (!mapEditor.GetAddRoad())
+	{
+		ui.btnAddRoad->setStyleSheet("background-color: #d86a39;");
+		mapEditor.SetAddRoad(true);
+	}
+	else
+	{
+		ui.btnAddRoad->setStyleSheet("");
+		mapEditor.SetAddRoad(false);
+	}
+}
+
+void ParkingSimulator::addParkPlace()
+{
+	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddRoad())
+		clearAddButtons();
+
+	if (!mapEditor.GetAddParkPlace())
+	{
+		ui.btnAddParkPlace->setStyleSheet("background-color: #d86a39;");
+		mapEditor.SetAddParkPlace(true);
+	}
+	else
+	{
+		ui.btnAddParkPlace->setStyleSheet("");
+		mapEditor.SetAddParkPlace(false);
+	}
+}
+
+void ParkingSimulator::clearAddButtons()
+{
+	mapEditor.SetAddBuilding(false);
+	mapEditor.SetAddDecoration(false);
+	mapEditor.SetAddParkPlace(false);
+	mapEditor.SetAddRoad(false);
+
+	clearAddButtonsStyle();
+}
+
+void ParkingSimulator::clearAddButtonsStyle()
+{
+	if (!mapEditor.GetAddBuilding())
+		ui.btnAddBuilding->setStyleSheet("");
+	if (!mapEditor.GetAddDecoration())
+		ui.btnAddDecoration->setStyleSheet("");
+	if (!mapEditor.GetAddParkPlace())
+		ui.btnAddParkPlace->setStyleSheet("");
+	if (!mapEditor.GetAddRoad())
+		ui.btnAddRoad->setStyleSheet("");
+}
+
+#pragma endregion
+
+#pragma region Path planner.
+
+
+
+#pragma endregion

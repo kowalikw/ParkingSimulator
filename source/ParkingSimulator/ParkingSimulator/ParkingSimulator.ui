@@ -76,7 +76,7 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -88,11 +88,7 @@ QTabBar::tab:selected {
        <attribute name="title">
         <string>start</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QOpenGLWidget" name="glVisualisation"/>
-        </item>
-       </layout>
+       <layout class="QGridLayout" name="gridLayout_4"/>
       </widget>
       <widget class="QWidget" name="tab_2">
        <property name="styleSheet">
@@ -297,7 +293,7 @@ border-radius: 3px;</string>
              </widget>
             </item>
             <item>
-             <widget class="QOpenGLWidget" name="glMapEditor">
+             <widget class="MapEditorGLHost" name="glMapEditor">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -397,7 +393,7 @@ border-radius: 3px;</string>
                </layout>
               </item>
               <item>
-               <widget class="QFrame" name="">
+               <widget class="QFrame" name="frame">
                 <property name="styleSheet">
                  <string notr="true">background-color: #3b3e41;
  color: white;
@@ -636,7 +632,7 @@ QLabel {
                  <enum>Qt::RightToLeft</enum>
                 </property>
                 <property name="text">
-                 <string>Next</string>
+                 <string>Go to path planner</string>
                 </property>
                 <property name="icon">
                  <iconset>
@@ -684,6 +680,11 @@ QLabel {
        <attribute name="title">
         <string>visualisation</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QOpenGLWidget" name="glVisualisation"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -701,6 +702,11 @@ QLabel {
    <class>PathPlannerGLHost</class>
    <extends>QOpenGLWidget</extends>
    <header>PathPlannerGLHost.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MapEditorGLHost</class>
+   <extends>QOpenGLWidget</extends>
+   <header>MapEditorGLHost.h</header>
   </customwidget>
  </customwidgets>
  <resources>

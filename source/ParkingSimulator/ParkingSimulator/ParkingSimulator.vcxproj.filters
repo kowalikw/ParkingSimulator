@@ -136,6 +136,33 @@
     <ClCompile Include="Obstacle.cpp">
       <Filter>Source Files\MapElements</Filter>
     </ClCompile>
+    <ClCompile Include="MapEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CreateMap.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CreateMap.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorGLHost.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_MapEditorGLHost.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AddBuilding.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AddBuilding.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="AddBuilding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.h">
@@ -153,13 +180,25 @@
     <CustomBuild Include="PathPlannerGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
     </CustomBuild>
+    <CustomBuild Include="CreateMap.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="CreateMap.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MapEditorGLHost.h">
+      <Filter>Header Files\OpenGLHosts</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddBuilding.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddBuilding.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ParkingSimulator.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MapEditorGLHost.h">
-      <Filter>Header Files\OpenGLHosts</Filter>
     </ClInclude>
     <ClInclude Include="VisualisationGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
@@ -202,6 +241,15 @@
     </ClInclude>
     <ClInclude Include="Obstacle.h">
       <Filter>Header Files\MapElements</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_CreateMap.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_AddBuilding.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
