@@ -17,11 +17,13 @@ public:
 	int GetWidth();
 	int GetHeight();
 	void AddMapElement(MapElement *mapElement);
-	vector<MapElement*> GetMapElements();
+	std::vector<MapElement*> GetMapElements();
+	std::vector<glm::vec2> GetPoints();
 private:
 	int width;
 	int height;
-	vector<MapElement*> mapElements;
+	std::vector<MapElement*> mapElements;
+	std::vector<glm::vec2> points;
 };
 
 #endif

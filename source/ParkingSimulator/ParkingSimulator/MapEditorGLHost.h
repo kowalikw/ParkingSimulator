@@ -3,6 +3,7 @@
 
 #include "OpenGLHost.h"
 #include "MapEditor.h"
+#include "GeometryHelper.h"
 
 class MapEditorGLHost : public OpenGLHost
 {
@@ -26,12 +27,12 @@ private:
 	void adjustMaxOffset();
 	void nvgRenderFrame();
 	void drawMap();
-	void drawBuilding(MapElement *building);
+	void drawBuilding(MapElement *building, bool selected);
 	void drawRoad();
-	void drawDecoration(MapElement *decoration);
+	void drawDecoration(MapElement *decoration, bool selected);
+	void drawActiveElement();
 
 	MapEditor *mapEditor;
-	MapElement *currentElement = NULL;
 	NVGcontext* vg = NULL;
 	glm::vec2 positionOnMap;
 	float magnificationRatio = 1.0;
@@ -44,15 +45,24 @@ private:
 	int mapPositionX;
 	int mapPositionY;
 
+	const int SELECTED_MARKER_SIZE = 5;
+	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
+
+	const int ACTIVE_BORDER_WIDTH = 3;
+	const NVGcolor ACTIVE_GOOD_COLOR = nvgRGBA(135, 255, 145, 255);
+	const NVGcolor ACTIVE_GOOD_BORDER_COLOR = nvgRGBA(0, 145, 0, 255);
+	const NVGcolor ACTIVE_BAD_COLOR = nvgRGBA(255, 125, 125, 255);
+	const NVGcolor ACTIVE_BAD_BORDER_COLOR = nvgRGBA(175, 0, 0, 255);
+
 	const int EXTRA_OFFSET = 30;
 	const float MIN_MAGNIFICATION_RATIO = 0.2;
 	const float MAX_MAGNIFICATION_RATIO = 5.0;
 
-	const int MAP_BORDER_WIDTH = 2;
+	const int MAP_BORDER_WIDTH = 3;
 	const NVGcolor MAP_COLOR = nvgRGBA(58, 124, 37, 255);
 	const NVGcolor MAP_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
 
-	const int BUILDING_BORDER_WIDTH = 2;
+	const int BUILDING_BORDER_WIDTH = 3;
 	const NVGcolor BUILDING_COLOR = nvgRGBA(140, 140, 140, 255);
 	const NVGcolor BUILDING_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
 };

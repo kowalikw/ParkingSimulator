@@ -7,7 +7,7 @@ Vehicle::Vehicle()
 Vehicle::Vehicle(double wheelbase, double track)
 {
 	this->position = glm::vec2(0.0f, 0.0f);
-	this->rotation = glm::vec2(0.0f, 0.0f);
+	this->rotation = 0.0;
 	this->size = glm::vec2(1.0f, 1.0f);
 	this->wheelbase = wheelbase;
 	this->track = track;
@@ -17,7 +17,7 @@ Vehicle::Vehicle(double wheelbase, double track)
 
 void Vehicle::UpdateState(double angle)
 {
-	this->rotation.y = angle;
+	this->rotation = angle;
 }
 
 void Vehicle::UpdateState(glm::vec2 position)
@@ -28,13 +28,13 @@ void Vehicle::UpdateState(glm::vec2 position)
 void Vehicle::UpdateState(glm::vec2 position, double angle)
 {
 	this->position = position;
-	this->rotation.y = angle;
+	this->rotation = angle;
 }
 
 void Vehicle::UpdateState(double x, double y, double z, double angle)
 {
 	this->position = glm::vec2(x, y);
-	this->rotation.y = angle;
+	this->rotation = angle;
 }
 
 void Vehicle::UpdateState(PathElement pathElement)
@@ -77,7 +77,7 @@ glm::vec2 Vehicle::GetTurnCentre(double insideAngle, CircleType circleType)
 
 double Vehicle::GetAngle()
 {
-	return this->rotation.y;
+	return this->rotation;
 }
 
 double Vehicle::GetTrack()

@@ -3,6 +3,7 @@
 OpenGLHost::OpenGLHost(QWidget *parent) : QOpenGLWidget(parent) 
 {
 	setFocus();
+	setMouseTracking(true);
 	for (int i = 0; i < 1024; i++)
 		keys[i] = false;
 }
@@ -47,14 +48,14 @@ void OpenGLHost::mouseReleaseEvent(QMouseEvent * event)
 
 void OpenGLHost::mouseMoveEvent(QMouseEvent * event)
 {
-	if (mouseLeftPressed || mouseMiddlePressed || mouseRightPressed)
-	{
+	//if (mouseLeftPressed || mouseMiddlePressed || mouseRightPressed)
+	//{
 		mouseOffsetX = event->x() - mouseLastX;
 		mouseOffsetY = event->y() - mouseLastY;
 
 		mouseLastX = event->x();
 		mouseLastY = event->y();
-	}
+	//}
 }
 
 void OpenGLHost::wheelEvent(QWheelEvent * event)

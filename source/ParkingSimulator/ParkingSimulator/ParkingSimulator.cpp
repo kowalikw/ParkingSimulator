@@ -9,7 +9,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	((MapEditorGLHost*)ui.glMapEditor)->SetMapEditor(&mapEditor);
 
 	renderTimer = new QTimer();
-	renderTimer->setInterval(20);
+	renderTimer->setInterval(10);
 	renderTimer->start();
 
 	connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderTimerCall()));
@@ -100,6 +100,7 @@ void ParkingSimulator::addBuilding()
 	{
 		ui.btnAddBuilding->setStyleSheet("background-color: #d86a39;");
 		mapEditor.SetAddBuilding(true);
+		mapEditor.AddBuilding(100, 100);
 	}
 	else
 	{

@@ -10,6 +10,11 @@ Map::Map(int width, int height)
 {
 	this->width = width;
 	this->height = height;
+
+	this->points.push_back(glm::vec2(0.0f, 0.0f));
+	this->points.push_back(glm::vec2(width, 0.0f));
+	this->points.push_back(glm::vec2(width, height));
+	this->points.push_back(glm::vec2(0.0f, height));
 }
 
 int Map::GetWidth()
@@ -30,4 +35,9 @@ void Map::AddMapElement(MapElement *mapElement)
 vector<MapElement*> Map::GetMapElements()
 {
 	return this->mapElements;
+}
+
+std::vector<glm::vec2> Map::GetPoints()
+{
+	return this->points;
 }

@@ -1,4 +1,9 @@
 #include "GeometryHelper.h"
+#include "OpenGLHost.h"
+
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream> 
 
 glm::vec2 GeometryHelper::GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4) // XZ plane
 {
@@ -22,6 +27,57 @@ glm::vec2 GeometryHelper::GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, g
 	double z = a1 * x + b1;
 
 	return glm::vec2(x, z);
+}
+
+bool GeometryHelper::CheckPolygonContainsPoint(std::vector<glm::vec2> polygon, glm::vec2 point)
+{
+	double totalAngle = GetAngle(point, polygon[polygon.size() - 1], polygon[0]);
+
+	
+
+	std::ostringstream ss;
+	ss << "totalAngle=: " << totalAngle << std::endl;
+	ss << std::endl;
+	std::string s(ss.str());
+
+	OutputDebugStringA(s.c_str());
+
+	for (int i = 0; i < polygon.size() - 1; i++)
+		totalAngle += GetAngle(point, polygon[i], polygon[i + 1]);
+
+	return !(abs(totalAngle) < EPS);
+}
+
+bool GeometryHelper::CheckPolygonIntersection(std::vector<glm::vec2> polygon1, std::vector<glm::vec2> polygon2)
+{
+	return false;
+}
+
+bool GeometryHelper::CheckPolygonContainsPolygon(std::vector<glm::vec2> subject, std::vector<glm::vec2> polygon)
+{
+	for (int i = 0; i < polygon.size(); i++)
+		if (!CheckPolygonContainsPoint(subject, polygon[i]))
+		{
+			/*std::ostringstream ss;
+			ss << "X: " << polygon[i].x << std::endl;
+			ss << "Y: " << polygon[i].y << std::endl;
+			ss << std::endl;
+			std::string s(ss.str());
+
+			OutputDebugStringA(s.c_str());*/
+
+			return false;
+		}
+
+	return true;
+}
+
+double GeometryHelper::GetAngle(glm::vec2 pivot, glm::vec2 source, glm::vec2 dest)
+{
+	glm::vec2 s = glm::vec2(source.x - pivot.x, source.y - pivot.y);
+	glm::vec2 d = glm::vec2(dest.x - pivot.x, dest.y - pivot.y);
+
+	return atan2(CrossProduct(s, d), DotProduct(s, d));
 }
 
 double GeometryHelper::CrossProduct(glm::vec2 v1, glm::vec2 v2)

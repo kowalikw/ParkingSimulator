@@ -13,9 +13,10 @@ void MapEditor::LoadMap()
 {
 }
 
-void MapEditor::AddBuilding(MapElement *building)
+void MapEditor::AddBuilding(int width, int height)
 {
-	map.AddMapElement(building);
+	MapElement *newElement = new Obstacle(glm::vec2(), glm::vec2(width, height), ObstacleType::Building, "Budyneczek");
+	this->newElement = newElement;
 }
 
 Map MapEditor::GetMap()
@@ -61,4 +62,32 @@ void MapEditor::SetAddRoad(bool addRoad)
 void MapEditor::SetAddParkPlace(bool addParkPlace)
 {
 	this->addParkPlace = addParkPlace;
+}
+
+MapElement * MapEditor::GetNewElement()
+{
+	return this->newElement;
+}
+
+MapElement * MapEditor::GetSelectedElement()
+{
+	return this->selectedElement;
+}
+
+bool MapEditor::IsMapElementAdmissible(MapElement * mapElement)
+{
+	return mapContainsMapElement(mapElement);// && mapElementIntersectsMapElement(mapElement);
+}
+
+bool MapEditor::mapContainsMapElement(MapElement * mapElement)
+{
+	std::vector<glm::vec2> mapPolygon = map.GetPoints();
+	std::vector<glm::vec2> mapElementPolygon = mapElement->GetPoints();
+
+	return GeometryHelper::CheckPolygonContainsPolygon(mapPolygon, mapElementPolygon);
+}
+
+bool MapEditor::mapElementIntersectsMapElement(MapElement * mapElement)
+{
+	return false;
 }

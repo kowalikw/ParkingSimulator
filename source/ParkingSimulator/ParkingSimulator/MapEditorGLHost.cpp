@@ -29,28 +29,34 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 		adjustMaxOffset();
 	}
 
-	if (mapEditor->GetAddBuilding())
+	if (mapEditor->GetAddBuilding() && mapEditor->GetNewElement() != nullptr)
 	{
 		int positionOnMapX = mouseLastX - mapPositionX - offsetX;
-		if (positionOnMapX > mapWidth) positionOnMapX = -1;
+		//if (positionOnMapX > mapWidth) positionOnMapX = -1;
 		if(positionOnMapX > 0) positionOnMapX /= magnificationRatio;
 
 		int positionOnMapY = mouseLastY - mapPositionY - offsetY;
-		if (positionOnMapY > mapHeight) positionOnMapY = -1;
+		//if (positionOnMapY > mapHeight) positionOnMapY = -1;
 		if (positionOnMapY > 0) positionOnMapY /= magnificationRatio;
 
-		if (positionOnMapX < 0 || positionOnMapY < 0)
-			positionOnMap = glm::vec2(-1, -1);
-		else
+		//if (positionOnMapX < 0 || positionOnMapY < 0)
+		//	positionOnMap = glm::vec2(-1, -1);
+		//else
 			positionOnMap = glm::vec2(positionOnMapX, positionOnMapY);
 
-		std::ostringstream ss;
+		//glm::vec2 lastPosition = mapEditor->GetNewElement()->GetPosition();
+		mapEditor->GetNewElement()->SetPosition(positionOnMap);
+
+		//if (!mapEditor->IsMapElementAdmissible(mapEditor->GetNewElement()))
+		//	mapEditor->GetNewElement()->SetPosition(lastPosition);
+
+		/*std::ostringstream ss;
 		ss << "X: " << positionOnMap.x << endl;
 		ss << "Y: " << positionOnMap.y << endl;
 		ss << endl;
 		std::string s(ss.str());
 
-		OutputDebugStringA(s.c_str());
+		OutputDebugStringA(s.c_str());*/
 	}
 }
 
@@ -96,9 +102,6 @@ void MapEditorGLHost::initializeGL()
 	OpenGLHost::initializeGL();
 
 	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
-
-	// to test only
-	currentElement = new Obstacle(glm::vec2(5, 5), glm::vec2(500, 500), ObstacleType::Building, "Budynek");
 }
 
 void MapEditorGLHost::resizeGL(int w, int h)
@@ -143,7 +146,9 @@ void MapEditorGLHost::nvgRenderFrame()
 {
 	drawMap();
 
-	drawBuilding(currentElement);
+	//drawBuilding(mapEditor->GetNewElement(), true);
+
+	drawActiveElement();
 }
 
 void MapEditorGLHost::drawMap()
@@ -169,30 +174,65 @@ void MapEditorGLHost::drawMap()
 	nvgFill(vg);
 }
 
-void MapEditorGLHost::drawBuilding(MapElement *building)
+void MapEditorGLHost::drawBuilding(MapElement *building, bool selected)
 {
-	int buildingWidth = building->GetSize().x * magnificationRatio;
-	int buildingHeight = building->GetSize().y * magnificationRatio;
+	if (building == NULL) return;
+
+	std::vector<glm::vec2> points = building->GetPoints();
 	int buildingPositionX = mapPositionX + building->GetPosition().x * magnificationRatio + offsetX;
 	int buildingPositionY = mapPositionY + building->GetPosition().y * magnificationRatio + offsetY;
 
 	nvgBeginPath(vg);
-	nvgRect(vg, buildingPositionX, buildingPositionY, buildingWidth + 2 * BUILDING_BORDER_WIDTH, buildingHeight + 2 * BUILDING_BORDER_WIDTH);
-	nvgFillColor(vg, BUILDING_BORDER_COLOR);
-	nvgFill(vg);
-
-	nvgBeginPath(vg);
-	nvgRect(vg, buildingPositionX + BUILDING_BORDER_WIDTH, buildingPositionY + BUILDING_BORDER_WIDTH, buildingWidth, buildingHeight);
+	nvgMoveTo(vg, mapPositionX + points[0].x * magnificationRatio + offsetX, mapPositionY + points[0].y * magnificationRatio + offsetY);
+	for (int i = 0; i <= points.size(); i++)
+		nvgLineTo(vg, mapPositionX + points[i % points.size()].x * magnificationRatio + offsetX, mapPositionY + points[i % points.size()].y * magnificationRatio + offsetY);
+	nvgStrokeColor(vg, BUILDING_BORDER_COLOR);
+	nvgStrokeWidth(vg, BUILDING_BORDER_WIDTH);
+	nvgStroke(vg);
 	nvgFillColor(vg, BUILDING_COLOR);
 	nvgFill(vg);
+
+	if (selected)
+	{
+		nvgBeginPath(vg);
+		nvgEllipse(vg, buildingPositionX, buildingPositionY, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
+		nvgFillColor(vg, SELECTED_MARKER_COLOR);
+		nvgFill(vg);
+	}
 }
 
 void MapEditorGLHost::drawRoad()
 {
 }
 
-void MapEditorGLHost::drawDecoration(MapElement *decoration)
+void MapEditorGLHost::drawDecoration(MapElement *decoration, bool selected)
 {
+}
+
+void MapEditorGLHost::drawActiveElement()
+{
+	if (mapEditor->GetNewElement() == nullptr)
+		return;
+
+	std::vector<glm::vec2> points = mapEditor->GetNewElement()->GetPoints();
+	bool admissible = mapEditor->IsMapElementAdmissible(mapEditor->GetNewElement());
+	int buildingPositionX = mapPositionX + mapEditor->GetNewElement()->GetPosition().x * magnificationRatio + offsetX;
+	int buildingPositionY = mapPositionY + mapEditor->GetNewElement()->GetPosition().y * magnificationRatio + offsetY;
+
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, mapPositionX + points[0].x * magnificationRatio + offsetX, mapPositionY + points[0].y * magnificationRatio + offsetY);
+	for (int i = 0; i <= points.size(); i++)
+		nvgLineTo(vg, mapPositionX + points[i % points.size()].x * magnificationRatio + offsetX, mapPositionY + points[i % points.size()].y * magnificationRatio + offsetY);
+	nvgStrokeColor(vg, admissible ? ACTIVE_GOOD_BORDER_COLOR : ACTIVE_BAD_BORDER_COLOR);
+	nvgStrokeWidth(vg, ACTIVE_BORDER_WIDTH);
+	nvgStroke(vg);
+	nvgFillColor(vg, admissible ? ACTIVE_GOOD_COLOR : ACTIVE_BAD_COLOR);
+	nvgFill(vg);
+
+	nvgBeginPath(vg);
+	nvgEllipse(vg, buildingPositionX, buildingPositionY, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
+	nvgFillColor(vg, SELECTED_MARKER_COLOR);
+	nvgFill(vg);
 }
 
 #pragma endregion
