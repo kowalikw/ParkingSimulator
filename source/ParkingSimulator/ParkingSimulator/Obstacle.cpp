@@ -14,7 +14,7 @@ Obstacle::Obstacle(glm::vec2 position, glm::vec2 size, ObstacleType type, std::s
 {
 	this->position = position;
 	this->size = size;
-	this->rotation = 3.14 / 4.0f;
+	this->rotation = 0.0;
 	this->type = type;
 	this->name = name;
 

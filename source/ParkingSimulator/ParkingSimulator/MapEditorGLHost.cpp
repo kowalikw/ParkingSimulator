@@ -10,6 +10,9 @@ MapEditorGLHost::MapEditorGLHost(QWidget *parent) : OpenGLHost(parent) { }
 void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 {
 	OpenGLHost::mousePressEvent(event);
+
+	if (mapEditor->GetAddBuilding())
+		mapEditor->AddObstacleConfirm();
 }
 
 void MapEditorGLHost::mouseReleaseEvent(QMouseEvent * event)
@@ -146,7 +149,23 @@ void MapEditorGLHost::nvgRenderFrame()
 {
 	drawMap();
 
-	//drawBuilding(mapEditor->GetNewElement(), true);
+	std::vector<MapElement*> mapElements = mapEditor->GetMap().GetMapElements();
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		if (dynamic_cast<Obstacle*>(mapElements[i]) != NULL)
+		{
+			auto obstacle = dynamic_cast<Obstacle*>(mapElements[i]);
+			switch (obstacle->GetType())
+			{
+			case ObstacleType::Building:
+				drawBuilding(obstacle, true);
+				break;
+			case ObstacleType::Decoration:
+
+				break;
+			}
+		}
+	}
 
 	drawActiveElement();
 }

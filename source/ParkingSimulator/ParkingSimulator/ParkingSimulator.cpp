@@ -61,6 +61,9 @@ void ParkingSimulator::renderTimerCall()
 {
 	ui.glMapEditor->repaint();
 	ui.glPathPlanner->repaint();
+
+	if (mapEditor.GetResetAddButtons())
+		clearAddButtons();
 }
 
 #pragma region Start.
@@ -100,7 +103,7 @@ void ParkingSimulator::addBuilding()
 	{
 		ui.btnAddBuilding->setStyleSheet("background-color: #d86a39;");
 		mapEditor.SetAddBuilding(true);
-		mapEditor.AddBuilding(100, 100);
+		mapEditor.AddObstacle("budynek", 100, 100, ObstacleType::Building);
 	}
 	else
 	{

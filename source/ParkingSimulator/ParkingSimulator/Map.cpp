@@ -15,6 +15,8 @@ Map::Map(int width, int height)
 	this->points.push_back(glm::vec2(width, 0.0f));
 	this->points.push_back(glm::vec2(width, height));
 	this->points.push_back(glm::vec2(0.0f, height));
+
+	this->AddMapElement(new Obstacle(glm::vec2(100, 100), glm::vec2(100, 100), ObstacleType::Building, "lalala"));
 }
 
 int Map::GetWidth()

@@ -10,18 +10,21 @@ public:
 	void CreateMap(int width, int height);
 	void SaveMap();
 	void LoadMap();
-	void AddBuilding(int width, int height);
+	void AddObstacle(string name, int width, int height, ObstacleType type);
+	void AddObstacleConfirm();
 	Map GetMap();
 
 	bool GetAddBuilding();
 	bool GetAddDecoration();
 	bool GetAddRoad();
 	bool GetAddParkPlace();
+	bool GetResetAddButtons();
 
 	void SetAddBuilding(bool addBuilding);
 	void SetAddDecoration(bool addDecoration);
 	void SetAddRoad(bool addRoad);
 	void SetAddParkPlace(bool addParkPlace);
+	void SetResetAddButtons(bool resetAddButtons);
 
 	MapElement *GetNewElement();
 	MapElement *GetSelectedElement();
@@ -33,6 +36,7 @@ private:
 	bool addDecoration = false;
 	bool addRoad = false;
 	bool addParkPlace = false;
+	bool resetAddButtons = false;
 	MapElement *newElement = NULL;
 	MapElement *selectedElement = NULL;
 

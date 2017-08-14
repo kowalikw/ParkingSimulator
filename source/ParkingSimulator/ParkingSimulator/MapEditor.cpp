@@ -13,10 +13,20 @@ void MapEditor::LoadMap()
 {
 }
 
-void MapEditor::AddBuilding(int width, int height)
+void MapEditor::AddObstacle(string name, int width, int height, ObstacleType type)
 {
-	MapElement *newElement = new Obstacle(glm::vec2(), glm::vec2(width, height), ObstacleType::Building, "Budyneczek");
+	MapElement *newElement = new Obstacle(glm::vec2(), glm::vec2(width, height), ObstacleType::Building, name);
 	this->newElement = newElement;
+}
+
+void MapEditor::AddObstacleConfirm()
+{
+	if (IsMapElementAdmissible(newElement))
+	{
+		map.AddMapElement(newElement);
+		this->newElement = nullptr;
+		this->resetAddButtons = true;
+	}
 }
 
 Map MapEditor::GetMap()
@@ -44,6 +54,16 @@ bool MapEditor::GetAddParkPlace()
 	return this->addParkPlace;
 }
 
+bool MapEditor::GetResetAddButtons()
+{
+	if (resetAddButtons)
+	{
+		this->resetAddButtons = false;
+		return true;
+	}
+	return false;
+}
+
 void MapEditor::SetAddBuilding(bool addBuilding)
 {
 	this->addBuilding = addBuilding;
@@ -64,6 +84,11 @@ void MapEditor::SetAddParkPlace(bool addParkPlace)
 	this->addParkPlace = addParkPlace;
 }
 
+void MapEditor::SetResetAddButtons(bool resetAddButtons)
+{
+	this->resetAddButtons = resetAddButtons;
+}
+
 MapElement * MapEditor::GetNewElement()
 {
 	return this->newElement;
@@ -76,7 +101,7 @@ MapElement * MapEditor::GetSelectedElement()
 
 bool MapEditor::IsMapElementAdmissible(MapElement * mapElement)
 {
-	return mapContainsMapElement(mapElement);// && mapElementIntersectsMapElement(mapElement);
+	return mapContainsMapElement(mapElement) && !mapElementIntersectsMapElement(mapElement);
 }
 
 bool MapEditor::mapContainsMapElement(MapElement * mapElement)
@@ -89,5 +114,14 @@ bool MapEditor::mapContainsMapElement(MapElement * mapElement)
 
 bool MapEditor::mapElementIntersectsMapElement(MapElement * mapElement)
 {
+	std::vector<MapElement*> mapElements = map.GetMapElements();
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		if (mapElements[i] == mapElement) continue;
+
+		if (GeometryHelper::CheckPolygonIntersection(mapElement->GetPoints(), mapElements[i]->GetPoints()))
+			return true;
+	}
+
 	return false;
 }
