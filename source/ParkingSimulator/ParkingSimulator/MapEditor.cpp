@@ -5,12 +5,24 @@ void MapEditor::CreateMap(int width, int height)
 	map = Map(width, height);
 }
 
-void MapEditor::SaveMap()
+void MapEditor::SaveMap(string filePath)
 {
+	ofstream f(filePath, ios::out);
+
+	boost::archive::text_oarchive oa(f);
+
+	oa << map;
 }
 
-void MapEditor::LoadMap()
+void MapEditor::LoadMap(string filePath)
 {
+	map = Map(0, 0);
+
+	std::ifstream ifs(filePath);
+
+	boost::archive::text_iarchive ia(ifs);
+
+	ia >> this->map;
 }
 
 void MapEditor::AddObstacle(string name, int width, int height, ObstacleType type)
@@ -62,6 +74,11 @@ bool MapEditor::GetResetAddButtons()
 		return true;
 	}
 	return false;
+}
+
+void MapEditor::SetMap(Map map)
+{
+	this->map = map;
 }
 
 void MapEditor::SetAddBuilding(bool addBuilding)

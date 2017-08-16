@@ -31,6 +31,8 @@ public slots:
 	void addDecoration();
 	void addRoad();
 	void addParkPlace();
+
+	void updateMapElementsTree();
 	void clearAddButtons();
 	void clearAddButtonsStyle();
 };

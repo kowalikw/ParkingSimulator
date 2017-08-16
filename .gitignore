@@ -58,3 +58,8 @@ CMakeLists.txt.user*
 /source/ParkingSimulator/ParkingSimulator/x64/Debug/ParkingSimulator.res
 /source/ParkingSimulator/ParkingSimulator/x64/Debug
 /ConsoleApplication1
+/source/ParkingSimulator/qwe
+*.txt
+/source/ParkingSimulator/lalala
+/source/ParkingSimulator/ParkingSimulator/plik
+*.map

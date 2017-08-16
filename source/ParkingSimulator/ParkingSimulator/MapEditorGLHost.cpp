@@ -35,23 +35,14 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 	if (mapEditor->GetAddBuilding() && mapEditor->GetNewElement() != nullptr)
 	{
 		int positionOnMapX = mouseLastX - mapPositionX - offsetX;
-		//if (positionOnMapX > mapWidth) positionOnMapX = -1;
 		if(positionOnMapX > 0) positionOnMapX /= magnificationRatio;
 
 		int positionOnMapY = mouseLastY - mapPositionY - offsetY;
-		//if (positionOnMapY > mapHeight) positionOnMapY = -1;
 		if (positionOnMapY > 0) positionOnMapY /= magnificationRatio;
 
-		//if (positionOnMapX < 0 || positionOnMapY < 0)
-		//	positionOnMap = glm::vec2(-1, -1);
-		//else
-			positionOnMap = glm::vec2(positionOnMapX, positionOnMapY);
+		positionOnMap = glm::vec2(positionOnMapX, positionOnMapY);
 
-		//glm::vec2 lastPosition = mapEditor->GetNewElement()->GetPosition();
 		mapEditor->GetNewElement()->SetPosition(positionOnMap);
-
-		//if (!mapEditor->IsMapElementAdmissible(mapEditor->GetNewElement()))
-		//	mapEditor->GetNewElement()->SetPosition(lastPosition);
 
 		/*std::ostringstream ss;
 		ss << "X: " << positionOnMap.x << endl;

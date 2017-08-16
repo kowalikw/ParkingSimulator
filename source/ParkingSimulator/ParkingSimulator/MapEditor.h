@@ -8,8 +8,8 @@ class MapEditor
 {
 public:
 	void CreateMap(int width, int height);
-	void SaveMap();
-	void LoadMap();
+	void SaveMap(string filePath);
+	void LoadMap(string filePath);
 	void AddObstacle(string name, int width, int height, ObstacleType type);
 	void AddObstacleConfirm();
 	Map GetMap();
@@ -20,6 +20,7 @@ public:
 	bool GetAddParkPlace();
 	bool GetResetAddButtons();
 
+	void SetMap(Map map);
 	void SetAddBuilding(bool addBuilding);
 	void SetAddDecoration(bool addDecoration);
 	void SetAddRoad(bool addRoad);
