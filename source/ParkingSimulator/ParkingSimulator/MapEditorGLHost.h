@@ -4,6 +4,7 @@
 #include "OpenGLHost.h"
 #include "MapEditor.h"
 #include "GeometryHelper.h"
+#include "Graph.h"
 
 class MapEditorGLHost : public OpenGLHost
 {
@@ -31,6 +32,8 @@ private:
 	void drawRoad();
 	void drawDecoration(MapElement *decoration, bool selected);
 	void drawActiveElement();
+
+	void drawGraph(Graph g);
 
 	MapEditor *mapEditor;
 	NVGcontext* vg = NULL;

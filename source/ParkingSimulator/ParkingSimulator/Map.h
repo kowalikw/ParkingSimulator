@@ -2,12 +2,12 @@
 #define MAP_H
 
 #include <vector>
+#include <fstream>
+
 #include "MapElement.h"
 #include "Obstacle.h"
 #include "ParkingSpace.h"
 #include "Vehicle.h"
-
-#include <fstream>
 
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>

@@ -122,6 +122,27 @@ void Graph::RemoveEdge(GraphEdge * e)
 	RemoveEdge(edgeStart, edgeEnd);
 }
 
+int Graph::VerticesCount()
+{
+	return vertices.size();
+}
+
+int Graph::FindIndexOfVertex(GraphVertex * v)
+{
+	for (int i = 0; i < vertices.size(); i++)
+		if (v == vertices[i])
+			return i;
+	return -1; // index not found
+}
+
+int Graph::FindIndexOfVector(double x, double y)
+{
+	for (int i = 0; i < vertices.size(); i++)
+		if (vertices[i]->x == x && vertices[i]->y == y)
+			return i;
+	return -1;
+}
+
 std::vector<GraphEdge*> Graph::EdgesFrom(int v)
 {
 	std::vector<GraphEdge*> edgesFrom;
@@ -146,7 +167,87 @@ std::vector<GraphEdge*> Graph::EdgesTo(int v)
 
 void Graph::CreateVoronoiGraph(Map * map)
 {
+	std::vector<Point2> points;
+	std::vector<Segment> segments;
+	voronoi_diagram<double> vd;
 
+	std::vector<glm::vec2> mapPoints = map->GetPoints();
+	for(int i = 0; i < mapPoints.size(); i++)
+		segments.push_back(Segment(mapPoints[i].x, mapPoints[i].y, mapPoints[(i + 1) % mapPoints.size()].x, mapPoints[(i + 1) % mapPoints.size()].y));
+
+	std::vector<MapElement*> mapElements = map->GetMapElements();
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		std::vector<glm::vec2> mapElementPoints = mapElements[i]->GetPoints();
+		for (int j = 0; j < mapElementPoints.size(); j++)
+			segments.push_back(Segment(mapElementPoints[j].x, mapElementPoints[j].y, mapElementPoints[(j + 1) % mapElementPoints.size()].x, mapElementPoints[(j + 1) % mapElementPoints.size()].y));
+	}
+
+	construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), &vd);
+
+	vertices.resize(vd.num_vertices());
+	for (int i = 0; i < vd.num_vertices(); i++)
+		vertices[i] = new GraphVertex(0, 0);
+
+	edges.resize(vd.num_vertices());
+	for (int i = 0; i < vd.num_vertices(); i++)
+		edges[i].resize(vd.num_vertices());
+
+	for (int i = 0; i < vd.num_vertices(); i++)
+		for (int j = 0; j < vd.num_vertices(); j++)
+			edges[i][j] = nullptr;
+
+	for (int i = 0; i < vd.num_vertices(); i++)
+	{
+		GraphVertex *v = new GraphVertex(vd.vertices().at(i).x(), vd.vertices().at(i).y());
+		vertices[i] = v;
+	}
+
+	for (voronoi_diagram<double>::const_cell_iterator it = vd.cells().begin(); it != vd.cells().end(); ++it) {
+		const voronoi_diagram<double>::cell_type &cell = *it;
+		const voronoi_diagram<double>::edge_type *edge = cell.incident_edge();
+		
+		do
+		{
+			bool edgeAdmissible = true;
+			if (edge != NULL && edge->vertex0() != NULL && edge->vertex1() != NULL)
+			{
+				auto mapElements = map->GetMapElements();
+				for (int i = 0; i < mapElements.size(); i++)
+				{
+					auto pts = mapElements[i]->GetPoints();
+					for (int j = 0; j < pts.size(); j++)
+					{
+						if (pts[j].x == edge->vertex0()->x() && pts[j].y == edge->vertex0()->y())
+							edgeAdmissible = false;
+						if (pts[j].x == edge->vertex1()->x() && pts[j].y == edge->vertex1()->y())
+							edgeAdmissible = false;
+					}
+				}
+
+				auto mapPoints = map->GetPoints();
+				for (int i = 0; i < mapPoints.size(); i++)
+				{
+					if (mapPoints[i].x == edge->vertex0()->x() && mapPoints[i].y == edge->vertex0()->y())
+						edgeAdmissible = false;
+					if (mapPoints[i].x == edge->vertex1()->x() && mapPoints[i].y == edge->vertex1()->y())
+						edgeAdmissible = false;
+				}
+			}
+			else
+				edgeAdmissible = false;
+
+			if (edgeAdmissible)
+			{
+				int from = FindIndexOfVector(edge->vertex0()->x(), edge->vertex0()->y());
+				int to = FindIndexOfVector(edge->vertex1()->x(), edge->vertex1()->y());
+
+				AddEdge(from, to);
+			}
+
+			edge = edge->next();
+		} while (edge != cell.incident_edge());
+	}
 }
 
 std::vector<int> Graph::FindPath(int s, int t, double **estimatedDist)
