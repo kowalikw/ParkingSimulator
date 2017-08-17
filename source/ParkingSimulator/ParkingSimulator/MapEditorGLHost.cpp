@@ -3,6 +3,7 @@
 #include <iostream>     // std::cout
 #include <sstream> 
 
+#include "Graph.h"
 
 #include <boost/polygon/voronoi.hpp>
 using boost::polygon::voronoi_builder;
@@ -66,6 +67,7 @@ struct boost::polygon::segment_traits<Segment> {
 
 std::vector<Point2> points;
 std::vector<Segment> segments;
+std::vector<Segment> edgesToDraw;
 voronoi_diagram<double> vd;
 
 MapEditorGLHost::MapEditorGLHost(QWidget *parent) : OpenGLHost(parent) { }
@@ -94,7 +96,6 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 
 
 		vd.clear();
-		construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), &vd);
 	}
 }
 
@@ -189,7 +190,7 @@ void MapEditorGLHost::initializeGL()
 	segments.push_back(Segment(600, 500, 600, 0));
 	segments.push_back(Segment(600, 0, 0, 0));
 	
-	/*segments.push_back(Segment(100, 100, 200, 100));
+	segments.push_back(Segment(100, 100, 200, 100));
 	segments.push_back(Segment(200, 100, 200, 200));
 	segments.push_back(Segment(200, 200, 100, 200));
 	segments.push_back(Segment(100, 200, 100, 100));
@@ -197,11 +198,58 @@ void MapEditorGLHost::initializeGL()
 	segments.push_back(Segment(300, 300, 300, 400));
 	segments.push_back(Segment(300, 400, 400, 400));
 	segments.push_back(Segment(400, 400, 400, 300));
-	segments.push_back(Segment(400, 300, 300, 300));*/
+	segments.push_back(Segment(400, 300, 300, 300));
+
+	Map map = Map(600, 500);
+	map.AddMapElement(new Obstacle(glm::vec2(150, 150), glm::vec2(100, 100), ObstacleType::Building, "lalala"));
+	map.AddMapElement(new Obstacle(glm::vec2(350, 350), glm::vec2(100, 100), ObstacleType::Building, "lalala"));
+	mapEditor->SetMap(map);
 
 	// Construction of the Voronoi Diagram.
-	
-	
+	construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), &vd);
+
+	Graph g(10);
+
+	for (voronoi_diagram<double>::const_cell_iterator it = vd.cells().begin(); it != vd.cells().end(); ++it) {
+		const voronoi_diagram<double>::cell_type &cell = *it;
+		const voronoi_diagram<double>::edge_type *edge = cell.incident_edge();
+		// This is convenient way to iterate edges around Voronoi cell.
+		do 
+		{
+			bool edgeOk = true;
+			if (edge != NULL && edge->vertex0() != NULL && edge->vertex1() != NULL)
+			{
+				auto mapElements = mapEditor->GetMap().GetMapElements();
+				for (int i = 0; i < mapElements.size(); i++)
+				{
+					auto pts = mapElements[i]->GetPoints();
+					for (int j = 0; j < pts.size(); j++)
+					{
+						if (pts[j].x == edge->vertex0()->x() && pts[j].y == edge->vertex0()->y())
+							edgeOk = false;
+						if (pts[j].x == edge->vertex1()->x() && pts[j].y == edge->vertex1()->y())
+							edgeOk = false;
+					}
+				}
+
+				auto mapPoints = mapEditor->GetMap().GetPoints();
+				for (int i = 0; i < mapPoints.size(); i++)
+				{
+					if (mapPoints[i].x == edge->vertex0()->x() && mapPoints[i].y == edge->vertex0()->y())
+						edgeOk = false;
+					if (mapPoints[i].x == edge->vertex1()->x() && mapPoints[i].y == edge->vertex1()->y())
+						edgeOk = false;
+				}
+			}
+			else
+				edgeOk = false;
+
+			if (edgeOk)
+				edgesToDraw.push_back(Segment(edge->vertex0()->x(), edge->vertex0()->y(), edge->vertex1()->x(), edge->vertex1()->y()));
+
+			edge = edge->next();
+		} while (edge != cell.incident_edge());
+	}
 
 	int lala = 0;
 }
@@ -225,18 +273,18 @@ void MapEditorGLHost::paintGL()
 
 	nvgRenderFrame();
 
-	/*for (int i = 0; i < segments.size(); i++)
+	for (int i = 0; i < segments.size(); i++)
 	{
 		nvgBeginPath(vg);
 		nvgMoveTo(vg, segments[i].p0.a, segments[i].p0.b);
 		nvgLineTo(vg, segments[i].p1.a, segments[i].p1.b);
-		nvgStrokeColor(vg, MAP_BORDER_COLOR);
+		nvgStrokeColor(vg, MAP_COLOR);
 		nvgStrokeWidth(vg, 3);
 		nvgStroke(vg);
-	}*/
+	}
 
 	
-	{
+	/*{
 		for (voronoi_diagram<double>::const_cell_iterator it = vd.cells().begin();
 			it != vd.cells().end(); ++it) {
 			const voronoi_diagram<double>::cell_type &cell = *it;
@@ -259,6 +307,16 @@ void MapEditorGLHost::paintGL()
 				edge = edge->next();
 			} while (edge != cell.incident_edge());
 		}
+	}*/
+
+	for (int i = 0; i < edgesToDraw.size(); i++)
+	{
+		nvgBeginPath(vg);
+		nvgMoveTo(vg, edgesToDraw[i].p0.a, edgesToDraw[i].p0.b);
+		nvgLineTo(vg, edgesToDraw[i].p1.a, edgesToDraw[i].p1.b);
+		nvgStrokeColor(vg, MAP_BORDER_COLOR);
+		nvgStrokeWidth(vg, 3);
+		nvgStroke(vg);
 	}
 
 	nvgEndFrame(vg);

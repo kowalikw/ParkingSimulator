@@ -116,6 +116,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeometryHelper.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="GeneratedFiles\ui_CreateMap.h" />
     <ClInclude Include="GeneratedFiles\ui_ParkingSimulator.h" />
     <ClInclude Include="GeometryHelper.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapEditor.h" />
