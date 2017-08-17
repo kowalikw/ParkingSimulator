@@ -3,6 +3,71 @@
 #include <iostream>     // std::cout
 #include <sstream> 
 
+
+#include <boost/polygon/voronoi.hpp>
+using boost::polygon::voronoi_builder;
+using boost::polygon::voronoi_diagram;
+using boost::polygon::x;
+using boost::polygon::y;
+using boost::polygon::low;
+using boost::polygon::high;
+
+
+
+namespace boost
+{
+	namespace polygon 
+	{
+		
+	}
+}
+
+struct Point2 {
+	int a;
+	int b;
+	Point2(int x, int y) : a(x), b(y) {}
+};
+
+struct Segment {
+	Point2 p0;
+	Point2 p1;
+	Segment(int x1, int y1, int x2, int y2) : p0(x1, y1), p1(x2, y2) {}
+};
+
+template <>
+struct boost::polygon::geometry_concept<Point2> {
+	typedef point_concept type;
+};
+
+template <>
+struct boost::polygon::point_traits<Point2> {
+	typedef int coordinate_type;
+
+	static inline coordinate_type get(
+		const Point2& point, boost::polygon::orientation_2d orient) {
+		return (orient == boost::polygon::HORIZONTAL) ? point.a : point.b;
+	}
+};
+
+template <>
+struct boost::polygon::geometry_concept<Segment> {
+	typedef segment_concept type;
+};
+
+template <>
+struct boost::polygon::segment_traits<Segment> {
+	typedef int coordinate_type;
+	typedef Point2 point_type;
+
+	static inline point_type get(const Segment& segment, boost::polygon::direction_1d dir) {
+		return dir.to_int() ? segment.p1 : segment.p0;
+	}
+};
+
+std::vector<Point2> points;
+std::vector<Segment> segments;
+voronoi_diagram<double> vd;
+
 MapEditorGLHost::MapEditorGLHost(QWidget *parent) : OpenGLHost(parent) { }
 
 #pragma region User input events.
@@ -12,7 +77,25 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 	OpenGLHost::mousePressEvent(event);
 
 	if (mapEditor->GetAddBuilding())
+	{
 		mapEditor->AddObstacleConfirm();
+
+		segments.clear();
+
+		auto mapElements = mapEditor->GetMap().GetMapElements();
+		for (int i = 0; i < mapElements.size(); i++)
+		{
+			auto elementPoints = mapElements[i]->GetPoints();
+			for (int j = 0; j < elementPoints.size(); j++)
+			{
+				segments.push_back(Segment(elementPoints[j].x, elementPoints[j].y, elementPoints[(j + 1) % elementPoints.size()].x, elementPoints[(j + 1) % elementPoints.size()].y));
+			}
+		}
+
+
+		vd.clear();
+		construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), &vd);
+	}
 }
 
 void MapEditorGLHost::mouseReleaseEvent(QMouseEvent * event)
@@ -96,6 +179,31 @@ void MapEditorGLHost::initializeGL()
 	OpenGLHost::initializeGL();
 
 	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
+
+	// voronoi test
+	// Preparing Input Geometries.
+	
+
+	segments.push_back(Segment(0, 0, 0, 500));
+	segments.push_back(Segment(0, 500, 600, 500));
+	segments.push_back(Segment(600, 500, 600, 0));
+	segments.push_back(Segment(600, 0, 0, 0));
+	
+	/*segments.push_back(Segment(100, 100, 200, 100));
+	segments.push_back(Segment(200, 100, 200, 200));
+	segments.push_back(Segment(200, 200, 100, 200));
+	segments.push_back(Segment(100, 200, 100, 100));
+
+	segments.push_back(Segment(300, 300, 300, 400));
+	segments.push_back(Segment(300, 400, 400, 400));
+	segments.push_back(Segment(400, 400, 400, 300));
+	segments.push_back(Segment(400, 300, 300, 300));*/
+
+	// Construction of the Voronoi Diagram.
+	
+	
+
+	int lala = 0;
 }
 
 void MapEditorGLHost::resizeGL(int w, int h)
@@ -116,6 +224,42 @@ void MapEditorGLHost::paintGL()
 	nvgBeginFrame(vg, widgetWidth, widgetHeight, pixelRatio);
 
 	nvgRenderFrame();
+
+	/*for (int i = 0; i < segments.size(); i++)
+	{
+		nvgBeginPath(vg);
+		nvgMoveTo(vg, segments[i].p0.a, segments[i].p0.b);
+		nvgLineTo(vg, segments[i].p1.a, segments[i].p1.b);
+		nvgStrokeColor(vg, MAP_BORDER_COLOR);
+		nvgStrokeWidth(vg, 3);
+		nvgStroke(vg);
+	}*/
+
+	
+	{
+		for (voronoi_diagram<double>::const_cell_iterator it = vd.cells().begin();
+			it != vd.cells().end(); ++it) {
+			const voronoi_diagram<double>::cell_type &cell = *it;
+			const voronoi_diagram<double>::edge_type *edge = cell.incident_edge();
+			// This is convenient way to iterate edges around Voronoi cell.
+			do {
+				//if (edge->is_primary())
+				//	++result;
+
+				if (edge != NULL && edge->vertex0() != NULL && edge->vertex1() != NULL)
+				{
+					nvgBeginPath(vg);
+					nvgMoveTo(vg, edge->vertex0()->x(), edge->vertex0()->y());
+					nvgLineTo(vg, edge->vertex1()->x(), edge->vertex1()->y());
+					nvgStrokeColor(vg, MAP_BORDER_COLOR);
+					nvgStrokeWidth(vg, 3);
+					nvgStroke(vg);
+				}
+
+				edge = edge->next();
+			} while (edge != cell.incident_edge());
+		}
+	}
 
 	nvgEndFrame(vg);
 }

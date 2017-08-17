@@ -26,6 +26,21 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	connect(ui.btnAddDecoration, SIGNAL(released()), this, SLOT(addDecoration()));
 	connect(ui.btnAddParkPlace, SIGNAL(released()), this, SLOT(addParkPlace()));
 	connect(ui.btnAddRoad, SIGNAL(released()), this, SLOT(addRoad()));	
+
+	ui.treeMapElements->setColumnCount(1);
+	QList<QTreeWidgetItem *> items;
+
+	buildings = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Buildings")));
+	decorations = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Decorations")));
+	roads = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Roads")));
+	parkPlaces = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Park places")));
+
+	items.append(buildings);
+	items.append(decorations);
+	items.append(roads);
+	items.append(parkPlaces);
+
+	ui.treeMapElements->insertTopLevelItems(0, items);
 }
 
 void ParkingSimulator::renderTimerCall()
@@ -149,22 +164,8 @@ void ParkingSimulator::addParkPlace()
 
 void ParkingSimulator::updateMapElementsTree()
 {
-	ui.treeMapElements->setColumnCount(1);
 	QList<QTreeWidgetItem *> items;
 
-	auto buildings = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Buildings")));
-	auto decorations = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Decorations")));
-	auto roads = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Roads")));
-	auto parkPlaces = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Park places")));
-
-	items.append(buildings);
-	items.append(decorations);
-	items.append(roads);
-	items.append(parkPlaces);
-
-	ui.treeMapElements->insertTopLevelItems(0, items);
-
-	items.clear();
 	std::vector<Obstacle*> obstacles = mapEditor.GetMap().GetObstacles();
 	for (int i = 0; i < mapEditor.GetMap().GetObstacles().size(); ++i)
 		if(obstacles[i]->GetType() == ObstacleType::Building)

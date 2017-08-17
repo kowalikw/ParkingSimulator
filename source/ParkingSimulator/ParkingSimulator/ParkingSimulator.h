@@ -21,6 +21,7 @@ private:
 	ParkingSimulatorClass ui;
 	QTimer *renderTimer;
 	MapEditor mapEditor;
+	QTreeWidgetItem *buildings, *decorations, *roads, *parkPlaces;
 public slots:
 	void renderTimerCall();
 
