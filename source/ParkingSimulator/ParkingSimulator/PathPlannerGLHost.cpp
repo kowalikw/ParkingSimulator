@@ -45,23 +45,39 @@ void PathPlannerGLHost::initializeGL()
 
 	// normal path
 	pathPlanner.AddUserPoint(glm::vec2(200, 300));
-	pathPlanner.AddUserPoint(glm::vec2(200, 700));
-	pathPlanner.AddUserPoint(glm::vec2(900, 700));
-	pathPlanner.AddUserPoint(glm::vec2(900, 900));
+	pathPlanner.AddUserPoint(glm::vec2(200, 500));
+	pathPlanner.AddUserPoint(glm::vec2(500, 500));
+	pathPlanner.AddUserPoint(glm::vec2(500, 300));
+
+	pathPlanner.AddUserPoint(glm::vec2(700, 300));
+	pathPlanner.AddUserPoint(glm::vec2(300, 100));
+
+	pathPlanner.AddUserPoint(glm::vec2(100, 100));
+
+	pathPlanner.AddUserPoint(glm::vec2(100, 300));
+	pathPlanner.AddUserPoint(glm::vec2(310, 300));
+
+	pathPlanner.AddUserPoint(glm::vec2(305, 171));
+
+	pathPlanner.AddUserPoint(glm::vec2(678, 186));
+	pathPlanner.AddUserPoint(glm::vec2(697, 488));
+	pathPlanner.AddUserPoint(glm::vec2(988, 517));
+	pathPlanner.AddUserPoint(glm::vec2(1000, 100));
+
 
 	// bezier path
-	pathPlanner.AddUserPoint(glm::vec2(1200, 900));
+	/*pathPlanner.AddUserPoint(glm::vec2(1200, 900));
 	pathPlanner.AddUserPoint(glm::vec2(1150, 100));
 	pathPlanner.AddUserPoint(glm::vec2(1350, 100));
 	pathPlanner.AddUserPoint(glm::vec2(1300, 900));
 
-	pathPlanner.AddUserPoint(glm::vec2(1500, 900));
+	//pathPlanner.AddUserPoint(glm::vec2(1500, 900));
 
 	// path planner 2
-	pathPlanner2.AddUserPoint(glm::vec2(1200, 900));
+	/*pathPlanner2.AddUserPoint(glm::vec2(1200, 900));
 	pathPlanner2.AddUserPoint(glm::vec2(1100, 100));
 	pathPlanner2.AddUserPoint(glm::vec2(1400, 100));
-	pathPlanner2.AddUserPoint(glm::vec2(1300, 900));
+	pathPlanner2.AddUserPoint(glm::vec2(1300, 900));*/
 
 }
 
@@ -123,7 +139,7 @@ void PathPlannerGLHost::nvgRenderFrame()
 
 	renderPathPolyline();
 	renderPathAdmissible();
-	drawBSpline();
+	//drawBSpline();
 }
 
 void PathPlannerGLHost::renderVoronoiGraph()

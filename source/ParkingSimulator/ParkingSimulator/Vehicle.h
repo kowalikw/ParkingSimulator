@@ -33,7 +33,7 @@ public:
 	glm::vec2 GetTurnCentre(double angle, CircleType circleType);
 
 	PathElement GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom = 0, double angleTo = 2 * M_PI);
-private:
+
 	double wheelbase; // rozstaw osi
 	double track; // rozstaw kó³
 	double maxInsideAngle = M_PI / 4;

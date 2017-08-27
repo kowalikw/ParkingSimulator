@@ -11,7 +11,7 @@ PathElement::PathElement(glm::vec2 from, glm::vec2 to)
 	this->type = PathElementType::Line;
 }
 
-PathElement::PathElement(glm::vec2 centre, double radius, double angleFrom, double angleTo, CircleType circleType)
+PathElement::PathElement(glm::vec2 centre, double radius, double angleFrom, double angleTo, std::vector<glm::vec2> arcBasePoints, CircleType circleType)
 {
 	this->centre = centre;
 	this->radius = radius;
@@ -19,6 +19,7 @@ PathElement::PathElement(glm::vec2 centre, double radius, double angleFrom, doub
 	this->angleTo = angleTo;
 	this->type = PathElementType::Circle;
 	this->circleType = circleType;
+	this->arcBasePoints = arcBasePoints;
 }
 
 glm::vec2 PathElement::GetFrom()

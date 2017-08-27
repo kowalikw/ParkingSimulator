@@ -137,3 +137,12 @@ ArcType GeometryHelper::GetVectorsDirection(glm::vec2 p1, glm::vec2 p2, glm::vec
 {
 	return GeometryHelper::GetVectorsDirection(p1 - commonPoint, p2 - commonPoint);
 }
+
+glm::vec2 GeometryHelper::GetLineDirection(glm::vec2 p1, glm::vec2 p2)
+{
+	glm::vec2 direction = p2 - p1;
+
+	direction = glm::normalize(direction);
+
+	return direction;
+}

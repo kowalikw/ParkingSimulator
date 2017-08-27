@@ -1,6 +1,7 @@
 #ifndef PATH_ELEMENT_H
 #define PATH_ELEMENT_H
 
+#include <vector>
 #include <glm.hpp>
 
 #define M_PI 3.14159265358979323846
@@ -22,7 +23,7 @@ class PathElement
 public:
 	PathElement();
 	PathElement(glm::vec2 from, glm::vec2 to);
-	PathElement(glm::vec2 centre, double radius, double angleFrom, double angleTo, CircleType circleType = CircleType::Right);
+	PathElement(glm::vec2 centre, double radius, double angleFrom, double angleTo, std::vector<glm::vec2> arcBasePoints, CircleType circleType = CircleType::Right);
 	glm::vec2 GetFrom();
 	glm::vec2 GetTo();
 	double GetRadius();
@@ -40,6 +41,7 @@ public:
 	double angleTo;
 	PathElementType type;
 	CircleType circleType;
+	std::vector<glm::vec2> arcBasePoints;
 };
 
 #endif

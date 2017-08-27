@@ -27,6 +27,15 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	connect(ui.btnAddParkPlace, SIGNAL(released()), this, SLOT(addParkPlace()));
 	connect(ui.btnAddRoad, SIGNAL(released()), this, SLOT(addRoad()));	
 
+	connect(ui.btnAddSimulation, SIGNAL(released()), this, SLOT(addSimulation()));
+	connect(ui.btnRemoveSimulation, SIGNAL(released()), this, SLOT(removeSimulation()));
+	connect(ui.btnInfoSimulation, SIGNAL(released()), this, SLOT(infoSimulation()));
+	connect(ui.btnPlayPauseSimulation, SIGNAL(released()), this, SLOT(playPauseSimulation()));
+	connect(ui.btnStopSimulation, SIGNAL(released()), this, SLOT(stopSimulation()));
+	connect(ui.btnVisualisation2D, SIGNAL(released()), this, SLOT(enableVisualisation2D()));
+	connect(ui.btnVisualisation3D, SIGNAL(released()), this, SLOT(enableVisualisation3D()));
+	//connect(ui.showPathElements, SIGNAL(released()), this, SLOT(showSimulationPath()));
+
 	ui.treeMapElements->setColumnCount(1);
 	QList<QTreeWidgetItem *> items;
 
@@ -47,6 +56,7 @@ void ParkingSimulator::renderTimerCall()
 {
 	ui.glMapEditor->repaint();
 	ui.glPathPlanner->repaint();
+	ui.glVisualisation->repaint();
 
 	if (mapEditor.GetResetAddButtons())
 	{
@@ -216,5 +226,60 @@ void ParkingSimulator::clearAddButtonsStyle()
 #pragma region Path planner.
 
 
+
+#pragma endregion
+
+#pragma region Visualisation.
+
+void ParkingSimulator::addSimulation()
+{
+	/*Map map;
+	Vehicle vehicle(200, 100);
+	Path path;
+
+	MapElement *parkingSpace = new ParkingSpace(glm::vec2(200, 200), glm::vec2(300, 120));
+	map.AddMapElement(parkingSpace);
+
+	Simulation *simulation = new Simulation(map, vehicle, path);
+	visualisation.AddSimulation(simulation);*/
+
+	int lala2 = 0;
+}
+
+void ParkingSimulator::removeSimulation()
+{
+}
+
+void ParkingSimulator::infoSimulation()
+{
+}
+
+void ParkingSimulator::playPauseSimulation()
+{
+}
+
+void ParkingSimulator::stopSimulation()
+{
+}
+
+void ParkingSimulator::showSimulationPath()
+{
+}
+
+void ParkingSimulator::enableVisualisation2D()
+{
+	visualisation.SetVisualisation2D(true);
+	visualisation.SetVisualisation3D(false);
+	ui.btnVisualisation2D->setStyleSheet("border: 3px solid #d86a39;");
+	ui.btnVisualisation3D->setStyleSheet("");
+}
+
+void ParkingSimulator::enableVisualisation3D()
+{
+	visualisation.SetVisualisation2D(false);
+	visualisation.SetVisualisation3D(true);
+	ui.btnVisualisation2D->setStyleSheet("");
+	ui.btnVisualisation3D->setStyleSheet("border: 3px solid #d86a39;");
+}
 
 #pragma endregion

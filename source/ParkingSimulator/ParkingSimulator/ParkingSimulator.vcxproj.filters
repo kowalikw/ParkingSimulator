@@ -56,6 +56,12 @@
     <Filter Include="Source Files\MapElements">
       <UniqueIdentifier>{f5bc0bb7-0779-4e6c-9414-3fa1ffa74fba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Helpers">
+      <UniqueIdentifier>{0912ce52-244e-4d79-8f32-1fdb67128dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helpers">
+      <UniqueIdentifier>{a1f3bc4f-f686-4f0a-9999-aaea54ded741}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -107,9 +113,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Path.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Arc.cpp">
@@ -166,6 +169,24 @@
     <ClCompile Include="Graph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VisualisationGLHost.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VisualisationGLHost.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Visualisation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryHelper.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="NvgDrawHelper.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.h">
@@ -198,13 +219,13 @@
     <CustomBuild Include="AddBuilding.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="VisualisationGLHost.h">
+      <Filter>Header Files\OpenGLHosts</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ParkingSimulator.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VisualisationGLHost.h">
-      <Filter>Header Files\OpenGLHosts</Filter>
     </ClInclude>
     <ClInclude Include="PathPlanner.h">
       <Filter>Header Files</Filter>
@@ -216,9 +237,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Path.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Arc.h">
@@ -256,6 +274,18 @@
     </ClInclude>
     <ClInclude Include="Graph.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Visualisation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryHelper.h">
+      <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="NvgDrawHelper.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

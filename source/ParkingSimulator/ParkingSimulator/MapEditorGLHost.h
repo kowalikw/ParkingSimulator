@@ -5,6 +5,10 @@
 #include "MapEditor.h"
 #include "GeometryHelper.h"
 #include "Graph.h"
+#include "Map.h"
+#include "Path.h"
+#include "PathPlanner.h"
+#include "Simulation.h"
 
 class MapEditorGLHost : public OpenGLHost
 {
@@ -27,7 +31,9 @@ protected:
 private:
 	void adjustMaxOffset();
 	void nvgRenderFrame();
-	void drawMap();
+	void drawMap(Map *map);
+	void drawVehicle(Vehicle *vehicle, float magnificationRatio);
+	void drawPath(Path *path);
 	void drawBuilding(MapElement *building, bool selected);
 	void drawRoad();
 	void drawDecoration(MapElement *decoration, bool selected);

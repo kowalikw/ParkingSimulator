@@ -76,7 +76,7 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -677,12 +677,224 @@ QLabel {
        </layout>
       </widget>
       <widget class="QWidget" name="tab_4">
+       <property name="styleSheet">
+        <string notr="true">QPushButton#btnAddSimulation, QPushButton#btnRemoveSimulation, QPushButton#btnInfoSimulation, QToolButton#btnPlayPauseSimulation, QToolButton#btnStopSimulation, QToolButton#btnVisualisation2D, QToolButton#btnVisualisation3D {
+    background-color: #3b3e41;
+    border-radius: 3px;
+    border: 1px solid #757575;
+    font: bold 18px;
+	color: white;
+    padding: 6px;
+}
+
+QPushButton#btnAddSimulation:hover, QPushButton#btnRemoveSimulation:hover, QPushButton#btnInfoSimulation:hover, QToolButton#btnPlayPauseSimulation:hover, QToolButton#btnStopSimulation:hover {
+    background-color: #85b448;
+}
+
+QPushButton#btnAddSimulation:pressed, QPushButton#btnRemoveSimulation:pressed, QPushButton#btnInfoSimulation:pressed, QToolButton#btnPlayPauseSimulation:pressed, QToolButton#btnStopSimulation:pressed {
+    background-color: #d86a39;
+}
+
+QToolButton#btnVisualisation2D:hover, QToolButton#btnVisualisation3D:hover {
+	border: 3px solid #85b448;
+}
+
+QToolButton#btnVisualisation2D:pressed, QToolButton#btnVisualisation3D:pressed {
+	border: 3px solid #d86a39;
+}</string>
+       </property>
        <attribute name="title">
         <string>visualisation</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_7">
         <item row="0" column="0">
-         <widget class="QOpenGLWidget" name="glVisualisation"/>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QPushButton" name="btnAddSimulation">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/plus.png</normaloff>Resources/VisualisationIcons/plus.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnRemoveSimulation">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/minus.png</normaloff>Resources/VisualisationIcons/minus.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnInfoSimulation">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/info.png</normaloff>Resources/VisualisationIcons/info.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QListWidget" name="listSimulations">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="layoutMode">
+               <enum>QListView::SinglePass</enum>
+              </property>
+              <property name="viewMode">
+               <enum>QListView::ListMode</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QLabel" name="label_9">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: white;
+margin-left: 8px;</string>
+                </property>
+                <property name="text">
+                 <string>Simulation length (sec):</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="simulationLength">
+                <property name="font">
+                 <font>
+                  <pointsize>12</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: white;</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="showPathElements">
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: white;
+margin-left: 30px;</string>
+                </property>
+                <property name="text">
+                 <string>Show path elements</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btnVisualisation2D">
+                <property name="text">
+                 <string>2D</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btnVisualisation3D">
+                <property name="text">
+                 <string>3D</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="VisualisationGLHost" name="glVisualisation">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QToolButton" name="btnPlayPauseSimulation">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/play.png</normaloff>Resources/VisualisationIcons/play.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btnStopSimulation">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/stop.png</normaloff>Resources/VisualisationIcons/stop.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSlider" name="simulationPrograssBar">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -707,6 +919,11 @@ QLabel {
    <class>MapEditorGLHost</class>
    <extends>QOpenGLWidget</extends>
    <header>MapEditorGLHost.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VisualisationGLHost</class>
+   <extends>QOpenGLWidget</extends>
+   <header>VisualisationGLHost.h</header>
   </customwidget>
  </customwidgets>
  <resources>

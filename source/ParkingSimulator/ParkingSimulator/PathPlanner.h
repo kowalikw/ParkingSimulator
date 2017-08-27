@@ -12,6 +12,8 @@
 #include "BSpline.h"
 #include "GeometryHelper.h"
 
+#define EPS 10e-3;
+
 using namespace std;
 
 class PathPlanner
@@ -27,11 +29,16 @@ public:
 	vector<glm::vec2> VoronoiPoints();
 
 	Path CreateAdmissiblePath(vector<glm::vec2> points);
-private:
+//private:
 	Map map;
 	Vehicle vehicle;
 	vector<glm::vec2> userPoints;
 	vector<glm::vec2> voronoiPoints;
+
+	bool epsilonEquals(float f1, float f2);
+	Path createArcsBetweenSegments(vector<glm::vec2> points);
+	bool checkArcsCorrectness(Path pathArcs, int *arc1, int *arc2);
+	Path createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace);
 };
 
 #endif

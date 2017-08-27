@@ -3,11 +3,23 @@
 #include <iostream>     // std::cout
 #include <sstream> 
 
-#include "Graph.h"
+#include "PathPlanner.h"
 
 Graph g;
 
-MapEditorGLHost::MapEditorGLHost(QWidget *parent) : OpenGLHost(parent) { }
+PathPlanner pathPlanner;
+
+Map *mapa = new Map(1000, 550);
+Vehicle *vehicle = new Vehicle(200, 100);
+
+Path *path = new Path();
+MapElement *parkingSpace = new ParkingSpace(glm::vec2(200, 200), glm::vec2(300, 120), ParkingSpaceType::Paralell);
+Simulation *simulation = new Simulation(mapa, vehicle, path);
+
+MapEditorGLHost::MapEditorGLHost(QWidget *parent) : OpenGLHost(parent) 
+{ 
+	
+}
 
 #pragma region User input events.
 
@@ -70,7 +82,7 @@ void MapEditorGLHost::wheelEvent(QWheelEvent * event)
 	if (magnificationRatio < 0.05f)
 		magnificationRatio = 0.05f;
 
-	drawMap();
+	drawMap(&mapEditor->GetMap());
 	adjustMaxOffset();
 }
 
@@ -103,13 +115,23 @@ void MapEditorGLHost::initializeGL()
 	OpenGLHost::initializeGL();
 
 	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
+
+	mapa->AddMapElement(parkingSpace);
+	vehicle->UpdateState(glm::vec2(500, 500), -M_PI / 4.0);
+
+	auto pS = dynamic_cast<ParkingSpace*>(parkingSpace);
+
+	//Path p = pathPlanner.createParkingPath(*vehicle, *pS);
+	//simulation->SetPath(&p);
+
+	int lala2 = 0;
 }
 
 void MapEditorGLHost::resizeGL(int w, int h)
 {
 	OpenGLHost::resizeGL(w, h);
 
-	drawMap();
+	drawMap(&mapEditor->GetMap());
 	adjustMaxOffset();
 }
 
@@ -145,9 +167,9 @@ void MapEditorGLHost::adjustMaxOffset()
 
 void MapEditorGLHost::nvgRenderFrame()
 {
-	drawMap();
+	drawMap(simulation->GetMap());
 
-	std::vector<MapElement*> mapElements = mapEditor->GetMap().GetMapElements();
+	std::vector<MapElement*> mapElements = simulation->GetMap()->GetMapElements();
 	for (int i = 0; i < mapElements.size(); i++)
 	{
 		if (dynamic_cast<Obstacle*>(mapElements[i]) != NULL)
@@ -163,17 +185,31 @@ void MapEditorGLHost::nvgRenderFrame()
 				break;
 			}
 		}
+		else if (dynamic_cast<ParkingSpace*>(mapElements[i]) != NULL)
+		{
+			auto parkingSpace = dynamic_cast<ParkingSpace*>(mapElements[i]);
+			drawBuilding(parkingSpace, true);
+		}
 	}
+
+	nvgBeginPath(vg);
+	nvgEllipse(vg, 500, 500, 8, 8);
+	nvgFillColor(vg, nvgRGBA(255, 255, 0, 255));
+	nvgFill(vg);
+
+	drawVehicle(simulation->GetVehicle(), magnificationRatio);
+
+	drawPath(simulation->GetPath());
 
 	drawActiveElement();
 
 	drawGraph(g);
 }
 
-void MapEditorGLHost::drawMap()
+void MapEditorGLHost::drawMap(Map *map)
 {
-	mapWidth = mapEditor->GetMap().GetWidth() * magnificationRatio;
-	mapHeight = mapEditor->GetMap().GetHeight() * magnificationRatio;
+	mapWidth = map->GetWidth() * magnificationRatio;
+	mapHeight = map->GetHeight() * magnificationRatio;
 	mapPositionX = (widgetWidth - mapWidth - 2 * MAP_BORDER_WIDTH) / 2;
 	mapPositionY = (widgetHeight - mapHeight - 2 * MAP_BORDER_WIDTH) / 2;
 
@@ -191,6 +227,75 @@ void MapEditorGLHost::drawMap()
 	nvgRect(vg, mapPositionX + offsetX + MAP_BORDER_WIDTH, mapPositionY + offsetY + MAP_BORDER_WIDTH, mapWidth, mapHeight);
 	nvgFillColor(vg, MAP_COLOR);
 	nvgFill(vg);
+}
+
+void MapEditorGLHost::drawVehicle(Vehicle * vehicle, float magnificationRatio)
+{
+	auto position = vehicle->GetPosition();
+	auto wheelbase = vehicle->GetWheelbase() * magnificationRatio;
+	auto track = vehicle->GetTrack() * magnificationRatio;
+	auto dirWheelbase = vehicle->GetDirWheelbase();
+	auto dirTrack = vehicle->GetDirTrack();
+	auto tireRadius = 25.0f * magnificationRatio;
+
+	auto p0 = glm::vec2(mapPositionX + offsetX + position.x * magnificationRatio, mapPositionY + offsetY + position.y * magnificationRatio);
+	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
+	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
+	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
+	auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
+	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
+	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
+
+	auto p2a = p2 - (tireRadius * dirWheelbase);
+	auto p2b = p2 + (tireRadius * dirWheelbase);
+	auto p3a = p3 - (tireRadius * dirWheelbase);
+	auto p3b = p3 + (tireRadius * dirWheelbase);
+	auto p5a = p5 - (tireRadius * dirWheelbase);
+	auto p5b = p5 + (tireRadius * dirWheelbase);
+	auto p6a = p6 - (tireRadius * dirWheelbase);
+	auto p6b = p6 + (tireRadius * dirWheelbase);
+
+	nvgBeginPath(vg);
+	
+	nvgMoveTo(vg, p1.x, p1.y);
+	nvgLineTo(vg, p4.x, p4.y);
+	
+	nvgMoveTo(vg, p2.x, p2.y);
+	nvgLineTo(vg, p3.x, p3.y);
+
+	nvgMoveTo(vg, p5.x, p5.y);
+	nvgLineTo(vg, p6.x, p6.y);
+
+	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStroke(vg);
+
+	//draw tires
+	nvgBeginPath(vg);
+
+	nvgMoveTo(vg, p2a.x, p2a.y);
+	nvgLineTo(vg, p2b.x, p2b.y);
+
+	nvgMoveTo(vg, p3a.x, p3a.y);
+	nvgLineTo(vg, p3b.x, p3b.y);
+
+	nvgMoveTo(vg, p5a.x, p5a.y);
+	nvgLineTo(vg, p5b.x, p5b.y);
+
+	nvgMoveTo(vg, p6a.x, p6a.y);
+	nvgLineTo(vg, p6b.x, p6b.y);
+
+	nvgStrokeWidth(vg, 5);
+	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStroke(vg);
+
+	nvgBeginPath(vg);
+	nvgEllipse(vg, position.x, position.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
+	nvgFillColor(vg, SELECTED_MARKER_COLOR);
+	nvgFill(vg);
+}
+
+void MapEditorGLHost::drawPath(Path * path)
+{
 }
 
 void MapEditorGLHost::drawBuilding(MapElement *building, bool selected)

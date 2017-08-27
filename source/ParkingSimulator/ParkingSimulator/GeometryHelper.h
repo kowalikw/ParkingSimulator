@@ -19,6 +19,7 @@ public:
 	static double GetAngleVector(glm::vec2 p1, glm::vec2 p2, ArcType direction);
 	static ArcType GetVectorsDirection(glm::vec2 v1, glm::vec2 v2);
 	static ArcType GetVectorsDirection(glm::vec2 p1, glm::vec2 p2, glm::vec2 commonPoint);
+	static glm::vec2 GetLineDirection(glm::vec2 p1, glm::vec2 p2);
 	static glm::vec2 GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4);
 	static bool CheckSegmentsIntersection(glm::vec2 p1, glm::vec2 p2, glm::vec2 q1, glm::vec2 q2);
 	static bool CheckPolygonContainsPoint(std::vector<glm::vec2> polygon, glm::vec2 point);
