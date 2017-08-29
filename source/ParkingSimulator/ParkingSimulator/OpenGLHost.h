@@ -12,6 +12,7 @@
 #include "nanovg.h"
 #define NANOVG_GL3_IMPLEMENTATION
 #include "nanovg_gl.h"
+#include "NvgDrawHelper.h"
 
 using namespace Qt;
 
@@ -32,6 +33,8 @@ protected:
 	virtual void resizeGL(int w, int h);
 	virtual void paintGL();
 
+	void adjustMaxOffset();
+
 	bool keys[1024];
 	bool mouseFirstPressed = true;
 	bool mouseLeftPressed = false;
@@ -50,6 +53,18 @@ protected:
 	float mouseOffsetX;
 	float mouseOffsetY;
 	float mouseWheelSteps;
+	float magnificationRatio = 1.0f;
+
+	glm::vec2 widgetSize;
+	glm::vec2 widgetOffset;
+	glm::vec2 maxWidgetOffset;
+
+	NVGcontext *vg;
+	NvgDrawHelper *nvgHelper;
+
+	const int EXTRA_OFFSET = 30;
+	const float MIN_MAGNIFICATION_RATIO = 0.2;
+	const float MAX_MAGNIFICATION_RATIO = 5.0;
 };
 
 #endif

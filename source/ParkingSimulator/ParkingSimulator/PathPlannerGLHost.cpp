@@ -39,8 +39,6 @@ void PathPlannerGLHost::initializeGL()
 {
 	OpenGLHost::initializeGL();
 
-	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
-
 	pathPlanner = PathPlanner(Map(), Vehicle(100, 50));
 
 	// normal path

@@ -26,6 +26,27 @@ ParkingSpaceType ParkingSpace::GetType()
 
 bool ParkingSpace::ContainVehicle(Vehicle vehicle)
 {
-	//return true;
-	return vehicle.GetPosition().x > (vehicle.GetPosition().y - GetSize().y); // TODO
+	auto position = vehicle.GetPosition();
+	auto wheelbase = vehicle.GetWheelbase();
+	auto track = vehicle.GetTrack();
+	auto dirWheelbase = vehicle.GetDirWheelbase();
+	auto dirTrack = vehicle.GetDirTrack();
+
+	auto p0 = position;
+	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
+	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
+	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
+	auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
+	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
+	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
+
+	auto parkingSpacePoints = GetPoints();
+	
+	return GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p0) ||
+		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p1) ||
+		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p2) ||
+		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p3) ||
+		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p4) ||
+		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p5) ||
+		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p6); // TODO: Geometry helper::ContainsAnyPoint?
 }

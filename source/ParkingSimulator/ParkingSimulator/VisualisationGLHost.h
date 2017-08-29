@@ -24,7 +24,6 @@ protected:
 	virtual void paintGL() override;
 private:
 	Visualisation* visualisation;
-	NVGcontext* vg = NULL;
 
 	void nvgRenderFrame();
 	void drawVehicle(Vehicle vehicle);

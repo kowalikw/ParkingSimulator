@@ -170,9 +170,9 @@ bool PathPlanner::checkArcsCorrectness(Path pathArcs, int *arc1, int *arc2)
 	return true;
 }
 
-Path PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace)
+Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace)
 {
-	Path path;
+	Path *path = new Path();
 
 	if (parkingSpace.GetType() == ParkingSpaceType::Paralell)
 	{
@@ -190,7 +190,7 @@ Path PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace)
 
 		auto p2 = vehicle.GetPosition();
 
-		path.AddElement(PathElement(p1, p2));
+		path->AddElement(PathElement(p1, p2));
 
 		int arcCount = 0;
 		double insideAngle = vehicle.GetMaxInsideAngle();
@@ -200,7 +200,8 @@ Path PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace)
 		{
 			PathElement circle = vehicle.GetTurnCircle(insideAngle, Left);
 
-			while (circle.GetCirclePoint(angleTo).x < parkingSpace.GetPosition().x - vehicle.GetWheelbase() / 2.0)
+			auto pp = parkingSpace.GetPosition().x - vehicle.GetWheelbase() / 2.0;
+			while (circle.GetCirclePoint(angleTo).x < pp)
 				angleTo += 0.001;
 
 			switch (arcCount % 4)
@@ -236,7 +237,7 @@ Path PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace)
 			}*/
 
 			arcCount++;
-			path.AddElement(circle);
+			path->AddElement(circle);
 			vehicle.UpdateState(circle.GetCirclePoint(circle.angleTo), circle.angleTo);
 
 			//if (arcCount == 2) break;

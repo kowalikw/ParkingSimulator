@@ -9,6 +9,7 @@
 #include "Path.h"
 #include "PathPlanner.h"
 #include "Simulation.h"
+#include "NvgDrawHelper.h"
 
 class MapEditorGLHost : public OpenGLHost
 {
@@ -29,7 +30,7 @@ protected:
 	virtual void resizeGL(int w, int h) override;
 	virtual void paintGL() override;
 private:
-	void adjustMaxOffset();
+	/*void adjustMaxOffset();*/
 	void nvgRenderFrame();
 	void drawMap(Map *map);
 	void drawVehicle(Vehicle *vehicle, float magnificationRatio);
@@ -42,7 +43,6 @@ private:
 	void drawGraph(Graph g);
 
 	MapEditor *mapEditor;
-	NVGcontext* vg = NULL;
 	glm::vec2 positionOnMap;
 	float magnificationRatio = 1.0;
 	int offsetX = 0;

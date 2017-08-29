@@ -43,14 +43,6 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 {
 	OpenGLHost::mouseMoveEvent(event);
 
-	if (mouseMiddlePressed)
-	{
-		offsetX += mouseOffsetX / 2.0;
-		offsetY += mouseOffsetY / 2.0;
-
-		adjustMaxOffset();
-	}
-
 	if (mapEditor->GetAddBuilding() && mapEditor->GetNewElement() != nullptr)
 	{
 		int positionOnMapX = mouseLastX - mapPositionX - offsetX;
@@ -76,11 +68,6 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 void MapEditorGLHost::wheelEvent(QWheelEvent * event)
 {
 	OpenGLHost::wheelEvent(event);
-
-	magnificationRatio += mouseWheelSteps / 20.0f;
-
-	if (magnificationRatio < 0.05f)
-		magnificationRatio = 0.05f;
 
 	drawMap(&mapEditor->GetMap());
 	adjustMaxOffset();
@@ -114,15 +101,13 @@ void MapEditorGLHost::initializeGL()
 {
 	OpenGLHost::initializeGL();
 
-	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
-
 	mapa->AddMapElement(parkingSpace);
-	vehicle->UpdateState(glm::vec2(500, 500), -M_PI / 4.0);
+	vehicle->UpdateState(glm::vec2(500, 500), 0);
 
 	auto pS = dynamic_cast<ParkingSpace*>(parkingSpace);
 
-	//Path p = pathPlanner.createParkingPath(*vehicle, *pS);
-	//simulation->SetPath(&p);
+	Path *p = pathPlanner.createParkingPath(*vehicle, *pS);
+	simulation->SetPath(p);
 
 	int lala2 = 0;
 }
@@ -153,7 +138,7 @@ void MapEditorGLHost::paintGL()
 
 #pragma region Private methods.
 
-void MapEditorGLHost::adjustMaxOffset()
+/*void MapEditorGLHost::adjustMaxOffset()
 {
 	if (offsetX > maxOffsetX + EXTRA_OFFSET)
 		offsetX = maxOffsetX + EXTRA_OFFSET;
@@ -163,14 +148,16 @@ void MapEditorGLHost::adjustMaxOffset()
 		offsetY = maxOffsetY + EXTRA_OFFSET;
 	if (offsetY < -maxOffsetY - EXTRA_OFFSET)
 		offsetY = -maxOffsetY - EXTRA_OFFSET;
-}
+}*/
 
 void MapEditorGLHost::nvgRenderFrame()
 {
-	drawMap(simulation->GetMap());
+	//drawMap(simulation->GetMap());
+
+	nvgHelper->DrawMap(simulation->GetMap());
 
 	std::vector<MapElement*> mapElements = simulation->GetMap()->GetMapElements();
-	for (int i = 0; i < mapElements.size(); i++)
+	/*for (int i = 0; i < mapElements.size(); i++)
 	{
 		if (dynamic_cast<Obstacle*>(mapElements[i]) != NULL)
 		{
@@ -195,11 +182,29 @@ void MapEditorGLHost::nvgRenderFrame()
 	nvgBeginPath(vg);
 	nvgEllipse(vg, 500, 500, 8, 8);
 	nvgFillColor(vg, nvgRGBA(255, 255, 0, 255));
+	nvgFill(vg);*/
+
+	//drawVehicle(simulation->GetVehicle(), magnificationRatio);
+
+
+	auto points = mapElements[0]->GetPoints();
+	nvgBeginPath(vg);
+
+	
+	nvgMoveTo(vg, points[0].x, points[0].y);
+	nvgLineTo(vg, points[0].x, points[0].y);
+	nvgLineTo(vg, points[1].x, points[1].y);
+	nvgLineTo(vg, points[2].x, points[2].y);
+	nvgLineTo(vg, points[3].x, points[3].y);
+	
+	nvgFillColor(vg, nvgRGBA(45, 58, 136, 255));
 	nvgFill(vg);
 
-	drawVehicle(simulation->GetVehicle(), magnificationRatio);
+	nvgHelper->DrawVehicle(simulation->GetVehicle());
 
-	drawPath(simulation->GetPath());
+	//drawPath(simulation->GetPath());
+
+	nvgHelper->DrawPath(simulation->GetPath());
 
 	drawActiveElement();
 

@@ -1,6 +1,7 @@
 #ifndef PARKING_SPACE_H
 #define PARKING_SPACE_H
 
+#include "GeometryHelper.h"
 #include "MapElement.h"
 #include "Vehicle.h"
 

@@ -46,8 +46,6 @@ Visualisation * VisualisationGLHost::GetVisualisation()
 void VisualisationGLHost::initializeGL()
 {
 	OpenGLHost::initializeGL();
-
-	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
 }
 
 void VisualisationGLHost::resizeGL(int w, int h)

@@ -7,6 +7,14 @@
 #include "Path.h"
 #include <glm.hpp>
 
+#define GLEW_STATIC
+#include "glew.h"
+#include <QTime>
+#include <QEvent>
+#include <qdesktopwidget.h>
+#include <QMouseEvent> 
+#include <QOpenGLWidget>
+
 #include "nanovg.h"
 #define NANOVG_GL3_IMPLEMENTATION
 #include "nanovg_gl.h"
@@ -14,13 +22,60 @@
 class NvgDrawHelper
 {
 public:
-	void DrawMap(NVGcontext* vg, Map *map, glm::vec2 mapPosition, glm::vec2 offset, float magnificationRatio);
-	void DrawVehicle(NVGcontext* vg, Vehicle *vehicle, glm::vec2 mapPosition, glm::vec2 offset, float magnificationRatio);
-	void DrawPath(NVGcontext* vg, Path *path, glm::vec2 mapPosition, glm::vec2 offset, float magnificationRatio);
+	NvgDrawHelper(NVGcontext *vg, glm::vec2 *widgetSize, glm::vec2 *offset, glm::vec2 *maxOffset, float *magnificationRatio);
+
+	void DrawMap(Map *map);
+	void DrawVehicle(Vehicle *vehicle);
+	void DrawPath(Path *path);
+
+	const int SELECTED_MARKER_SIZE = 5;
+	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
+
+	const int ACTIVE_BORDER_WIDTH = 3;
+	const NVGcolor ACTIVE_GOOD_COLOR = nvgRGBA(135, 255, 145, 255);
+	const NVGcolor ACTIVE_GOOD_BORDER_COLOR = nvgRGBA(0, 145, 0, 255);
+	const NVGcolor ACTIVE_BAD_COLOR = nvgRGBA(255, 125, 125, 255);
+	const NVGcolor ACTIVE_BAD_BORDER_COLOR = nvgRGBA(175, 0, 0, 255);
+
+	const int EXTRA_OFFSET = 30;
+	const float MIN_MAGNIFICATION_RATIO = 0.2;
+	const float MAX_MAGNIFICATION_RATIO = 5.0;
+
+	const int MAP_BORDER_WIDTH = 3;
+	const NVGcolor MAP_COLOR = nvgRGBA(58, 124, 37, 255);
+	const NVGcolor MAP_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
+
+	const int BUILDING_BORDER_WIDTH = 3;
+	const NVGcolor BUILDING_COLOR = nvgRGBA(140, 140, 140, 255);
+	const NVGcolor BUILDING_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
+
+	const int DECORATION_BORDER_WIDTH = 3;
+	const NVGcolor DECORATION_COLOR = nvgRGBA(140, 140, 140, 255);
+	const NVGcolor DECORATION_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
+
+	const int PARKING_SPACE_BORDER_WIDTH = 3;
+	const NVGcolor PARKING_SPACE_COLOR = nvgRGBA(140, 140, 140, 255);
+	const NVGcolor PARKING_SPACE_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
+
+	const int PATH_LINE_WIDTH = 3;
+	const NVGcolor PATH_LINE_COLOR = nvgRGBA(140, 0, 140, 255);
+
+	const int PATH_ARC_WIDTH = 3;
+	const NVGcolor PATH_ARC_COLOR = nvgRGBA(140, 140, 0, 255);
 private:
-	void drawMapElements(NVGcontext* vg, std::vector<MapElement*> *mapElements, glm::vec2 mapPosition, glm::vec2 offset, float magnificationRatio);
-	void drawObstacle(NVGcontext* vg, Obstacle *obstacle, glm::vec2 mapPosition, glm::vec2 offset, float magnificationRatio);
-	void drawParkingSpace(NVGcontext* vg, ParkingSpace *parkingSpace, glm::vec2 mapPosition, glm::vec2 offset, float magnificationRatio);
+	NVGcontext *vg;
+	glm::vec2 *widgetSize;
+	glm::vec2 *offset;
+	glm::vec2 *maxOffset;
+	float *magnificationRatio;
+
+	glm::vec2 drawAreaSize; // draw area is a map
+	glm::vec2 drawAreaPosition;
+
+	void updateDrawAreaProperties();
+	void drawMapElements(std::vector<MapElement*> *mapElements);
+	void drawObstacle(Obstacle *obstacle);
+	void drawParkingSpace(ParkingSpace *parkingSpace);
 };
 
 #endif

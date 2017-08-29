@@ -48,14 +48,18 @@ void OpenGLHost::mouseReleaseEvent(QMouseEvent * event)
 
 void OpenGLHost::mouseMoveEvent(QMouseEvent * event)
 {
-	//if (mouseLeftPressed || mouseMiddlePressed || mouseRightPressed)
-	//{
-		mouseOffsetX = event->x() - mouseLastX;
-		mouseOffsetY = event->y() - mouseLastY;
+	mouseOffsetX = event->x() - mouseLastX;
+	mouseOffsetY = event->y() - mouseLastY;
 
-		mouseLastX = event->x();
-		mouseLastY = event->y();
-	//}
+	mouseLastX = event->x();
+	mouseLastY = event->y();
+
+	if (mouseMiddlePressed)
+	{
+		widgetOffset = glm::vec2(widgetOffset.x + mouseOffsetX / 2.0, widgetOffset.y + mouseOffsetY / 2.0);
+
+		adjustMaxOffset();
+	}
 }
 
 void OpenGLHost::wheelEvent(QWheelEvent * event)
@@ -64,6 +68,11 @@ void OpenGLHost::wheelEvent(QWheelEvent * event)
 	mouseWheelSteps = numDegrees / 15.0f;
 
 	event->accept();
+
+	magnificationRatio += mouseWheelSteps / 20.0f;
+
+	if (magnificationRatio < 0.05f)
+		magnificationRatio = 0.05f;
 }
 
 void OpenGLHost::keyPressEvent(QKeyEvent * event)
@@ -87,12 +96,16 @@ void OpenGLHost::keyReleaseEvent(QKeyEvent * event)
 void OpenGLHost::initializeGL()
 {
 	glewInit();
+
+	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
+	nvgHelper = new NvgDrawHelper(vg, &widgetSize, &widgetOffset, &maxWidgetOffset, &magnificationRatio);
 }
 
 void OpenGLHost::resizeGL(int w, int h)
 {
 	widgetWidth = w;
 	widgetHeight = h;
+	widgetSize = glm::vec2(w, h);
 	pixelRatio = widgetWidth / widgetHeight;
 	glViewport(0, 0, widgetWidth, widgetHeight);
 }
@@ -100,6 +113,18 @@ void OpenGLHost::resizeGL(int w, int h)
 void OpenGLHost::paintGL()
 {
 	glViewport(0, 0, widgetWidth, widgetHeight);
+}
+
+void OpenGLHost::adjustMaxOffset()
+{
+	if (widgetOffset.x > maxWidgetOffset.x + EXTRA_OFFSET)
+		widgetOffset.x = maxWidgetOffset.x + EXTRA_OFFSET;
+	if (widgetOffset.x < -maxWidgetOffset.x - EXTRA_OFFSET)
+		widgetOffset.x = -maxWidgetOffset.x - EXTRA_OFFSET;
+	if (widgetOffset.y > maxWidgetOffset.y + EXTRA_OFFSET)
+		widgetOffset.y = maxWidgetOffset.y + EXTRA_OFFSET;
+	if (widgetOffset.y < -maxWidgetOffset.y - EXTRA_OFFSET)
+		widgetOffset.y = -maxWidgetOffset.y - EXTRA_OFFSET;
 }
 
 #pragma endregion

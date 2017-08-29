@@ -20,7 +20,6 @@ protected:
 	virtual void resizeGL(int w, int h) override;
 	virtual void paintGL() override;
 private:
-	NVGcontext* vg = NULL;
 	PathPlanner pathPlanner, pathPlanner2;
 	Path pathPolyline;
 	Path pathAdmissible;
