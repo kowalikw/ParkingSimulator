@@ -131,7 +131,7 @@ void NvgDrawHelper::DrawPath(Path * path)
 			auto circle = pathElements[i];
 
 			nvgBeginPath(vg);
-			/*for (double angle = circle.angleFrom; angle < circle.angleTo; angle += 0.01)
+			for (double angle = circle.angleFrom; angle < circle.angleTo; angle += 0.01)
 			{
 				if (angle == circle.angleFrom)
 				{
@@ -141,6 +141,11 @@ void NvgDrawHelper::DrawPath(Path * path)
 				auto p = circle.GetCirclePoint(angle);
 				nvgLineTo(vg, p.x, p.y);
 			}
+			nvgStrokeWidth(vg, PATH_ARC_WIDTH);
+			nvgStrokeColor(vg, PATH_ARC_COLOR);
+			nvgStroke(vg);
+
+			nvgBeginPath(vg);
 			for (double angle = circle.angleFrom; angle > circle.angleTo; angle -= 0.01)
 			{
 				if (angle == circle.angleFrom)
@@ -150,8 +155,12 @@ void NvgDrawHelper::DrawPath(Path * path)
 				}
 				auto p = circle.GetCirclePoint(angle);
 				nvgLineTo(vg, p.x, p.y);
-			}*/
+			}
+			nvgStrokeWidth(vg, PATH_ARC_WIDTH);
+			nvgStrokeColor(vg, PATH_ARC_COLOR);
+			nvgStroke(vg);
 
+			/*nvgBeginPath(vg);
 			for (double angle = 0; angle < 2 * M_PI; angle += 0.01)
 			{
 				if (angle == circle.angleFrom)
@@ -160,17 +169,14 @@ void NvgDrawHelper::DrawPath(Path * path)
 					nvgMoveTo(vg, p.x, p.y);
 				}
 				auto p = circle.GetCirclePoint(angle);
-
-				pointss.push_back(p);
 				nvgLineTo(vg, p.x, p.y);
 			}
-
 			nvgStrokeWidth(vg, PATH_ARC_WIDTH);
 			nvgStrokeColor(vg, PATH_ARC_COLOR);
-			nvgStroke(vg);
+			nvgStroke(vg);*/
 		}
 
-		nvgBeginPath(vg);
+		/*nvgBeginPath(vg);
 		for (int i = 0; i < (int)pointss.size() - 2; i++)
 		{
 			nvgMoveTo(vg, pointss[i].x, pointss[i].y);
@@ -178,7 +184,7 @@ void NvgDrawHelper::DrawPath(Path * path)
 		}
 		nvgStrokeWidth(vg, PATH_ARC_WIDTH);
 		nvgStrokeColor(vg, PATH_ARC_COLOR);
-		nvgStroke(vg);
+		nvgStroke(vg);*/
 	}
 }
 

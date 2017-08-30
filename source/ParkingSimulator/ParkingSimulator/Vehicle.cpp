@@ -102,7 +102,7 @@ double Vehicle::GetMinOneManeouverLength(double insideAngle)
 
 glm::vec2 Vehicle::GetDirTrack()
 {
-	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), glm::degrees((float)GetAngle()), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), -(float)GetAngle(), glm::vec3(0.0f, 0.0f, 1.0f));
 	glm::vec4 dirTrack = rotationMatrix * glm::vec4(this->dirTrack, 0.0f, 1.0f);
 
 	return glm::vec2(dirTrack);
@@ -110,7 +110,7 @@ glm::vec2 Vehicle::GetDirTrack()
 
 glm::vec2 Vehicle::GetDirWheelbase()
 {
-	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), glm::degrees((float)GetAngle()), glm::vec3(0.0f, 0.0f, 1.0f));
+	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), -(float)GetAngle(), glm::vec3(0.0f, 0.0f, 1.0f));
 	glm::vec4 dirWheelbase = rotationMatrix * glm::vec4(this->dirWheelbase, 0.0f, 1.0f);
 
 	return glm::vec2(dirWheelbase);
