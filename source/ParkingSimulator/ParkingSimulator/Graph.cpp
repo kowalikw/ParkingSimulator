@@ -36,6 +36,10 @@ void Graph::AddVertex(double x, double y)
 {
 	GraphVertex *v = new GraphVertex(x, y);
 	vertices.push_back(v);
+
+	edges.resize(vertices.size());
+	for (int i = 0; i < vertices.size(); i++)
+		edges[i].resize(vertices.size());
 }
 
 void Graph::AddEdge(int v1, int v2)
@@ -120,6 +124,18 @@ void Graph::RemoveEdge(GraphEdge * e)
 				break;
 			}
 	RemoveEdge(edgeStart, edgeEnd);
+}
+
+int Graph::IndexOfVertex(GraphVertex * v)
+{
+	int u;
+	for (int i = 0; i < vertices.size(); i++)
+		if (v == vertices[i])
+		{
+			u = i;
+			break;
+		}
+	return u;
 }
 
 int Graph::VerticesCount()
@@ -267,18 +283,15 @@ std::vector<int> Graph::FindPath(int s, int t, double **estimatedDist)
 
 	while (!T.empty())
 	{
-		int u;
 		GraphVertex *vU = T.front();
-		for(int i = 0; i < vertices.size(); i++)
-			if (vU == vertices[i])
-			{
-				u = i;
-				break;
-			}
+		int u = IndexOfVertex(vU);
 
-		for (int i = 0; i < T.size(); i++)
-			if (dist[i] + estimatedDist[i][t] < dist[u] + estimatedDist[u][t])
-				u = i;
+		for (auto v = T.begin(); v != T.end(); v++)
+		{
+			auto vIndex = IndexOfVertex(*v);
+			if (dist[vIndex] + estimatedDist[vIndex][t] < dist[u] + estimatedDist[u][t])
+				u = vIndex;
+		}
 		T.remove(vertices[u]);
 
 		if (u == t) break;
@@ -286,9 +299,10 @@ std::vector<int> Graph::FindPath(int s, int t, double **estimatedDist)
 		std::vector<GraphEdge*> neighbours = EdgesFrom(u); // the same as EdgesTo with assumption of indirection
 		for (int w = 0; w < neighbours.size(); w++)
 		{
-			if (dist[w] > dist[u] + GetEdge(u, w)->weight)
+			GraphEdge *e = GetEdge(u, w);
+			if (e != NULL && dist[w] > dist[u] + e->weight)
 			{
-				dist[w] = dist[u] + GetEdge(u, w)->weight;
+				dist[w] = dist[u] + e->weight;
 				prev[w] = u;
 			}
 		}
@@ -300,6 +314,9 @@ std::vector<int> Graph::FindPath(int s, int t, double **estimatedDist)
 		path.push_back(w);
 		w = prev[w];
 	}
+	path.push_back(s);
+
+	std::reverse(path.begin(), path.end());
 
 	return path;
 }

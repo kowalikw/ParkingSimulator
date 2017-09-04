@@ -113,7 +113,7 @@ void PathPlannerGLHost::renderVehicle()
 void PathPlannerGLHost::nvgRenderFrame()
 {
 	pathAdmissible = pathPlanner.CreateAdmissiblePath(pathPlanner.UserPoints());
-	bspline = BSpline(pathPlanner.UserPoints());
+	//bspline = BSpline(pathPlanner.UserPoints());
 
 
 	nvgSave(vg);
@@ -181,36 +181,37 @@ void PathPlannerGLHost::renderPathAdmissible()
 
 	nvgBeginPath(vg);
 
-	for (glm::vec2 point : pathPlanner.UserPoints())
-	{
-		for (PathElement pathElement : pathAdmissible.GetElements())
+	//for (glm::vec2 point : pathPlanner.UserPoints())
+	//{
+		for (PathElement *pathElement : pathAdmissible->GetElements())
 		{
-			if (pathElement.type == Line)
+			if (dynamic_cast<Line*>(pathElement) != NULL)
 			{
-				nvgMoveTo(vg, pathElement.GetFrom().x, pathElement.GetFrom().y);
-				nvgLineTo(vg, pathElement.GetTo().x, pathElement.GetTo().y);
+				Line *line = dynamic_cast<Line*>(pathElement);
+				nvgMoveTo(vg, line->GetFrom().x, line->GetFrom().y);
+				nvgLineTo(vg, line->GetTo().x, line->GetTo().y);
 			}
-			else if (pathElement.type == Circle)
+			else if (dynamic_cast<Circle*>(pathElement) != NULL)
 			{
-				//nvgArc(vg, 100, 100, 40, 0, -M_PI / 2, NVG_CCW);
-				for (double angle = pathElement.angleFrom; angle < pathElement.angleTo; angle += 0.01)
+				Circle *circle = dynamic_cast<Circle*>(pathElement);
+				for (double angle = circle->angleFrom; angle < circle->angleTo; angle += 0.01)
 				{
-					if (angle == pathElement.angleFrom)
+					if (angle == circle->angleFrom)
 					{
-						auto p = pathElement.GetCirclePoint(angle);
+						auto p = circle->GetPointForAngle(angle);
 						nvgMoveTo(vg, p.x, p.y);
 					}
-					auto p = pathElement.GetCirclePoint(angle);
+					auto p = circle->GetPointForAngle(angle);
 					nvgLineTo(vg, p.x, p.y);
 				}
 			}
 		}
-	}
+	//}
 
 	nvgStroke(vg);
 }
 
-void PathPlannerGLHost::drawBSpline()
+/*void PathPlannerGLHost::drawBSpline()
 {
 	nvgSave(vg);
 
@@ -232,6 +233,6 @@ void PathPlannerGLHost::drawBSpline()
 	}
 
 	nvgStroke(vg);
-}
+}*/
 
 #pragma endregion

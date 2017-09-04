@@ -105,35 +105,35 @@ double GeometryHelper::GetAngle(glm::vec2 pivot, glm::vec2 source, glm::vec2 des
 	return atan2(CrossProduct(s, d), DotProduct(s, d));
 }
 
-double GeometryHelper::GetDistanceBetweenPoints(Point p1, Point p2)
+/*double GeometryHelper::GetDistanceBetweenPoints(Point p1, Point p2)
 {
 	return sqrt((p1.GetX() - p2.GetX()) * (p1.GetX() - p2.GetX()) + (p1.GetY() - p2.GetY()) * (p1.GetY() - p2.GetY()) + (p1.GetZ() - p2.GetZ()) * (p1.GetZ() - p2.GetZ()));
-}
+}*/
 
-double GeometryHelper::GetAngleVector(glm::vec2 p1, glm::vec2 p2, ArcType direction)
+double GeometryHelper::GetAngleVector(glm::vec2 p1, glm::vec2 p2, CircleType direction)
 {
 	double alfa = 0;
 
-	if(direction == ArcType::Left1)
+	if(direction == CircleType::Left)
 		alfa = 2 * M_PI - atan2(p2.y - p1.y, p2.x - p1.x);
-	else if(direction == ArcType::Right1)
+	else if(direction == CircleType::Right)
 		alfa = atan2(p2.y - p1.y, p2.x - p1.x);
 	
 	return alfa;
 }
 
-ArcType GeometryHelper::GetVectorsDirection(glm::vec2 v1, glm::vec2 v2)
+CircleType GeometryHelper::GetVectorsDirection(glm::vec2 v1, glm::vec2 v2)
 {
 	double crossProduct = CrossProduct(v1, v2);
 
 	if (crossProduct < 0)
-		return ArcType::Right1;
+		return CircleType::Right;
 	if (crossProduct > 0)
-		return ArcType::Left1;
-	return ArcType::Undefined;
+		return CircleType::Left;
+	return CircleType::Undefined;
 }
 
-ArcType GeometryHelper::GetVectorsDirection(glm::vec2 p1, glm::vec2 p2, glm::vec2 commonPoint)
+CircleType GeometryHelper::GetVectorsDirection(glm::vec2 p1, glm::vec2 p2, glm::vec2 commonPoint)
 {
 	return GeometryHelper::GetVectorsDirection(p1 - commonPoint, p2 - commonPoint);
 }

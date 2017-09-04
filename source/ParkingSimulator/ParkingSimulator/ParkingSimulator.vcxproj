@@ -139,6 +139,7 @@
     <ClCompile Include="PathPlanner.cpp" />
     <ClCompile Include="PathPlannerGLHost.cpp" />
     <ClCompile Include="Point.cpp" />
+    <ClCompile Include="Road.cpp" />
     <ClCompile Include="Simulation.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Visualisation.cpp" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NvgDrawHelper.h" />
+    <ClInclude Include="Road.h" />
     <ClInclude Include="Simulation.h" />
     <ClInclude Include="Visualisation.h" />
     <CustomBuild Include="AddBuilding.h">

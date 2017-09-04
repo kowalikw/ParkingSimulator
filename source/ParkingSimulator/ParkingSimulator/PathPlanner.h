@@ -28,7 +28,7 @@ public:
 	vector<glm::vec2> UserPoints();
 	vector<glm::vec2> VoronoiPoints();
 
-	Path CreateAdmissiblePath(vector<glm::vec2> points);
+	Path *CreateAdmissiblePath(vector<glm::vec2> points);
 //private:
 	Map map;
 	Vehicle vehicle;
@@ -36,8 +36,8 @@ public:
 	vector<glm::vec2> voronoiPoints;
 
 	bool epsilonEquals(float f1, float f2);
-	Path createArcsBetweenSegments(vector<glm::vec2> points);
-	bool checkArcsCorrectness(Path pathArcs, int *arc1, int *arc2);
+	Path *createArcsBetweenSegments(vector<glm::vec2> points);
+	bool checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2);
 	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace);
 };
 

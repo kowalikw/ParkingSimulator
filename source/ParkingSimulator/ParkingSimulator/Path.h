@@ -9,23 +9,19 @@
 
 using namespace std;
 
-enum PathType
-{
-	Simple,
-	Spline
-};
-
 class Path
 {
 public:
 	Path();
 	~Path();
-	PathElement GetAt(int i);
-	vector<PathElement> GetElements();
-	void AddElement(PathElement element);
-	//void CreateAdmissiblePath(vector<PathElement> elements, Map map, Vehicle vehicle, PathType type = Simple);
+	PathElement *GetAt(int i);
+	vector<PathElement*> GetElements();
+	void AddElement(PathElement *element);
+	double GetLength();
+	double GetLengthToElement(PathElement *pathElement);
+	PathElement *GetElement(double t);
 private:
-	vector<PathElement> elements;
+	vector<PathElement*> elements;
 };
 
 #endif

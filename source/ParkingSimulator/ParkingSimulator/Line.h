@@ -6,12 +6,17 @@
 class Line : public PathElement
 {
 public:
-	Line(glm::vec3 from, glm::vec3 to);
-	glm::vec3 GetFrom() const;
-	glm::vec3 GetTo() const;
-private:
-	glm::vec3 from;
-	glm::vec3 to;
+	Line(glm::vec2 from, glm::vec2 to);
+	glm::vec2 GetFrom() const;
+	glm::vec2 GetTo() const;
+
+	virtual double GetLength();
+	virtual double GetAngle(double t);
+	virtual glm::vec2 GetPoint(double t);
+	virtual SimulationState GetSimulationState(double t);
+//private:
+	glm::vec2 from;
+	glm::vec2 to;
 };
 
 #endif

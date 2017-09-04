@@ -5,6 +5,10 @@
 #include "MapElement.h"
 #include "Vehicle.h"
 #include "Path.h"
+#include "Graph.h"
+#include "Road.h"
+#include "Line.h"
+#include "Arc.h"
 #include <glm.hpp>
 
 #define GLEW_STATIC
@@ -27,6 +31,7 @@ public:
 	void DrawMap(Map *map);
 	void DrawVehicle(Vehicle *vehicle);
 	void DrawPath(Path *path);
+	void DrawGraph(Graph * g);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
@@ -57,11 +62,21 @@ public:
 	const NVGcolor PARKING_SPACE_COLOR = nvgRGBA(140, 140, 140, 255);
 	const NVGcolor PARKING_SPACE_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
 
+	const int ROAD_BORDER_WIDTH = 3;
+	const NVGcolor ROAD_COLOR = nvgRGBA(140, 140, 140, 255);
+	const NVGcolor ROAD_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
+
+	const int GRAPH_EDGE_WIDTH = 3;
+	const NVGcolor GRAPH_EDGE_COLOR = nvgRGBA(255, 255, 140, 255);
+
+	const int GRAPH_VERTEX_RADIUS = 3;
+	const NVGcolor GRAPH_VERTEX_COLOR = nvgRGBA(140, 140, 140, 255);
+
 	const int PATH_LINE_WIDTH = 3;
 	const NVGcolor PATH_LINE_COLOR = nvgRGBA(140, 0, 140, 255);
 
-	const int PATH_ARC_WIDTH = 3;
-	const NVGcolor PATH_ARC_COLOR = nvgRGBA(140, 140, 0, 255);
+	const int PATH_CIRCLE_WIDTH = 3;
+	const NVGcolor PATH_CIRCLE_COLOR = nvgRGBA(255, 255, 0, 255);
 private:
 	NVGcontext *vg;
 	glm::vec2 *widgetSize;
@@ -73,9 +88,12 @@ private:
 	glm::vec2 drawAreaPosition;
 
 	void updateDrawAreaProperties();
-	void drawMapElements(std::vector<MapElement*> *mapElements);
+	void drawMapElements(std::vector<MapElement*> mapElements);
 	void drawObstacle(Obstacle *obstacle);
 	void drawParkingSpace(ParkingSpace *parkingSpace);
+	void drawRoad(Road *road);
+	void drawLine(Line *line);
+	void drawCircle(Circle *circle);
 };
 
 #endif

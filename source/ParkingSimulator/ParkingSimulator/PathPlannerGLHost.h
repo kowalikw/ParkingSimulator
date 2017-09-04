@@ -22,8 +22,8 @@ protected:
 private:
 	PathPlanner pathPlanner, pathPlanner2;
 	Path pathPolyline;
-	Path pathAdmissible;
-	BSpline bspline;
+	Path *pathAdmissible;
+	//BSpline bspline;
 
 	void nvgRenderFrame();
 	void renderMap();

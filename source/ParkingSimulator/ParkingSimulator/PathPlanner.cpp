@@ -30,9 +30,10 @@ std::vector<glm::vec2> PathPlanner::VoronoiPoints()
 	return this->voronoiPoints;
 }
 
-Path PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
+Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 {
-	Path pathTmp, path;
+	Path *pathTmp = new Path();
+	Path *path = new Path();
 
 	// path contains less than 3 points
 	/*if (points.size() < 3)
@@ -51,10 +52,9 @@ Path PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 		std::vector<glm::vec2> newPoints;
 		for (int i = 0; i < points.size() - 2; i++)
 		{
-			if (!epsilonEquals(points[i].x, pathTmp.GetAt(arc2).arcBasePoints[1].x) || !epsilonEquals(points[i].y, pathTmp.GetAt(arc2).arcBasePoints[1].y))
+			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetAt(arc2));
+			if (!epsilonEquals(points[i].x, circle->circleBasePoints[1].x) || !epsilonEquals(points[i].y, circle->circleBasePoints[1].y))
 				newPoints.push_back(points[i]);
-			//else
-			//	newPoints.push_back(pathTmp.GetAt(arc2).GetCirclePoint(pathTmp.GetAt(arc2).angleTo));
 		}
 		newPoints.push_back(points[(int)points.size() - 2]);
 		newPoints.push_back(points[(int)points.size() - 1]);
@@ -65,18 +65,28 @@ Path PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 		iter++;
 	}
 
-	for (int i = 0; i < pathTmp.GetElements().size(); i++)
+	for (int i = 0; i < pathTmp->GetElements().size(); i++)
 	{
 		if (i == 0)
-			path.AddElement(PathElement(points[0], glm::vec2(pathTmp.GetElements()[0].GetCirclePoint(pathTmp.GetElements()[0].GetAngleFrom()))));
-		
-		if (i == path.GetElements().size() - 1)
-			path.AddElement(PathElement(glm::vec2(pathTmp.GetElements()[pathTmp.GetElements().size() - 1].GetCirclePoint(pathTmp.GetElements()[pathTmp.GetElements().size() - 1].GetAngleTo())), points[points.size() - 1]));
-			
-		path.AddElement(pathTmp.GetAt(i));
+		{
+			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[0]);
+			path->AddElement(new Line(points[0], glm::vec2(circle->GetPointForAngle(circle->angleFrom))));
+		}
+
+		if (i == path->GetElements().size() - 1)
+		{
+			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[pathTmp->GetElements().size() - 1]);
+			path->AddElement(new Line(glm::vec2(circle->GetPointForAngle(circle->angleTo)), points[points.size() - 1]));
+		}
+
+		path->AddElement(pathTmp->GetAt(i));
 
 		if (i > 0)
-			path.AddElement(PathElement(glm::vec2(pathTmp.GetAt(i - 1).GetCirclePoint(pathTmp.GetAt(i - 1).GetAngleTo())), glm::vec2(pathTmp.GetAt(i).GetCirclePoint(pathTmp.GetAt(i).GetAngleFrom()))));
+		{
+			Circle *prevCircle = dynamic_cast<Circle*>(pathTmp->GetAt(i - 1));
+			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetAt(i));
+			path->AddElement(new Line(glm::vec2(prevCircle->GetPointForAngle(prevCircle->GetAngleTo())), glm::vec2(circle->GetPointForAngle(circle->angleFrom))));
+		}
 	}
 
 	return path;
@@ -87,9 +97,9 @@ bool PathPlanner::epsilonEquals(float f1, float f2)
 	return abs(f2 - f1) < EPS;
 }
 
-Path PathPlanner::createArcsBetweenSegments(vector<glm::vec2> points)
+Path * PathPlanner::createArcsBetweenSegments(vector<glm::vec2> points)
 {
-	Path pathArcs;
+	Path *pathArcs = new Path();
 
 	for (int i = 0; i < (int)points.size() - 2; i++)
 	{
@@ -114,7 +124,7 @@ Path PathPlanner::createArcsBetweenSegments(vector<glm::vec2> points)
 		glm::vec2 n2(dir2.y, -dir2.x);
 
 		double length = l1 > l2 ? l2 : l1;
-		double radiusMin = vehicle.GetRMin(vehicle.GetMaxInsideAngle());
+		double radiusMin = vehicle.GetRMin(vehicle.maxInsideAngle);
 		double radius;
 		glm::vec2 center;
 		do
@@ -133,31 +143,34 @@ Path PathPlanner::createArcsBetweenSegments(vector<glm::vec2> points)
 			length -= 0.1;
 		} while (radius >= radiusMin);
 
-		ArcType arcType = GeometryHelper::GetVectorsDirection(p1, p3, p2);
+		CircleType arcType = GeometryHelper::GetVectorsDirection(p1, p3, p2);
 		double angleFrom = GeometryHelper::GetAngleVector(p1, p2, arcType);
 		double angleTo = GeometryHelper::GetAngleVector(p2, p3, arcType);
 
 		if (angleTo < angleFrom)
 			angleTo += 2 * M_PI;
 
-		pathArcs.AddElement(PathElement(center, radius, angleFrom, angleTo, arcBasePoints, arcType == Right1 ? Right : Left));
+		pathArcs->AddElement(new Circle(center, radius, angleFrom, angleTo, arcBasePoints, arcType));
 	}
 
 	return pathArcs;
 }
 
-bool PathPlanner::checkArcsCorrectness(Path pathArcs, int *arc1, int *arc2)
+bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2)
 {
-	std::vector<PathElement> arcs = pathArcs.GetElements();
+	std::vector<PathElement*> arcs = pathArcs->GetElements();
 	for (int i = 0; i < (int)arcs.size() - 1; i++)
 	{
-		auto p1 = arcs[i].GetCirclePoint(arcs[i].angleTo);
-		auto p2 = arcs[i + 1].GetCirclePoint(arcs[i + 1].angleFrom);
+		Circle *circle = dynamic_cast<Circle*>(arcs[i]);
+		Circle *nextCircle = dynamic_cast<Circle*>(arcs[i + 1]);
+
+		auto p1 = circle->GetPointForAngle(circle->angleTo);
+		auto p2 = nextCircle->GetPointForAngle(nextCircle->angleFrom);
 
 		if (p1 == p2) continue;
 
 		auto dir1 = GeometryHelper::GetLineDirection(p1, p2);
-		auto dir2 = GeometryHelper::GetLineDirection(arcs[i].arcBasePoints[1], arcs[i].arcBasePoints[2]);
+		auto dir2 = GeometryHelper::GetLineDirection(circle->circleBasePoints[1], circle->circleBasePoints[2]);
 
 		if (!epsilonEquals(dir1.x, dir2.x) || !epsilonEquals(dir1.y, dir2.y)) 
 		{
@@ -190,7 +203,7 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 
 		auto p2 = vehicle.GetPosition();
 
-		path->AddElement(PathElement(p1, p2));
+		path->AddElement(new Line(p1, p2));
 
 		int arcCount = 0;
 		double insideAngle = vehicle.GetMaxInsideAngle();
@@ -198,10 +211,10 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 		double angleTo = 0;
 		while (parkingSpace.ContainVehicle(vehicle)) // ³uki
 		{
-			PathElement circle = vehicle.GetTurnCircle(insideAngle, Left);
+			Circle* circle = vehicle.GetTurnCircle(insideAngle, Left);
 
 			auto pp = parkingSpace.GetPosition().x - vehicle.GetWheelbase() / 2.0;
-			while (circle.GetCirclePoint(angleTo).x < pp)
+			while (circle->GetPointForAngle(angleTo).x < pp)
 				angleTo += 0.001;
 
 			switch (arcCount % 4)
@@ -220,34 +233,12 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 				break;
 			}
 
-			/*switch (arcCount % 4)
-			{
-			case 0:
-			circle = vehicle.GetTurnCircle(insideAngle, Right, angleFrom, angleTo);
-			break;
-			case 1:
-			circle = vehicle.GetTurnCircle(insideAngle, Left, angleFrom, 2 * M_PI - angleTo);
-			break;
-			case 2:
-			circle = vehicle.GetTurnCircle(insideAngle, Right, 2 * M_PI + angleFrom, 2 * M_PI - angleTo);
-			break;
-			case 3:
-			circle = vehicle.GetTurnCircle(insideAngle, Left, angleTo, angleFrom);
-			break;
-			}*/
+			
 
 			arcCount++;
 			path->AddElement(circle);
-			vehicle.UpdateState(circle.GetCirclePoint(circle.angleTo), circle.angleTo);
-
-			//if (arcCount == 2) break;
+			vehicle.UpdateState(circle->GetPointForAngle(circle->angleTo), circle->angleTo);
 		}
-
-
-
-
-
-		//}
 	}
 	else if (parkingSpace.GetType() == ParkingSpaceType::Perpendicular)
 	{

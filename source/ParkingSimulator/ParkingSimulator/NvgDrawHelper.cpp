@@ -17,13 +17,14 @@ void NvgDrawHelper::DrawMap(Map * map)
 
 	drawAreaSize.x = map->GetWidth() * magnificationRatio;
 	drawAreaSize.y = map->GetHeight() * magnificationRatio;
+
 	drawAreaPosition.x = (widgetSize.x - drawAreaSize.x - 2 * MAP_BORDER_WIDTH) / 2;
 	drawAreaPosition.y = (widgetSize.y - drawAreaSize.y - 2 * MAP_BORDER_WIDTH) / 2;
 
-	if (drawAreaSize.x == 0 || drawAreaSize.y == 0) return;
+	maxOffset->x = drawAreaPosition.x < 0 ? abs(drawAreaPosition.x) : 0;
+	maxOffset->y = drawAreaPosition.y < 0 ? abs(drawAreaPosition.y) : 0;
 
-	/*maxOffsetX = mapPositionX < 0 ? abs(mapPositionX) : 0;
-	maxOffsetY = mapPositionY < 0 ? abs(mapPositionY) : 0;*/
+	if (drawAreaSize.x == 0 || drawAreaSize.y == 0) return;
 
 	nvgBeginPath(vg);
 	nvgRect(vg, drawAreaPosition.x + offset.x, drawAreaPosition.y + offset.y, drawAreaSize.x + 2 * MAP_BORDER_WIDTH, drawAreaSize.y + 2 * MAP_BORDER_WIDTH);
@@ -35,7 +36,7 @@ void NvgDrawHelper::DrawMap(Map * map)
 	nvgFillColor(vg, MAP_COLOR);
 	nvgFill(vg);
 
-	drawMapElements(&map->GetMapElements());
+	drawMapElements(map->GetMapElements());
 }
 
 void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
@@ -61,6 +62,14 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
 	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
 
+	//auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
+	//auto p1 = p0 + (float)wheelbase * dirWheelbase;
+	//auto p2 = p1 + (float)(track / 2.0) * dirTrack;
+	//auto p3 = p1 - (float)(track / 2.0) * dirTrack;
+	//auto p4 = p0;
+	//auto p5 = p4 + (float)(track / 2.0) * dirTrack;
+	//auto p6 = p4 - (float)(track / 2.0) * dirTrack;
+
 	auto p2a = p2 - (tireRadius * dirWheelbase);
 	auto p2b = p2 + (tireRadius * dirWheelbase);
 	auto p3a = p3 - (tireRadius * dirWheelbase);
@@ -85,121 +94,64 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	nvgStroke(vg);
 
 	//draw tires
+
 	nvgBeginPath(vg);
 
 	nvgMoveTo(vg, p2a.x, p2a.y);
 	nvgLineTo(vg, p2b.x, p2b.y);
-
+	
 	nvgMoveTo(vg, p3a.x, p3a.y);
 	nvgLineTo(vg, p3b.x, p3b.y);
-
+	
 	nvgMoveTo(vg, p5a.x, p5a.y);
 	nvgLineTo(vg, p5b.x, p5b.y);
-
+	
 	nvgMoveTo(vg, p6a.x, p6a.y);
 	nvgLineTo(vg, p6b.x, p6b.y);
-
+	
 	nvgStrokeWidth(vg, 5);
 	nvgStrokeColor(vg, MAP_BORDER_COLOR);
 	nvgStroke(vg);
-
-	nvgBeginPath(vg);
-	nvgEllipse(vg, position.x, position.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
-	nvgFillColor(vg, SELECTED_MARKER_COLOR);
-	nvgFill(vg);
 }
 
 void NvgDrawHelper::DrawPath(Path * path)
 {
-	std::vector<glm::vec2> pointss;
-	auto pathElements = path->GetElements();
+	std::vector<PathElement*> pathElements = path->GetElements();
 	for (int i = 0; i < pathElements.size(); i++)
 	{
-		if (pathElements[i].GetType() == PathElementType::Line)
+		if (dynamic_cast<Line*>(pathElements[i]) != NULL)
 		{
-			auto line = pathElements[i];
+			Line *line = dynamic_cast<Line*>(pathElements[i]);
 
-			nvgBeginPath(vg);
-			nvgMoveTo(vg, line.from.x, line.from.y);
-			nvgLineTo(vg, line.to.x, line.to.y);
-			nvgStrokeWidth(vg, PATH_LINE_WIDTH);
-			nvgStrokeColor(vg, PATH_LINE_COLOR);
-			nvgStroke(vg);
+			drawLine(line);
 		}
-		else if (pathElements[i].GetType() == PathElementType::Circle)
+		else if (dynamic_cast<Circle*>(pathElements[i]) != NULL)
 		{
-			auto circle = pathElements[i];
+			Circle *circle = dynamic_cast<Circle*>(pathElements[i]);
 
-			nvgBeginPath(vg);
-			for (double angle = circle.angleFrom; angle < circle.angleTo; angle += 0.01)
-			{
-				if (angle == circle.angleFrom)
-				{
-					auto p = circle.GetCirclePoint(angle);
-					nvgMoveTo(vg, p.x, p.y);
-				}
-				auto p = circle.GetCirclePoint(angle);
-				nvgLineTo(vg, p.x, p.y);
-			}
-			nvgStrokeWidth(vg, PATH_ARC_WIDTH);
-			nvgStrokeColor(vg, PATH_ARC_COLOR);
-			nvgStroke(vg);
-
-			nvgBeginPath(vg);
-			for (double angle = circle.angleFrom; angle > circle.angleTo; angle -= 0.01)
-			{
-				if (angle == circle.angleFrom)
-				{
-					auto p = circle.GetCirclePoint(angle);
-					nvgMoveTo(vg, p.x, p.y);
-				}
-				auto p = circle.GetCirclePoint(angle);
-				nvgLineTo(vg, p.x, p.y);
-			}
-			nvgStrokeWidth(vg, PATH_ARC_WIDTH);
-			nvgStrokeColor(vg, PATH_ARC_COLOR);
-			nvgStroke(vg);
-
-			/*nvgBeginPath(vg);
-			for (double angle = 0; angle < 2 * M_PI; angle += 0.01)
-			{
-				if (angle == circle.angleFrom)
-				{
-					auto p = circle.GetCirclePoint(angle);
-					nvgMoveTo(vg, p.x, p.y);
-				}
-				auto p = circle.GetCirclePoint(angle);
-				nvgLineTo(vg, p.x, p.y);
-			}
-			nvgStrokeWidth(vg, PATH_ARC_WIDTH);
-			nvgStrokeColor(vg, PATH_ARC_COLOR);
-			nvgStroke(vg);*/
+			drawCircle(circle);
 		}
-
-		/*nvgBeginPath(vg);
-		for (int i = 0; i < (int)pointss.size() - 2; i++)
-		{
-			nvgMoveTo(vg, pointss[i].x, pointss[i].y);
-			nvgLineTo(vg, pointss[i + 1].x, pointss[i + 1].y);
-		}
-		nvgStrokeWidth(vg, PATH_ARC_WIDTH);
-		nvgStrokeColor(vg, PATH_ARC_COLOR);
-		nvgStroke(vg);*/
 	}
 }
 
 void NvgDrawHelper::updateDrawAreaProperties()
 {
+
 }
 
-void NvgDrawHelper::drawMapElements(std::vector<MapElement*>* mapElements)
+void NvgDrawHelper::drawMapElements(std::vector<MapElement*> mapElements)
 {
-	for (int i = 0; i < mapElements->size(); i++)
+	for (int i = 0; i < mapElements.size(); i++)
 	{
-		if (dynamic_cast<Obstacle*>((*mapElements)[i]) != NULL)
+		if (dynamic_cast<Obstacle*>(mapElements[i]) != NULL)
 		{
-			auto obstacle = dynamic_cast<Obstacle*>((*mapElements)[i]);
+			auto obstacle = dynamic_cast<Obstacle*>(mapElements[i]);
 			drawObstacle(obstacle);
+		}
+		else if (dynamic_cast<ParkingSpace*>(mapElements[i]) != NULL)
+		{
+			auto parkingSpace = dynamic_cast<ParkingSpace*>(mapElements[i]);
+			drawParkingSpace(parkingSpace);
 		}
 	}
 }
@@ -209,19 +161,26 @@ void NvgDrawHelper::drawObstacle(Obstacle * obstacle)
 	glm::vec2 offset = *this->offset;
 	glm::vec2 widgetSize = *this->widgetSize;
 	float magnificationRatio = (*this->magnificationRatio);
-
+	
 	if (drawAreaSize.x == 0 || drawAreaSize.y == 0) return;
-
 	if (obstacle == NULL) return;
 
 	std::vector<glm::vec2> points = obstacle->GetPoints();
-	int buildingPositionX = drawAreaPosition.x + obstacle->GetPosition().x * magnificationRatio + offset.x;
-	int buildingPositionY = drawAreaPosition.y + obstacle->GetPosition().y * magnificationRatio + offset.y;
-
+	glm::vec2 obstaclePosition = drawAreaPosition + obstacle->GetPosition() * magnificationRatio + offset;
+	
 	nvgBeginPath(vg);
 	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + offset.x, drawAreaPosition.y + points[0].y * magnificationRatio + offset.y);
 	for (int i = 0; i <= points.size(); i++)
 		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + offset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + offset.y);
+
+	//nvgFontSize(vg, 18.0f);
+	//nvgFontFace(vg, "sans-bold");
+	//nvgTextAlign(vg, NVG_ALIGN_CENTER | NVG_ALIGN_MIDDLE);
+
+	//nvgFontBlur(vg, 2);
+	//nvgFillColor(vg, nvgRGBA(0, 0, 0, 128));
+	//nvgText(vg, x + w / 2, y + 16 + 1, "Nazwa przeszkody", NULL);
+
 	nvgStrokeColor(vg, BUILDING_BORDER_COLOR);
 	nvgStrokeWidth(vg, BUILDING_BORDER_WIDTH);
 	nvgStroke(vg);
@@ -231,5 +190,104 @@ void NvgDrawHelper::drawObstacle(Obstacle * obstacle)
 
 void NvgDrawHelper::drawParkingSpace(ParkingSpace * parkingSpace)
 {
+	glm::vec2 offset = *this->offset;
+	glm::vec2 widgetSize = *this->widgetSize;
+	float magnificationRatio = (*this->magnificationRatio);
+	
+	if (drawAreaSize.x == 0 || drawAreaSize.y == 0) return;
+	if (parkingSpace == NULL) return;
 
+	std::vector<glm::vec2> points = parkingSpace->GetPoints();
+	glm::vec2 parkingSpacePosition = drawAreaPosition + parkingSpace->GetPosition() * magnificationRatio + offset;
+	
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + offset.x, drawAreaPosition.y + points[0].y * magnificationRatio + offset.y);
+	for (int i = 0; i <= points.size(); i++)
+		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + offset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + offset.y);
+	nvgStrokeColor(vg, PARKING_SPACE_BORDER_COLOR);
+	nvgStrokeWidth(vg, PARKING_SPACE_BORDER_WIDTH);
+	nvgStroke(vg);
+	nvgFillColor(vg, PARKING_SPACE_COLOR);
+	nvgFill(vg);
+}
+
+void NvgDrawHelper::DrawGraph(Graph *g)
+{
+	for (int i = 0; i < g->VerticesCount(); i++)
+	{
+		for (int j = 0; j < g->VerticesCount(); j++)
+		{
+			if (g->GetEdge(i, j) == NULL) continue;
+			
+			nvgBeginPath(vg);
+			nvgMoveTo(vg, g->GetEdge(i, j)->v1->x, g->GetEdge(i, j)->v1->y);
+			nvgLineTo(vg, g->GetEdge(i, j)->v2->x, g->GetEdge(i, j)->v2->y);
+			nvgStrokeColor(vg, GRAPH_EDGE_COLOR);
+			nvgStrokeWidth(vg, GRAPH_EDGE_WIDTH);
+			nvgStroke(vg);
+		}
+	}
+
+	for (int i = 0; i < g->VerticesCount(); i++)
+	{
+		nvgBeginPath(vg);
+		nvgEllipse(vg, g->GetVertex(i)->x, g->GetVertex(i)->y, GRAPH_VERTEX_RADIUS, GRAPH_VERTEX_RADIUS);
+		nvgFillColor(vg, GRAPH_VERTEX_COLOR);
+		nvgFill(vg);
+	}
+}
+
+void NvgDrawHelper::drawRoad(Road *road)
+{
+	
+}
+
+void NvgDrawHelper::drawLine(Line *line)
+{
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, line->GetFrom().x, line->GetFrom().y);
+	nvgLineTo(vg, line->GetTo().x, line->GetTo().y);
+	nvgStrokeWidth(vg, PATH_LINE_WIDTH);
+	nvgStrokeColor(vg, PATH_LINE_COLOR);
+	nvgStroke(vg);
+}
+
+void NvgDrawHelper::drawCircle(Circle *circle)
+{
+	if (circle->GetAngleFrom() < circle->GetAngleTo())
+	{
+		nvgBeginPath(vg);
+		for (double angle = circle->angleFrom; angle < circle->angleTo; angle += 0.01)
+		{
+			if (angle == circle->angleFrom)
+			{
+				auto p = circle->GetPointForAngle(angle);
+				nvgMoveTo(vg, p.x, p.y);
+			}
+
+			auto p = circle->GetPointForAngle(angle);
+			nvgLineTo(vg, p.x, p.y);
+		}
+		nvgStrokeWidth(vg, PATH_CIRCLE_WIDTH);
+		nvgStrokeColor(vg, PATH_CIRCLE_COLOR);
+		nvgStroke(vg);
+	}
+	else
+	{
+		nvgBeginPath(vg);
+		for (double angle = circle->angleFrom; angle > circle->angleTo; angle -= 0.01)
+		{
+			if (angle == circle->angleFrom)
+			{
+				auto p = circle->GetPointForAngle(angle);
+				nvgMoveTo(vg, p.x, p.y);
+			}
+
+			auto p = circle->GetPointForAngle(angle);
+			nvgLineTo(vg, p.x, p.y);
+		}
+		nvgStrokeWidth(vg, PATH_CIRCLE_WIDTH);
+		nvgStrokeColor(vg, PATH_CIRCLE_COLOR);
+		nvgStroke(vg);
+	}
 }

@@ -32,15 +32,7 @@ protected:
 private:
 	/*void adjustMaxOffset();*/
 	void nvgRenderFrame();
-	void drawMap(Map *map);
-	void drawVehicle(Vehicle *vehicle, float magnificationRatio);
-	void drawPath(Path *path);
-	void drawBuilding(MapElement *building, bool selected);
-	void drawRoad();
-	void drawDecoration(MapElement *decoration, bool selected);
 	void drawActiveElement();
-
-	void drawGraph(Graph g);
 
 	MapEditor *mapEditor;
 	glm::vec2 positionOnMap;

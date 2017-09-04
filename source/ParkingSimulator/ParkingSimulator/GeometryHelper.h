@@ -15,10 +15,10 @@ public:
 	static double CrossProduct(glm::vec2 v1, glm::vec2 v2);
 	static double DotProduct(glm::vec2 v1, glm::vec2 v2);
 	static bool IsEnclosedByRect(glm::vec2 point, glm::vec2 cornerA, glm::vec2 cornerB);
-	static double GetDistanceBetweenPoints(Point p1, Point p2);
-	static double GetAngleVector(glm::vec2 p1, glm::vec2 p2, ArcType direction);
-	static ArcType GetVectorsDirection(glm::vec2 v1, glm::vec2 v2);
-	static ArcType GetVectorsDirection(glm::vec2 p1, glm::vec2 p2, glm::vec2 commonPoint);
+	//static double GetDistanceBetweenPoints(Point p1, Point p2);
+	static double GetAngleVector(glm::vec2 p1, glm::vec2 p2, CircleType direction);
+	static CircleType GetVectorsDirection(glm::vec2 v1, glm::vec2 v2);
+	static CircleType GetVectorsDirection(glm::vec2 p1, glm::vec2 p2, glm::vec2 commonPoint);
 	static glm::vec2 GetLineDirection(glm::vec2 p1, glm::vec2 p2);
 	static glm::vec2 GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4);
 	static bool CheckSegmentsIntersection(glm::vec2 p1, glm::vec2 p2, glm::vec2 q1, glm::vec2 q2);

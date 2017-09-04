@@ -92,6 +92,7 @@ public:
 	void RemoveVertex(GraphVertex *v);
 	void RemoveEdge(int v1, int v2);
 	void RemoveEdge(GraphEdge *e);
+	int IndexOfVertex(GraphVertex *v);
 	int VerticesCount();
 	int FindIndexOfVertex(GraphVertex *v);
 	int FindIndexOfVector(double x, double y);

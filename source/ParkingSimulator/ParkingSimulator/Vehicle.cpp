@@ -37,12 +37,26 @@ void Vehicle::UpdateState(double x, double y, double z, double angle)
 	this->rotation = angle;
 }
 
-void Vehicle::UpdateState(PathElement pathElement)
+void Vehicle::UpdateState(PathElement *pathElement)
 {
-	if (pathElement.type == PathElementType::Line)
+	/*if (pathElement.type == PathElementType::Line)
 		UpdateState(pathElement.to);
 	else if (pathElement.type == PathElementType::Circle)
-		UpdateState(pathElement.GetCirclePoint(pathElement.angleTo), pathElement.circleType == Right ? -pathElement.angleTo : pathElement.angleTo);
+		UpdateState(pathElement.GetCirclePoint(pathElement.angleTo), pathElement.circleType == Right ? -pathElement.angleTo : pathElement.angleTo);*/
+
+	if (dynamic_cast<Line*>(pathElement) != NULL)
+		UpdateState(dynamic_cast<Line*>(pathElement)->GetTo());
+	else if (dynamic_cast<Circle*>(pathElement) != NULL)
+	{
+		Circle *circle = dynamic_cast<Circle*>(pathElement);
+		UpdateState(circle->GetPointForAngle(circle->GetAngleTo()), circle->GetCircleType() == Right ? -circle->GetAngleTo() : circle->GetAngleTo());
+	}
+}
+
+void Vehicle::UpdateState(SimulationState simulationState)
+{
+	this->position = simulationState.position;
+	this->rotation = simulationState.angle;
 }
 
 double Vehicle::GetR(double angle)
@@ -52,7 +66,8 @@ double Vehicle::GetR(double angle)
 
 double Vehicle::GetRMin(double insideAngle)
 {
-	return abs(wheelbase / tan(insideAngle));
+	auto lalala = abs(wheelbase / tan(insideAngle));
+	return lalala;
 }
 
 double Vehicle::GetRMax(double insideAngle)
@@ -116,7 +131,7 @@ glm::vec2 Vehicle::GetDirWheelbase()
 	return glm::vec2(dirWheelbase);
 }
 
-PathElement Vehicle::GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom, double angleTo)
+Circle *Vehicle::GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom, double angleTo)
 {
 	insideAngle = abs(insideAngle);
 	auto centre = GetTurnCentre(insideAngle, circleType);
@@ -124,5 +139,5 @@ PathElement Vehicle::GetTurnCircle(double insideAngle, CircleType circleType, do
 
 	std::vector<glm::vec2> basePoints;
 
-	return PathElement(centre, radius, angleFrom, angleTo, basePoints, circleType);
+	return new Circle(centre, radius, angleFrom, angleTo, basePoints, circleType);
 }
