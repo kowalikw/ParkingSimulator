@@ -9,6 +9,7 @@
 #include "Road.h"
 #include "Line.h"
 #include "Arc.h"
+#include "Simulation.h"
 #include <glm.hpp>
 
 #define GLEW_STATIC
@@ -32,6 +33,7 @@ public:
 	void DrawVehicle(Vehicle *vehicle);
 	void DrawPath(Path *path);
 	void DrawGraph(Graph * g);
+	void DrawSimulationFrame(Simulation *simulation);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);

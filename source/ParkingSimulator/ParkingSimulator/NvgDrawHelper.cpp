@@ -1,5 +1,7 @@
 #include "NvgDrawHelper.h"
 
+#pragma region Public methods.
+
 NvgDrawHelper::NvgDrawHelper(NVGcontext * vg, glm::vec2 * widgetSize, glm::vec2 * offset, glm::vec2 * maxOffset, float * magnificationRatio)
 {
 	this->vg = vg;
@@ -134,6 +136,45 @@ void NvgDrawHelper::DrawPath(Path * path)
 	}
 }
 
+void NvgDrawHelper::DrawGraph(Graph *g)
+{
+	for (int i = 0; i < g->VerticesCount(); i++)
+	{
+		for (int j = 0; j < g->VerticesCount(); j++)
+		{
+			if (g->GetEdge(i, j) == NULL) continue;
+
+			nvgBeginPath(vg);
+			nvgMoveTo(vg, g->GetEdge(i, j)->v1->x, g->GetEdge(i, j)->v1->y);
+			nvgLineTo(vg, g->GetEdge(i, j)->v2->x, g->GetEdge(i, j)->v2->y);
+			nvgStrokeColor(vg, GRAPH_EDGE_COLOR);
+			nvgStrokeWidth(vg, GRAPH_EDGE_WIDTH);
+			nvgStroke(vg);
+		}
+	}
+
+	for (int i = 0; i < g->VerticesCount(); i++)
+	{
+		nvgBeginPath(vg);
+		nvgEllipse(vg, g->GetVertex(i)->x, g->GetVertex(i)->y, GRAPH_VERTEX_RADIUS, GRAPH_VERTEX_RADIUS);
+		nvgFillColor(vg, GRAPH_VERTEX_COLOR);
+		nvgFill(vg);
+	}
+}
+
+void NvgDrawHelper::DrawSimulationFrame(Simulation * simulation)
+{
+	DrawMap(simulation->GetMap());
+
+	DrawVehicle(simulation->GetVehicle());
+
+	DrawPath(simulation->GetPath());
+}
+
+#pragma endregion
+
+#pragma region Private methods.
+
 void NvgDrawHelper::updateDrawAreaProperties()
 {
 
@@ -211,32 +252,6 @@ void NvgDrawHelper::drawParkingSpace(ParkingSpace * parkingSpace)
 	nvgFill(vg);
 }
 
-void NvgDrawHelper::DrawGraph(Graph *g)
-{
-	for (int i = 0; i < g->VerticesCount(); i++)
-	{
-		for (int j = 0; j < g->VerticesCount(); j++)
-		{
-			if (g->GetEdge(i, j) == NULL) continue;
-			
-			nvgBeginPath(vg);
-			nvgMoveTo(vg, g->GetEdge(i, j)->v1->x, g->GetEdge(i, j)->v1->y);
-			nvgLineTo(vg, g->GetEdge(i, j)->v2->x, g->GetEdge(i, j)->v2->y);
-			nvgStrokeColor(vg, GRAPH_EDGE_COLOR);
-			nvgStrokeWidth(vg, GRAPH_EDGE_WIDTH);
-			nvgStroke(vg);
-		}
-	}
-
-	for (int i = 0; i < g->VerticesCount(); i++)
-	{
-		nvgBeginPath(vg);
-		nvgEllipse(vg, g->GetVertex(i)->x, g->GetVertex(i)->y, GRAPH_VERTEX_RADIUS, GRAPH_VERTEX_RADIUS);
-		nvgFillColor(vg, GRAPH_VERTEX_COLOR);
-		nvgFill(vg);
-	}
-}
-
 void NvgDrawHelper::drawRoad(Road *road)
 {
 	
@@ -244,9 +259,15 @@ void NvgDrawHelper::drawRoad(Road *road)
 
 void NvgDrawHelper::drawLine(Line *line)
 {
+	glm::vec2 offset = *this->offset;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	glm::vec2 from = drawAreaPosition + line->GetFrom() * magnificationRatio + offset;
+	glm::vec2 to = drawAreaPosition + line->GetTo() * magnificationRatio + offset;
+
 	nvgBeginPath(vg);
-	nvgMoveTo(vg, line->GetFrom().x, line->GetFrom().y);
-	nvgLineTo(vg, line->GetTo().x, line->GetTo().y);
+	nvgMoveTo(vg, from.x, from.y);
+	nvgLineTo(vg, to.x, to.y);
 	nvgStrokeWidth(vg, PATH_LINE_WIDTH);
 	nvgStrokeColor(vg, PATH_LINE_COLOR);
 	nvgStroke(vg);
@@ -254,6 +275,9 @@ void NvgDrawHelper::drawLine(Line *line)
 
 void NvgDrawHelper::drawCircle(Circle *circle)
 {
+	glm::vec2 offset = *this->offset;
+	float magnificationRatio = (*this->magnificationRatio);
+
 	if (circle->GetAngleFrom() < circle->GetAngleTo())
 	{
 		nvgBeginPath(vg);
@@ -261,11 +285,11 @@ void NvgDrawHelper::drawCircle(Circle *circle)
 		{
 			if (angle == circle->angleFrom)
 			{
-				auto p = circle->GetPointForAngle(angle);
+				auto p = drawAreaPosition + circle->GetPointForAngle(angle) * magnificationRatio + offset;
 				nvgMoveTo(vg, p.x, p.y);
 			}
 
-			auto p = circle->GetPointForAngle(angle);
+			auto p = drawAreaPosition + circle->GetPointForAngle(angle) * magnificationRatio + offset;
 			nvgLineTo(vg, p.x, p.y);
 		}
 		nvgStrokeWidth(vg, PATH_CIRCLE_WIDTH);
@@ -279,11 +303,11 @@ void NvgDrawHelper::drawCircle(Circle *circle)
 		{
 			if (angle == circle->angleFrom)
 			{
-				auto p = circle->GetPointForAngle(angle);
+				auto p = drawAreaPosition + circle->GetPointForAngle(angle) * magnificationRatio + offset;
 				nvgMoveTo(vg, p.x, p.y);
 			}
 
-			auto p = circle->GetPointForAngle(angle);
+			auto p = drawAreaPosition + circle->GetPointForAngle(angle) * magnificationRatio + offset;
 			nvgLineTo(vg, p.x, p.y);
 		}
 		nvgStrokeWidth(vg, PATH_CIRCLE_WIDTH);
@@ -291,3 +315,5 @@ void NvgDrawHelper::drawCircle(Circle *circle)
 		nvgStroke(vg);
 	}
 }
+
+#pragma endregion

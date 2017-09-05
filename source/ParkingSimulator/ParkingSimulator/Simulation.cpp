@@ -2,9 +2,6 @@
 
 Simulation::Simulation()
 {
-	simulationTimer = new QTimer();
-
-	simulationTimer->start(10);
 }
 
 Simulation::Simulation(Map *map, Vehicle *vehicle, Path *path)
@@ -72,17 +69,20 @@ void Simulation::SetSimulationTime(float simulationTime)
 
 void Simulation::Start()
 {
-	simulationTimer->start();
+	isStarted = true;
+	isPaused = false;
 }
 
 void Simulation::Pause()
 {
-	simulationTimer->start();
+	isStarted = true;
+	isPaused = true;
 }
 
 void Simulation::Stop()
 {
-	simulationTimer->stop();
+	isStarted = false;
+	isPaused = false;
 	currentSimulationTime = 0;
 }
 
@@ -103,4 +103,19 @@ void Simulation::Step()
 
 	float elapsedTime = 0.001f;
 	currentSimulationTime += elapsedTime;
+}
+
+bool Simulation::IsStarted()
+{
+	return isStarted;
+}
+
+bool Simulation::IsPaused()
+{
+	return isPaused;
+}
+
+bool Simulation::IsStopped()
+{
+	return !isStarted && !isPaused;
 }

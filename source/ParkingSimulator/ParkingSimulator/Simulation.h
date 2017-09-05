@@ -26,13 +26,18 @@ public:
 	void Pause();
 	void Stop();
 	void Step();
+
+	bool IsStarted();
+	bool IsPaused();
+	bool IsStopped();
 private:
 	Map *map;
 	Vehicle *vehicle;
 	Path *path;
 	float simulationTime;
 	float currentSimulationTime;
-	QTimer *simulationTimer;
+	bool isStarted = false;
+	bool isPaused = false;
 };
 
 #endif

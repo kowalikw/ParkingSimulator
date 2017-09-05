@@ -4,6 +4,7 @@
 #include "OpenGLHost.h"
 #include "Visualisation.h"
 #include "Vehicle.h"
+#include "NvgDrawHelper.h"
 
 class VisualisationGLHost : public OpenGLHost
 {
@@ -24,12 +25,11 @@ protected:
 	virtual void paintGL() override;
 private:
 	Visualisation* visualisation;
+	QTimer *simulationTimer;
 
 	void nvgRenderFrame();
-	void drawVehicle(Vehicle vehicle);
-	void drawMap(Map map);
-	void drawPath(Path path);
-	void drawMapElement(MapElement *mapElement);
+public slots:
+	void simulationTimerTick();
 };
 
 #endif

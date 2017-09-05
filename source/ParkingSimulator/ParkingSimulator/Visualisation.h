@@ -13,6 +13,7 @@ public:
 	bool GetVisualisation3D();
 	void SetVisualisation2D(bool visualisation2D);
 	void SetVisualisation3D(bool visualisation3D);
+	void SetCurrentSimulation(Simulation *simulation);
 	Simulation *GetCurrentSimulation();
 	std::vector<Simulation*> GetSimulations();
 	void AddSimulation(Simulation *simulation);
