@@ -1,7 +1,7 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include <QTimer>
+#include <QElapsedTimer>
 #include "Map.h"
 #include "Vehicle.h"
 #include "Path.h"
@@ -38,6 +38,7 @@ private:
 	float currentSimulationTime;
 	bool isStarted = false;
 	bool isPaused = false;
+	QElapsedTimer simulationTimer;
 };
 
 #endif

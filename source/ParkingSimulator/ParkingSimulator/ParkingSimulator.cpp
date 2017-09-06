@@ -13,6 +13,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	this->setStyleSheet("background-color: #2a2a2a;");
 
 	((MapEditorGLHost*)ui.glMapEditor)->SetMapEditor(&mapEditor);
+	((VisualisationGLHost*)ui.glVisualisation)->SetVisualisation(&visualisation);
 
 	renderTimer = new QTimer();
 	renderTimer->setInterval(10);
@@ -34,7 +35,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	connect(ui.btnStopSimulation, SIGNAL(released()), this, SLOT(stopSimulation()));
 	connect(ui.btnVisualisation2D, SIGNAL(released()), this, SLOT(enableVisualisation2D()));
 	connect(ui.btnVisualisation3D, SIGNAL(released()), this, SLOT(enableVisualisation3D()));
-	//connect(ui.showPathElements, SIGNAL(released()), this, SLOT(showSimulationPath()));
+	connect(ui.showPathElements, SIGNAL(stateChanged(int)), this, SLOT(showSimulationPath(int)));
 
 	ui.treeMapElements->setColumnCount(1);
 	QList<QTreeWidgetItem *> items;
@@ -256,14 +257,24 @@ void ParkingSimulator::infoSimulation()
 
 void ParkingSimulator::playPauseSimulation()
 {
+	if (visualisation.GetCurrentSimulation() != NULL)
+	{
+		Simulation *simulation = visualisation.GetCurrentSimulation();
+		if (simulation->IsStarted())
+			simulation->Pause();
+		else
+			simulation->Start();
+	}
 }
 
 void ParkingSimulator::stopSimulation()
 {
-}
+	if (visualisation.GetCurrentSimulation() != NULL)
+	{
+		Simulation *simulation = visualisation.GetCurrentSimulation();
 
-void ParkingSimulator::showSimulationPath()
-{
+		simulation->Stop();
+	}
 }
 
 void ParkingSimulator::enableVisualisation2D()
@@ -280,6 +291,11 @@ void ParkingSimulator::enableVisualisation3D()
 	visualisation.SetVisualisation3D(true);
 	ui.btnVisualisation2D->setStyleSheet("");
 	ui.btnVisualisation3D->setStyleSheet("border: 3px solid #d86a39;");
+}
+
+void ParkingSimulator::showSimulationPath(int checked)
+{
+	visualisation.SetShowPath(checked == Qt::Checked);
 }
 
 #pragma endregion

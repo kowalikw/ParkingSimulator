@@ -131,7 +131,7 @@ glm::vec2 Vehicle::GetDirWheelbase()
 	return glm::vec2(dirWheelbase);
 }
 
-Circle *Vehicle::GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom, double angleTo)
+Circle *Vehicle::GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom, double angleTo, ManeuverType maneuverType)
 {
 	insideAngle = abs(insideAngle);
 	auto centre = GetTurnCentre(insideAngle, circleType);
@@ -139,5 +139,5 @@ Circle *Vehicle::GetTurnCircle(double insideAngle, CircleType circleType, double
 
 	std::vector<glm::vec2> basePoints;
 
-	return new Circle(centre, radius, angleFrom, angleTo, basePoints, circleType);
+	return new Circle(centre, radius, angleFrom, angleTo, basePoints, circleType, maneuverType);
 }

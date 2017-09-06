@@ -226,10 +226,10 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 				circle = vehicle.GetTurnCircle(insideAngle, Right, 2 * M_PI - angleTo, 2 * M_PI + angleFrom);
 				break;
 			case 2:
-				circle = vehicle.GetTurnCircle(insideAngle, Left, 2 * M_PI + angleFrom, 2 * M_PI - angleTo);
+				circle = vehicle.GetTurnCircle(insideAngle, Left, 2 * M_PI + angleFrom, 2 * M_PI - angleTo, ManeuverType::Back);
 				break;
 			case 3:
-				circle = vehicle.GetTurnCircle(insideAngle, Right, angleTo, angleFrom);
+				circle = vehicle.GetTurnCircle(insideAngle, Right, angleTo, angleFrom, ManeuverType::Back);
 				break;
 			}
 

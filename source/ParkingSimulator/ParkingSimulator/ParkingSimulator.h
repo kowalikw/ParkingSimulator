@@ -45,7 +45,7 @@ public slots:
 	void infoSimulation();
 	void playPauseSimulation();
 	void stopSimulation();
-	void showSimulationPath();
 	void enableVisualisation2D();
 	void enableVisualisation3D();
+	void showSimulationPath(int checked);
 };

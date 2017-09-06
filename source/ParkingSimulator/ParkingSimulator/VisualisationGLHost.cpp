@@ -53,8 +53,6 @@ Visualisation * VisualisationGLHost::GetVisualisation()
 void VisualisationGLHost::initializeGL()
 {
 	OpenGLHost::initializeGL();
-
-	visualisation = new Visualisation();
 }
 
 void VisualisationGLHost::resizeGL(int w, int h)
@@ -65,6 +63,8 @@ void VisualisationGLHost::resizeGL(int w, int h)
 void VisualisationGLHost::paintGL()
 {
 	OpenGLHost::paintGL();
+
+	if (visualisation == NULL) return;
 
 	glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -85,6 +85,10 @@ void VisualisationGLHost::nvgRenderFrame()
 	if (visualisation->GetCurrentSimulation() != NULL)
 	{
 		nvgHelper->DrawSimulationFrame(visualisation->GetCurrentSimulation());
+
+		bool showPath = visualisation->GetShowPath();
+		if (visualisation->GetShowPath())
+			nvgHelper->DrawPath(visualisation->GetCurrentSimulation()->GetPath());
 	}
 }
 

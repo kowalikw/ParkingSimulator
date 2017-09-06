@@ -6,7 +6,7 @@
 class Line : public PathElement
 {
 public:
-	Line(glm::vec2 from, glm::vec2 to);
+	Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType = ManeuverType::Front);
 	glm::vec2 GetFrom() const;
 	glm::vec2 GetTo() const;
 

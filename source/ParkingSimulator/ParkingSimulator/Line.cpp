@@ -1,9 +1,10 @@
 #include "Line.h"
 
-Line::Line(glm::vec2 from, glm::vec2 to)
+Line::Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType)
 {
 	this->from = from;
 	this->to = to;
+	this->maneuverType = maneuverType;
 }
 
 glm::vec2 Line::GetFrom() const
@@ -38,7 +39,7 @@ SimulationState Line::GetSimulationState(double t)
 {
 	SimulationState simulationState;
 	simulationState.position = GetPoint(t);
-	simulationState.angle = GetAngle(t);
+	simulationState.angle = M_PI - GetAngle(t);
 
 	return simulationState;
 }

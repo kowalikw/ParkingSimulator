@@ -12,6 +12,12 @@ struct SimulationState
 	double angle;
 };
 
+enum ManeuverType
+{
+	Front,
+	Back
+};
+
 class PathElement
 {
 public:
@@ -31,6 +37,8 @@ public:
 	virtual double GetAngle(double t) = 0;
 	virtual glm::vec2 GetPoint(double t) = 0;
 	virtual SimulationState GetSimulationState(double t) = 0;
+protected:
+	ManeuverType maneuverType;
 };
 
 #endif

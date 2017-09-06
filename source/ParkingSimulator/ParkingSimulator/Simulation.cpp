@@ -71,12 +71,14 @@ void Simulation::Start()
 {
 	isStarted = true;
 	isPaused = false;
+	simulationTimer.restart();
 }
 
 void Simulation::Pause()
 {
 	isStarted = true;
 	isPaused = true;
+	simulationTimer.restart();
 }
 
 void Simulation::Stop()
@@ -90,29 +92,36 @@ void Simulation::Step()
 {
 	double timeRatio = currentSimulationTime / simulationTime;
 
+	if (timeRatio > 1.0)
+	{
+		Stop();
+		return;
+	}
+
 	PathElement *pathElement = path->GetElement(timeRatio);
 
 	double pathLength = path->GetLength();
 	double lengthToPathElementExclude = path->GetLengthToElement(pathElement);
 	double lengthToPathElementInclude = pathElement->GetLength() + lengthToPathElementExclude;
 
-	double t = (lengthToPathElementInclude - (timeRatio * pathLength)) / pathElement->GetLength();
+	double t = abs((lengthToPathElementExclude - (timeRatio * pathLength)) / pathElement->GetLength());
 	SimulationState simulationState = pathElement->GetSimulationState(t);
 
 	this->vehicle->UpdateState(simulationState);
 
-	float elapsedTime = 0.001f;
-	currentSimulationTime += elapsedTime;
+	//currentSimulationTime += simulationTimer.elapsed() / 1000.0;
+	currentSimulationTime += 0.01;
+	simulationTimer.restart();
 }
 
 bool Simulation::IsStarted()
 {
-	return isStarted;
+	return isStarted && !isPaused;
 }
 
 bool Simulation::IsPaused()
 {
-	return isPaused;
+	return isStarted && isPaused;
 }
 
 bool Simulation::IsStopped()

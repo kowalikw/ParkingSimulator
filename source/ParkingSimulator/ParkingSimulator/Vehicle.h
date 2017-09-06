@@ -35,7 +35,7 @@ public:
 	glm::vec2 GetDirWheelbase();
 	glm::vec2 GetTurnCentre(double angle, CircleType circleType);
 
-	Circle *GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom = 0, double angleTo = 2 * M_PI);
+	Circle *GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom = 0, double angleTo = 2 * M_PI, ManeuverType maneuverType = ManeuverType::Front);
 
 	double wheelbase; // rozstaw osi
 	double track; // rozstaw kó³

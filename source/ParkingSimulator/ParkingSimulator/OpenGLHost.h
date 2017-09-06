@@ -3,7 +3,7 @@
 
 #define GLEW_STATIC
 #include "glew.h"
-#include <QTime>
+#include <QTimer>
 #include <QEvent>
 #include <qdesktopwidget.h>
 #include <QMouseEvent> 

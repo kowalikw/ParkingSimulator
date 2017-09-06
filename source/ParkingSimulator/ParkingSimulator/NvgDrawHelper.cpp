@@ -56,21 +56,21 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	auto dirTrack = vehicle->GetDirTrack();
 	auto tireRadius = 25.0f * magnificationRatio;
 
-	auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
-	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
-	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
-	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
-	auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
-	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
-	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
-
 	//auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
-	//auto p1 = p0 + (float)wheelbase * dirWheelbase;
+	//auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
 	//auto p2 = p1 + (float)(track / 2.0) * dirTrack;
 	//auto p3 = p1 - (float)(track / 2.0) * dirTrack;
-	//auto p4 = p0;
+	//auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
 	//auto p5 = p4 + (float)(track / 2.0) * dirTrack;
 	//auto p6 = p4 - (float)(track / 2.0) * dirTrack;
+
+	auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
+	auto p1 = p0 + (float)wheelbase * dirWheelbase;
+	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
+	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
+	auto p4 = p0;
+	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
+	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
 
 	auto p2a = p2 - (tireRadius * dirWheelbase);
 	auto p2b = p2 + (tireRadius * dirWheelbase);
@@ -167,8 +167,6 @@ void NvgDrawHelper::DrawSimulationFrame(Simulation * simulation)
 	DrawMap(simulation->GetMap());
 
 	DrawVehicle(simulation->GetVehicle());
-
-	DrawPath(simulation->GetPath());
 }
 
 #pragma endregion

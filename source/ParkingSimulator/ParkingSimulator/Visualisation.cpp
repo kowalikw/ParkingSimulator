@@ -9,11 +9,13 @@ Visualisation::Visualisation()
 
 	//tymczasowo
 	Map *mapa = new Map(1000, 550);
-	Vehicle *vehicle = new Vehicle(100, 50);
+	Vehicle *vehicle = new Vehicle(200, 50);
 	Path *path = new Path();
 
 	PathPlanner pathPlanner(*mapa, *vehicle);
 	MapElement *parkingSpace = new ParkingSpace(glm::vec2(200, 200), glm::vec2(300, 120), ParkingSpaceType::Paralell);
+
+	mapa->AddMapElement(parkingSpace);
 
 	auto pS = dynamic_cast<ParkingSpace*>(parkingSpace);
 
@@ -41,11 +43,9 @@ Visualisation::Visualisation()
 
 	Path *p2 = pathPlanner.CreateAdmissiblePath(pathPlanner.UserPoints());
 	
-	currentSimulation = new Simulation(mapa, vehicle, p2);
+	currentSimulation = new Simulation(mapa, vehicle, p);
 
-	currentSimulation->SetSimulationTime(10);
-
-	currentSimulation->Start();
+	currentSimulation->SetSimulationTime(15);
 }
 
 bool Visualisation::GetVisualisation2D()
@@ -66,6 +66,16 @@ void Visualisation::SetVisualisation2D(bool visualisation2D)
 void Visualisation::SetVisualisation3D(bool visualisation3D)
 {
 	this->visualisation3D = visualisation3D;
+}
+
+bool Visualisation::GetShowPath()
+{
+	return this->showPath;
+}
+
+void Visualisation::SetShowPath(bool showPath)
+{
+	this->showPath = showPath;
 }
 
 void Visualisation::SetCurrentSimulation(Simulation * simulation)

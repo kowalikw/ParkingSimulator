@@ -4,7 +4,7 @@ Circle::Circle()
 {
 }
 
-Circle::Circle(glm::vec2 centre, double radius, double angleFrom, double angleTo, std::vector<glm::vec2> circleBasePoints, CircleType circleType)
+Circle::Circle(glm::vec2 centre, double radius, double angleFrom, double angleTo, std::vector<glm::vec2> circleBasePoints, CircleType circleType, ManeuverType maneuverType)
 {
 	this->center = centre;
 	this->radius = radius;
@@ -12,6 +12,7 @@ Circle::Circle(glm::vec2 centre, double radius, double angleFrom, double angleTo
 	this->angleTo = angleTo;
 	this->circleBasePoints = circleBasePoints;
 	this->circleType = circleType;
+	this->maneuverType = maneuverType;
 }
 
 double Circle::GetAngleFrom() const
@@ -68,6 +69,8 @@ double Circle::GetLength()
 }
 double Circle::GetAngle(double t)
 {
+	if(maneuverType == ManeuverType::Back)
+		t = 1 - t;
 	return angleFrom < angleTo ? angleFrom + t * (angleTo - angleFrom) : angleTo + t * (angleFrom - angleTo);
 }
 
@@ -82,7 +85,7 @@ SimulationState Circle::GetSimulationState(double t)
 {
 	SimulationState simulationState;
 	simulationState.position = GetPoint(t);
-	simulationState.angle = GetAngle(t);
+	simulationState.angle = circleType == CircleType::Right ?  -GetAngle(t) : GetAngle(t);
 
 	return simulationState;
 }
