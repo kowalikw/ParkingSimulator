@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Simulation.h"
+#include "Graph.h"
 
 class Visualisation
 {
@@ -20,6 +21,9 @@ public:
 	std::vector<Simulation*> GetSimulations();
 	void AddSimulation(Simulation *simulation);
 	void RemoveSimulation(Simulation *simulation);
+
+	//temp
+	Graph voronoi;
 private:
 	bool showPath = false;
 	bool visualisation2D = false;

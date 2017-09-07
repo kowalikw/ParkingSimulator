@@ -15,6 +15,8 @@ public:
 	Path();
 	~Path();
 	PathElement *GetAt(int i);
+	PathElement *GetFirstElement();
+	PathElement *GetLastElement();
 	vector<PathElement*> GetElements();
 	void AddElement(PathElement *element);
 	double GetLength();

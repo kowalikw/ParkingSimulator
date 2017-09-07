@@ -266,6 +266,71 @@ void Graph::CreateVoronoiGraph(Map * map)
 	}
 }
 
+void Graph::CreateVoronoiFullGraph(Map * map)
+{
+	CreateVoronoiGraph(map);
+
+	for (int i = 0; i < VerticesCount(); i++)
+	{
+		for (int j = 0; j < VerticesCount(); j++)
+		{
+			if (i == j) continue;
+
+			bool addEdge = true;
+			GraphVertex *v1 = GetVertex(i);
+			GraphVertex *v2 = GetVertex(j);
+
+			std::vector<MapElement*> mapElements = map->GetMapElements();
+			for(int k = 0; k < mapElements.size(); k++)
+				if (GeometryHelper::CheckPolygonSegmentIntersection(glm::vec2(v1->x, v1->y), glm::vec2(v2->x, v2->y), mapElements[k]->GetPoints()))
+					addEdge = false;
+
+			if (addEdge)
+				AddEdge(i, j);
+		}
+	}
+}
+
+void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end, int *indexFrom, int *indexTo)
+{
+	CreateVoronoiFullGraph(map);
+
+	int verticesCount = VerticesCount();
+	AddVertex(start->from.x, start->from.y); // verticesCount
+	AddVertex(start->to.x, start->to.y); // verticesCount + 1
+	AddVertex(end->from.x, end->from.y); // verticesCount + 2
+	AddVertex(end->to.x, end->to.y); // verticesCount + 3
+
+	AddEdge(verticesCount, verticesCount + 1);
+	AddEdge(verticesCount + 2, verticesCount + 3);
+
+	glm::vec2 startTo = glm::vec2(start->to.x, start->to.y); // ostatni wierzcho³ek œcie¿ki wyjazdowej (verticesCount + 1)
+	glm::vec2 endFrom = glm::vec2(end->from.x, end->from.y); // pierwszy wierzcho³ak œcie¿ki wjazdowej (verticesCount + 2)
+	for (int i = 0; i < verticesCount; i++)
+	{
+		bool addEdgeToStartTo = true;
+		bool addEdgeToEndFrom = true;
+		GraphVertex *v = GetVertex(i);
+		std::vector<MapElement*> mapElements = map->GetMapElements();
+
+		for (int j = 0; j < mapElements.size(); j++)
+		{
+			if (GeometryHelper::CheckPolygonSegmentIntersection(startTo, glm::vec2(v->x, v->y), mapElements[j]->GetPoints()))
+				addEdgeToStartTo = false;
+			if (GeometryHelper::CheckPolygonSegmentIntersection(endFrom, glm::vec2(v->x, v->y), mapElements[j]->GetPoints()))
+				addEdgeToEndFrom = false;
+		}
+		
+		if(addEdgeToStartTo)
+			AddEdge(verticesCount + 1, i);
+		if(addEdgeToEndFrom)
+			AddEdge(i, verticesCount + 2);
+	}
+
+	*indexFrom = verticesCount;
+	*indexTo = verticesCount + 3;
+}
+
 std::vector<int> Graph::FindPath(int s, int t, double **estimatedDist)
 {
 	std::vector<int> path;

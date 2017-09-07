@@ -90,6 +90,8 @@ void VisualisationGLHost::nvgRenderFrame()
 		if (visualisation->GetShowPath())
 			nvgHelper->DrawPath(visualisation->GetCurrentSimulation()->GetPath());
 	}
+
+	nvgHelper->DrawGraph(&visualisation->voronoi);
 }
 
 #pragma endregion

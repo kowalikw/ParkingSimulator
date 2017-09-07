@@ -97,6 +97,15 @@ bool GeometryHelper::CheckPolygonContainsPolygon(std::vector<glm::vec2> subject,
 	return true;
 }
 
+bool GeometryHelper::CheckPolygonSegmentIntersection(glm::vec2 p1, glm::vec2 p2, std::vector<glm::vec2> polygon)
+{
+	for (int i = 0; i < polygon.size(); i++)
+		if (CheckSegmentsIntersection(p1, p2, polygon[i], polygon[(i + 1) % polygon.size()]))
+			return true;
+
+	return false;
+}
+
 double GeometryHelper::GetAngle(glm::vec2 pivot, glm::vec2 source, glm::vec2 dest)
 {
 	glm::vec2 s = glm::vec2(source.x - pivot.x, source.y - pivot.y);

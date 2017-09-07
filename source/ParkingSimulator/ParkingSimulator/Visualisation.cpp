@@ -8,18 +8,25 @@ Visualisation::Visualisation()
 	this->visualisation3D = false;
 
 	//tymczasowo
-	Map *mapa = new Map(1000, 550);
-	Vehicle *vehicle = new Vehicle(200, 50);
+	Map *mapa = new Map(1000, 750);
+	Vehicle *vehicle = new Vehicle(100, 50);
 	Path *path = new Path();
 
 	PathPlanner pathPlanner(*mapa, *vehicle);
-	MapElement *parkingSpace = new ParkingSpace(glm::vec2(200, 200), glm::vec2(300, 120), ParkingSpaceType::Paralell);
+	MapElement *parkingSpaceStart = new ParkingSpace(glm::vec2(150, 200), glm::vec2(200, 120), ParkingSpaceType::Paralell);
+	MapElement *parkingSpaceEnd = new ParkingSpace(glm::vec2(600, 500), glm::vec2(200, 120), ParkingSpaceType::Paralell);
 
-	mapa->AddMapElement(parkingSpace);
+	MapElement *obstacle = new Obstacle(glm::vec2(400, 250), glm::vec2(50, 50), ObstacleType::Decoration, "name");
 
-	auto pS = dynamic_cast<ParkingSpace*>(parkingSpace);
+	mapa->AddMapElement(parkingSpaceStart);
+	mapa->AddMapElement(parkingSpaceEnd);
+	mapa->AddMapElement(obstacle);
 
-	Path *p = pathPlanner.createParkingPath(*vehicle, *pS);
+	auto pS = dynamic_cast<ParkingSpace*>(parkingSpaceStart);
+	auto pE = dynamic_cast<ParkingSpace*>(parkingSpaceEnd);
+
+	Path *pStart = pathPlanner.createParkingPath(*vehicle, *pS);
+	Path *pEnd = pathPlanner.createParkingPath(*vehicle, *pE);
 
 	pathPlanner.AddUserPoint(glm::vec2(200, 300));
 	pathPlanner.AddUserPoint(glm::vec2(200, 500));
@@ -42,8 +49,25 @@ Visualisation::Visualisation()
 	pathPlanner.AddUserPoint(glm::vec2(1000, 100));
 
 	Path *p2 = pathPlanner.CreateAdmissiblePath(pathPlanner.UserPoints());
+
+	Line* start = dynamic_cast<Line*>(pStart->GetLastElement());
+	Line* end = dynamic_cast<Line*>(pEnd->GetLastElement());
+
+	int indexStart, indexEnd;
+	voronoi.CreateVoronoiVisibilityFullGraph(mapa, start, end, &indexStart, &indexEnd);
+
+	double **estimated = new double*[voronoi.VerticesCount()];
+	for (int i = 0; i < voronoi.VerticesCount(); i++)
+		estimated[i] = new double[voronoi.VerticesCount()];
+
+	for (int i = 0; i < voronoi.VerticesCount(); i++)
+		for (int j = 0; j < voronoi.VerticesCount(); j++)
+			estimated[i][j] = 999;
 	
-	currentSimulation = new Simulation(mapa, vehicle, p);
+	
+	auto path2 = voronoi.FindPath(indexStart, indexEnd, estimated);
+		
+	currentSimulation = new Simulation(mapa, vehicle, pStart);
 
 	currentSimulation->SetSimulationTime(15);
 }

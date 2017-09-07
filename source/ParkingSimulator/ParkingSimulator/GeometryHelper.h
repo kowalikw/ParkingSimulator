@@ -25,6 +25,7 @@ public:
 	static bool CheckPolygonContainsPoint(std::vector<glm::vec2> polygon, glm::vec2 point);
 	static bool CheckPolygonIntersection(std::vector<glm::vec2> polygon1, std::vector<glm::vec2> polygon2);
 	static bool CheckPolygonContainsPolygon(std::vector<glm::vec2> subject, std::vector<glm::vec2> polygon);
+	static bool CheckPolygonSegmentIntersection(glm::vec2 p1, glm::vec2 p2, std::vector<glm::vec2> polygon);
 private:
 	static double GetAngle(glm::vec2 pivot, glm::vec2 source, glm::vec2 dest);
 };

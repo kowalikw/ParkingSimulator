@@ -138,15 +138,21 @@ void NvgDrawHelper::DrawPath(Path * path)
 
 void NvgDrawHelper::DrawGraph(Graph *g)
 {
+	glm::vec2 offset = *this->offset;
+	float magnificationRatio = (*this->magnificationRatio);
+
 	for (int i = 0; i < g->VerticesCount(); i++)
 	{
 		for (int j = 0; j < g->VerticesCount(); j++)
 		{
 			if (g->GetEdge(i, j) == NULL) continue;
 
+			glm::vec2 from = drawAreaPosition + glm::vec2(g->GetEdge(i, j)->v1->x, g->GetEdge(i, j)->v1->y) * magnificationRatio + offset;;
+			glm::vec2 to = drawAreaPosition + glm::vec2(g->GetEdge(i, j)->v2->x, g->GetEdge(i, j)->v2->y) * magnificationRatio + offset;;
+
 			nvgBeginPath(vg);
-			nvgMoveTo(vg, g->GetEdge(i, j)->v1->x, g->GetEdge(i, j)->v1->y);
-			nvgLineTo(vg, g->GetEdge(i, j)->v2->x, g->GetEdge(i, j)->v2->y);
+			nvgMoveTo(vg, from.x, from.y);
+			nvgLineTo(vg, to.x, to.y);
 			nvgStrokeColor(vg, GRAPH_EDGE_COLOR);
 			nvgStrokeWidth(vg, GRAPH_EDGE_WIDTH);
 			nvgStroke(vg);
@@ -155,8 +161,10 @@ void NvgDrawHelper::DrawGraph(Graph *g)
 
 	for (int i = 0; i < g->VerticesCount(); i++)
 	{
+		glm::vec2 v = drawAreaPosition + glm::vec2(g->GetVertex(i)->x, g->GetVertex(i)->y) * magnificationRatio + offset;;
+
 		nvgBeginPath(vg);
-		nvgEllipse(vg, g->GetVertex(i)->x, g->GetVertex(i)->y, GRAPH_VERTEX_RADIUS, GRAPH_VERTEX_RADIUS);
+		nvgEllipse(vg, v.x, v.y, GRAPH_VERTEX_RADIUS, GRAPH_VERTEX_RADIUS);
 		nvgFillColor(vg, GRAPH_VERTEX_COLOR);
 		nvgFill(vg);
 	}

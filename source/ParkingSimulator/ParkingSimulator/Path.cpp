@@ -13,6 +13,16 @@ PathElement *Path::GetAt(int i)
 	return elements[i];
 }
 
+PathElement * Path::GetFirstElement()
+{
+	return elements[0];
+}
+
+PathElement * Path::GetLastElement()
+{
+	return elements[elements.size() - 1];
+}
+
 vector<PathElement*> Path::GetElements()
 {
 	return this->elements;

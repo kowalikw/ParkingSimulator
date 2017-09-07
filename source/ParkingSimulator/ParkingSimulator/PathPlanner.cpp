@@ -185,6 +185,7 @@ bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2)
 
 Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace)
 {
+	PathElement *lastElement;
 	Path *path = new Path();
 
 	if (parkingSpace.GetType() == ParkingSpaceType::Paralell)
@@ -233,8 +234,6 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 				break;
 			}
 
-			
-
 			arcCount++;
 			path->AddElement(circle);
 			vehicle.UpdateState(circle->GetPointForAngle(circle->angleTo), circle->angleTo);
@@ -242,8 +241,10 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 	}
 	else if (parkingSpace.GetType() == ParkingSpaceType::Perpendicular)
 	{
-
+		// TODO:
 	}
+
+	path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetWheelbase() * vehicle.GetDirWheelbase()));
 
 	return path;
 }
