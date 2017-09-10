@@ -18,8 +18,12 @@ public:
 	double GetAngleFrom() const;
 	double GetAngleTo() const;
 	double GetRadius() const;
+	void SetAngleFrom(double angleFrom);
+	void SetAngleTo(double angleTo);
+	void SetRadius(double radius);
 	glm::vec2 GetCenter() const;
 	CircleType GetCircleType() const;
+	void SetCircleType(CircleType type);
 	std::vector<glm::vec2> GetCircleBasePoints() const;
 	glm::vec2 GetPointForAngle(double angle);
 

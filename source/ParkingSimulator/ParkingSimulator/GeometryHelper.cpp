@@ -47,6 +47,23 @@ glm::vec2 GeometryHelper::GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, g
 	return glm::vec2(x, z);
 }
 
+std::vector<glm::vec2> GeometryHelper::ExpandPolygon(std::vector<glm::vec2> polygon, float expandSize)
+{
+	std::vector<glm::vec2> expandedPolygon;
+
+	for (int i = 0; i < polygon.size(); i++)
+	{
+		glm::vec2 p1 = polygon[i];
+		glm::vec2 p2 = polygon[(i + 1) % polygon.size()];
+
+		glm::vec2 normal = GetLineNormal(p1, p2);
+		expandedPolygon.push_back(p1 + expandSize * normal);
+		expandedPolygon.push_back(p2 + expandSize * normal);
+	}
+
+	return expandedPolygon;
+}
+
 bool GeometryHelper::CheckSegmentsIntersection(glm::vec2 p1, glm::vec2 p2, glm::vec2 q1, glm::vec2 q2)
 {
 	double d1 = CrossProduct(glm::vec2(q2.x - q1.x, q2.y - q1.y), glm::vec2(p1.x - q1.x, p1.y - q1.y));
@@ -154,4 +171,15 @@ glm::vec2 GeometryHelper::GetLineDirection(glm::vec2 p1, glm::vec2 p2)
 	direction = glm::normalize(direction);
 
 	return direction;
+}
+
+glm::vec2 GeometryHelper::GetLineNormal(glm::vec2 p1, glm::vec2 p2)
+{
+	glm::vec2 direction = GetLineDirection(p1, p2);
+
+	glm::vec2 normal = glm::vec2(direction.y, -direction.x);
+
+	normal = glm::normalize(normal);
+
+	return normal;
 }

@@ -74,3 +74,13 @@ y = centre.y + radius * cos(angle);
 
 return glm::vec2(x, y);
 }*/
+
+ManeuverType PathElement::GetManeuverType()
+{
+	return this->maneuverType;
+}
+
+void PathElement::SetManeuverType(ManeuverType maneuverType)
+{
+	this->maneuverType = maneuverType;
+}

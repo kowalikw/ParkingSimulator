@@ -24,6 +24,7 @@ public:
 
 	//temp
 	Graph voronoi;
+	Map *mapa2;
 private:
 	bool showPath = false;
 	bool visualisation2D = false;

@@ -56,21 +56,21 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	auto dirTrack = vehicle->GetDirTrack();
 	auto tireRadius = 25.0f * magnificationRatio;
 
-	//auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
-	//auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
-	//auto p2 = p1 + (float)(track / 2.0) * dirTrack;
-	//auto p3 = p1 - (float)(track / 2.0) * dirTrack;
-	//auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
-	//auto p5 = p4 + (float)(track / 2.0) * dirTrack;
-	//auto p6 = p4 - (float)(track / 2.0) * dirTrack;
-
 	auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
-	auto p1 = p0 + (float)wheelbase * dirWheelbase;
+	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
 	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
 	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
-	auto p4 = p0;
+	auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
 	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
 	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
+
+	//auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
+	//auto p1 = p0 + (float)wheelbase * dirWheelbase;
+	//auto p2 = p1 + (float)(track / 2.0) * dirTrack;
+	//auto p3 = p1 - (float)(track / 2.0) * dirTrack;
+	//auto p4 = p0;
+	//auto p5 = p4 + (float)(track / 2.0) * dirTrack;
+	//auto p6 = p4 - (float)(track / 2.0) * dirTrack;
 
 	auto p2a = p2 - (tireRadius * dirWheelbase);
 	auto p2b = p2 + (tireRadius * dirWheelbase);
@@ -175,6 +175,30 @@ void NvgDrawHelper::DrawSimulationFrame(Simulation * simulation)
 	DrawMap(simulation->GetMap());
 
 	DrawVehicle(simulation->GetVehicle());
+}
+
+void NvgDrawHelper::DrawPolygon(std::vector<glm::vec2> polygon, bool fill)
+{
+	glm::vec2 offset = *this->offset;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	for (int i = 0; i < polygon.size(); i++)
+	{
+		glm::vec2 from = drawAreaPosition + polygon[i] * magnificationRatio + offset;;
+		glm::vec2 to = drawAreaPosition + polygon[(i + 1) % polygon.size()] * magnificationRatio + offset;;
+
+		nvgBeginPath(vg);
+		nvgMoveTo(vg, from.x, from.y);
+		nvgLineTo(vg, to.x, to.y);
+		nvgStrokeColor(vg, POLYGON_BORDER_COLOR);
+		nvgStrokeWidth(vg, POLYGON_BORDER_WIDTH);
+		nvgStroke(vg);
+		if (fill)
+		{
+			nvgFillColor(vg, POLYGON_COLOR);
+			nvgFill(vg);
+		}
+	}
 }
 
 #pragma endregion

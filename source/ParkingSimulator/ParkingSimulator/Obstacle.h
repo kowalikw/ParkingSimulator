@@ -13,7 +13,9 @@ class Obstacle : public MapElement
 {
 public:
 	Obstacle();
+	Obstacle(glm::vec2 position, glm::vec2 size);
 	Obstacle(glm::vec2 position, ObstacleType type);
+	Obstacle(glm::vec2 position, glm::vec2 size, double rotation, std::vector<glm::vec2> points, ObstacleType type);
 	Obstacle(glm::vec2 position, glm::vec2 size, ObstacleType type, std::string name);
 	ObstacleType GetType();
 

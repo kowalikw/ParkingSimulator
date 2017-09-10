@@ -45,6 +45,7 @@ protected:
 	double rotation;
 	glm::vec2 position;
 	glm::vec2 size;
+	bool isRectangular;
 	std::vector<glm::vec2> points;
 
 	void move();

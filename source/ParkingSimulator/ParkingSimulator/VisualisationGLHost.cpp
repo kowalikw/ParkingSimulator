@@ -86,12 +86,20 @@ void VisualisationGLHost::nvgRenderFrame()
 	{
 		nvgHelper->DrawSimulationFrame(visualisation->GetCurrentSimulation());
 
+		//nvgHelper->DrawGraph(&visualisation->voronoi);
+
 		bool showPath = visualisation->GetShowPath();
 		if (visualisation->GetShowPath())
 			nvgHelper->DrawPath(visualisation->GetCurrentSimulation()->GetPath());
 	}
+	auto mapElements = visualisation->mapa2->GetMapElements();
+	auto vehicle = visualisation->GetCurrentSimulation()->GetVehicle();
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		auto polygon = GeometryHelper::ExpandPolygon(mapElements[i]->GetPoints(), 3.0f * vehicle->track / 4.0f);
 
-	nvgHelper->DrawGraph(&visualisation->voronoi);
+		nvgHelper->DrawPolygon(polygon);
+	}
 }
 
 #pragma endregion

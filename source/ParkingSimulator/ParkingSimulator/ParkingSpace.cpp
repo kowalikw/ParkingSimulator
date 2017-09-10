@@ -10,6 +10,7 @@ ParkingSpace::ParkingSpace(glm::vec2 position, glm::vec2 size, ParkingSpaceType 
 	this->size = size;
 	this->type = type;
 	this->rotation = 0.0;
+	this->isRectangular = true;
 
 	this->points.push_back(glm::vec2(-size.x / 2.0f, -size.y / 2.0f));
 	this->points.push_back(glm::vec2(size.x / 2.0f, -size.y / 2.0f));
@@ -17,6 +18,16 @@ ParkingSpace::ParkingSpace(glm::vec2 position, glm::vec2 size, ParkingSpaceType 
 	this->points.push_back(glm::vec2(-size.x / 2.0f, size.y / 2.0f));
 
 	transform();
+}
+
+ParkingSpace::ParkingSpace(glm::vec2 position, glm::vec2 size, double rotation, std::vector<glm::vec2> points, ParkingSpaceType type)
+{
+	this->position = position;
+	this->size = size;
+	this->rotation = rotation;
+	this->points = points;
+	this->type = type;
+	this->isRectangular = false;
 }
 
 ParkingSpaceType ParkingSpace::GetType()

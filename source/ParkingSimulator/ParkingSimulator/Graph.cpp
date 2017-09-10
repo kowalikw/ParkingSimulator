@@ -295,6 +295,31 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 {
 	CreateVoronoiFullGraph(map);
 
+	for (int i = 0; i < VerticesCount(); i++)
+	{
+		for (int j = 0; j < VerticesCount(); j++)
+		{
+			GraphEdge *e = GetEdge(i, j);
+			if (e != NULL)
+			{
+				std::vector<MapElement*> mapElements = map->GetMapElements();
+				for (int k = 0; k < mapElements.size(); k++)
+					if (GeometryHelper::CheckPolygonSegmentIntersection(glm::vec2(e->v1->x, e->v1->y), glm::vec2(e->v2->x, e->v2->y), mapElements[k]->GetPoints())
+						|| GeometryHelper::CheckPolygonContainsPoint(mapElements[k]->GetPoints(), glm::vec2(e->v1->x, e->v1->y))
+						|| GeometryHelper::CheckPolygonContainsPoint(mapElements[k]->GetPoints(), glm::vec2(e->v2->x, e->v2->y)))
+						RemoveEdge(i, j);
+			}
+		}
+	}
+
+	/*for (int i = 0; i < VerticesCount(); i++)
+	{
+		std::vector<MapElement*> mapElements = map->GetMapElements();
+		for (int k = 0; k < mapElements.size(); k++)
+			if (GeometryHelper::CheckPolygonContainsPoint(mapElements[k]->GetPoints(), glm::vec2(vertices[i]->x, vertices[i]->y)))
+				RemoveVertex(i);
+	}*/
+
 	int verticesCount = VerticesCount();
 	AddVertex(start->from.x, start->from.y); // verticesCount
 	AddVertex(start->to.x, start->to.y); // verticesCount + 1
@@ -331,9 +356,10 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 	*indexTo = verticesCount + 3;
 }
 
-std::vector<int> Graph::FindPath(int s, int t, double **estimatedDist)
+Path * Graph::FindPath(int s, int t, double **estimatedDist)
 {
-	std::vector<int> path;
+	Path *path = new Path();
+	std::vector<int> pathVertices;
 	std::list<GraphVertex*> T;
 	std::vector<double> dist(vertices.size());
 	std::vector<int> prev(vertices.size());
@@ -362,8 +388,9 @@ std::vector<int> Graph::FindPath(int s, int t, double **estimatedDist)
 		if (u == t) break;
 
 		std::vector<GraphEdge*> neighbours = EdgesFrom(u); // the same as EdgesTo with assumption of indirection
-		for (int w = 0; w < neighbours.size(); w++)
+		for (int i = 0; i < neighbours.size(); i++)
 		{
+			int w = IndexOfVertex(neighbours[i]->v2);
 			GraphEdge *e = GetEdge(u, w);
 			if (e != NULL && dist[w] > dist[u] + e->weight)
 			{
@@ -376,12 +403,15 @@ std::vector<int> Graph::FindPath(int s, int t, double **estimatedDist)
 	int w = t;
 	while (prev[w] != -1)
 	{
-		path.push_back(w);
+		pathVertices.push_back(w);
 		w = prev[w];
 	}
-	path.push_back(s);
+	pathVertices.push_back(s);
 
-	std::reverse(path.begin(), path.end());
+	std::reverse(pathVertices.begin(), pathVertices.end());
+
+	for (int i = 0; i < pathVertices.size() - 1; i++)
+		path->AddElement(new Line(glm::vec2(vertices[pathVertices[i]]->x, vertices[pathVertices[i]]->y), glm::vec2(vertices[pathVertices[i + 1]]->x, vertices[pathVertices[i + 1]]->y)));
 
 	return path;
 }

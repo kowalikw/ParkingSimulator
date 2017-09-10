@@ -30,6 +30,41 @@ std::vector<glm::vec2> PathPlanner::VoronoiPoints()
 	return this->voronoiPoints;
 }
 
+Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * end)
+{
+	return nullptr;
+}
+
+Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
+{
+	return nullptr;
+}
+
+Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
+{
+	return nullptr;
+}
+
+Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
+{
+	return nullptr;
+}
+
+Path * PathPlanner::CreateAdmissiblePath(Path * path)
+{
+	std::vector<glm::vec2> points;
+
+	std::vector<PathElement*> pathElements = path->GetElements();
+	for (int i = 0; i < pathElements.size(); i++)
+	{
+		if (i == 0)
+			points.push_back(dynamic_cast<Line*>(pathElements[i])->from);
+		points.push_back(dynamic_cast<Line*>(pathElements[i])->to);
+	}
+
+	return CreateAdmissiblePath(points);
+}
+
 Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 {
 	Path *pathTmp = new Path();
@@ -71,21 +106,21 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 		{
 			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[0]);
 			path->AddElement(new Line(points[0], glm::vec2(circle->GetPointForAngle(circle->angleFrom))));
-		}
-
-		if (i == path->GetElements().size() - 1)
-		{
-			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[pathTmp->GetElements().size() - 1]);
-			path->AddElement(new Line(glm::vec2(circle->GetPointForAngle(circle->angleTo)), points[points.size() - 1]));
-		}
-
-		path->AddElement(pathTmp->GetAt(i));
+		}		
 
 		if (i > 0)
 		{
 			Circle *prevCircle = dynamic_cast<Circle*>(pathTmp->GetAt(i - 1));
 			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetAt(i));
 			path->AddElement(new Line(glm::vec2(prevCircle->GetPointForAngle(prevCircle->GetAngleTo())), glm::vec2(circle->GetPointForAngle(circle->angleFrom))));
+		}
+
+		path->AddElement(pathTmp->GetAt(i));
+
+		if (i == (int)pathTmp->GetElements().size() - 1)
+		{
+			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[pathTmp->GetElements().size() - 1]);
+			path->AddElement(new Line(glm::vec2(circle->GetPointForAngle(circle->angleTo)), points[points.size() - 1]));
 		}
 	}
 
@@ -183,7 +218,7 @@ bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2)
 	return true;
 }
 
-Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace)
+Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType)
 {
 	PathElement *lastElement;
 	Path *path = new Path();
@@ -245,6 +280,21 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 	}
 
 	path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetWheelbase() * vehicle.GetDirWheelbase()));
+
+	if (parkManeuverType == ParkManeuverType::Exit)
+	{
+		std::vector<PathElement*> reversedPathElements;
+		std::vector<PathElement*> pathElements = path->GetElements();
+		
+		for (int i = pathElements.size() - 1; i >= 0; i--)
+		{
+			ManeuverType maneuverType = pathElements[i]->GetManeuverType();
+			pathElements[i]->SetManeuverType(maneuverType == Front ? Back : Front);
+			reversedPathElements.push_back(pathElements[i]);
+		}
+
+		path->SetElements(reversedPathElements);
+	}
 
 	return path;
 }

@@ -55,3 +55,39 @@ std::vector<glm::vec2> Map::GetPoints()
 {
 	return this->points;
 }
+
+Map * Map::GetExpandedMap(float expandSize)
+{
+	Map * expandedMap = new Map(width, height);
+
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		std::vector<glm::vec2> expandedPoints = GeometryHelper::ExpandPolygon(mapElements[i]->GetPoints(), expandSize);
+
+		MapElement *newElement;
+		if (dynamic_cast<Obstacle*>(mapElements[i]) != NULL)
+		{
+			Obstacle *obstacle = dynamic_cast<Obstacle*>(mapElements[i]);
+			newElement = new Obstacle(obstacle->GetPosition(), obstacle->GetSize(), obstacle->GetRotation(), expandedPoints, obstacle->GetType());
+		}
+		else if (dynamic_cast<ParkingSpace*>(mapElements[i]) != NULL)
+		{
+			ParkingSpace *parkingSpace = dynamic_cast<ParkingSpace*>(mapElements[i]);
+			newElement = new ParkingSpace(parkingSpace->GetPosition(), parkingSpace->GetSize(), parkingSpace->GetRotation(), expandedPoints, parkingSpace->GetType());
+			
+		}
+		expandedMap->AddMapElement(newElement);
+	}
+
+	MapElement *mapEdgeLeft = new Obstacle(glm::vec2(expandSize / 2.0f, height / 2.0f), glm::vec2(expandSize, height - expandSize));
+	MapElement *mapEdgeRight = new Obstacle(glm::vec2(width - expandSize / 2.0f, height / 2.0f), glm::vec2(expandSize, height - expandSize));
+	MapElement *mapEdgeTop = new Obstacle(glm::vec2(width / 2.0f, expandSize / 2.0f), glm::vec2(width - expandSize, expandSize));
+	MapElement *mapEdgeBottom = new Obstacle(glm::vec2(width / 2.0f, height - expandSize / 2.0f), glm::vec2(width - expandSize, expandSize));
+
+	//expandedMap->AddMapElement(mapEdgeLeft);
+	//expandedMap->AddMapElement(mapEdgeRight);
+	/*expandedMap->AddMapElement(mapEdgeTop);
+	expandedMap->AddMapElement(mapEdgeBottom);*/
+
+	return expandedMap;
+}

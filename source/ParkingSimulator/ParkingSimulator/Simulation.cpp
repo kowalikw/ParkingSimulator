@@ -109,8 +109,8 @@ void Simulation::Step()
 
 	this->vehicle->UpdateState(simulationState);
 
-	//currentSimulationTime += simulationTimer.elapsed() / 1000.0;
-	currentSimulationTime += 0.01;
+	currentSimulationTime += simulationTimer.elapsed() / 1000.0;
+	//currentSimulationTime += 0.01;
 	simulationTimer.restart();
 }
 

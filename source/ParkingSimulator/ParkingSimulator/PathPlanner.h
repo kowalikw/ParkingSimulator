@@ -16,6 +16,12 @@
 
 using namespace std;
 
+enum ParkManeuverType
+{
+	Entry,
+	Exit
+};
+
 class PathPlanner
 {
 public:
@@ -28,6 +34,12 @@ public:
 	vector<glm::vec2> UserPoints();
 	vector<glm::vec2> VoronoiPoints();
 
+	Path *CreateAdmissiblePath(ParkingSpace *start, ParkingSpace *end);
+	Path *CreateAdmissiblePath(ParkingSpace *start, glm::vec2 end);
+	Path *CreateAdmissiblePath(glm::vec2 start, ParkingSpace *end);
+	Path *CreateAdmissiblePath(glm::vec2 start, glm::vec2 end);
+
+	Path *CreateAdmissiblePath(Path *path); // zak³adamy, ¿e ta œcie¿ka sk³ada siê z samych linii
 	Path *CreateAdmissiblePath(vector<glm::vec2> points);
 //private:
 	Map map;
@@ -38,7 +50,7 @@ public:
 	bool epsilonEquals(float f1, float f2);
 	Path *createArcsBetweenSegments(vector<glm::vec2> points);
 	bool checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2);
-	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace);
+	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType = ParkManeuverType::Entry);
 };
 
 #endif

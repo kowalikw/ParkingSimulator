@@ -6,7 +6,7 @@
 #include <glm.hpp>
 
 #include "Map.h"
-#include "Line.h"
+#include "Path.h"
 
 #include <boost/polygon/voronoi.hpp>
 using boost::polygon::voronoi_builder;
@@ -103,7 +103,7 @@ public:
 	void CreateVoronoiGraph(Map *map);
 	void CreateVoronoiFullGraph(Map *map);
 	void CreateVoronoiVisibilityFullGraph(Map *map, Line *from, Line *to, int *indexFrom, int *indexTo);
-	std::vector<int> FindPath(int s, int t, double **estimatedDist);
+	Path *FindPath(int s, int t, double **estimatedDist);
 private:
 	bool directed;
 	std::vector<GraphVertex*> vertices;

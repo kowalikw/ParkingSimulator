@@ -30,6 +30,21 @@ double Circle::GetRadius() const
 	return this->radius;
 }
 
+void Circle::SetAngleFrom(double angleFrom)
+{
+	this->angleFrom = angleFrom;
+}
+
+void Circle::SetAngleTo(double angleTo)
+{
+	this->angleTo = angleTo;
+}
+
+void Circle::SetRadius(double radius)
+{
+	this->radius = radius;
+}
+
 glm::vec2 Circle::GetCenter() const
 {
 	return this->center;
@@ -38,6 +53,11 @@ glm::vec2 Circle::GetCenter() const
 CircleType Circle::GetCircleType() const
 {
 	return this->circleType;
+}
+
+void Circle::SetCircleType(CircleType type)
+{
+	this->circleType = type;
 }
 
 std::vector<glm::vec2> Circle::GetCircleBasePoints() const

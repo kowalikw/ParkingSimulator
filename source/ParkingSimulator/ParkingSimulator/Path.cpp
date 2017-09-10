@@ -4,6 +4,17 @@ Path::Path()
 {
 }
 
+Path::Path(std::vector<Path*> pathParts)
+{
+	for (int i = 0; i < pathParts.size(); i++)
+	{
+		for (int j = 0; j < pathParts[i]->elements.size(); j++)
+		{
+			elements.push_back(pathParts[i]->elements[j]);
+		}
+	}
+}
+
 Path::~Path()
 {
 }
@@ -31,6 +42,20 @@ vector<PathElement*> Path::GetElements()
 void Path::AddElement(PathElement *element)
 {
 	this->elements.push_back(element);
+}
+
+void Path::RemoveElement(PathElement * element)
+{
+	std::vector<PathElement*> newElements;
+	for (int i = 0; i < elements.size(); i++)
+		if (elements[i] != element)
+			newElements.push_back(elements[i]);
+	this->elements = newElements;
+}
+
+void Path::SetElements(std::vector<PathElement*> elements)
+{
+	this->elements = elements;
 }
 
 double Path::GetLength()

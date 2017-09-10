@@ -88,7 +88,8 @@ void MapElement::resize()
 
 void MapElement::transform()
 {
-	resize();
+	if(isRectangular) 
+		resize();
 	rotate();
 	move();
 }

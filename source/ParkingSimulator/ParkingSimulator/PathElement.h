@@ -33,6 +33,9 @@ public:
 	glm::vec2 GetLinePoint(double t);
 	glm::vec2 GetCirclePoint(double angle);	*/
 
+	ManeuverType GetManeuverType();
+	void SetManeuverType(ManeuverType maneuvertype);
+
 	virtual double GetLength() = 0;
 	virtual double GetAngle(double t) = 0;
 	virtual glm::vec2 GetPoint(double t) = 0;

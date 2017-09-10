@@ -47,6 +47,8 @@ public:
 	std::vector<Obstacle*> GetObstacles();
 	std::vector<ParkingSpace*> GetParkingSpaces();
 	std::vector<glm::vec2> GetPoints();
+	Map *GetExpandedMap(float expandSize);
+
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
 	{

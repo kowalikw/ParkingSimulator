@@ -16,17 +16,19 @@ Visualisation::Visualisation()
 	MapElement *parkingSpaceStart = new ParkingSpace(glm::vec2(150, 200), glm::vec2(200, 120), ParkingSpaceType::Paralell);
 	MapElement *parkingSpaceEnd = new ParkingSpace(glm::vec2(600, 500), glm::vec2(200, 120), ParkingSpaceType::Paralell);
 
-	MapElement *obstacle = new Obstacle(glm::vec2(400, 250), glm::vec2(50, 50), ObstacleType::Decoration, "name");
+	MapElement *obstacle = new Obstacle(glm::vec2(500, 250), glm::vec2(50, 50), ObstacleType::Decoration, "name");
+	MapElement *obstacle2 = new Obstacle(glm::vec2(380, 380), glm::vec2(50, 50), ObstacleType::Decoration, "name");
 
 	mapa->AddMapElement(parkingSpaceStart);
 	mapa->AddMapElement(parkingSpaceEnd);
 	mapa->AddMapElement(obstacle);
+	mapa->AddMapElement(obstacle2);
 
 	auto pS = dynamic_cast<ParkingSpace*>(parkingSpaceStart);
 	auto pE = dynamic_cast<ParkingSpace*>(parkingSpaceEnd);
 
-	Path *pStart = pathPlanner.createParkingPath(*vehicle, *pS);
-	Path *pEnd = pathPlanner.createParkingPath(*vehicle, *pE);
+	Path *pStart = pathPlanner.createParkingPath(*vehicle, *pS, Entry);
+	Path *pEnd = pathPlanner.createParkingPath(*vehicle, *pE, Exit);
 
 	pathPlanner.AddUserPoint(glm::vec2(200, 300));
 	pathPlanner.AddUserPoint(glm::vec2(200, 500));
@@ -48,13 +50,22 @@ Visualisation::Visualisation()
 	pathPlanner.AddUserPoint(glm::vec2(988, 517));
 	pathPlanner.AddUserPoint(glm::vec2(1000, 100));
 
-	Path *p2 = pathPlanner.CreateAdmissiblePath(pathPlanner.UserPoints());
+	///Path *p2 = pathPlanner.CreateAdmissiblePath(pathPlanner.UserPoints());
 
 	Line* start = dynamic_cast<Line*>(pStart->GetLastElement());
-	Line* end = dynamic_cast<Line*>(pEnd->GetLastElement());
+	Line* end = dynamic_cast<Line*>(pEnd->GetFirstElement());
+	pStart->RemoveElement(start);
+	pEnd->RemoveElement(end);
+
+	//if (end->GetManeuverType() == Back)
+	//	end = new Line(end->GetTo(), end->GetFrom(), Back);
 
 	int indexStart, indexEnd;
-	voronoi.CreateVoronoiVisibilityFullGraph(mapa, start, end, &indexStart, &indexEnd);
+
+	auto expandedMap = mapa->GetExpandedMap(3.0f * vehicle->GetTrack() / 4.0f);
+
+	//voronoi.CreateVoronoiGraph(expandedMap);
+	voronoi.CreateVoronoiVisibilityFullGraph(expandedMap, start, end, &indexStart, &indexEnd);
 
 	double **estimated = new double*[voronoi.VerticesCount()];
 	for (int i = 0; i < voronoi.VerticesCount(); i++)
@@ -67,9 +78,19 @@ Visualisation::Visualisation()
 	
 	auto path2 = voronoi.FindPath(indexStart, indexEnd, estimated);
 		
-	currentSimulation = new Simulation(mapa, vehicle, pStart);
+	auto path3 = pathPlanner.CreateAdmissiblePath(path2);
 
-	currentSimulation->SetSimulationTime(15);
+	std::vector<Path*> pathParts;
+	pathParts.push_back(pStart);
+	pathParts.push_back(path3);
+	pathParts.push_back(pEnd);
+
+	Path *finalPath = new Path(pathParts);
+	
+	mapa2 = mapa;
+	currentSimulation = new Simulation(mapa, vehicle, finalPath);
+
+	currentSimulation->SetSimulationTime(10);
 }
 
 bool Visualisation::GetVisualisation2D()
