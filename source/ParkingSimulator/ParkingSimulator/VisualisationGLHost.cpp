@@ -86,7 +86,7 @@ void VisualisationGLHost::nvgRenderFrame()
 	{
 		nvgHelper->DrawSimulationFrame(visualisation->GetCurrentSimulation());
 
-		//nvgHelper->DrawGraph(&visualisation->voronoi);
+		nvgHelper->DrawGraph(&visualisation->voronoi);
 
 		bool showPath = visualisation->GetShowPath();
 		if (visualisation->GetShowPath())

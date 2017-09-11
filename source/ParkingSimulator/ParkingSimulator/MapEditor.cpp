@@ -2,7 +2,7 @@
 
 void MapEditor::CreateMap(int width, int height)
 {
-	map = Map(width, height);
+	map = new Map(width, height);
 }
 
 void MapEditor::SaveMap(string filePath)
@@ -16,7 +16,7 @@ void MapEditor::SaveMap(string filePath)
 
 void MapEditor::LoadMap(string filePath)
 {
-	map = Map(0, 0);
+	map = new Map(0, 0);
 
 	std::ifstream ifs(filePath);
 
@@ -35,13 +35,13 @@ void MapEditor::AddObstacleConfirm()
 {
 	if (IsMapElementAdmissible(newElement))
 	{
-		map.AddMapElement(newElement);
+		map->AddMapElement(newElement);
 		this->newElement = nullptr;
 		this->resetAddButtons = true;
 	}
 }
 
-Map MapEditor::GetMap()
+Map *MapEditor::GetMap()
 {
 	return this->map;
 }
@@ -76,7 +76,7 @@ bool MapEditor::GetResetAddButtons()
 	return false;
 }
 
-void MapEditor::SetMap(Map map)
+void MapEditor::SetMap(Map *map)
 {
 	this->map = map;
 }
@@ -123,7 +123,7 @@ bool MapEditor::IsMapElementAdmissible(MapElement * mapElement)
 
 bool MapEditor::mapContainsMapElement(MapElement * mapElement)
 {
-	std::vector<glm::vec2> mapPolygon = map.GetPoints();
+	std::vector<glm::vec2> mapPolygon = map->GetPoints();
 	std::vector<glm::vec2> mapElementPolygon = mapElement->GetPoints();
 
 	return GeometryHelper::CheckPolygonContainsPolygon(mapPolygon, mapElementPolygon);
@@ -131,7 +131,7 @@ bool MapEditor::mapContainsMapElement(MapElement * mapElement)
 
 bool MapEditor::mapElementIntersectsMapElement(MapElement * mapElement)
 {
-	std::vector<MapElement*> mapElements = map.GetMapElements();
+	std::vector<MapElement*> mapElements = map->GetMapElements();
 	for (int i = 0; i < mapElements.size(); i++)
 	{
 		if (mapElements[i] == mapElement) continue;

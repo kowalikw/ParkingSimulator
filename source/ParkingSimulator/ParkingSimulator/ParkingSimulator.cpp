@@ -19,7 +19,12 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	renderTimer->setInterval(10);
 	renderTimer->start();
 
+	updateTimer = new QTimer();
+	updateTimer->setInterval(20);
+	updateTimer->start();
+
 	connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderTimerCall()));
+	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimerCall()));
 	connect(ui.btnNewMap, SIGNAL(released()), this, SLOT(createMap()));
 	connect(ui.btnSaveMap, SIGNAL(released()), this, SLOT(saveMap()));
 	connect(ui.btnLoadMap, SIGNAL(released()), this, SLOT(loadMap()));
@@ -36,6 +41,11 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	connect(ui.btnVisualisation2D, SIGNAL(released()), this, SLOT(enableVisualisation2D()));
 	connect(ui.btnVisualisation3D, SIGNAL(released()), this, SLOT(enableVisualisation3D()));
 	connect(ui.showPathElements, SIGNAL(stateChanged(int)), this, SLOT(showSimulationPath(int)));
+	connect(ui.simulationPrograssBar, SIGNAL(sliderMoved(int)), this, SLOT(simulationProgressBarChange(int)));
+	connect(ui.simulationPrograssBar, SIGNAL(sliderPressed()), this, SLOT(simulationProgressBarPressed()));
+	connect(ui.simulationPrograssBar, SIGNAL(sliderReleased()), this, SLOT(simulationProgressBarReleased()));
+
+	ui.simulationPrograssBar->setTracking(false);
 
 	ui.treeMapElements->setColumnCount(1);
 	QList<QTreeWidgetItem *> items;
@@ -66,6 +76,18 @@ void ParkingSimulator::renderTimerCall()
 	}
 }
 
+void ParkingSimulator::updateTimerCall()
+{
+	if (visualisation.GetCurrentSimulation() != NULL)
+	{
+		Simulation *simulation = visualisation.GetCurrentSimulation();
+
+		float t = simulation->GetCurrentSimulationTime() / simulation->GetSimulationTime();
+
+		ui.simulationPrograssBar->setValue(t * 1000);
+	}
+}
+
 #pragma region Start.
 
 
@@ -73,6 +95,8 @@ void ParkingSimulator::renderTimerCall()
 #pragma endregion
 
 #pragma region Map editor.
+
+
 
 void ParkingSimulator::createMap()
 {
@@ -106,6 +130,9 @@ void ParkingSimulator::loadMap()
 
 void ParkingSimulator::addBuilding()
 {
+	if (mapEditor.GetMap() == NULL)
+		return;
+
 	if (mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace() || mapEditor.GetAddRoad())
 		clearAddButtons();
 
@@ -124,6 +151,9 @@ void ParkingSimulator::addBuilding()
 
 void ParkingSimulator::addDecoration()
 {
+	if (mapEditor.GetMap() == NULL)
+		return;
+
 	if (mapEditor.GetAddBuilding() || mapEditor.GetAddParkPlace() || mapEditor.GetAddRoad())
 		clearAddButtons();
 
@@ -141,6 +171,9 @@ void ParkingSimulator::addDecoration()
 
 void ParkingSimulator::addRoad()
 {
+	if (mapEditor.GetMap() == NULL)
+		return;
+
 	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace())
 		clearAddButtons();
 
@@ -158,6 +191,9 @@ void ParkingSimulator::addRoad()
 
 void ParkingSimulator::addParkPlace()
 {
+	if (mapEditor.GetMap() == NULL)
+		return;
+
 	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddRoad())
 		clearAddButtons();
 
@@ -177,8 +213,8 @@ void ParkingSimulator::updateMapElementsTree()
 {
 	QList<QTreeWidgetItem *> items;
 
-	std::vector<Obstacle*> obstacles = mapEditor.GetMap().GetObstacles();
-	for (int i = 0; i < mapEditor.GetMap().GetObstacles().size(); ++i)
+	std::vector<Obstacle*> obstacles = mapEditor.GetMap()->GetObstacles();
+	for (int i = 0; i < mapEditor.GetMap()->GetObstacles().size(); ++i)
 		if(obstacles[i]->GetType() == ObstacleType::Building)
 			items.append(new QTreeWidgetItem(buildings, QStringList(QString::fromStdString(obstacles[i]->GetName()))));
 	ui.treeMapElements->insertTopLevelItems(0, items);
@@ -194,7 +230,7 @@ void ParkingSimulator::updateMapElementsTree()
 	ui.treeMapElements->insertTopLevelItems(0, items);
 
 	items.clear();
-	std::vector<ParkingSpace*> parkingSpaces = mapEditor.GetMap().GetParkingSpaces();
+	std::vector<ParkingSpace*> parkingSpaces = mapEditor.GetMap()->GetParkingSpaces();
 	for (int i = 0; i < parkingSpaces.size(); ++i)
 		items.append(new QTreeWidgetItem(buildings, QStringList(QString::fromStdString(parkingSpaces[i]->GetName()))));
 	ui.treeMapElements->insertTopLevelItems(0, items);
@@ -263,7 +299,11 @@ void ParkingSimulator::playPauseSimulation()
 		if (simulation->IsStarted())
 			simulation->Pause();
 		else
+		{
+			float t = ui.simulationPrograssBar->value() / 1000.0f;
+			simulation->SetCurrentSimulationTime(t * simulation->GetSimulationTime());
 			simulation->Start();
+		}
 	}
 }
 
@@ -296,6 +336,33 @@ void ParkingSimulator::enableVisualisation3D()
 void ParkingSimulator::showSimulationPath(int checked)
 {
 	visualisation.SetShowPath(checked == Qt::Checked);
+}
+
+void ParkingSimulator::simulationProgressBarChange(int time)
+{
+	float t = time / 1000.0f;
+
+	if (t == 1.0f)
+		t = 0.999f;
+
+	if (visualisation.GetCurrentSimulation() != NULL)
+	{
+		Simulation *simulation = visualisation.GetCurrentSimulation();
+
+		simulation->SetCurrentSimulationTime(t * simulation->GetSimulationTime());
+
+		visualisation.GetCurrentSimulation()->UpdateSimulationState();
+	}
+}
+
+void ParkingSimulator::simulationProgressBarPressed()
+{
+
+}
+
+void ParkingSimulator::simulationProgressBarReleased()
+{
+
 }
 
 #pragma endregion

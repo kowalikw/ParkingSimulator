@@ -885,6 +885,9 @@ margin-left: 30px;</string>
               </item>
               <item>
                <widget class="QSlider" name="simulationPrograssBar">
+                <property name="maximum">
+                 <number>1000</number>
+                </property>
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>

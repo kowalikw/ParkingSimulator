@@ -58,6 +58,8 @@ protected:
 	glm::vec2 widgetSize;
 	glm::vec2 widgetOffset;
 	glm::vec2 maxWidgetOffset;
+	glm::vec2 drawAreaSize;
+	glm::vec2 drawAreaPosition;
 
 	NVGcontext *vg;
 	NvgDrawHelper *nvgHelper;

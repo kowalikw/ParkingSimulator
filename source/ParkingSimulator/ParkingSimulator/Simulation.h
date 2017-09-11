@@ -21,6 +21,8 @@ public:
 	void SetVehicle(Vehicle *vehicle);
 	void SetPath(Path *path);
 	void SetSimulationTime(float simulationTime);
+	void SetCurrentSimulationTime(float currentSimulationPath);
+	void UpdateSimulationState();
 
 	void Start();
 	void Pause();

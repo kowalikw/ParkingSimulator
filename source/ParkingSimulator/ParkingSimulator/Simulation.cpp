@@ -65,6 +65,13 @@ void Simulation::SetPath(Path *path)
 void Simulation::SetSimulationTime(float simulationTime)
 {
 	this->simulationTime = simulationTime;
+
+	Step();
+}
+
+void Simulation::SetCurrentSimulationTime(float currentSimulationTime)
+{
+	this->currentSimulationTime = currentSimulationTime;
 }
 
 void Simulation::Start()
@@ -88,7 +95,7 @@ void Simulation::Stop()
 	currentSimulationTime = 0;
 }
 
-void Simulation::Step()
+void Simulation::UpdateSimulationState()
 {
 	double timeRatio = currentSimulationTime / simulationTime;
 
@@ -108,9 +115,14 @@ void Simulation::Step()
 	SimulationState simulationState = pathElement->GetSimulationState(t);
 
 	this->vehicle->UpdateState(simulationState);
+}
+
+void Simulation::Step()
+{
+	UpdateSimulationState();
 
 	currentSimulationTime += simulationTimer.elapsed() / 1000.0;
-	//currentSimulationTime += 0.01;
+	
 	simulationTimer.restart();
 }
 

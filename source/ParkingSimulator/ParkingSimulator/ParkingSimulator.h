@@ -21,11 +21,15 @@ public:
 private:
 	ParkingSimulatorClass ui;
 	QTimer *renderTimer;
+	QTimer *updateTimer;
 	MapEditor mapEditor;
 	Visualisation visualisation;
 	QTreeWidgetItem *buildings, *decorations, *roads, *parkPlaces;
+
+	bool updateSimulationProgressBarEnable = false;
 public slots:
 	void renderTimerCall();
+	void updateTimerCall();
 
 	void createMap();
 	void saveMap();
@@ -48,4 +52,7 @@ public slots:
 	void enableVisualisation2D();
 	void enableVisualisation3D();
 	void showSimulationPath(int checked);
+	void simulationProgressBarChange(int time);
+	void simulationProgressBarPressed();
+	void simulationProgressBarReleased();
 };

@@ -281,6 +281,23 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 
 	path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetWheelbase() * vehicle.GetDirWheelbase()));
 
+	glm::vec2 pathTranslation = glm::vec2((float)vehicle.GetWheelbase() / 2.0f, 0.0f);
+	auto pathElements = path->GetElements();
+	for (int i = 0; i < pathElements.size(); i++)
+	{
+		if (dynamic_cast<Line*>(pathElements[i]) != NULL)
+		{
+			Line *line = dynamic_cast<Line*>(pathElements[i]);
+			line->SetFrom(line->GetFrom() + pathTranslation);
+			line->SetTo(line->GetTo() + pathTranslation);
+		}
+		else if (dynamic_cast<Circle*>(pathElements[i]) != NULL)
+		{
+			Circle *circle = dynamic_cast<Circle*>(pathElements[i]);
+			circle->center = circle->center + pathTranslation;
+		}
+	}
+
 	if (parkManeuverType == ParkManeuverType::Exit)
 	{
 		std::vector<PathElement*> reversedPathElements;

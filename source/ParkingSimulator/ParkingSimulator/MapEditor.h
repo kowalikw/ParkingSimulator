@@ -12,7 +12,7 @@ public:
 	void LoadMap(string filePath);
 	void AddObstacle(string name, int width, int height, ObstacleType type);
 	void AddObstacleConfirm();
-	Map GetMap();
+	Map *GetMap();
 
 	bool GetAddBuilding();
 	bool GetAddDecoration();
@@ -20,7 +20,7 @@ public:
 	bool GetAddParkPlace();
 	bool GetResetAddButtons();
 
-	void SetMap(Map map);
+	void SetMap(Map *map);
 	void SetAddBuilding(bool addBuilding);
 	void SetAddDecoration(bool addDecoration);
 	void SetAddRoad(bool addRoad);
@@ -32,7 +32,7 @@ public:
 
 	bool IsMapElementAdmissible(MapElement *mapElement);
 private:
-	Map map;
+	Map *map;
 	bool addBuilding = false;
 	bool addDecoration = false;
 	bool addRoad = false;

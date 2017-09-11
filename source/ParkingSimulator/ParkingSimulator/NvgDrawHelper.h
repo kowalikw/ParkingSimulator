@@ -27,7 +27,7 @@
 class NvgDrawHelper
 {
 public:
-	NvgDrawHelper(NVGcontext *vg, glm::vec2 *widgetSize, glm::vec2 *offset, glm::vec2 *maxOffset, float *magnificationRatio);
+	NvgDrawHelper(NVGcontext *vg, glm::vec2 *widgetSize, glm::vec2 *offset, glm::vec2 *maxOffset, glm::vec2 *drawAreaSize, glm::vec2 *drawAreaPosition, float *magnificationRatio);
 
 	void DrawMap(Map *map);
 	void DrawVehicle(Vehicle *vehicle);
@@ -35,6 +35,7 @@ public:
 	void DrawGraph(Graph * g);
 	void DrawSimulationFrame(Simulation *simulation);
 	void DrawPolygon(std::vector<glm::vec2> polygon, bool fill = false);
+	void DrawActiveElement(MapElement *mapElement);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
@@ -52,6 +53,10 @@ public:
 	const int MAP_BORDER_WIDTH = 3;
 	const NVGcolor MAP_COLOR = nvgRGBA(58, 124, 37, 255);
 	const NVGcolor MAP_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
+
+	const int VEHICLE_BORDER_WIDTH = 3;
+	const NVGcolor VEHICLE_COLOR = nvgRGBA(8, 73, 171, 255);
+	const NVGcolor VEHICLE_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
 
 	const int BUILDING_BORDER_WIDTH = 3;
 	const NVGcolor BUILDING_COLOR = nvgRGBA(140, 140, 140, 255);
@@ -89,10 +94,9 @@ private:
 	glm::vec2 *widgetSize;
 	glm::vec2 *offset;
 	glm::vec2 *maxOffset;
+	glm::vec2 *drawAreaSize; // draw area is a map
+	glm::vec2 *drawAreaPosition;
 	float *magnificationRatio;
-
-	glm::vec2 drawAreaSize; // draw area is a map
-	glm::vec2 drawAreaPosition;
 
 	void updateDrawAreaProperties();
 	void drawMapElements(std::vector<MapElement*> mapElements);

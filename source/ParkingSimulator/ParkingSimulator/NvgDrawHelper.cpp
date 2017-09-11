@@ -2,39 +2,43 @@
 
 #pragma region Public methods.
 
-NvgDrawHelper::NvgDrawHelper(NVGcontext * vg, glm::vec2 * widgetSize, glm::vec2 * offset, glm::vec2 * maxOffset, float * magnificationRatio)
+NvgDrawHelper::NvgDrawHelper(NVGcontext * vg, glm::vec2 * widgetSize, glm::vec2 * offset, glm::vec2 * maxOffset, glm::vec2 * drawAreaSize, glm::vec2 * drawAreaPosition, float * magnificationRatio)
 {
 	this->vg = vg;
 	this->widgetSize = widgetSize;
 	this->offset = offset;
 	this->maxOffset = maxOffset;
+	this->drawAreaSize = drawAreaSize;
+	this->drawAreaPosition = drawAreaPosition;
 	this->magnificationRatio = magnificationRatio;
 }
 
 void NvgDrawHelper::DrawMap(Map * map)
 {
+	if (map == NULL) return;
+
 	glm::vec2 offset = *this->offset;
 	glm::vec2 widgetSize = *this->widgetSize;
 	float magnificationRatio = *this->magnificationRatio;
 
-	drawAreaSize.x = map->GetWidth() * magnificationRatio;
-	drawAreaSize.y = map->GetHeight() * magnificationRatio;
+	drawAreaSize->x = map->GetWidth() * magnificationRatio;
+	drawAreaSize->y = map->GetHeight() * magnificationRatio;
 
-	drawAreaPosition.x = (widgetSize.x - drawAreaSize.x - 2 * MAP_BORDER_WIDTH) / 2;
-	drawAreaPosition.y = (widgetSize.y - drawAreaSize.y - 2 * MAP_BORDER_WIDTH) / 2;
+	drawAreaPosition->x = (widgetSize.x - drawAreaSize->x - 2 * MAP_BORDER_WIDTH) / 2;
+	drawAreaPosition->y = (widgetSize.y - drawAreaSize->y - 2 * MAP_BORDER_WIDTH) / 2;
 
-	maxOffset->x = drawAreaPosition.x < 0 ? abs(drawAreaPosition.x) : 0;
-	maxOffset->y = drawAreaPosition.y < 0 ? abs(drawAreaPosition.y) : 0;
+	maxOffset->x = drawAreaPosition->x < 0 ? abs(drawAreaPosition->x) : 0;
+	maxOffset->y = drawAreaPosition->y < 0 ? abs(drawAreaPosition->y) : 0;
 
-	if (drawAreaSize.x == 0 || drawAreaSize.y == 0) return;
+	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
 
 	nvgBeginPath(vg);
-	nvgRect(vg, drawAreaPosition.x + offset.x, drawAreaPosition.y + offset.y, drawAreaSize.x + 2 * MAP_BORDER_WIDTH, drawAreaSize.y + 2 * MAP_BORDER_WIDTH);
+	nvgRect(vg, drawAreaPosition->x + offset.x, drawAreaPosition->y + offset.y, drawAreaSize->x + 2 * MAP_BORDER_WIDTH, drawAreaSize->y + 2 * MAP_BORDER_WIDTH);
 	nvgFillColor(vg, MAP_BORDER_COLOR);
 	nvgFill(vg);
 
 	nvgBeginPath(vg);
-	nvgRect(vg, drawAreaPosition.x + offset.x + MAP_BORDER_WIDTH, drawAreaPosition.y + offset.y + MAP_BORDER_WIDTH, drawAreaSize.x, drawAreaSize.y);
+	nvgRect(vg, drawAreaPosition->x + offset.x + MAP_BORDER_WIDTH, drawAreaPosition->y + offset.y + MAP_BORDER_WIDTH, drawAreaSize->x, drawAreaSize->y);
 	nvgFillColor(vg, MAP_COLOR);
 	nvgFill(vg);
 
@@ -47,7 +51,7 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	glm::vec2 widgetSize = *this->widgetSize;
 	float magnificationRatio = (*this->magnificationRatio);
 
-	if (drawAreaSize.x == 0 || drawAreaSize.y == 0) return;
+	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
 
 	auto position = vehicle->GetPosition();
 	auto wheelbase = vehicle->GetWheelbase() * magnificationRatio;
@@ -56,7 +60,7 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	auto dirTrack = vehicle->GetDirTrack();
 	auto tireRadius = 25.0f * magnificationRatio;
 
-	auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
+	auto p0 = glm::vec2(drawAreaPosition->x + offset.x + position.x * magnificationRatio, drawAreaPosition->y + offset.y + position.y * magnificationRatio);
 	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
 	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
 	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
@@ -64,7 +68,7 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
 	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
 
-	//auto p0 = glm::vec2(drawAreaPosition.x + offset.x + position.x * magnificationRatio, drawAreaPosition.y + offset.y + position.y * magnificationRatio);
+	//auto p0 = glm::vec2(drawAreaPosition->x + offset.x + position.x * magnificationRatio, drawAreaPosition->y + offset.y + position.y * magnificationRatio);
 	//auto p1 = p0 + (float)wheelbase * dirWheelbase;
 	//auto p2 = p1 + (float)(track / 2.0) * dirTrack;
 	//auto p3 = p1 - (float)(track / 2.0) * dirTrack;
@@ -83,7 +87,7 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 
 	nvgBeginPath(vg);
 
-	nvgMoveTo(vg, p1.x, p1.y);
+	/*nvgMoveTo(vg, p1.x, p1.y);
 	nvgLineTo(vg, p4.x, p4.y);
 
 	nvgMoveTo(vg, p2.x, p2.y);
@@ -109,11 +113,20 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	nvgLineTo(vg, p5b.x, p5b.y);
 	
 	nvgMoveTo(vg, p6a.x, p6a.y);
-	nvgLineTo(vg, p6b.x, p6b.y);
+	nvgLineTo(vg, p6b.x, p6b.y);*/
+
+	nvgMoveTo(vg, p2.x, p2.y);
+	nvgLineTo(vg, p3.x, p3.y);
+	nvgLineTo(vg, p6.x, p6.y);
+	nvgLineTo(vg, p5.x, p5.y);
+	nvgLineTo(vg, p2.x, p2.y);
+
+	nvgFillColor(vg, VEHICLE_COLOR);
+	nvgFill(vg);
 	
-	nvgStrokeWidth(vg, 5);
+	/*nvgStrokeWidth(vg, 5);
 	nvgStrokeColor(vg, MAP_BORDER_COLOR);
-	nvgStroke(vg);
+	nvgStroke(vg);*/
 }
 
 void NvgDrawHelper::DrawPath(Path * path)
@@ -139,6 +152,7 @@ void NvgDrawHelper::DrawPath(Path * path)
 void NvgDrawHelper::DrawGraph(Graph *g)
 {
 	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
 	float magnificationRatio = (*this->magnificationRatio);
 
 	for (int i = 0; i < g->VerticesCount(); i++)
@@ -180,6 +194,7 @@ void NvgDrawHelper::DrawSimulationFrame(Simulation * simulation)
 void NvgDrawHelper::DrawPolygon(std::vector<glm::vec2> polygon, bool fill)
 {
 	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
 	float magnificationRatio = (*this->magnificationRatio);
 
 	for (int i = 0; i < polygon.size(); i++)
@@ -199,6 +214,10 @@ void NvgDrawHelper::DrawPolygon(std::vector<glm::vec2> polygon, bool fill)
 			nvgFill(vg);
 		}
 	}
+}
+
+void NvgDrawHelper::DrawActiveElement(MapElement * mapElement)
+{
 }
 
 #pragma endregion
@@ -231,9 +250,10 @@ void NvgDrawHelper::drawObstacle(Obstacle * obstacle)
 {
 	glm::vec2 offset = *this->offset;
 	glm::vec2 widgetSize = *this->widgetSize;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
 	float magnificationRatio = (*this->magnificationRatio);
 	
-	if (drawAreaSize.x == 0 || drawAreaSize.y == 0) return;
+	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
 	if (obstacle == NULL) return;
 
 	std::vector<glm::vec2> points = obstacle->GetPoints();
@@ -263,9 +283,10 @@ void NvgDrawHelper::drawParkingSpace(ParkingSpace * parkingSpace)
 {
 	glm::vec2 offset = *this->offset;
 	glm::vec2 widgetSize = *this->widgetSize;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
 	float magnificationRatio = (*this->magnificationRatio);
 	
-	if (drawAreaSize.x == 0 || drawAreaSize.y == 0) return;
+	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
 	if (parkingSpace == NULL) return;
 
 	std::vector<glm::vec2> points = parkingSpace->GetPoints();
@@ -290,6 +311,7 @@ void NvgDrawHelper::drawRoad(Road *road)
 void NvgDrawHelper::drawLine(Line *line)
 {
 	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
 	float magnificationRatio = (*this->magnificationRatio);
 
 	glm::vec2 from = drawAreaPosition + line->GetFrom() * magnificationRatio + offset;
@@ -306,6 +328,7 @@ void NvgDrawHelper::drawLine(Line *line)
 void NvgDrawHelper::drawCircle(Circle *circle)
 {
 	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
 	float magnificationRatio = (*this->magnificationRatio);
 
 	if (circle->GetAngleFrom() < circle->GetAngleTo())

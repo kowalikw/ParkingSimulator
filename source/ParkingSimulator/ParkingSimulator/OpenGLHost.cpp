@@ -98,7 +98,7 @@ void OpenGLHost::initializeGL()
 	glewInit();
 
 	vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES | NVG_DEBUG);
-	nvgHelper = new NvgDrawHelper(vg, &widgetSize, &widgetOffset, &maxWidgetOffset, &magnificationRatio);
+	nvgHelper = new NvgDrawHelper(vg, &widgetSize, &widgetOffset, &maxWidgetOffset, &drawAreaSize, &drawAreaPosition, &magnificationRatio);
 }
 
 void OpenGLHost::resizeGL(int w, int h)

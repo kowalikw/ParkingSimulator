@@ -17,7 +17,8 @@ Visualisation::Visualisation()
 	MapElement *parkingSpaceEnd = new ParkingSpace(glm::vec2(600, 500), glm::vec2(200, 120), ParkingSpaceType::Paralell);
 
 	MapElement *obstacle = new Obstacle(glm::vec2(500, 250), glm::vec2(50, 50), ObstacleType::Decoration, "name");
-	MapElement *obstacle2 = new Obstacle(glm::vec2(380, 380), glm::vec2(50, 50), ObstacleType::Decoration, "name");
+	MapElement *obstacle2 = new Obstacle(glm::vec2(450, 380), glm::vec2(50, 50), ObstacleType::Decoration, "name");
+	MapElement *obstacle3 = new Obstacle(glm::vec2(340, 250), glm::vec2(50, 50), ObstacleType::Decoration, "name");
 
 	mapa->AddMapElement(parkingSpaceStart);
 	mapa->AddMapElement(parkingSpaceEnd);
@@ -55,7 +56,7 @@ Visualisation::Visualisation()
 	Line* start = dynamic_cast<Line*>(pStart->GetLastElement());
 	Line* end = dynamic_cast<Line*>(pEnd->GetFirstElement());
 	pStart->RemoveElement(start);
-	pEnd->RemoveElement(end);
+	//pEnd->RemoveElement(end);
 
 	//if (end->GetManeuverType() == Back)
 	//	end = new Line(end->GetTo(), end->GetFrom(), Back);
