@@ -32,7 +32,7 @@ protected:
 private:
 	/*void adjustMaxOffset();*/
 	void nvgRenderFrame();
-	void drawActiveElement();
+	//void drawActiveElement();
 
 	MapEditor *mapEditor;
 	glm::vec2 positionOnMap;

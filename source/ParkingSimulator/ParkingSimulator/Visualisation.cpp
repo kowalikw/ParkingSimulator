@@ -65,10 +65,10 @@ Visualisation::Visualisation()
 
 	auto expandedMap = mapa->GetExpandedMap(3.0f * vehicle->GetTrack() / 4.0f);
 
-	//voronoi.CreateVoronoiGraph(expandedMap);
-	voronoi.CreateVoronoiVisibilityFullGraph(expandedMap, start, end, &indexStart, &indexEnd);
+	voronoi.CreateVoronoiGraph(mapa);
+	//voronoi.CreateVoronoiVisibilityFullGraph(expandedMap, start, end, &indexStart, &indexEnd);
 
-	double **estimated = new double*[voronoi.VerticesCount()];
+	/*double **estimated = new double*[voronoi.VerticesCount()];
 	for (int i = 0; i < voronoi.VerticesCount(); i++)
 		estimated[i] = new double[voronoi.VerticesCount()];
 
@@ -86,10 +86,10 @@ Visualisation::Visualisation()
 	pathParts.push_back(path3);
 	pathParts.push_back(pEnd);
 
-	Path *finalPath = new Path(pathParts);
+	Path *finalPath = new Path(pathParts);*/
 	
 	mapa2 = mapa;
-	currentSimulation = new Simulation(mapa, vehicle, finalPath);
+	currentSimulation = new Simulation(mapa, vehicle, pStart);
 
 	currentSimulation->SetSimulationTime(10);
 }

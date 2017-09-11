@@ -151,32 +151,38 @@ void MapEditorGLHost::nvgRenderFrame()
 {
 	nvgHelper->DrawMap(mapEditor->GetMap());
 
-	drawActiveElement();
+	//drawActiveElement();
+
+	if (mapEditor->GetNewElement() != nullptr)
+	{
+		bool admissible = mapEditor->IsMapElementAdmissible(mapEditor->GetNewElement());
+		nvgHelper->DrawActiveElement(mapEditor->GetNewElement(), admissible);
+	}
 }
 
-void MapEditorGLHost::drawActiveElement()
-{
-	if (mapEditor->GetNewElement() == nullptr)
-		return;
-
-	std::vector<glm::vec2> points = mapEditor->GetNewElement()->GetPoints();
-	bool admissible = mapEditor->IsMapElementAdmissible(mapEditor->GetNewElement());
-	glm::vec2 elementPosition = drawAreaPosition + mapEditor->GetNewElement()->GetPosition() * magnificationRatio + widgetOffset;
-
-	nvgBeginPath(vg);
-	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + widgetOffset.x, drawAreaPosition.y + points[0].y * magnificationRatio + widgetOffset.y);
-	for (int i = 0; i <= points.size(); i++)
-		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + widgetOffset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + widgetOffset.y);
-	nvgStrokeColor(vg, admissible ? ACTIVE_GOOD_BORDER_COLOR : ACTIVE_BAD_BORDER_COLOR);
-	nvgStrokeWidth(vg, ACTIVE_BORDER_WIDTH);
-	nvgStroke(vg);
-	nvgFillColor(vg, admissible ? ACTIVE_GOOD_COLOR : ACTIVE_BAD_COLOR);
-	nvgFill(vg);
-
-	nvgBeginPath(vg);
-	nvgEllipse(vg, elementPosition.x, elementPosition.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
-	nvgFillColor(vg, SELECTED_MARKER_COLOR);
-	nvgFill(vg);
-}
+//void MapEditorGLHost::drawActiveElement()
+//{
+//	if (mapEditor->GetNewElement() == nullptr)
+//		return;
+//
+//	std::vector<glm::vec2> points = mapEditor->GetNewElement()->GetPoints();
+//	
+//	glm::vec2 elementPosition = drawAreaPosition + mapEditor->GetNewElement()->GetPosition() * magnificationRatio + widgetOffset;
+//
+//	nvgBeginPath(vg);
+//	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + widgetOffset.x, drawAreaPosition.y + points[0].y * magnificationRatio + widgetOffset.y);
+//	for (int i = 0; i <= points.size(); i++)
+//		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + widgetOffset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + widgetOffset.y);
+//	nvgStrokeColor(vg, admissible ? ACTIVE_GOOD_BORDER_COLOR : ACTIVE_BAD_BORDER_COLOR);
+//	nvgStrokeWidth(vg, ACTIVE_BORDER_WIDTH);
+//	nvgStroke(vg);
+//	nvgFillColor(vg, admissible ? ACTIVE_GOOD_COLOR : ACTIVE_BAD_COLOR);
+//	nvgFill(vg);
+//
+//	nvgBeginPath(vg);
+//	nvgEllipse(vg, elementPosition.x, elementPosition.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
+//	nvgFillColor(vg, SELECTED_MARKER_COLOR);
+//	nvgFill(vg);
+//}
 
 #pragma endregion

@@ -35,7 +35,7 @@ public:
 	void DrawGraph(Graph * g);
 	void DrawSimulationFrame(Simulation *simulation);
 	void DrawPolygon(std::vector<glm::vec2> polygon, bool fill = false);
-	void DrawActiveElement(MapElement *mapElement);
+	void DrawActiveElement(MapElement *mapElement, bool admissible);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);

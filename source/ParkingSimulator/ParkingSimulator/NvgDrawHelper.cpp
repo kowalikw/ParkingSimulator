@@ -216,8 +216,32 @@ void NvgDrawHelper::DrawPolygon(std::vector<glm::vec2> polygon, bool fill)
 	}
 }
 
-void NvgDrawHelper::DrawActiveElement(MapElement * mapElement)
+void NvgDrawHelper::DrawActiveElement(MapElement * mapElement, bool admissible)
 {
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
+	if (mapElement == NULL) return;
+
+	std::vector<glm::vec2> points = mapElement->GetPoints();
+	glm::vec2 elementPosition = drawAreaPosition + mapElement->GetPosition() * magnificationRatio + offset;
+
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + offset.x, drawAreaPosition.y + points[0].y * magnificationRatio + offset.y);
+	for (int i = 0; i <= points.size(); i++)
+		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + offset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + offset.y);
+	nvgStrokeColor(vg, admissible ? ACTIVE_GOOD_BORDER_COLOR : ACTIVE_BAD_BORDER_COLOR);
+	nvgStrokeWidth(vg, ACTIVE_BORDER_WIDTH);
+	nvgStroke(vg);
+	nvgFillColor(vg, admissible ? ACTIVE_GOOD_COLOR : ACTIVE_BAD_COLOR);
+	nvgFill(vg);
+
+	nvgBeginPath(vg);
+	nvgEllipse(vg, elementPosition.x, elementPosition.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
+	nvgFillColor(vg, SELECTED_MARKER_COLOR);
+	nvgFill(vg);
 }
 
 #pragma endregion
