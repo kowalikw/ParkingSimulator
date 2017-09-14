@@ -105,6 +105,9 @@ private:
 	void drawRoad(Road *road);
 	void drawLine(Line *line);
 	void drawCircle(Circle *circle);
+	void drawResizeShape(MapElement *mapElement);
+	void drawMoveShape(MapElement *mapElement);
+	void drawRotateShape(MapElement *mapElement);
 };
 
 #endif

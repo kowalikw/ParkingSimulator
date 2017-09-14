@@ -24,6 +24,26 @@ glm::vec2 MapElement::GetSize()
 	return this->size;
 }
 
+glm::vec2 MapElement::GetDirX()
+{
+	glm::mat4 mtx;
+	mtx = glm::rotate(mtx, (float)rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::vec4 dirX = mtx * glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	return glm::normalize(glm::vec2(dirX.x, dirX.y));
+}
+
+glm::vec2 MapElement::GetDirY()
+{
+	glm::mat4 mtx;
+	mtx = glm::rotate(mtx, (float)rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+
+	glm::vec4 dirY = mtx * glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+
+	return glm::normalize(glm::vec2(dirY.x, dirY.y));
+}
+
 std::vector<glm::vec2> MapElement::GetPoints()
 {
 	return this->points;

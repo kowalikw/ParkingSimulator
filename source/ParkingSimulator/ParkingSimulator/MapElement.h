@@ -20,6 +20,8 @@ public:
 	double GetRotation();
 	glm::vec2 GetPosition();
 	glm::vec2 GetSize();
+	glm::vec2 GetDirX();
+	glm::vec2 GetDirY();
 	std::vector<glm::vec2> GetPoints();
 	void SetName(std::string name);
 	void SetRotation(double rotation);

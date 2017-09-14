@@ -261,11 +261,19 @@ void NvgDrawHelper::drawMapElements(std::vector<MapElement*> mapElements)
 		{
 			auto obstacle = dynamic_cast<Obstacle*>(mapElements[i]);
 			drawObstacle(obstacle);
+
+			drawMoveShape(obstacle);
+			drawResizeShape(obstacle);
+			drawRotateShape(obstacle);
 		}
 		else if (dynamic_cast<ParkingSpace*>(mapElements[i]) != NULL)
 		{
 			auto parkingSpace = dynamic_cast<ParkingSpace*>(mapElements[i]);
 			drawParkingSpace(parkingSpace);
+
+			drawMoveShape(parkingSpace);
+			drawResizeShape(parkingSpace);
+			drawRotateShape(parkingSpace);
 		}
 	}
 }
@@ -391,6 +399,81 @@ void NvgDrawHelper::drawCircle(Circle *circle)
 		nvgStrokeColor(vg, PATH_CIRCLE_COLOR);
 		nvgStroke(vg);
 	}
+}
+
+void NvgDrawHelper::drawResizeShape(MapElement * mapElement)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = *this->magnificationRatio;
+
+	glm::vec2 mapElementSize = mapElement->GetSize() * magnificationRatio;
+	glm::vec2 mapElementDirX = mapElement->GetDirX();
+	glm::vec2 mapElementDirY = mapElement->GetDirY();
+	glm::vec2 mapElementPosition = drawAreaPosition + mapElement->GetPosition() * magnificationRatio + offset;
+	float resizeShapeSize = 3 * magnificationRatio;
+
+	auto p0 = mapElementPosition + mapElementDirX * mapElementSize / 2.0f + mapElementDirY * mapElementSize / 2.0f;
+	auto p1 = mapElementPosition + mapElementDirX * mapElementSize / 2.0f - mapElementDirY * mapElementSize / 2.0f;
+	auto p2 = mapElementPosition - mapElementDirX * mapElementSize / 2.0f + mapElementDirY * mapElementSize / 2.0f;
+	auto p3 = mapElementPosition - mapElementDirX * mapElementSize / 2.0f - mapElementDirY * mapElementSize / 2.0f;
+
+	nvgBeginPath(vg);
+
+	nvgEllipse(vg, p0.x, p0.y, resizeShapeSize, resizeShapeSize);
+	nvgEllipse(vg, p1.x, p1.y, resizeShapeSize, resizeShapeSize);
+	nvgEllipse(vg, p2.x, p2.y, resizeShapeSize, resizeShapeSize);
+	nvgEllipse(vg, p3.x, p3.y, resizeShapeSize, resizeShapeSize);
+
+	nvgFillColor(vg, MAP_BORDER_COLOR);
+	nvgFill(vg);
+}
+
+void NvgDrawHelper::drawMoveShape(MapElement * mapElement)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = *this->magnificationRatio;
+
+	glm::vec2 mapElementPosition = drawAreaPosition + mapElement->GetPosition() * magnificationRatio + offset;
+	float moveShapeSize = 3 * magnificationRatio;
+
+	nvgBeginPath(vg);
+	nvgEllipse(vg, mapElementPosition.x, mapElementPosition.y, moveShapeSize, moveShapeSize);
+	nvgFillColor(vg, MAP_BORDER_COLOR);
+	nvgFill(vg);
+}
+
+void NvgDrawHelper::drawRotateShape(MapElement * mapElement)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = *this->magnificationRatio;
+
+	glm::vec2 mapElementPosition = drawAreaPosition + mapElement->GetPosition() * magnificationRatio + offset;
+	float rotateShapeRadius = 15 * magnificationRatio;
+	float rotateShapeAngleStart = -0.5f;
+	float rotateShapeAngleEnd = 0.5f;
+
+	nvgBeginPath(vg);
+	nvgArc(vg, mapElementPosition.x, mapElementPosition.y, rotateShapeRadius, rotateShapeAngleStart, rotateShapeAngleEnd, NVG_CW);
+	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStroke(vg);
+	
+	nvgBeginPath(vg);
+	nvgArc(vg, mapElementPosition.x, mapElementPosition.y, rotateShapeRadius, rotateShapeAngleStart + M_PI / 2.0f, rotateShapeAngleEnd + M_PI / 2.0f, NVG_CW);
+	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStroke(vg);
+
+	nvgBeginPath(vg);
+	nvgArc(vg, mapElementPosition.x, mapElementPosition.y, rotateShapeRadius, rotateShapeAngleStart + M_PI, rotateShapeAngleEnd + M_PI, NVG_CW);
+	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStroke(vg);
+	
+	nvgBeginPath(vg);
+	nvgArc(vg, mapElementPosition.x, mapElementPosition.y, rotateShapeRadius, rotateShapeAngleStart + 3 * M_PI / 2.0f, rotateShapeAngleEnd + 3 * M_PI / 2.0f, NVG_CW);
+	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStroke(vg);
 }
 
 #pragma endregion
