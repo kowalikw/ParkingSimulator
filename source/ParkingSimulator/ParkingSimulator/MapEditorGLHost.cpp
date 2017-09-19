@@ -29,6 +29,26 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 {
 	OpenGLHost::mousePressEvent(event);
 
+	if (mapEditor->GetHoverElement(positionOnMap) != NULL)
+		mapEditor->SetSelectedElement(mapEditor->GetHoverElement(positionOnMap));
+	else
+		mapEditor->SetSelectedElement(nullptr);
+
+	if (mapEditor->GetSelectedElement() != NULL)
+	{
+		MapElement *selectedElement = mapEditor->GetSelectedElement();
+		selectedElement->EnableMove(false);
+		selectedElement->EnableRotation(false);
+		selectedElement->EnableResize(false);
+
+		if (mapEditor->GetMapElementToMove(positionOnMap) == selectedElement)
+			selectedElement->EnableMove(true);
+		if (mapEditor->GetMapElementToRotate(positionOnMap) == selectedElement)
+			selectedElement->EnableRotation(true);
+		/*if (mapEditor->GetMapElementToResize(positionOnMap, NULL) == selectedElement || selectedElement->IsResizeActive())
+		this->setCursor(Qt::PointingHandCursor);*/
+	}
+
 	if (mapEditor->GetAddBuilding())
 	{
 		mapEditor->AddObstacleConfirm();
@@ -50,16 +70,46 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 void MapEditorGLHost::mouseReleaseEvent(QMouseEvent * event)
 {
 	OpenGLHost::mouseReleaseEvent(event);
+
+	if (mapEditor->GetSelectedElement() != NULL)
+	{
+		MapElement *selectedElement = mapEditor->GetSelectedElement();
+		selectedElement->EnableMove(false);
+		selectedElement->EnableRotation(false);
+		selectedElement->EnableResize(false);
+	}
 }
 
 void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 {
 	OpenGLHost::mouseMoveEvent(event);
 
+	positionOnMap = (glm::vec2(mouseLastX, mouseLastY) - drawAreaPosition - widgetOffset) / magnificationRatio;
+
+	if (mapEditor->GetSelectedElement() != NULL)
+	{
+		MapElement *selectedElement = mapEditor->GetSelectedElement();
+
+		if (mapEditor->GetMapElementToMove(positionOnMap) == selectedElement || selectedElement->IsMoveActive())
+		{
+			this->setCursor(Qt::PointingHandCursor);
+			if (selectedElement->IsMoveActive())
+				selectedElement->Move(glm::vec2(mouseOffsetX, mouseOffsetY) / magnificationRatio);
+		}
+		else if (mapEditor->GetMapElementToRotate(positionOnMap) == selectedElement || selectedElement->IsRotationActive())
+		{
+			this->setCursor(Qt::PointingHandCursor);
+			if (selectedElement->IsRotationActive())
+				selectedElement->Rotate((mouseOffsetX + mouseOffsetY) / 50.0f);
+		}
+		/*if (mapEditor->GetMapElementToResize(positionOnMap, NULL) == selectedElement || selectedElement->IsResizeActive())
+		{
+			this->setCursor(Qt::PointingHandCursor);
+		}*/
+	}
+
 	if (mapEditor->GetAddBuilding() && mapEditor->GetNewElement() != nullptr)
 	{
-		positionOnMap = (glm::vec2(mouseLastX, mouseLastY) - drawAreaPosition - widgetOffset) / magnificationRatio;
-
 		mapEditor->GetNewElement()->SetPosition(positionOnMap);
 
 		/*std::ostringstream ss;
@@ -149,7 +199,13 @@ void MapEditorGLHost::paintGL()
 
 void MapEditorGLHost::nvgRenderFrame()
 {
+	if (mapEditor->GetMap() == NULL) return;
+
 	nvgHelper->DrawMap(mapEditor->GetMap());
+
+	nvgHelper->DrawHoverElement(mapEditor->GetHoverElement(positionOnMap));
+
+	nvgHelper->DrawTransformShapes(mapEditor->GetSelectedElement());
 
 	//drawActiveElement();
 

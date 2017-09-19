@@ -36,6 +36,8 @@ public:
 	void DrawSimulationFrame(Simulation *simulation);
 	void DrawPolygon(std::vector<glm::vec2> polygon, bool fill = false);
 	void DrawActiveElement(MapElement *mapElement, bool admissible);
+	void DrawHoverElement(MapElement *mapElement);
+	void DrawTransformShapes(MapElement *mapElement);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
@@ -57,6 +59,10 @@ public:
 	const int VEHICLE_BORDER_WIDTH = 3;
 	const NVGcolor VEHICLE_COLOR = nvgRGBA(8, 73, 171, 255);
 	const NVGcolor VEHICLE_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
+
+	const int MAP_ELEMENT_HOVER_WIDTH = 3;
+	const NVGcolor MAP_ELEMENT_HOVER_COLOR = nvgRGBA(140, 140, 140, 255);
+	const NVGcolor MAP_ELEMENT_HOVER_BORDER_COLOR = nvgRGBA(255, 255, 0, 255);
 
 	const int BUILDING_BORDER_WIDTH = 3;
 	const NVGcolor BUILDING_COLOR = nvgRGBA(140, 140, 140, 255);

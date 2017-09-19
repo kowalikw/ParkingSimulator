@@ -23,6 +23,11 @@ bool GeometryHelper::IsEnclosedByRect(glm::vec2 point, glm::vec2 cornerA, glm::v
 		&& point.y <= std::max(cornerA.y, cornerB.y);
 }
 
+double GeometryHelper::GetDistanceBetweenPoints(glm::vec2 p1, glm::vec2 p2)
+{
+	return glm::distance(p1, p2);
+}
+
 glm::vec2 GeometryHelper::GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4) // XZ plane
 {
 	double a1 = (p1.y - p2.y) / (p1.x - p2.x);

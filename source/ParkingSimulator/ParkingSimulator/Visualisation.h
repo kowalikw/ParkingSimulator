@@ -22,6 +22,8 @@ public:
 	void AddSimulation(Simulation *simulation);
 	void RemoveSimulation(Simulation *simulation);
 
+	
+
 	//temp
 	Graph voronoi;
 	Map *mapa2;

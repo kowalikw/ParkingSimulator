@@ -27,12 +27,20 @@ public:
 	void SetAddParkPlace(bool addParkPlace);
 	void SetResetAddButtons(bool resetAddButtons);
 
-	MapElement *GetNewElement();
-	MapElement *GetSelectedElement();
+	void SetNewElement(MapElement *mapElement);
+	void SetSelectedElement(MapElement *mapElement);
+
+	MapElement * GetNewElement();
+	MapElement * GetSelectedElement();
+	MapElement * GetHoverElement(glm::vec2 mousePosition);
+
+	MapElement * GetMapElementToMove(glm::vec2 mousePosition);
+	MapElement * GetMapElementToRotate(glm::vec2 mousePosition);
+	MapElement * GetMapElementToResize(glm::vec2 mousePosition, int *corner);
 
 	bool IsMapElementAdmissible(MapElement *mapElement);
 private:
-	Map *map;
+	Map *map = NULL;
 	bool addBuilding = false;
 	bool addDecoration = false;
 	bool addRoad = false;

@@ -28,6 +28,15 @@ public:
 	void SetPosition(glm::vec2 position);
 	void SetSize(glm::vec2 size);
 	void SetPoints(std::vector<glm::vec2> points);
+	void Move(glm::vec2 offset);
+	void Rotate(double offset);
+	void Resize(glm::vec2 offset, int corner);
+	void EnableMove(bool isMoveActive);
+	void EnableRotation(bool isRotationActive);
+	void EnableResize(bool isResizeActive);
+	bool IsMoveActive();
+	bool IsRotationActive();
+	bool IsResizeActive();
 
 	friend class boost::serialization::access;
 	// When the class Archive corresponds to an output archive, the
@@ -48,6 +57,9 @@ protected:
 	glm::vec2 position;
 	glm::vec2 size;
 	bool isRectangular;
+	bool isMoveActive = false;
+	bool isRotationActive = false;
+	bool isResizeActive = false;
 	std::vector<glm::vec2> points;
 
 	void move();

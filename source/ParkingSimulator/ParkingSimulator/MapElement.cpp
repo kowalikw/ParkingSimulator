@@ -80,6 +80,57 @@ void MapElement::SetPoints(std::vector<glm::vec2> points)
 	this->points = points;
 }
 
+void MapElement::Move(glm::vec2 offset)
+{
+	SetPosition(position + offset);
+
+	transform();
+}
+
+void MapElement::Rotate(double offset)
+{
+	SetRotation(rotation + offset);
+
+	transform();
+}
+
+void MapElement::Resize(glm::vec2 offset, int corner)
+{
+
+
+	transform();
+}
+
+void MapElement::EnableMove(bool isMoveActive)
+{
+	this->isMoveActive = isMoveActive;
+}
+
+void MapElement::EnableRotation(bool isRotationActive)
+{
+	this->isRotationActive = isRotationActive;
+}
+
+void MapElement::EnableResize(bool isResizeActive)
+{
+	this->isResizeActive = isResizeActive;
+}
+
+bool MapElement::IsMoveActive()
+{
+	return this->isMoveActive;
+}
+
+bool MapElement::IsRotationActive()
+{
+	return this->isRotationActive;
+}
+
+bool MapElement::IsResizeActive()
+{
+	return this->isResizeActive;
+}
+
 void MapElement::move()
 {
 	for (int i = 0; i < points.size(); i++)

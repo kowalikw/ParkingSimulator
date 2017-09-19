@@ -106,6 +106,16 @@ void MapEditor::SetResetAddButtons(bool resetAddButtons)
 	this->resetAddButtons = resetAddButtons;
 }
 
+void MapEditor::SetNewElement(MapElement * mapElement)
+{
+	this->newElement = mapElement;
+}
+
+void MapEditor::SetSelectedElement(MapElement * mapElement)
+{
+	this->selectedElement = mapElement;
+}
+
 MapElement * MapEditor::GetNewElement()
 {
 	return this->newElement;
@@ -114,6 +124,75 @@ MapElement * MapEditor::GetNewElement()
 MapElement * MapEditor::GetSelectedElement()
 {
 	return this->selectedElement;
+}
+
+MapElement * MapEditor::GetHoverElement(glm::vec2 mousePosition)
+{
+	if (map != NULL)
+	{
+		std::vector<MapElement*> mapElements = map->GetMapElements();
+		for (int i = 0; i < mapElements.size(); i++)
+			if (GeometryHelper::CheckPolygonContainsPoint(mapElements[i]->GetPoints(), mousePosition))
+				return mapElements[i];
+	}
+	return nullptr;
+}
+
+MapElement * MapEditor::GetMapElementToMove(glm::vec2 mousePosition)
+{
+	if (map != NULL)
+	{
+		std::vector<MapElement*> mapElements = map->GetMapElements();
+		for (int i = 0; i < mapElements.size(); i++)
+			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, mapElements[i]->GetPosition()) < 20)
+				return mapElements[i];
+	}
+	return nullptr;
+}
+MapElement * MapEditor::GetMapElementToRotate(glm::vec2 mousePosition)
+{
+	if (map != NULL)
+	{
+		std::vector<MapElement*> mapElements = map->GetMapElements();
+		for (int i = 0; i < mapElements.size(); i++)
+			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, mapElements[i]->GetPosition()) < 40)
+				return mapElements[i];
+	}
+	return nullptr;
+}
+
+MapElement * MapEditor::GetMapElementToResize(glm::vec2 mousePosition, int * corner)
+{
+	if (map != NULL)
+	{
+		std::vector<MapElement*> mapElements = map->GetMapElements();
+		for (int i = 0; i < mapElements.size(); i++)
+		{
+			*corner = -1;
+
+			glm::vec2 position = mapElements[i]->GetPosition();
+			glm::vec2 size = mapElements[i]->GetSize();
+			glm::vec2 dirX = mapElements[i]->GetDirX();
+			glm::vec2 dirY = mapElements[i]->GetDirY();
+
+			glm::vec2 p0 = position + size.x * dirX - size.y * dirY;
+			glm::vec2 p1 = position + size.x * dirX + size.y * dirY;
+			glm::vec2 p2 = position - size.x * dirX + size.y * dirY;
+			glm::vec2 p3 = position - size.x * dirX - size.y * dirY;
+
+			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p0) < 20)
+				*corner = 0;
+			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p1) < 20)
+				*corner = 1;
+			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p2) < 20)
+				*corner = 2;
+			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p3) < 20)
+				*corner = 3;
+
+			return mapElements[i];
+		}
+	}
+	return nullptr;
 }
 
 bool MapEditor::IsMapElementAdmissible(MapElement * mapElement)

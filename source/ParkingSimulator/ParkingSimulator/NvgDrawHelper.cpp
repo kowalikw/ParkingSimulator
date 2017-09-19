@@ -244,6 +244,38 @@ void NvgDrawHelper::DrawActiveElement(MapElement * mapElement, bool admissible)
 	nvgFill(vg);
 }
 
+void NvgDrawHelper::DrawHoverElement(MapElement * mapElement)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 widgetSize = *this->widgetSize;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
+	if (mapElement == NULL) return;
+
+	std::vector<glm::vec2> points = mapElement->GetPoints();
+
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + offset.x, drawAreaPosition.y + points[0].y * magnificationRatio + offset.y);
+	for (int i = 0; i <= points.size(); i++)
+		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + offset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + offset.y);
+	nvgStrokeColor(vg, MAP_ELEMENT_HOVER_BORDER_COLOR);
+	nvgStrokeWidth(vg, MAP_ELEMENT_HOVER_WIDTH);
+	nvgStroke(vg);
+	nvgFillColor(vg, MAP_ELEMENT_HOVER_COLOR);
+	nvgFill(vg);
+}
+
+void NvgDrawHelper::DrawTransformShapes(MapElement * mapElement)
+{
+	if (mapElement == NULL) return;
+
+	drawMoveShape(mapElement);
+	drawResizeShape(mapElement);
+	drawRotateShape(mapElement);
+}
+
 #pragma endregion
 
 #pragma region Private methods.
@@ -261,19 +293,11 @@ void NvgDrawHelper::drawMapElements(std::vector<MapElement*> mapElements)
 		{
 			auto obstacle = dynamic_cast<Obstacle*>(mapElements[i]);
 			drawObstacle(obstacle);
-
-			drawMoveShape(obstacle);
-			drawResizeShape(obstacle);
-			drawRotateShape(obstacle);
 		}
 		else if (dynamic_cast<ParkingSpace*>(mapElements[i]) != NULL)
 		{
 			auto parkingSpace = dynamic_cast<ParkingSpace*>(mapElements[i]);
 			drawParkingSpace(parkingSpace);
-
-			drawMoveShape(parkingSpace);
-			drawResizeShape(parkingSpace);
-			drawRotateShape(parkingSpace);
 		}
 	}
 }
