@@ -261,19 +261,44 @@ void NvgDrawHelper::DrawHoverElement(MapElement * mapElement)
 	for (int i = 0; i <= points.size(); i++)
 		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + offset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + offset.y);
 	nvgStrokeColor(vg, MAP_ELEMENT_HOVER_BORDER_COLOR);
-	nvgStrokeWidth(vg, MAP_ELEMENT_HOVER_WIDTH);
+	nvgStrokeWidth(vg, MAP_ELEMENT_HOVER_BORDER_WIDTH);
 	nvgStroke(vg);
 	nvgFillColor(vg, MAP_ELEMENT_HOVER_COLOR);
 	nvgFill(vg);
 }
 
-void NvgDrawHelper::DrawTransformShapes(MapElement * mapElement)
+void NvgDrawHelper::DrawSelectedElement(MapElement * mapElement)
 {
+	glm::vec2 offset = *this->offset;
+	glm::vec2 widgetSize = *this->widgetSize;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
 	if (mapElement == NULL) return;
 
-	drawMoveShape(mapElement);
-	drawResizeShape(mapElement);
-	drawRotateShape(mapElement);
+	std::vector<glm::vec2> points = mapElement->GetPoints();
+
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + offset.x, drawAreaPosition.y + points[0].y * magnificationRatio + offset.y);
+	for (int i = 0; i <= points.size(); i++)
+		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + offset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + offset.y);
+	if (!mapElement->IsMoveActive() && !mapElement->IsRotationActive() && !mapElement->IsResizeActive())
+	{
+		nvgStrokeColor(vg, MAP_ELEMENT_SELECTED_BORDER_COLOR);
+		nvgStrokeWidth(vg, MAP_ELEMENT_SELECTED_BORDER_WIDTH);
+		nvgFillColor(vg, MAP_ELEMENT_SELECTED_COLOR);
+	}
+	else
+	{
+		nvgStrokeColor(vg, mapElement->IsAdmissible() ? ACTIVE_GOOD_BORDER_COLOR : ACTIVE_BAD_BORDER_COLOR);
+		nvgStrokeWidth(vg, ACTIVE_BORDER_WIDTH);
+		nvgFillColor(vg, mapElement->IsAdmissible() ? ACTIVE_GOOD_COLOR : ACTIVE_BAD_COLOR);
+	}
+	nvgStroke(vg);
+	nvgFill(vg);
+
+	drawTransformShapes(mapElement);
 }
 
 #pragma endregion
@@ -435,22 +460,44 @@ void NvgDrawHelper::drawResizeShape(MapElement * mapElement)
 	glm::vec2 mapElementDirX = mapElement->GetDirX();
 	glm::vec2 mapElementDirY = mapElement->GetDirY();
 	glm::vec2 mapElementPosition = drawAreaPosition + mapElement->GetPosition() * magnificationRatio + offset;
-	float resizeShapeSize = 3 * magnificationRatio;
+	float resizeShapeSize = TRANSFORM_SHAPE_RESIZE_RADIUS * magnificationRatio;
+	bool isHover = mapElement->IsResizeHover();
+	int hoverCorner = mapElement->GetResizeHoverCorner();
 
-	auto p0 = mapElementPosition + mapElementDirX * mapElementSize / 2.0f + mapElementDirY * mapElementSize / 2.0f;
-	auto p1 = mapElementPosition + mapElementDirX * mapElementSize / 2.0f - mapElementDirY * mapElementSize / 2.0f;
-	auto p2 = mapElementPosition - mapElementDirX * mapElementSize / 2.0f + mapElementDirY * mapElementSize / 2.0f;
-	auto p3 = mapElementPosition - mapElementDirX * mapElementSize / 2.0f - mapElementDirY * mapElementSize / 2.0f;
+	auto p0 = mapElementPosition + mapElementDirX * mapElementSize.x / 2.0f - mapElementDirY * mapElementSize.y / 2.0f;
+	auto p1 = mapElementPosition + mapElementDirX * mapElementSize.x / 2.0f + mapElementDirY * mapElementSize.y / 2.0f;
+	auto p2 = mapElementPosition - mapElementDirX * mapElementSize.x / 2.0f + mapElementDirY * mapElementSize.y / 2.0f;
+	auto p3 = mapElementPosition - mapElementDirX * mapElementSize.x / 2.0f - mapElementDirY * mapElementSize.y / 2.0f;
 
 	nvgBeginPath(vg);
-
 	nvgEllipse(vg, p0.x, p0.y, resizeShapeSize, resizeShapeSize);
 	nvgEllipse(vg, p1.x, p1.y, resizeShapeSize, resizeShapeSize);
 	nvgEllipse(vg, p2.x, p2.y, resizeShapeSize, resizeShapeSize);
 	nvgEllipse(vg, p3.x, p3.y, resizeShapeSize, resizeShapeSize);
-
-	nvgFillColor(vg, MAP_BORDER_COLOR);
+	nvgFillColor(vg, TRANSFORM_SHAPE_RESIZE_COLOR);
 	nvgFill(vg);
+
+	if (isHover)
+	{
+		nvgBeginPath(vg);
+		switch (hoverCorner)
+		{
+		case 0:
+			nvgEllipse(vg, p0.x, p0.y, resizeShapeSize, resizeShapeSize);
+			break;
+		case 1:
+			nvgEllipse(vg, p1.x, p1.y, resizeShapeSize, resizeShapeSize);
+			break;
+		case 2:
+			nvgEllipse(vg, p2.x, p2.y, resizeShapeSize, resizeShapeSize);
+			break;
+		case 3:
+			nvgEllipse(vg, p3.x, p3.y, resizeShapeSize, resizeShapeSize);
+			break;
+		}
+		nvgFillColor(vg, TRANSFORM_SHAPE_HOVER_COLOR);
+		nvgFill(vg);
+	}
 }
 
 void NvgDrawHelper::drawMoveShape(MapElement * mapElement)
@@ -460,11 +507,12 @@ void NvgDrawHelper::drawMoveShape(MapElement * mapElement)
 	float magnificationRatio = *this->magnificationRatio;
 
 	glm::vec2 mapElementPosition = drawAreaPosition + mapElement->GetPosition() * magnificationRatio + offset;
-	float moveShapeSize = 3 * magnificationRatio;
+	float moveShapeSize = TRANSFORM_SHAPE_MOVE_RADIUS * magnificationRatio;
+	bool isHover = mapElement->IsMoveHover();
 
 	nvgBeginPath(vg);
 	nvgEllipse(vg, mapElementPosition.x, mapElementPosition.y, moveShapeSize, moveShapeSize);
-	nvgFillColor(vg, MAP_BORDER_COLOR);
+	nvgFillColor(vg, isHover ? TRANSFORM_SHAPE_HOVER_COLOR : TRANSFORM_SHAPE_MOVE_COLOR);
 	nvgFill(vg);
 }
 
@@ -475,29 +523,39 @@ void NvgDrawHelper::drawRotateShape(MapElement * mapElement)
 	float magnificationRatio = *this->magnificationRatio;
 
 	glm::vec2 mapElementPosition = drawAreaPosition + mapElement->GetPosition() * magnificationRatio + offset;
-	float rotateShapeRadius = 15 * magnificationRatio;
+	float rotateShapeRadius = TRANSFORM_SHAPE_ROTATE_RADIUS * magnificationRatio;
 	float rotateShapeAngleStart = -0.5f;
 	float rotateShapeAngleEnd = 0.5f;
+	bool isHover = mapElement->IsRotationHover();
 
 	nvgBeginPath(vg);
 	nvgArc(vg, mapElementPosition.x, mapElementPosition.y, rotateShapeRadius, rotateShapeAngleStart, rotateShapeAngleEnd, NVG_CW);
-	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStrokeColor(vg, isHover ? TRANSFORM_SHAPE_HOVER_COLOR : TRANSFORM_SHAPE_ROTATE_COLOR);
 	nvgStroke(vg);
 	
 	nvgBeginPath(vg);
 	nvgArc(vg, mapElementPosition.x, mapElementPosition.y, rotateShapeRadius, rotateShapeAngleStart + M_PI / 2.0f, rotateShapeAngleEnd + M_PI / 2.0f, NVG_CW);
-	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStrokeColor(vg, isHover ? TRANSFORM_SHAPE_HOVER_COLOR : TRANSFORM_SHAPE_ROTATE_COLOR);
 	nvgStroke(vg);
 
 	nvgBeginPath(vg);
 	nvgArc(vg, mapElementPosition.x, mapElementPosition.y, rotateShapeRadius, rotateShapeAngleStart + M_PI, rotateShapeAngleEnd + M_PI, NVG_CW);
-	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStrokeColor(vg, isHover ? TRANSFORM_SHAPE_HOVER_COLOR : TRANSFORM_SHAPE_ROTATE_COLOR);
 	nvgStroke(vg);
 	
 	nvgBeginPath(vg);
 	nvgArc(vg, mapElementPosition.x, mapElementPosition.y, rotateShapeRadius, rotateShapeAngleStart + 3 * M_PI / 2.0f, rotateShapeAngleEnd + 3 * M_PI / 2.0f, NVG_CW);
-	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStrokeColor(vg, isHover ? TRANSFORM_SHAPE_HOVER_COLOR : TRANSFORM_SHAPE_ROTATE_COLOR);
 	nvgStroke(vg);
+}
+
+void NvgDrawHelper::drawTransformShapes(MapElement * mapElement)
+{
+	if (mapElement == NULL) return;
+
+	drawMoveShape(mapElement);
+	drawResizeShape(mapElement);
+	drawRotateShape(mapElement);
 }
 
 #pragma endregion

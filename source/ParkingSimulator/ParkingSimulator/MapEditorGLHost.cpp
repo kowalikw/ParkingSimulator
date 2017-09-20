@@ -29,13 +29,9 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 {
 	OpenGLHost::mousePressEvent(event);
 
-	if (mapEditor->GetHoverElement(positionOnMap) != NULL)
-		mapEditor->SetSelectedElement(mapEditor->GetHoverElement(positionOnMap));
-	else
-		mapEditor->SetSelectedElement(nullptr);
-
 	if (mapEditor->GetSelectedElement() != NULL)
 	{
+		int resizeCorner;
 		MapElement *selectedElement = mapEditor->GetSelectedElement();
 		selectedElement->EnableMove(false);
 		selectedElement->EnableRotation(false);
@@ -45,8 +41,25 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 			selectedElement->EnableMove(true);
 		if (mapEditor->GetMapElementToRotate(positionOnMap) == selectedElement)
 			selectedElement->EnableRotation(true);
-		/*if (mapEditor->GetMapElementToResize(positionOnMap, NULL) == selectedElement || selectedElement->IsResizeActive())
-		this->setCursor(Qt::PointingHandCursor);*/
+		if (mapEditor->GetMapElementToResize(positionOnMap, &resizeCorner, selectedElement) == selectedElement || selectedElement->IsResizeActive())
+		{
+			selectedElement->EnableResize(true);
+			selectedElement->SetResizeHoverCorner(resizeCorner);
+		}
+	}
+
+	if (mapEditor->GetHoverElement(positionOnMap) != NULL)
+	{
+		MapElement *selectedElement = mapEditor->GetSelectedElement();
+		if (selectedElement == NULL ||
+			(!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
+				mapEditor->SetSelectedElement(mapEditor->GetHoverElement(positionOnMap));
+	}
+	else if (mapEditor->GetSelectedElement() != NULL && !mouseMiddlePressed)
+	{
+		MapElement *selectedElement = mapEditor->GetSelectedElement();
+		if (!selectedElement->IsMoveActive() && !selectedElement->IsRotationActive() && !selectedElement->IsResizeActive())
+			mapEditor->SetSelectedElement(nullptr);
 	}
 
 	if (mapEditor->GetAddBuilding())
@@ -74,9 +87,12 @@ void MapEditorGLHost::mouseReleaseEvent(QMouseEvent * event)
 	if (mapEditor->GetSelectedElement() != NULL)
 	{
 		MapElement *selectedElement = mapEditor->GetSelectedElement();
-		selectedElement->EnableMove(false);
-		selectedElement->EnableRotation(false);
-		selectedElement->EnableResize(false);
+		if (selectedElement->IsAdmissible())
+		{
+			selectedElement->EnableMove(false);
+			selectedElement->EnableRotation(false);
+			selectedElement->EnableResize(false);
+		}
 	}
 }
 
@@ -84,41 +100,94 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 {
 	OpenGLHost::mouseMoveEvent(event);
 
+	lasPositionOnMap = positionOnMap;
 	positionOnMap = (glm::vec2(mouseLastX, mouseLastY) - drawAreaPosition - widgetOffset) / magnificationRatio;
+	MapElement *selectedElement = mapEditor->GetSelectedElement();
 
-	if (mapEditor->GetSelectedElement() != NULL)
+	if (selectedElement != NULL)
 	{
-		MapElement *selectedElement = mapEditor->GetSelectedElement();
+		int resizeCorner;
+
+		selectedElement->SetMoveHover(false);
+		selectedElement->SetRotationHover(false);
+		selectedElement->SetResizeHover(false);
 
 		if (mapEditor->GetMapElementToMove(positionOnMap) == selectedElement || selectedElement->IsMoveActive())
 		{
-			this->setCursor(Qt::PointingHandCursor);
+			this->setCursor(MOVE_CURSOR);
+			selectedElement->SetMoveHover(true);
 			if (selectedElement->IsMoveActive())
 				selectedElement->Move(glm::vec2(mouseOffsetX, mouseOffsetY) / magnificationRatio);
 		}
 		else if (mapEditor->GetMapElementToRotate(positionOnMap) == selectedElement || selectedElement->IsRotationActive())
 		{
-			this->setCursor(Qt::PointingHandCursor);
+			this->setCursor(ROTATE_CURSOR);
+			selectedElement->SetRotationHover(true);
 			if (selectedElement->IsRotationActive())
-				selectedElement->Rotate((mouseOffsetX + mouseOffsetY) / 50.0f);
+			{
+				if (positionOnMap.x > selectedElement->GetPosition().x)
+				{
+					if(positionOnMap.y > selectedElement->GetPosition().y)
+						selectedElement->Rotate((-mouseOffsetX + mouseOffsetY) / 50.0f);
+					else
+						selectedElement->Rotate((mouseOffsetX + mouseOffsetY) / 50.0f);
+				}
+				else
+				{
+					if (positionOnMap.y > selectedElement->GetPosition().y)
+						selectedElement->Rotate((-mouseOffsetX - mouseOffsetY) / 50.0f);
+					else
+						selectedElement->Rotate((mouseOffsetX - mouseOffsetY) / 50.0f);
+				}
+			}
 		}
-		/*if (mapEditor->GetMapElementToResize(positionOnMap, NULL) == selectedElement || selectedElement->IsResizeActive())
+		else if (mapEditor->GetMapElementToResize(positionOnMap, &resizeCorner, selectedElement) == selectedElement || selectedElement->IsResizeActive())
 		{
 			this->setCursor(Qt::PointingHandCursor);
-		}*/
+			selectedElement->SetResizeHover(true);
+			if (!selectedElement->IsResizeActive())
+				selectedElement->SetResizeHoverCorner(resizeCorner);
+			if (selectedElement->IsResizeActive())
+				selectedElement->Resize(positionOnMap, selectedElement->GetResizeHoverCorner());
+		}
+
+		std::ostringstream ss;
+		ss << "X: " << positionOnMap.x << endl;
+		ss << "Y: " << positionOnMap.y << endl;
+
+		ss << "LastMouseX: " << mouseLastX << endl;
+		ss << "LastMouseY: " << mouseLastY << endl;
+
+		ss << "DrawAreaPositionX: " << drawAreaPosition.x << endl;
+		ss << "DrawAreaPositionY: " << drawAreaPosition.y << endl;
+
+		ss << "widgetOffsetZ: " << widgetOffset.x << endl;
+		ss << "widgetOffsetY: " << widgetOffset.y << endl;
+
+		ss << "selectedElement: " << selectedElement << endl;
+		ss << "corner: " << selectedElement->GetResizeHoverCorner();
+
+		ss << endl;
+		std::string s(ss.str());
+
+		OutputDebugStringA(s.c_str());
 	}
+
+	if (mapEditor->GetHoverElement(positionOnMap) != NULL && mapEditor->GetHoverElement(positionOnMap) != selectedElement)
+	{
+		if (selectedElement == NULL ||
+			(!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
+				this->setCursor(HOVER_CURSOR);
+	}
+	else if (selectedElement != NULL && (!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
+		this->setCursor(DEFAULT_CURSOR);
+	
 
 	if (mapEditor->GetAddBuilding() && mapEditor->GetNewElement() != nullptr)
 	{
 		mapEditor->GetNewElement()->SetPosition(positionOnMap);
 
-		/*std::ostringstream ss;
-		ss << "X: " << positionOnMap.x << endl;
-		ss << "Y: " << positionOnMap.y << endl;
-		ss << endl;
-		std::string s(ss.str());
-
-		OutputDebugStringA(s.c_str());*/
+		
 	}
 }
 
@@ -203,11 +272,11 @@ void MapEditorGLHost::nvgRenderFrame()
 
 	nvgHelper->DrawMap(mapEditor->GetMap());
 
-	nvgHelper->DrawHoverElement(mapEditor->GetHoverElement(positionOnMap));
+	if(mapEditor->GetSelectedElement() == NULL || 
+		(!mapEditor->GetSelectedElement()->IsMoveHover() && !mapEditor->GetSelectedElement()->IsRotationHover() && !mapEditor->GetSelectedElement()->IsResizeHover()))
+			nvgHelper->DrawHoverElement(mapEditor->GetHoverElement(positionOnMap));
 
-	nvgHelper->DrawTransformShapes(mapEditor->GetSelectedElement());
-
-	//drawActiveElement();
+	nvgHelper->DrawSelectedElement(mapEditor->GetSelectedElement());
 
 	if (mapEditor->GetNewElement() != nullptr)
 	{
@@ -215,30 +284,5 @@ void MapEditorGLHost::nvgRenderFrame()
 		nvgHelper->DrawActiveElement(mapEditor->GetNewElement(), admissible);
 	}
 }
-
-//void MapEditorGLHost::drawActiveElement()
-//{
-//	if (mapEditor->GetNewElement() == nullptr)
-//		return;
-//
-//	std::vector<glm::vec2> points = mapEditor->GetNewElement()->GetPoints();
-//	
-//	glm::vec2 elementPosition = drawAreaPosition + mapEditor->GetNewElement()->GetPosition() * magnificationRatio + widgetOffset;
-//
-//	nvgBeginPath(vg);
-//	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + widgetOffset.x, drawAreaPosition.y + points[0].y * magnificationRatio + widgetOffset.y);
-//	for (int i = 0; i <= points.size(); i++)
-//		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + widgetOffset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + widgetOffset.y);
-//	nvgStrokeColor(vg, admissible ? ACTIVE_GOOD_BORDER_COLOR : ACTIVE_BAD_BORDER_COLOR);
-//	nvgStrokeWidth(vg, ACTIVE_BORDER_WIDTH);
-//	nvgStroke(vg);
-//	nvgFillColor(vg, admissible ? ACTIVE_GOOD_COLOR : ACTIVE_BAD_COLOR);
-//	nvgFill(vg);
-//
-//	nvgBeginPath(vg);
-//	nvgEllipse(vg, elementPosition.x, elementPosition.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
-//	nvgFillColor(vg, SELECTED_MARKER_COLOR);
-//	nvgFill(vg);
-//}
 
 #pragma endregion

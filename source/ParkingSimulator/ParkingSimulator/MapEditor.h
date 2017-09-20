@@ -36,7 +36,7 @@ public:
 
 	MapElement * GetMapElementToMove(glm::vec2 mousePosition);
 	MapElement * GetMapElementToRotate(glm::vec2 mousePosition);
-	MapElement * GetMapElementToResize(glm::vec2 mousePosition, int *corner);
+	MapElement * GetMapElementToResize(glm::vec2 mousePosition, int *corner, MapElement *selectedElement = nullptr);
 
 	bool IsMapElementAdmissible(MapElement *mapElement);
 private:
@@ -51,6 +51,11 @@ private:
 
 	bool mapContainsMapElement(MapElement *mapElement);
 	bool mapElementIntersectsMapElement(MapElement *mapElement);
+
+	const double DISTANCE_TO_MOVE = 15;
+	const double DISTANCE_TO_ROTATE = 30;
+	const double DISTANCE_TO_RESIZE = 15;
+	const double DISTANCE_TO_ROTATE_MOVE_OFFSET = 3;
 };
 
 #endif

@@ -37,7 +37,7 @@ public:
 	void DrawPolygon(std::vector<glm::vec2> polygon, bool fill = false);
 	void DrawActiveElement(MapElement *mapElement, bool admissible);
 	void DrawHoverElement(MapElement *mapElement);
-	void DrawTransformShapes(MapElement *mapElement);
+	void DrawSelectedElement(MapElement *mapElement);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
@@ -60,9 +60,13 @@ public:
 	const NVGcolor VEHICLE_COLOR = nvgRGBA(8, 73, 171, 255);
 	const NVGcolor VEHICLE_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
 
-	const int MAP_ELEMENT_HOVER_WIDTH = 3;
+	const int MAP_ELEMENT_HOVER_BORDER_WIDTH = 3;
 	const NVGcolor MAP_ELEMENT_HOVER_COLOR = nvgRGBA(140, 140, 140, 255);
 	const NVGcolor MAP_ELEMENT_HOVER_BORDER_COLOR = nvgRGBA(255, 255, 0, 255);
+
+	const int MAP_ELEMENT_SELECTED_BORDER_WIDTH = 3;
+	const NVGcolor MAP_ELEMENT_SELECTED_COLOR = nvgRGBA(140, 140, 140, 255);
+	const NVGcolor MAP_ELEMENT_SELECTED_BORDER_COLOR = nvgRGBA(255, 255, 0, 255);
 
 	const int BUILDING_BORDER_WIDTH = 3;
 	const NVGcolor BUILDING_COLOR = nvgRGBA(140, 140, 140, 255);
@@ -95,6 +99,16 @@ public:
 	const int POLYGON_BORDER_WIDTH = 3;
 	const NVGcolor POLYGON_COLOR = nvgRGBA(255, 255, 0, 255);
 	const NVGcolor POLYGON_BORDER_COLOR = nvgRGBA(255, 255, 0, 255);
+
+	const int TRANSFORM_SHAPE_MOVE_RADIUS = 4;
+	const int TRANSFORM_SHAPE_ROTATE_RADIUS = 20;
+	const int TRANSFORM_SHAPE_ROTATE_WIDTH = 3;
+	const int TRANSFORM_SHAPE_RESIZE_RADIUS = 4;
+	const NVGcolor TRANSFORM_SHAPE_MOVE_COLOR = nvgRGBA(255, 0, 0, 255);
+	const NVGcolor TRANSFORM_SHAPE_ROTATE_COLOR = nvgRGBA(255, 0, 0, 255);
+	const NVGcolor TRANSFORM_SHAPE_RESIZE_COLOR = nvgRGBA(255, 0, 0, 255);
+	const NVGcolor TRANSFORM_SHAPE_HOVER_COLOR = nvgRGBA(255, 255, 0, 255);
+
 private:
 	NVGcontext *vg;
 	glm::vec2 *widgetSize;
@@ -114,6 +128,7 @@ private:
 	void drawResizeShape(MapElement *mapElement);
 	void drawMoveShape(MapElement *mapElement);
 	void drawRotateShape(MapElement *mapElement);
+	void drawTransformShapes(MapElement *mapElement);
 };
 
 #endif

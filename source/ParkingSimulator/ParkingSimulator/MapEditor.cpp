@@ -123,19 +123,39 @@ MapElement * MapEditor::GetNewElement()
 
 MapElement * MapEditor::GetSelectedElement()
 {
+	if (selectedElement != NULL)
+	{
+		selectedElement->SetIsAdmissible(true);
+		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), selectedElement->GetPoints()))
+			selectedElement->SetIsAdmissible(false);
+		std::vector<MapElement*> mapElements = map->GetMapElements();
+		for (int i = 0; i < mapElements.size(); i++)
+		{
+			if (selectedElement == mapElements[i])
+				continue;
+			if (GeometryHelper::CheckPolygonIntersection(mapElements[i]->GetPoints(), selectedElement->GetPoints()))
+				selectedElement->SetIsAdmissible(false);
+		}
+	}
+
 	return this->selectedElement;
 }
 
 MapElement * MapEditor::GetHoverElement(glm::vec2 mousePosition)
 {
+	MapElement *hoverElement = nullptr;
 	if (map != NULL)
 	{
 		std::vector<MapElement*> mapElements = map->GetMapElements();
 		for (int i = 0; i < mapElements.size(); i++)
+		{
+			if (mapElements[i] != hoverElement && (mapElements[i]->IsMoveActive() || mapElements[i]->IsRotationActive() || mapElements[i]->IsResizeActive()))
+				return nullptr;
 			if (GeometryHelper::CheckPolygonContainsPoint(mapElements[i]->GetPoints(), mousePosition))
-				return mapElements[i];
+				hoverElement = mapElements[i];
+		}
 	}
-	return nullptr;
+	return hoverElement;
 }
 
 MapElement * MapEditor::GetMapElementToMove(glm::vec2 mousePosition)
@@ -144,7 +164,7 @@ MapElement * MapEditor::GetMapElementToMove(glm::vec2 mousePosition)
 	{
 		std::vector<MapElement*> mapElements = map->GetMapElements();
 		for (int i = 0; i < mapElements.size(); i++)
-			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, mapElements[i]->GetPosition()) < 20)
+			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, mapElements[i]->GetPosition()) < DISTANCE_TO_MOVE && !mapElements[i]->IsRotationActive() && !mapElements[i]->IsResizeActive())
 				return mapElements[i];
 	}
 	return nullptr;
@@ -155,19 +175,25 @@ MapElement * MapEditor::GetMapElementToRotate(glm::vec2 mousePosition)
 	{
 		std::vector<MapElement*> mapElements = map->GetMapElements();
 		for (int i = 0; i < mapElements.size(); i++)
-			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, mapElements[i]->GetPosition()) < 40)
+		{
+			double distance = GeometryHelper::GetDistanceBetweenPoints(mousePosition, mapElements[i]->GetPosition());
+			if (distance >= DISTANCE_TO_MOVE + DISTANCE_TO_ROTATE_MOVE_OFFSET && distance < DISTANCE_TO_ROTATE && !mapElements[i]->IsMoveActive() && !mapElements[i]->IsResizeActive())
 				return mapElements[i];
+		}
 	}
 	return nullptr;
 }
 
-MapElement * MapEditor::GetMapElementToResize(glm::vec2 mousePosition, int * corner)
+MapElement * MapEditor::GetMapElementToResize(glm::vec2 mousePosition, int * corner, MapElement *selectedElement)
 {
 	if (map != NULL)
 	{
 		std::vector<MapElement*> mapElements = map->GetMapElements();
 		for (int i = 0; i < mapElements.size(); i++)
 		{
+			if (selectedElement != NULL && selectedElement != mapElements[i])
+				continue;
+
 			*corner = -1;
 
 			glm::vec2 position = mapElements[i]->GetPosition();
@@ -175,21 +201,25 @@ MapElement * MapEditor::GetMapElementToResize(glm::vec2 mousePosition, int * cor
 			glm::vec2 dirX = mapElements[i]->GetDirX();
 			glm::vec2 dirY = mapElements[i]->GetDirY();
 
-			glm::vec2 p0 = position + size.x * dirX - size.y * dirY;
-			glm::vec2 p1 = position + size.x * dirX + size.y * dirY;
-			glm::vec2 p2 = position - size.x * dirX + size.y * dirY;
-			glm::vec2 p3 = position - size.x * dirX - size.y * dirY;
+			glm::vec2 p0 = position + size.x / 2.0f * dirX - size.y / 2.0f * dirY;
+			glm::vec2 p1 = position + size.x / 2.0f * dirX + size.y / 2.0f * dirY;
+			glm::vec2 p2 = position - size.x / 2.0f * dirX + size.y / 2.0f * dirY;
+			glm::vec2 p3 = position - size.x / 2.0f * dirX - size.y / 2.0f * dirY;
 
-			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p0) < 20)
-				*corner = 0;
-			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p1) < 20)
-				*corner = 1;
-			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p2) < 20)
-				*corner = 2;
-			if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p3) < 20)
-				*corner = 3;
+			if (!mapElements[i]->IsMoveActive() && !mapElements[i]->IsRotationActive())
+			{
+				if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p0) < DISTANCE_TO_RESIZE)
+					*corner = 0;
+				if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p1) < DISTANCE_TO_RESIZE)
+					*corner = 1;
+				if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p2) < DISTANCE_TO_RESIZE)
+					*corner = 2;
+				if (GeometryHelper::GetDistanceBetweenPoints(mousePosition, p3) < DISTANCE_TO_RESIZE)
+					*corner = 3;
 
-			return mapElements[i];
+			}
+			if(*corner != -1)
+				return mapElements[i];
 		}
 	}
 	return nullptr;

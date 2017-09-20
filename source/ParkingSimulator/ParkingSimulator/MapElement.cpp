@@ -96,7 +96,58 @@ void MapElement::Rotate(double offset)
 
 void MapElement::Resize(glm::vec2 offset, int corner)
 {
+	double sizeX, sizeY;
+	glm::vec2 dirX = GetDirX();
+	glm::vec2 dirY = GetDirY();
 
+	glm::vec2 p0 = position + size.x / 2.0f * dirX - size.y / 2.0f * dirY;
+	glm::vec2 p1 = position + size.x / 2.0f * dirX + size.y / 2.0f * dirY;
+	glm::vec2 p2 = position - size.x / 2.0f * dirX + size.y / 2.0f * dirY;
+	glm::vec2 p3 = position - size.x / 2.0f * dirX - size.y / 2.0f * dirY;
+
+	switch (corner)
+	{
+	case 0:
+		p0 = offset;
+		sizeX = glm::distance(p0, p3);
+		sizeY = glm::distance(p0, p1);
+		if (sizeX > MAP_ELEMENT_MIN_SIZE && sizeY > MAP_ELEMENT_MIN_SIZE)
+		{
+			size = glm::vec2(sizeX, sizeY);
+			position = (p0 + p2) / 2.0f;
+		}
+		break;
+	case 1:
+		p1 = offset;
+		sizeX = glm::distance(p1, p2);
+		sizeY = glm::distance(p1, p0);
+		if (sizeX > MAP_ELEMENT_MIN_SIZE && sizeY > MAP_ELEMENT_MIN_SIZE)
+		{
+			size = glm::vec2(sizeX, sizeY);
+			position = (p1 + p3) / 2.0f;
+		}
+		break;
+	case 2:
+		p2 = offset;
+		sizeX = glm::distance(p2, p1);
+		sizeY = glm::distance(p2, p3);
+		if (sizeX > MAP_ELEMENT_MIN_SIZE && sizeY > MAP_ELEMENT_MIN_SIZE)
+		{
+			size = glm::vec2(sizeX, sizeY);
+			position = (p2 + p0) / 2.0f;
+		}
+		break;
+	case 3:
+		p3 = offset;
+		sizeX = glm::distance(p3, p0);
+		sizeY = glm::distance(p3, p2);
+		if (sizeX > MAP_ELEMENT_MIN_SIZE && sizeY > MAP_ELEMENT_MIN_SIZE)
+		{
+			size = glm::vec2(sizeX, sizeY);
+			position = (p3 + p1) / 2.0f;
+		}
+		break;
+	}
 
 	transform();
 }
@@ -116,6 +167,21 @@ void MapElement::EnableResize(bool isResizeActive)
 	this->isResizeActive = isResizeActive;
 }
 
+void MapElement::SetMoveHover(bool isMoveHover)
+{
+	this->isMoveHover = isMoveHover;
+}
+
+void MapElement::SetRotationHover(bool isRotationHover)
+{
+	this->isRotationHover = isRotationHover;
+}
+
+void MapElement::SetResizeHover(bool isResizeHover)
+{
+	this->isResizeHover = isResizeHover;
+}
+
 bool MapElement::IsMoveActive()
 {
 	return this->isMoveActive;
@@ -129,6 +195,41 @@ bool MapElement::IsRotationActive()
 bool MapElement::IsResizeActive()
 {
 	return this->isResizeActive;
+}
+
+bool MapElement::IsMoveHover()
+{
+	return this->isMoveHover;
+}
+
+bool MapElement::IsRotationHover()
+{
+	return this->isRotationHover;
+}
+
+bool MapElement::IsResizeHover()
+{
+	return this->isResizeHover;
+}
+
+int MapElement::GetResizeHoverCorner()
+{
+	return this->resizeHoverCorner;
+}
+
+void MapElement::SetResizeHoverCorner(int corner)
+{
+	this->resizeHoverCorner = corner;
+}
+
+bool MapElement::IsAdmissible()
+{
+	return this->isAdmissible;
+}
+
+void MapElement::SetIsAdmissible(bool isAdmissible)
+{
+	this->isAdmissible = isAdmissible;
 }
 
 void MapElement::move()

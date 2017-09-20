@@ -34,9 +34,19 @@ public:
 	void EnableMove(bool isMoveActive);
 	void EnableRotation(bool isRotationActive);
 	void EnableResize(bool isResizeActive);
+	void SetMoveHover(bool isMoveHover);
+	void SetRotationHover(bool isRotationHover);
+	void SetResizeHover(bool isResizeHover);
 	bool IsMoveActive();
 	bool IsRotationActive();
 	bool IsResizeActive();
+	bool IsMoveHover();
+	bool IsRotationHover();
+	bool IsResizeHover();
+	int GetResizeHoverCorner();
+	void SetResizeHoverCorner(int corner);
+	bool IsAdmissible();
+	void SetIsAdmissible(bool isAdmissible);
 
 	friend class boost::serialization::access;
 	// When the class Archive corresponds to an output archive, the
@@ -60,12 +70,19 @@ protected:
 	bool isMoveActive = false;
 	bool isRotationActive = false;
 	bool isResizeActive = false;
+	bool isMoveHover = false;
+	bool isRotationHover = false;
+	bool isResizeHover = false;
+	bool isAdmissible = true;
+	int resizeHoverCorner;
 	std::vector<glm::vec2> points;
 
 	void move();
 	void rotate();
 	void resize();
 	void transform();
+private:
+	double MAP_ELEMENT_MIN_SIZE = 45;
 };
 
 #endif
