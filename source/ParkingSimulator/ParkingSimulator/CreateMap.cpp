@@ -5,8 +5,8 @@ CreateMap::CreateMap(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	connect(ui.pushButton, SIGNAL(released()), this, SLOT(createMap()));
-	connect(ui.pushButton_2, SIGNAL(released()), this, SLOT(reject()));
+	connect(ui.btnAccept, SIGNAL(released()), this, SLOT(createMap()));
+	connect(ui.btnCancel, SIGNAL(released()), this, SLOT(reject()));
 }
 
 int CreateMap::GetMapWidth()

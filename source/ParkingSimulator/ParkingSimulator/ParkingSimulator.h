@@ -24,7 +24,6 @@ private:
 	QTimer *updateTimer;
 	MapEditor mapEditor;
 	Visualisation visualisation;
-	QTreeWidgetItem *buildings, *decorations, *roads, *parkPlaces;
 
 	bool updateSimulationProgressBarEnable = false;
 public slots:
@@ -34,12 +33,16 @@ public slots:
 	void createMap();
 	void saveMap();
 	void loadMap();
+	void clearMap();
 	void addBuilding();
 	void addDecoration();
 	void addRoad();
 	void addParkPlace();
+	void mapElementRemove();
+	void mapElementSaveProperties();
 
 	void updateMapElementsTree();
+	void treeMapElementsSelectionChanged();
 	void clearAddButtons();
 	void clearAddButtonsStyle();
 

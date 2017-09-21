@@ -7,8 +7,6 @@
 
 Graph g;
 
-
-
 Map *mapa = new Map(1000, 550);
 Vehicle *vehicle = new Vehicle(100, 50);
 
@@ -53,13 +51,21 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 		MapElement *selectedElement = mapEditor->GetSelectedElement();
 		if (selectedElement == NULL ||
 			(!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
+			{
 				mapEditor->SetSelectedElement(mapEditor->GetHoverElement(positionOnMap));
+				mapEditor->SetSelectedElementChanged(true);
+				mapEditor->SetMapElementsPropertiesChanged(true);
+			}
 	}
 	else if (mapEditor->GetSelectedElement() != NULL && !mouseMiddlePressed)
 	{
 		MapElement *selectedElement = mapEditor->GetSelectedElement();
 		if (!selectedElement->IsMoveActive() && !selectedElement->IsRotationActive() && !selectedElement->IsResizeActive())
+		{
 			mapEditor->SetSelectedElement(nullptr);
+			mapEditor->SetSelectedElementChanged(true);
+			mapEditor->SetMapElementsPropertiesChanged(true);
+		}
 	}
 
 	if (mapEditor->GetAddBuilding())
@@ -117,7 +123,10 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 			this->setCursor(MOVE_CURSOR);
 			selectedElement->SetMoveHover(true);
 			if (selectedElement->IsMoveActive())
+			{
 				selectedElement->Move(glm::vec2(mouseOffsetX, mouseOffsetY) / magnificationRatio);
+				mapEditor->SetMapElementsPropertiesChanged(true);
+			}
 		}
 		else if (mapEditor->GetMapElementToRotate(positionOnMap) == selectedElement || selectedElement->IsRotationActive())
 		{
@@ -139,6 +148,7 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 					else
 						selectedElement->Rotate((mouseOffsetX - mouseOffsetY) / 50.0f);
 				}
+				mapEditor->SetMapElementsPropertiesChanged(true);
 			}
 		}
 		else if (mapEditor->GetMapElementToResize(positionOnMap, &resizeCorner, selectedElement) == selectedElement || selectedElement->IsResizeActive())
@@ -148,7 +158,10 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 			if (!selectedElement->IsResizeActive())
 				selectedElement->SetResizeHoverCorner(resizeCorner);
 			if (selectedElement->IsResizeActive())
+			{
 				selectedElement->Resize(positionOnMap, selectedElement->GetResizeHoverCorner());
+				mapEditor->SetMapElementsPropertiesChanged(true);
+			}
 		}
 
 		std::ostringstream ss;
@@ -179,8 +192,16 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 			(!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
 				this->setCursor(HOVER_CURSOR);
 	}
-	else if (selectedElement != NULL && (!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
-		this->setCursor(DEFAULT_CURSOR);
+	else
+	{
+		if (selectedElement != NULL)
+		{
+			if ((!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
+				this->setCursor(DEFAULT_CURSOR);
+		}
+		else
+			this->setCursor(DEFAULT_CURSOR);
+	}
 	
 
 	if (mapEditor->GetAddBuilding() && mapEditor->GetNewElement() != nullptr)
@@ -202,6 +223,16 @@ void MapEditorGLHost::wheelEvent(QWheelEvent * event)
 void MapEditorGLHost::keyPressEvent(QKeyEvent * event)
 {
 	OpenGLHost::keyPressEvent(event);
+
+	if (event->key() == Qt::Key_Delete)
+	{
+		if (mapEditor->GetSelectedElement() != NULL)
+		{
+			mapEditor->GetMap()->RemoveMapElement(mapEditor->GetSelectedElement());
+			mapEditor->SetSelectedElement(nullptr);
+			mapEditor->SetMapElementsChanged(true);
+		}
+	}
 }
 
 void MapEditorGLHost::keyReleaseEvent(QKeyEvent * event)

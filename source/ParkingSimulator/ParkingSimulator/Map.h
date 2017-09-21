@@ -43,6 +43,7 @@ public:
 	int GetWidth();
 	int GetHeight();
 	void AddMapElement(MapElement *mapElement);
+	void RemoveMapElement(MapElement *mapElement);
 	std::vector<MapElement*> GetMapElements();
 	std::vector<Obstacle*> GetObstacles();
 	std::vector<ParkingSpace*> GetParkingSpaces();

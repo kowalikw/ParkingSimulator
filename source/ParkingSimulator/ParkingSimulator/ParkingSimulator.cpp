@@ -6,13 +6,13 @@
 
 #include <QFileDialog>
 
-ParkingSimulator::ParkingSimulator(QWidget *parent)
-	: QMainWindow(parent)
+ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
 	this->setStyleSheet("background-color: #2a2a2a;");
 
 	((MapEditorGLHost*)ui.glMapEditor)->SetMapEditor(&mapEditor);
+	//((PathPlannerGLHost*)ui.glPathPlanner)->SetPathPlanner(&pathPlanner);
 	((VisualisationGLHost*)ui.glVisualisation)->SetVisualisation(&visualisation);
 
 	renderTimer = new QTimer();
@@ -28,10 +28,13 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	connect(ui.btnNewMap, SIGNAL(released()), this, SLOT(createMap()));
 	connect(ui.btnSaveMap, SIGNAL(released()), this, SLOT(saveMap()));
 	connect(ui.btnLoadMap, SIGNAL(released()), this, SLOT(loadMap()));
+	connect(ui.btnClearMap, SIGNAL(released()), this, SLOT(clearMap()));
 	connect(ui.btnAddBuilding, SIGNAL(released()), this, SLOT(addBuilding()));
 	connect(ui.btnAddDecoration, SIGNAL(released()), this, SLOT(addDecoration()));
 	connect(ui.btnAddParkPlace, SIGNAL(released()), this, SLOT(addParkPlace()));
 	connect(ui.btnAddRoad, SIGNAL(released()), this, SLOT(addRoad()));	
+	connect(ui.btnMapElementRemove, SIGNAL(released()), this, SLOT(mapElementRemove()));
+	connect(ui.btnMapElementSaveProperties, SIGNAL(released()), this, SLOT(mapElementSaveProperties()));
 
 	connect(ui.btnAddSimulation, SIGNAL(released()), this, SLOT(addSimulation()));
 	connect(ui.btnRemoveSimulation, SIGNAL(released()), this, SLOT(removeSimulation()));
@@ -45,22 +48,14 @@ ParkingSimulator::ParkingSimulator(QWidget *parent)
 	connect(ui.simulationPrograssBar, SIGNAL(sliderPressed()), this, SLOT(simulationProgressBarPressed()));
 	connect(ui.simulationPrograssBar, SIGNAL(sliderReleased()), this, SLOT(simulationProgressBarReleased()));
 
+	connect(ui.treeMapElements, SIGNAL(itemSelectionChanged()), this, SLOT(treeMapElementsSelectionChanged()));
+
+	ui.mapElementProperties->hide();
+
 	ui.simulationPrograssBar->setTracking(false);
 
 	ui.treeMapElements->setColumnCount(1);
-	QList<QTreeWidgetItem *> items;
-
-	buildings = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Buildings")));
-	decorations = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Decorations")));
-	roads = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Roads")));
-	parkPlaces = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Park places")));
-
-	items.append(buildings);
-	items.append(decorations);
-	items.append(roads);
-	items.append(parkPlaces);
-
-	ui.treeMapElements->insertTopLevelItems(0, items);
+	ui.treeMapElements->insertTopLevelItems(0, *mapEditor.GetMapElementsTreeItems());
 }
 
 void ParkingSimulator::renderTimerCall()
@@ -78,6 +73,66 @@ void ParkingSimulator::renderTimerCall()
 
 void ParkingSimulator::updateTimerCall()
 {
+	if (mapEditor.GetMapElementsChanged())
+	{
+		updateMapElementsTree();
+		mapEditor.SetMapElementsChanged(false);
+	}
+
+	if (mapEditor.GetSelectedElement() != NULL && mapEditor.GetMapElementsPropertiesChanged())
+	{
+		MapElement *mapElement = mapEditor.GetSelectedElement();
+
+		ui.mapElementName->setText(QString::fromStdString(mapElement->GetName()));
+		ui.mapElementWidth->setValue(mapElement->GetSize().x);
+		ui.mapElementHeight->setValue(mapElement->GetSize().y);
+		ui.mapElementPositionX->setValue(mapElement->GetPosition().x);
+		ui.mapElementPositionY->setValue(mapElement->GetPosition().y);
+		ui.mapElementRotation->setValue(glm::degrees(mapElement->GetRotation()));
+
+		mapEditor.SetMapElementsPropertiesChanged(false);
+	}
+
+	if (mapEditor.GetSelectedElementChanged())
+	{
+		if (mapEditor.GetSelectedElement() == NULL)
+		{
+			ui.mapElementProperties->hide();
+		}
+		else
+		{
+			ui.mapElementProperties->show();
+
+			if (dynamic_cast<Obstacle*>(mapEditor.GetSelectedElement()) != NULL)
+			{
+				int index = 0;
+				while (mapEditor.GetMap()->GetObstacles()[index] != mapEditor.GetSelectedElement())
+					index++;
+				QModelIndex nIndex = ui.treeMapElements->currentIndex();
+				int b = nIndex.row();
+				QModelIndex newIndex = nIndex.sibling(index, 0);
+				auto bb = newIndex.isValid();
+
+				ui.treeMapElements->setCurrentIndex(newIndex);
+
+				int lala = 0;
+
+			}
+			else if (dynamic_cast<Road*>(mapEditor.GetSelectedElement()) != NULL)
+			{
+
+			}
+			else if (dynamic_cast<ParkingSpace*>(mapEditor.GetSelectedElement()) != NULL)
+			{
+				int index = 0;
+				while (mapEditor.GetMap()->GetParkingSpaces()[index] != mapEditor.GetSelectedElement())
+					index++;
+
+			}
+		}
+		mapEditor.SetSelectedElementChanged(false);
+	}
+
 	if (visualisation.GetCurrentSimulation() != NULL)
 	{
 		Simulation *simulation = visualisation.GetCurrentSimulation();
@@ -96,11 +151,10 @@ void ParkingSimulator::updateTimerCall()
 
 #pragma region Map editor.
 
-
-
 void ParkingSimulator::createMap()
 {
 	CreateMap createMapWindow;
+	createMapWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	if (createMapWindow.exec())
 	{
 		int width = createMapWindow.GetMapWidth();
@@ -126,6 +180,15 @@ void ParkingSimulator::loadMap()
 
 	if(filePath != "")
 		mapEditor.LoadMap(filePath.toStdString());
+}
+
+void ParkingSimulator::clearMap()
+{
+	mapEditor.SetSelectedElement(nullptr);
+	while(mapEditor.GetMap()->GetMapElements().size() > 0)
+		mapEditor.GetMap()->RemoveMapElement(mapEditor.GetMap()->GetMapElements()[0]);
+	mapEditor.SetMapElementsChanged(true);
+	mapEditor.SetSelectedElementChanged(true);
 }
 
 void ParkingSimulator::addBuilding()
@@ -209,31 +272,106 @@ void ParkingSimulator::addParkPlace()
 	}
 }
 
+void ParkingSimulator::mapElementRemove()
+{
+	mapEditor.GetMap()->RemoveMapElement(mapEditor.GetSelectedElement());
+	mapEditor.SetSelectedElement(nullptr);
+	mapEditor.SetMapElementsChanged(true);
+
+	ui.mapElementProperties->hide();
+}
+
+void ParkingSimulator::mapElementSaveProperties()
+{
+	MapElement *selectedElement = mapEditor.GetSelectedElement();
+
+	string oldName = selectedElement->GetName();
+	glm::vec2 oldSize = selectedElement->GetSize();
+	glm::vec2 oldPosition = selectedElement->GetPosition();
+	double oldRotation = selectedElement->GetRotation();
+
+	selectedElement->SetName(ui.mapElementName->toPlainText().toStdString());
+	selectedElement->SetSize(glm::vec2(ui.mapElementWidth->value(), ui.mapElementHeight->value()));
+	selectedElement->SetPosition(glm::vec2(ui.mapElementPositionX->value(), ui.mapElementPositionY->value()));
+	selectedElement->SetRotation(glm::radians(ui.mapElementRotation->value()));
+
+	if (!mapEditor.IsMapElementAdmissible(selectedElement))
+	{
+		selectedElement->SetName(oldName);
+		selectedElement->SetSize(oldSize);
+		selectedElement->SetPosition(oldPosition);
+		selectedElement->SetRotation(oldRotation);
+	}
+}
+
 void ParkingSimulator::updateMapElementsTree()
 {
-	QList<QTreeWidgetItem *> items;
+	auto mapElementsTree = *mapEditor.GetMapElementsTreeItems();
+	auto mapElementsTreeExpanded = mapEditor.GetMapElementsTreeItemsExpanded();
+	
+	ui.treeMapElements->clear();
+	ui.treeMapElements->insertTopLevelItems(0, mapElementsTree);
 
-	std::vector<Obstacle*> obstacles = mapEditor.GetMap()->GetObstacles();
-	for (int i = 0; i < mapEditor.GetMap()->GetObstacles().size(); ++i)
-		if(obstacles[i]->GetType() == ObstacleType::Building)
-			items.append(new QTreeWidgetItem(buildings, QStringList(QString::fromStdString(obstacles[i]->GetName()))));
-	ui.treeMapElements->insertTopLevelItems(0, items);
+	for (int i = 0; i < 5; i++)
+	{
+		if (mapElementsTreeExpanded[i])
+			ui.treeMapElements->expandItem(mapElementsTree[i]);
+	}
+}
 
-	items.clear();
-	for (int i = 0; i < 5; ++i)
-		items.append(new QTreeWidgetItem(decorations, QStringList(QString("Decoration: %1").arg(i))));
-	ui.treeMapElements->insertTopLevelItems(0, items);
+void ParkingSimulator::treeMapElementsSelectionChanged()
+{
+	auto currentItem = ui.treeMapElements->currentItem();
+	auto currentIndex = ui.treeMapElements->currentIndex();
 
-	items.clear();
-	for (int i = 0; i < 5; ++i)
-		items.append(new QTreeWidgetItem(roads, QStringList(QString("Road: %1").arg(i))));
-	ui.treeMapElements->insertTopLevelItems(0, items);
+	if (currentItem->parent() == NULL)
+		return;
 
-	items.clear();
-	std::vector<ParkingSpace*> parkingSpaces = mapEditor.GetMap()->GetParkingSpaces();
-	for (int i = 0; i < parkingSpaces.size(); ++i)
-		items.append(new QTreeWidgetItem(buildings, QStringList(QString::fromStdString(parkingSpaces[i]->GetName()))));
-	ui.treeMapElements->insertTopLevelItems(0, items);
+	QString parentItemTitle = currentItem->parent()->text(0);
+	if (parentItemTitle == "Buildings")
+	{
+		int i = 0;
+		int index = 0;
+		if (mapEditor.GetMap()->GetObstacles().size() > 0)
+		{
+			while (index < currentIndex.row())
+			{
+				if (mapEditor.GetMap()->GetObstacles()[i]->GetType() == ObstacleType::Building)
+					index++;
+				i++;
+			}
+			mapEditor.SetSelectedElement(mapEditor.GetMap()->GetObstacles()[i]);
+		}
+		else
+			mapEditor.SetSelectedElement(nullptr);
+	}
+	else if (parentItemTitle == "Decorations")
+	{
+		int i = 0;
+		int index = 0;
+		if (mapEditor.GetMap()->GetObstacles().size() > 0)
+		{
+			while (index < currentIndex.row())
+			{
+				if (mapEditor.GetMap()->GetObstacles()[i]->GetType() == ObstacleType::Decoration)
+					index++;
+				i++;
+			}
+			mapEditor.SetSelectedElement(mapEditor.GetMap()->GetObstacles()[i]);
+		}
+		else
+			mapEditor.SetSelectedElement(nullptr);
+	}
+	else if (parentItemTitle == "Roads")
+	{
+		//mapEditor.SetSelectedElement(mapEditor.GetMap()->GetMapElements()[index - 5]);
+	}
+	else if (parentItemTitle == "Park places")
+	{
+		mapEditor.SetSelectedElement(mapEditor.GetMap()->GetParkingSpaces()[currentIndex.row()]);
+	}
+	else
+		mapEditor.SetSelectedElement(nullptr);
 }
 
 void ParkingSimulator::clearAddButtons()

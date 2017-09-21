@@ -3,15 +3,20 @@
 
 #include "Map.h"
 #include "GeometryHelper.h"
+#include <qlist.h>
+#include <qtreewidget.h>
 
 class MapEditor
 {
 public:
+	MapEditor();
+
 	void CreateMap(int width, int height);
 	void SaveMap(string filePath);
 	void LoadMap(string filePath);
 	void AddObstacle(string name, int width, int height, ObstacleType type);
 	void AddObstacleConfirm();
+	void AddParkingSpace(string name, int width, int height, ParkingSpaceType type);
 	Map *GetMap();
 
 	bool GetAddBuilding();
@@ -19,6 +24,9 @@ public:
 	bool GetAddRoad();
 	bool GetAddParkPlace();
 	bool GetResetAddButtons();
+	bool GetSelectedElementChanged();
+	bool GetMapElementsChanged();
+	bool GetMapElementsPropertiesChanged();
 
 	void SetMap(Map *map);
 	void SetAddBuilding(bool addBuilding);
@@ -26,6 +34,9 @@ public:
 	void SetAddRoad(bool addRoad);
 	void SetAddParkPlace(bool addParkPlace);
 	void SetResetAddButtons(bool resetAddButtons);
+	void SetSelectedElementChanged(bool selectedElementChanged);
+	void SetMapElementsChanged(bool mapElementsChanged);
+	void SetMapElementsPropertiesChanged(bool mapElementsPropertiesChanged);
 
 	void SetNewElement(MapElement *mapElement);
 	void SetSelectedElement(MapElement *mapElement);
@@ -39,18 +50,33 @@ public:
 	MapElement * GetMapElementToResize(glm::vec2 mousePosition, int *corner, MapElement *selectedElement = nullptr);
 
 	bool IsMapElementAdmissible(MapElement *mapElement);
+	bool MapContainsMapElement(MapElement *mapElement);
+	bool MapElementIntersectsMapElement(MapElement *mapElement);
+
+	QList<bool> GetMapElementsTreeItemsExpanded();
+	QList<QTreeWidgetItem*> * GetMapElementsTreeItems();
 private:
+	QList<bool> mapElementsTreeItemsExpanded;
+	QList<QTreeWidgetItem*> *mapElementsTreeItems;
+	QTreeWidgetItem *mapElementsTree = NULL;
+	QTreeWidgetItem *buildingsTree = NULL;
+	QTreeWidgetItem *decorationsTree = NULL;
+	QTreeWidgetItem *roadsTree = NULL;
+	QTreeWidgetItem *parkPlacesTree = NULL;
+
 	Map *map = NULL;
 	bool addBuilding = false;
 	bool addDecoration = false;
 	bool addRoad = false;
 	bool addParkPlace = false;
 	bool resetAddButtons = false;
+	bool selectedElementChanged = false;
+	bool mapElementsChanged = false;
+	bool mapElementsPropertiesChanged = false;
 	MapElement *newElement = NULL;
 	MapElement *selectedElement = NULL;
 
-	bool mapContainsMapElement(MapElement *mapElement);
-	bool mapElementIntersectsMapElement(MapElement *mapElement);
+	void updateMapElementsTreeItem();
 
 	const double DISTANCE_TO_MOVE = 15;
 	const double DISTANCE_TO_ROTATE = 30;

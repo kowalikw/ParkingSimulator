@@ -62,12 +62,15 @@
     <Filter Include="Header Files\Helpers">
       <UniqueIdentifier>{a1f3bc4f-f686-4f0a-9999-aaea54ded741}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Windows">
+      <UniqueIdentifier>{5e1da223-6988-4026-a4e8-cafbca8a937f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Windows">
+      <UniqueIdentifier>{f0f82aab-8ba2-4439-bb54-8bda0737a812}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ParkingSimulator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ParkingSimulator.cpp">
@@ -148,9 +151,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_CreateMap.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="CreateMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_MapEditorGLHost.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -162,9 +162,6 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_AddBuilding.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="AddBuilding.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Graph.cpp">
       <Filter>Source Files</Filter>
@@ -190,11 +187,17 @@
     <ClCompile Include="Road.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CreateMap.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="AddBuilding.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="ParkingSimulator.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="ParkingSimulator.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="ParkingSimulator.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
@@ -207,23 +210,26 @@
     <CustomBuild Include="PathPlannerGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
     </CustomBuild>
-    <CustomBuild Include="CreateMap.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="CreateMap.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="MapEditorGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
     </CustomBuild>
-    <CustomBuild Include="AddBuilding.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="AddBuilding.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="VisualisationGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
+    </CustomBuild>
+    <CustomBuild Include="CreateMap.h">
+      <Filter>Header Files\Windows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ParkingSimulator.h">
+      <Filter>Header Files\Windows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddBuilding.h">
+      <Filter>Header Files\Windows</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

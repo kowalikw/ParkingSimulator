@@ -1,5 +1,10 @@
 #include "MapEditor.h"
 
+MapEditor::MapEditor()
+{
+	mapElementsTreeItems = new QList<QTreeWidgetItem*>();
+}
+
 void MapEditor::CreateMap(int width, int height)
 {
 	map = new Map(width, height);
@@ -23,11 +28,14 @@ void MapEditor::LoadMap(string filePath)
 	boost::archive::text_iarchive ia(ifs);
 
 	ia >> this->map;
+
+	SetMapElementsChanged(true);
+	SetMapElementsPropertiesChanged(true);
 }
 
 void MapEditor::AddObstacle(string name, int width, int height, ObstacleType type)
 {
-	MapElement *newElement = new Obstacle(glm::vec2(), glm::vec2(width, height), ObstacleType::Building, name);
+	MapElement *newElement = new Obstacle(glm::vec2(), glm::vec2(width, height), type, name);
 	this->newElement = newElement;
 }
 
@@ -39,6 +47,12 @@ void MapEditor::AddObstacleConfirm()
 		this->newElement = nullptr;
 		this->resetAddButtons = true;
 	}
+}
+
+void MapEditor::AddParkingSpace(string name, int width, int height, ParkingSpaceType type)
+{
+	MapElement *newElement = new ParkingSpace(glm::vec2(), glm::vec2(width, height), type);
+	this->newElement = newElement;
 }
 
 Map *MapEditor::GetMap()
@@ -76,6 +90,21 @@ bool MapEditor::GetResetAddButtons()
 	return false;
 }
 
+bool MapEditor::GetSelectedElementChanged()
+{
+	return this->selectedElementChanged;
+}
+
+bool MapEditor::GetMapElementsChanged()
+{
+	return this->mapElementsChanged;
+}
+
+bool MapEditor::GetMapElementsPropertiesChanged()
+{
+	return this->mapElementsPropertiesChanged;
+}
+
 void MapEditor::SetMap(Map *map)
 {
 	this->map = map;
@@ -106,6 +135,21 @@ void MapEditor::SetResetAddButtons(bool resetAddButtons)
 	this->resetAddButtons = resetAddButtons;
 }
 
+void MapEditor::SetSelectedElementChanged(bool selectedElementChanged)
+{
+	this->selectedElementChanged = selectedElementChanged;
+}
+
+void MapEditor::SetMapElementsChanged(bool mapElementsChanged)
+{
+	this->mapElementsChanged = mapElementsChanged;
+}
+
+void MapEditor::SetMapElementsPropertiesChanged(bool mapElementsPropertiesChanged)
+{
+	this->mapElementsPropertiesChanged = mapElementsPropertiesChanged;
+}
+
 void MapEditor::SetNewElement(MapElement * mapElement)
 {
 	this->newElement = mapElement;
@@ -114,6 +158,9 @@ void MapEditor::SetNewElement(MapElement * mapElement)
 void MapEditor::SetSelectedElement(MapElement * mapElement)
 {
 	this->selectedElement = mapElement;
+
+	SetSelectedElementChanged(true);
+	SetMapElementsPropertiesChanged(true);
 }
 
 MapElement * MapEditor::GetNewElement()
@@ -227,10 +274,10 @@ MapElement * MapEditor::GetMapElementToResize(glm::vec2 mousePosition, int * cor
 
 bool MapEditor::IsMapElementAdmissible(MapElement * mapElement)
 {
-	return mapContainsMapElement(mapElement) && !mapElementIntersectsMapElement(mapElement);
+	return MapContainsMapElement(mapElement) && !MapElementIntersectsMapElement(mapElement);
 }
 
-bool MapEditor::mapContainsMapElement(MapElement * mapElement)
+bool MapEditor::MapContainsMapElement(MapElement * mapElement)
 {
 	std::vector<glm::vec2> mapPolygon = map->GetPoints();
 	std::vector<glm::vec2> mapElementPolygon = mapElement->GetPoints();
@@ -238,7 +285,7 @@ bool MapEditor::mapContainsMapElement(MapElement * mapElement)
 	return GeometryHelper::CheckPolygonContainsPolygon(mapPolygon, mapElementPolygon);
 }
 
-bool MapEditor::mapElementIntersectsMapElement(MapElement * mapElement)
+bool MapEditor::MapElementIntersectsMapElement(MapElement * mapElement)
 {
 	std::vector<MapElement*> mapElements = map->GetMapElements();
 	for (int i = 0; i < mapElements.size(); i++)
@@ -250,4 +297,66 @@ bool MapEditor::mapElementIntersectsMapElement(MapElement * mapElement)
 	}
 
 	return false;
+}
+
+QList<bool> MapEditor::GetMapElementsTreeItemsExpanded()
+{
+	return this->mapElementsTreeItemsExpanded;
+}
+
+QList<QTreeWidgetItem*> * MapEditor::GetMapElementsTreeItems()
+{
+	updateMapElementsTreeItem();
+
+	return this->mapElementsTreeItems;
+}
+
+void MapEditor::updateMapElementsTreeItem()
+{
+	mapElementsTreeItemsExpanded.clear();
+
+	if(mapElementsTree != NULL)
+		mapElementsTreeItemsExpanded.append(mapElementsTree->isExpanded());
+	mapElementsTree = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Map Elements")));
+
+	if (buildingsTree != NULL)
+		mapElementsTreeItemsExpanded.append(buildingsTree->isExpanded());
+	buildingsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Buildings")), 7);
+
+	if (decorationsTree != NULL)
+		mapElementsTreeItemsExpanded.append(decorationsTree->isExpanded());
+	decorationsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Decorations")));
+
+	if (roadsTree != NULL)
+		mapElementsTreeItemsExpanded.append(roadsTree->isExpanded());
+	roadsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Roads")));
+
+	if (parkPlacesTree != NULL)
+		mapElementsTreeItemsExpanded.append(parkPlacesTree->isExpanded());
+	parkPlacesTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Park places")));
+
+	mapElementsTreeItems->clear();
+	mapElementsTreeItems->append(mapElementsTree);
+	mapElementsTreeItems->append(buildingsTree);
+	mapElementsTreeItems->append(decorationsTree);
+	mapElementsTreeItems->append(roadsTree);
+	mapElementsTreeItems->append(parkPlacesTree);
+
+	if (map != NULL)
+	{
+		std::vector<Obstacle*> obstacles = map->GetObstacles();
+		for (int i = 0; i < obstacles.size(); ++i)
+			if (obstacles[i]->GetType() == ObstacleType::Building)
+				mapElementsTreeItems->append(new QTreeWidgetItem(buildingsTree, QStringList(QString::fromStdString(obstacles[i]->GetName()))));
+
+		for (int i = 0; i < 5; ++i)
+			mapElementsTreeItems->append(new QTreeWidgetItem(decorationsTree, QStringList(QString("Decoration: %1").arg(i))));
+
+		for (int i = 0; i < 5; ++i)
+			mapElementsTreeItems->append(new QTreeWidgetItem(roadsTree, QStringList(QString("Road: %1").arg(i))));
+
+		std::vector<ParkingSpace*> parkingSpaces = map->GetParkingSpaces();
+		for (int i = 0; i < parkingSpaces.size(); ++i)
+			mapElementsTreeItems->append(new QTreeWidgetItem(parkPlacesTree, QStringList(QString::fromStdString(parkingSpaces[i]->GetName()))));
+	}
 }

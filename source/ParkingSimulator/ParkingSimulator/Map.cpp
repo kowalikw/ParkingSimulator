@@ -36,6 +36,33 @@ void Map::AddMapElement(MapElement *mapElement)
 		this->parkingSpaces.push_back((ParkingSpace*)mapElement);
 }
 
+void Map::RemoveMapElement(MapElement * mapElement)
+{
+	std::vector<MapElement*> newMapElements;
+	for (int i = 0; i < mapElements.size(); i++)
+		if (mapElements[i] == mapElement)
+			continue;
+		else
+			newMapElements.push_back(mapElements[i]);
+	this->mapElements = newMapElements;
+
+	std::vector<Obstacle*> newObstacles;
+	for (int i = 0; i < obstacles.size(); i++)
+		if (obstacles[i] == mapElement)
+			continue;
+		else
+			newObstacles.push_back(obstacles[i]);
+	this->obstacles = newObstacles;
+
+	std::vector<ParkingSpace*> newParkingSpaces;
+	for (int i = 0; i < newParkingSpaces.size(); i++)
+		if (parkingSpaces[i] == mapElement)
+			continue;
+		else
+			newParkingSpaces.push_back(newParkingSpaces[i]);
+	this->parkingSpaces = newParkingSpaces;
+}
+
 vector<MapElement*> Map::GetMapElements()
 {
 	return this->mapElements;

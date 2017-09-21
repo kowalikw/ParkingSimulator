@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1079</width>
+    <width>1088</width>
     <height>698</height>
    </rect>
   </property>
@@ -37,6 +37,9 @@
         <stylestrategy>PreferAntialias</stylestrategy>
         <kerning>true</kerning>
        </font>
+      </property>
+      <property name="cursor">
+       <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
@@ -76,7 +79,7 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -92,22 +95,26 @@ QTabBar::tab:selected {
       </widget>
       <widget class="QWidget" name="tab_2">
        <property name="styleSheet">
-        <string notr="true">QPushButton#btnNewMap, QPushButton#btnLoadMap, QPushButton#btnSaveMap, QToolButton#btnStep2 {
+        <string notr="true">QPushButton#btnNewMap, QPushButton#btnLoadMap, QPushButton#btnSaveMap, QToolButton#btnClearMap {
     background-color: #3b3e41;
     border-radius: 3px;
     border: 1px solid #757575;
     font: bold 18px;
 	color: white;
-    min-width: 10em;
+    min-width: 2em;
     padding: 6px;
 }
 
-QPushButton#btnNewMap:hover, QPushButton#btnLoadMap:hover, QPushButton#btnSaveMap:hover, QToolButton#btnStep2:hover {
+QPushButton#btnNewMap:hover, QPushButton#btnLoadMap:hover, QPushButton#btnSaveMap:hover, QToolButton#btnClearMap:hover {
     background-color: #85b448;
 }
 
-QPushButton#btnNewMap:pressed, QPushButton#btnLoadMap:pressed, QPushButton#btnSaveMap:pressed, QToolButton#btnStep2:pressed {
+QPushButton#btnNewMap:pressed, QPushButton#btnLoadMap:pressed, QPushButton#btnSaveMap:pressed,  QToolButton#btnClearMap:pressed {
     background-color: #d86a39;
+}
+
+QToolButton#btnClearMap {
+	font: bold 16px;
 }
 
 QTreeView::branch:has-siblings:!adjoins-item {
@@ -156,116 +163,160 @@ QPushButton#btnAddBuilding:pressed, QPushButton#btnAddDecoration:pressed, QPushB
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
           <property name="topMargin">
            <number>0</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="sizeConstraint">
-             <enum>QLayout::SetDefaultConstraint</enum>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
             </property>
             <item>
-             <widget class="QPushButton" name="btnNewMap">
-              <property name="maximumSize">
-               <size>
-                <width>300</width>
-                <height>60</height>
-               </size>
+             <layout class="QHBoxLayout" name="horizontalLayout">
+              <property name="spacing">
+               <number>5</number>
               </property>
-              <property name="text">
-               <string> New map</string>
+              <property name="sizeConstraint">
+               <enum>QLayout::SetDefaultConstraint</enum>
               </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>Resources/MapEditorIcons/new.png</normaloff>Resources/MapEditorIcons/new.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>44</width>
-                <height>44</height>
-               </size>
-              </property>
-             </widget>
+              <item>
+               <widget class="QPushButton" name="btnNewMap">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>64</horstretch>
+                  <verstretch>56</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>58</width>
+                  <height>56</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>56</height>
+                 </size>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/MapEditorIcons/new.png</normaloff>Resources/MapEditorIcons/new.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>32</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnLoadMap">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>64</horstretch>
+                  <verstretch>56</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>58</width>
+                  <height>56</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>56</height>
+                 </size>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/MapEditorIcons/open.png</normaloff>Resources/MapEditorIcons/open.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>36</width>
+                  <height>36</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnSaveMap">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>64</horstretch>
+                  <verstretch>56</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>58</width>
+                  <height>56</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>64</width>
+                  <height>56</height>
+                 </size>
+                </property>
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/MapEditorIcons/save.png</normaloff>Resources/MapEditorIcons/save.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>30</width>
+                  <height>30</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
-            <item>
-             <widget class="QPushButton" name="btnLoadMap">
-              <property name="maximumSize">
-               <size>
-                <width>300</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="text">
-               <string> Open map</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>Resources/MapEditorIcons/open.png</normaloff>Resources/MapEditorIcons/open.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>56</width>
-                <height>56</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btnSaveMap">
-              <property name="maximumSize">
-               <size>
-                <width>300</width>
-                <height>60</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>  Save map</string>
-              </property>
-              <property name="icon">
-               <iconset>
-                <normaloff>Resources/MapEditorIcons/save.png</normaloff>Resources/MapEditorIcons/save.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>44</width>
-                <height>44</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QTreeWidget" name="treeMapElements">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
               <property name="minimumSize">
                <size>
-                <width>100</width>
+                <width>204</width>
                 <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>200</width>
+                <height>16777215</height>
                </size>
               </property>
               <property name="font">
@@ -292,6 +343,38 @@ border-radius: 3px;</string>
               </column>
              </widget>
             </item>
+            <item>
+             <widget class="QToolButton" name="btnClearMap">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>204</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>204</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="text">
+               <string>Clear map</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
             <item>
              <widget class="MapEditorGLHost" name="glMapEditor">
               <property name="sizePolicy">
@@ -324,6 +407,21 @@ border-radius: 3px;</string>
                 </property>
                 <item row="1" column="0">
                  <widget class="QPushButton" name="btnAddRoad">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>110</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -341,6 +439,21 @@ border-radius: 3px;</string>
                 </item>
                 <item row="0" column="0">
                  <widget class="QPushButton" name="btnAddBuilding">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>110</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -358,6 +471,21 @@ border-radius: 3px;</string>
                 </item>
                 <item row="0" column="1">
                  <widget class="QPushButton" name="btnAddDecoration">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>110</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -375,6 +503,21 @@ border-radius: 3px;</string>
                 </item>
                 <item row="1" column="1">
                  <widget class="QPushButton" name="btnAddParkPlace">
+                  <property name="minimumSize">
+                   <size>
+                    <width>110</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>110</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -393,225 +536,373 @@ border-radius: 3px;</string>
                </layout>
               </item>
               <item>
-               <widget class="QFrame" name="frame">
-                <property name="styleSheet">
-                 <string notr="true">background-color: #3b3e41;
- color: white;
-border: 1px solid #757575;
-border-radius: 3px;
+               <layout class="QHBoxLayout" name="horizontalLayout_9">
+                <property name="topMargin">
+                 <number>20</number>
+                </property>
+                <item>
+                 <widget class="QFrame" name="mapElementProperties">
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QFrame { 
+	background-color: #303335;
+ 	color: white;
+	border: 1px solid #757575;
+	border-radius: 3px;
+	width: 100px;
+	padding: 3px;
+}
 
 QLabel {
 	border: 0px;
+}
+
+QDoubleSpinBox, QTextEdit {
+    padding-right: 15px; /* make room for the arrows */
+	background-color: #3b3e41;
+    border: 1px solid #757575;
+	border-radius: 0px;
+	padding: 1px 3px;
+	border-radius: 0px;
+	color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right; /* position at the top right corner */
+    width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+    border: 0px;
+}
+
+QDoubleSpinBox::up-arrow {
+    image: url(Resources/arrow_up.png);
+    width: 12px;
+    height: 12px;
+	padding-top: 3px;
+	padding-right: 3px;
+}
+
+QDoubleSpinBox::up-arrow:hover {
+	image: url(Resources/arrow_up_hover.png);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right; /* position at bottom right corner */
+    width: 16px;
+    border: 0px;
+    border-top-width: 0;
+}
+
+QDoubleSpinBox::down-arrow {
+    image: url(Resources/arrow_down.png);
+    width: 12px;
+    height: 12px;
+	padding-bottom: 3px;
+	padding-right: 3px;
+}
+
+QDoubleSpinBox::down-arrow:hover {
+	image: url(Resources/arrow_down_hover.png);
+}
+
+QPushButton#btnMapElementSaveProperties, QPushButton#btnMapElementRemove {
+    background-color: #3b3e41;
+    border-radius: 3px;
+    border: 1px solid #757575;
+    font: bold 12px;
+	color: white;
+    min-width: 5em;
+    padding: 6px;
+}
+
+QPushButton#btnMapElementSaveProperties:hover, QPushButton#btnMapElementRemove:hover {
+    background-color: #85b448;
+}
+
+QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove:pressed {
+    background-color: #d86a39;
 }</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_4">
-                 <property name="leftMargin">
-                  <number>5</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>5</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>5</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>5</number>
-                 </property>
-                 <item>
-                  <widget class="QLabel" name="label_6">
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                     <underline>true</underline>
-                    </font>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_4">
+                   <property name="leftMargin">
+                    <number>5</number>
                    </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: 0px;</string>
-                   </property>
-                   <property name="text">
-                    <string>Map Element Properties</string>
-                   </property>
-                   <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
-                  <layout class="QGridLayout" name="gridLayout_6">
                    <property name="topMargin">
-                    <number>0</number>
+                    <number>5</number>
                    </property>
-                   <item row="1" column="0">
-                    <widget class="QLabel" name="label_2">
+                   <property name="rightMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>5</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="label_6">
                      <property name="font">
                       <font>
+                       <pointsize>11</pointsize>
                        <weight>75</weight>
                        <bold>true</bold>
+                       <underline>true</underline>
                       </font>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">border: 0px;</string>
+                      <string notr="true">border: 0px;
+margin-bottom: 5px;</string>
                      </property>
                      <property name="text">
-                      <string>Position X:</string>
+                      <string>Map Element Properties</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
                      </property>
                     </widget>
                    </item>
-                   <item row="2" column="0">
-                    <widget class="QLabel" name="label_3">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
+                   <item>
+                    <layout class="QGridLayout" name="gridLayout_6">
+                     <property name="leftMargin">
+                      <number>2</number>
                      </property>
-                     <property name="styleSheet">
-                      <string notr="true">border: 0px;</string>
+                     <property name="topMargin">
+                      <number>0</number>
                      </property>
-                     <property name="text">
-                      <string>Position Y:</string>
+                     <property name="rightMargin">
+                      <number>4</number>
                      </property>
-                    </widget>
+                     <item row="3" column="0">
+                      <widget class="QLabel" name="label_2">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">border: 0px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Position:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="4" column="0">
+                      <widget class="QLabel" name="label_7">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">border: 0px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Rotation:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="QLabel" name="label">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">border: 0px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Name:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="1">
+                      <widget class="QTextEdit" name="mapElementName">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>22</height>
+                        </size>
+                       </property>
+                       <property name="verticalScrollBarPolicy">
+                        <enum>Qt::ScrollBarAlwaysOff</enum>
+                       </property>
+                       <property name="horizontalScrollBarPolicy">
+                        <enum>Qt::ScrollBarAlwaysOff</enum>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="QLabel" name="label_5">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">border: 0px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Height:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="QLabel" name="label_4">
+                       <property name="font">
+                        <font>
+                         <weight>75</weight>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">border: 0px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Width:</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="1">
+                      <layout class="QHBoxLayout" name="horizontalLayout_8">
+                       <item>
+                        <widget class="QDoubleSpinBox" name="mapElementPositionX">
+                         <property name="minimum">
+                          <double>-99999.000000000000000</double>
+                         </property>
+                         <property name="maximum">
+                          <double>99999.000000000000000</double>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QDoubleSpinBox" name="mapElementPositionY">
+                         <property name="minimum">
+                          <double>-99999.000000000000000</double>
+                         </property>
+                         <property name="maximum">
+                          <double>99999.000000000000000</double>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                     <item row="4" column="1">
+                      <widget class="QDoubleSpinBox" name="mapElementRotation">
+                       <property name="minimum">
+                        <double>-9999.000000000000000</double>
+                       </property>
+                       <property name="maximum">
+                        <double>9999.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="1">
+                      <widget class="QDoubleSpinBox" name="mapElementHeight">
+                       <property name="maximum">
+                        <double>9999.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="1">
+                      <widget class="QDoubleSpinBox" name="mapElementWidth">
+                       <property name="maximum">
+                        <double>9999.000000000000000</double>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </item>
-                   <item row="2" column="1">
-                    <widget class="QSpinBox" name="mapElementY"/>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_2">
+                     <property name="topMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QPushButton" name="btnMapElementRemove">
+                       <property name="minimumSize">
+                        <size>
+                         <width>84</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>110</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>PointingHandCursor</cursorShape>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">color: #cc0000; margin-top: 6px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Remove</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </item>
-                   <item row="5" column="1">
-                    <widget class="QSpinBox" name="mapElementWidth"/>
-                   </item>
-                   <item row="0" column="0">
-                    <widget class="QLabel" name="label">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_10">
+                     <property name="topMargin">
+                      <number>0</number>
                      </property>
-                     <property name="styleSheet">
-                      <string notr="true">border: 0px;</string>
-                     </property>
-                     <property name="text">
-                      <string>Name:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="1" column="1">
-                    <widget class="QSpinBox" name="mapElementX"/>
-                   </item>
-                   <item row="5" column="0">
-                    <widget class="QLabel" name="label_4">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">border: 0px;</string>
-                     </property>
-                     <property name="text">
-                      <string>Width:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="0" column="1">
-                    <widget class="QTextEdit" name="mapElementName">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>22</height>
-                      </size>
-                     </property>
-                     <property name="verticalScrollBarPolicy">
-                      <enum>Qt::ScrollBarAlwaysOff</enum>
-                     </property>
-                     <property name="horizontalScrollBarPolicy">
-                      <enum>Qt::ScrollBarAlwaysOff</enum>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="6" column="1">
-                    <widget class="QSpinBox" name="mapElementHeight"/>
-                   </item>
-                   <item row="6" column="0">
-                    <widget class="QLabel" name="label_5">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">border: 0px;</string>
-                     </property>
-                     <property name="text">
-                      <string>Height:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="0">
-                    <widget class="QLabel" name="label_7">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">border: 0px;</string>
-                     </property>
-                     <property name="text">
-                      <string>Rotation X:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="4" column="0">
-                    <widget class="QLabel" name="label_8">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">border: 0px; padding-right: 5px;</string>
-                     </property>
-                     <property name="text">
-                      <string>Rotation Y:</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item row="3" column="1">
-                    <widget class="QSpinBox" name="mapElementRotationX"/>
-                   </item>
-                   <item row="4" column="1">
-                    <widget class="QSpinBox" name="mapElementRotationY"/>
+                     <item>
+                      <widget class="QPushButton" name="btnMapElementSaveProperties">
+                       <property name="minimumSize">
+                        <size>
+                         <width>84</width>
+                         <height>0</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>110</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <pointsize>-1</pointsize>
+                         <weight>75</weight>
+                         <italic>false</italic>
+                         <bold>true</bold>
+                        </font>
+                       </property>
+                       <property name="cursor">
+                        <cursorShape>PointingHandCursor</cursorShape>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string>Save</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </item>
                   </layout>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="btnMapElementSaveProperties">
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="text">
-                    <string>Save properties</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
-               </widget>
+                 </widget>
+                </item>
+               </layout>
               </item>
               <item>
                <spacer name="verticalSpacer">
@@ -625,38 +916,6 @@ QLabel {
                  </size>
                 </property>
                </spacer>
-              </item>
-              <item>
-               <widget class="QToolButton" name="btnStep2">
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="text">
-                 <string>Go to path planner</string>
-                </property>
-                <property name="icon">
-                 <iconset>
-                  <normaloff>Resources/nextIcon.png</normaloff>Resources/nextIcon.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>32</width>
-                  <height>32</height>
-                 </size>
-                </property>
-                <property name="popupMode">
-                 <enum>QToolButton::DelayedPopup</enum>
-                </property>
-                <property name="toolButtonStyle">
-                 <enum>Qt::ToolButtonTextBesideIcon</enum>
-                </property>
-                <property name="autoRaise">
-                 <bool>false</bool>
-                </property>
-                <property name="arrowType">
-                 <enum>Qt::NoArrow</enum>
-                </property>
-               </widget>
               </item>
              </layout>
             </item>
