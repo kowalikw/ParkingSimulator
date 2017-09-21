@@ -5,6 +5,7 @@
 #include "glew.h"
 #include "ui_ParkingSimulator.h"
 #include "CreateMap.h"
+#include "WarningErrorMsg.h"
 #include "MapEditor.h"
 #include "Visualisation.h"
 #include "MapEditorGLHost.h"

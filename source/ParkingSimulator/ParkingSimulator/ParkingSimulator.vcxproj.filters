@@ -196,6 +196,15 @@
     <ClCompile Include="ParkingSimulator.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_WarningErrorMsg.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_WarningErrorMsg.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="WarningErrorMsg.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -229,6 +238,12 @@
       <Filter>Header Files\Windows</Filter>
     </CustomBuild>
     <CustomBuild Include="AddBuilding.h">
+      <Filter>Header Files\Windows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="WarningErrorMsg.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="WarningErrorMsg.h">
       <Filter>Header Files\Windows</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -298,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="Road.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_WarningErrorMsg.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

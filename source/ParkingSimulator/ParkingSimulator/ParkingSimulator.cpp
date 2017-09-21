@@ -301,6 +301,10 @@ void ParkingSimulator::mapElementSaveProperties()
 		selectedElement->SetSize(oldSize);
 		selectedElement->SetPosition(oldPosition);
 		selectedElement->SetRotation(oldRotation);
+
+		WarningErrorMsg warningWindow("An error occured!", "Map element after transformation is not admissible!", MessageType::Error);
+		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		warningWindow.exec();
 	}
 }
 

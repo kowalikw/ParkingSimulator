@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>224</width>
-    <height>140</height>
+    <width>240</width>
+    <height>168</height>
    </rect>
   </property>
   <property name="contextMenuPolicy">
@@ -19,7 +19,7 @@
   <property name="styleSheet">
    <string notr="true">QDialog {
 	background-color: #2a2a2a;
-	border: 1px solid #3b3e41;
+	border: 3px solid #3b3e41;
 	border-radius: 3px;
 }
 
