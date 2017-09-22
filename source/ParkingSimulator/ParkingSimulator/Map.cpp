@@ -55,11 +55,11 @@ void Map::RemoveMapElement(MapElement * mapElement)
 	this->obstacles = newObstacles;
 
 	std::vector<ParkingSpace*> newParkingSpaces;
-	for (int i = 0; i < newParkingSpaces.size(); i++)
+	for (int i = 0; i < parkingSpaces.size(); i++)
 		if (parkingSpaces[i] == mapElement)
 			continue;
 		else
-			newParkingSpaces.push_back(newParkingSpaces[i]);
+			newParkingSpaces.push_back(parkingSpaces[i]);
 	this->parkingSpaces = newParkingSpaces;
 }
 
@@ -110,11 +110,6 @@ Map * Map::GetExpandedMap(float expandSize)
 	MapElement *mapEdgeRight = new Obstacle(glm::vec2(width - expandSize / 2.0f, height / 2.0f), glm::vec2(expandSize, height - expandSize));
 	MapElement *mapEdgeTop = new Obstacle(glm::vec2(width / 2.0f, expandSize / 2.0f), glm::vec2(width - expandSize, expandSize));
 	MapElement *mapEdgeBottom = new Obstacle(glm::vec2(width / 2.0f, height - expandSize / 2.0f), glm::vec2(width - expandSize, expandSize));
-
-	//expandedMap->AddMapElement(mapEdgeLeft);
-	//expandedMap->AddMapElement(mapEdgeRight);
-	/*expandedMap->AddMapElement(mapEdgeTop);
-	expandedMap->AddMapElement(mapEdgeBottom);*/
 
 	return expandedMap;
 }

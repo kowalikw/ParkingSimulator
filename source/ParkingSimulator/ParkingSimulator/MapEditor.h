@@ -14,6 +14,10 @@ public:
 	void CreateMap(int width, int height);
 	void SaveMap(string filePath);
 	void LoadMap(string filePath);
+
+	void AddNewMapElement(MapElement *mapElement);
+	void AddNewMapElementConfirm();
+
 	void AddObstacle(string name, int width, int height, ObstacleType type);
 	void AddObstacleConfirm();
 	void AddParkingSpace(string name, int width, int height, ParkingSpaceType type);
@@ -27,6 +31,7 @@ public:
 	bool GetSelectedElementChanged();
 	bool GetMapElementsChanged();
 	bool GetMapElementsPropertiesChanged();
+	bool SelectedElementChangedOnMap();
 
 	void SetMap(Map *map);
 	void SetAddBuilding(bool addBuilding);
@@ -37,6 +42,7 @@ public:
 	void SetSelectedElementChanged(bool selectedElementChanged);
 	void SetMapElementsChanged(bool mapElementsChanged);
 	void SetMapElementsPropertiesChanged(bool mapElementsPropertiesChanged);
+	void SetSelectedElementChangedOnMap(bool selectedElementChangedOnMap);
 
 	void SetNewElement(MapElement *mapElement);
 	void SetSelectedElement(MapElement *mapElement);
@@ -62,7 +68,7 @@ private:
 	QTreeWidgetItem *buildingsTree = NULL;
 	QTreeWidgetItem *decorationsTree = NULL;
 	QTreeWidgetItem *roadsTree = NULL;
-	QTreeWidgetItem *parkPlacesTree = NULL;
+	QTreeWidgetItem *parkingPlacesTree = NULL;
 
 	Map *map = NULL;
 	bool addBuilding = false;
@@ -73,6 +79,7 @@ private:
 	bool selectedElementChanged = false;
 	bool mapElementsChanged = false;
 	bool mapElementsPropertiesChanged = false;
+	bool selectedElementChangedOnMap = false;
 	MapElement *newElement = NULL;
 	MapElement *selectedElement = NULL;
 

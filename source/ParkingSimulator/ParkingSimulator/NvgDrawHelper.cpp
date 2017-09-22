@@ -353,10 +353,10 @@ void NvgDrawHelper::drawObstacle(Obstacle * obstacle)
 	//nvgFillColor(vg, nvgRGBA(0, 0, 0, 128));
 	//nvgText(vg, x + w / 2, y + 16 + 1, "Nazwa przeszkody", NULL);
 
-	nvgStrokeColor(vg, BUILDING_BORDER_COLOR);
-	nvgStrokeWidth(vg, BUILDING_BORDER_WIDTH);
+	nvgStrokeColor(vg, obstacle->GetType() == Building ? BUILDING_BORDER_COLOR : DECORATION_BORDER_COLOR);
+	nvgStrokeWidth(vg, obstacle->GetType() == Building ? BUILDING_BORDER_WIDTH : DECORATION_BORDER_WIDTH);
 	nvgStroke(vg);
-	nvgFillColor(vg, BUILDING_COLOR);
+	nvgFillColor(vg, obstacle->GetType() == Building ? BUILDING_COLOR : DECORATION_COLOR);
 	nvgFill(vg);
 }
 

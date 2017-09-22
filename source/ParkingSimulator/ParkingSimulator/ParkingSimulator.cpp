@@ -108,18 +108,32 @@ void ParkingSimulator::updateTimerCall()
 
 			if (dynamic_cast<Obstacle*>(mapEditor.GetSelectedElement()) != NULL)
 			{
-				int index = 0;
-				while (mapEditor.GetMap()->GetObstacles()[index] != mapEditor.GetSelectedElement())
-					index++;
-				QModelIndex nIndex = ui.treeMapElements->currentIndex();
-				int b = nIndex.row();
-				QModelIndex newIndex = nIndex.sibling(index, 0);
-				auto bb = newIndex.isValid();
+				int i = 0;
+				int buildingIndex = 0;
+				int decorationIndex = 0;
+				while (mapEditor.GetMap()->GetObstacles()[i] != mapEditor.GetSelectedElement())
+				{
+					if (mapEditor.GetMap()->GetObstacles()[i]->GetType() == ObstacleType::Building)
+						buildingIndex++;
+					if (mapEditor.GetMap()->GetObstacles()[i]->GetType() == ObstacleType::Decoration)
+						decorationIndex++;
+					i++;
+				}
 
+				QModelIndex root = ui.treeMapElements->indexAt(QPoint(0, 0));
+				QModelIndex buildings = root.child(0, 0);
+				QModelIndex decorations = root.child(1, 0);
+
+				QModelIndex newIndex;
+				if (dynamic_cast<Obstacle*>(mapEditor.GetSelectedElement())->GetType() == ObstacleType::Building)
+				{
+					newIndex = buildings.child(buildingIndex, 0);
+				}
+				else if (dynamic_cast<Obstacle*>(mapEditor.GetSelectedElement())->GetType() == ObstacleType::Decoration)
+				{
+					newIndex = decorations.child(decorationIndex, 0);
+				}
 				ui.treeMapElements->setCurrentIndex(newIndex);
-
-				int lala = 0;
-
 			}
 			else if (dynamic_cast<Road*>(mapEditor.GetSelectedElement()) != NULL)
 			{
@@ -130,7 +144,10 @@ void ParkingSimulator::updateTimerCall()
 				int index = 0;
 				while (mapEditor.GetMap()->GetParkingSpaces()[index] != mapEditor.GetSelectedElement())
 					index++;
-
+				QModelIndex root = ui.treeMapElements->indexAt(QPoint(0, 0));
+				QModelIndex parkingPlaces = root.child(3, 0);
+				QModelIndex newIndex = parkingPlaces.child(index, 0);
+				ui.treeMapElements->setCurrentIndex(newIndex);
 			}
 		}
 		mapEditor.SetSelectedElementChanged(false);
@@ -214,9 +231,14 @@ void ParkingSimulator::addBuilding()
 
 	if (!mapEditor.GetAddBuilding())
 	{
-		ui.btnAddBuilding->setStyleSheet("background-color: #d86a39;");
-		mapEditor.SetAddBuilding(true);
-		mapEditor.AddObstacle("budynek", 100, 100, ObstacleType::Building);
+		AddMapElement addMapElementWindow(AddMapElementType::B);
+		addMapElementWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		if (addMapElementWindow.exec())
+		{
+			ui.btnAddBuilding->setStyleSheet("background-color: #d86a39;");
+			mapEditor.SetAddBuilding(true);
+			mapEditor.AddNewMapElement(addMapElementWindow.GetNewMapElement());
+		}
 	}
 	else
 	{
@@ -241,6 +263,7 @@ void ParkingSimulator::addDecoration()
 		{
 			ui.btnAddDecoration->setStyleSheet("background-color: #d86a39;");
 			mapEditor.SetAddDecoration(true);
+			mapEditor.AddNewMapElement(addMapElementWindow.GetNewMapElement());
 		}
 	}
 	else
@@ -280,8 +303,14 @@ void ParkingSimulator::addParkPlace()
 
 	if (!mapEditor.GetAddParkPlace())
 	{
-		ui.btnAddParkPlace->setStyleSheet("background-color: #d86a39;");
-		mapEditor.SetAddParkPlace(true);
+		AddMapElement addMapElementWindow(AddMapElementType::P);
+		addMapElementWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		if (addMapElementWindow.exec())
+		{
+			ui.btnAddParkPlace->setStyleSheet("background-color: #d86a39;");
+			mapEditor.SetAddParkPlace(true);
+			mapEditor.AddNewMapElement(addMapElementWindow.GetNewMapElement());
+		}
 	}
 	else
 	{
@@ -346,22 +375,41 @@ void ParkingSimulator::treeMapElementsSelectionChanged()
 	auto currentItem = ui.treeMapElements->currentItem();
 	auto currentIndex = ui.treeMapElements->currentIndex();
 
-	if (currentItem->parent() == NULL)
+	auto b = currentIndex.isValid();
+
+	if (currentItem->parent() == NULL || mapEditor.SelectedElementChangedOnMap())
+	{
+		mapEditor.SetSelectedElementChangedOnMap(false);
 		return;
+	}
 
 	QString parentItemTitle = currentItem->parent()->text(0);
 	if (parentItemTitle == "Buildings")
 	{
 		int i = 0;
-		int index = 0;
+		int buildingIndex = 0;
+
 		if (mapEditor.GetMap()->GetObstacles().size() > 0)
 		{
-			while (index < currentIndex.row())
+			do
 			{
+				if (i >= mapEditor.GetMap()->GetObstacles().size()) return;
 				if (mapEditor.GetMap()->GetObstacles()[i]->GetType() == ObstacleType::Building)
-					index++;
-				i++;
-			}
+				{
+					if (buildingIndex < currentIndex.row())
+					{
+						buildingIndex++;
+						i++;
+					}
+					else
+						break;
+				}
+				else
+				{
+					i++;
+				}
+			} while (buildingIndex <= currentIndex.row());
+
 			mapEditor.SetSelectedElement(mapEditor.GetMap()->GetObstacles()[i]);
 		}
 		else
@@ -370,15 +418,29 @@ void ParkingSimulator::treeMapElementsSelectionChanged()
 	else if (parentItemTitle == "Decorations")
 	{
 		int i = 0;
-		int index = 0;
+		int decorationIndex = 0;
+
 		if (mapEditor.GetMap()->GetObstacles().size() > 0)
 		{
-			while (index < currentIndex.row())
+			do
 			{
+				if (i >= mapEditor.GetMap()->GetObstacles().size()) return;
 				if (mapEditor.GetMap()->GetObstacles()[i]->GetType() == ObstacleType::Decoration)
-					index++;
-				i++;
-			}
+				{
+					if (decorationIndex < currentIndex.row())
+					{
+						decorationIndex++;
+						i++;
+					}
+					else
+						break;
+				}
+				else
+				{
+					i++;
+				}
+			} while (decorationIndex <= currentIndex.row());
+
 			mapEditor.SetSelectedElement(mapEditor.GetMap()->GetObstacles()[i]);
 		}
 		else
@@ -390,7 +452,8 @@ void ParkingSimulator::treeMapElementsSelectionChanged()
 	}
 	else if (parentItemTitle == "Park places")
 	{
-		mapEditor.SetSelectedElement(mapEditor.GetMap()->GetParkingSpaces()[currentIndex.row()]);
+		if (currentIndex.row() < mapEditor.GetMap()->GetParkingSpaces().size())
+			mapEditor.SetSelectedElement(mapEditor.GetMap()->GetParkingSpaces()[currentIndex.row()]);
 	}
 	else
 		mapEditor.SetSelectedElement(nullptr);

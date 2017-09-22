@@ -99,7 +99,7 @@ public:
 			parkingSpace = new ParkingSpace();
 			ar & *parkingSpace;
 			parkingSpaces.push_back(parkingSpace);
-			mapElements.push_back(obstacle);
+			mapElements.push_back(parkingSpace);
 		}
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()

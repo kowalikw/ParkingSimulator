@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>296</width>
+    <width>224</width>
     <height>298</height>
    </rect>
   </property>
@@ -229,7 +229,7 @@ QPushButton:pressed {
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="lineEdit">
+         <widget class="QLineEdit" name="newElementName">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -241,7 +241,7 @@ QPushButton:pressed {
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QDoubleSpinBox" name="doubleSpinBox">
+         <widget class="QDoubleSpinBox" name="newElementWidth">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -256,7 +256,7 @@ QPushButton:pressed {
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+         <widget class="QDoubleSpinBox" name="newElementHeight">
           <property name="font">
            <font>
             <pointsize>10</pointsize>
@@ -285,7 +285,7 @@ QPushButton:pressed {
          </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+         <widget class="QDoubleSpinBox" name="newElementRotation">
           <property name="font">
            <font>
             <pointsize>10</pointsize>

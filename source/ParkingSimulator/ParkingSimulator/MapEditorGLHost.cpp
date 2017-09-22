@@ -56,6 +56,7 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 				mapEditor->SetSelectedElementChanged(true);
 				mapEditor->SetMapElementsPropertiesChanged(true);
 			}
+		mapEditor->SetSelectedElementChangedOnMap(true);
 	}
 	else if (mapEditor->GetSelectedElement() != NULL && !mouseMiddlePressed)
 	{
@@ -68,17 +69,9 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 		}
 	}
 
-	if (mapEditor->GetAddBuilding())
+	if (mapEditor->GetAddBuilding() || mapEditor->GetAddDecoration() || mapEditor->GetAddParkPlace())
 	{
 		mapEditor->AddObstacleConfirm();
-	}
-	else if (mapEditor->GetAddDecoration())
-	{
-
-	}
-	else if (mapEditor->GetAddParkPlace())
-	{
-
 	}
 	else if (mapEditor->GetAddRoad())
 	{
@@ -203,12 +196,9 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 			this->setCursor(DEFAULT_CURSOR);
 	}
 	
-
-	if (mapEditor->GetAddBuilding() && mapEditor->GetNewElement() != nullptr)
+	if (mapEditor->GetNewElement() != nullptr)
 	{
 		mapEditor->GetNewElement()->SetPosition(positionOnMap);
-
-		
 	}
 }
 
