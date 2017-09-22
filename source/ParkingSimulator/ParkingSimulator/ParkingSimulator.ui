@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1088</width>
+    <width>1094</width>
     <height>698</height>
    </rect>
   </property>
@@ -79,7 +79,7 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -91,7 +91,22 @@ QTabBar::tab:selected {
        <attribute name="title">
         <string>start</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_4"/>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnLoadSettings">
+          <property name="text">
+           <string>Load settings</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnSaveSettings">
+          <property name="text">
+           <string>Save settings</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
        <property name="styleSheet">
@@ -353,7 +368,7 @@ border-radius: 3px;</string>
               </property>
               <property name="minimumSize">
                <size>
-                <width>204</width>
+                <width>52</width>
                 <height>0</height>
                </size>
               </property>

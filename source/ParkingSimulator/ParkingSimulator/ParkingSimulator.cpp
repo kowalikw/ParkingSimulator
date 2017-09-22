@@ -23,6 +23,9 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	updateTimer->setInterval(20);
 	updateTimer->start();
 
+	connect(ui.btnLoadSettings, SIGNAL(released()), this, SLOT(loadSettings()));
+	connect(ui.btnSaveSettings, SIGNAL(released()), this, SLOT(saveSettings()));
+
 	connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderTimerCall()));
 	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimerCall()));
 	connect(ui.btnNewMap, SIGNAL(released()), this, SLOT(createMap()));
@@ -151,6 +154,16 @@ void ParkingSimulator::updateTimerCall()
 
 #pragma region Map editor.
 
+void ParkingSimulator::loadSettings()
+{
+	Settings::getInstance()->LoadSettings();
+}
+
+void ParkingSimulator::saveSettings()
+{
+	Settings::getInstance()->SaveSettings();
+}
+
 void ParkingSimulator::createMap()
 {
 	CreateMap createMapWindow;
@@ -222,8 +235,13 @@ void ParkingSimulator::addDecoration()
 
 	if (!mapEditor.GetAddDecoration())
 	{
-		ui.btnAddDecoration->setStyleSheet("background-color: #d86a39;");
-		mapEditor.SetAddDecoration(true);
+		AddMapElement addMapElementWindow(AddMapElementType::D);
+		addMapElementWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		if (addMapElementWindow.exec())
+		{
+			ui.btnAddDecoration->setStyleSheet("background-color: #d86a39;");
+			mapEditor.SetAddDecoration(true);
+		}
 	}
 	else
 	{

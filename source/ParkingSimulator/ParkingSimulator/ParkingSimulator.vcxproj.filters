@@ -157,12 +157,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MapEditorGLHost.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_AddBuilding.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_AddBuilding.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Graph.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -184,13 +178,7 @@
     <ClCompile Include="NvgDrawHelper.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="Road.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CreateMap.cpp">
-      <Filter>Source Files\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="AddBuilding.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="ParkingSimulator.cpp">
@@ -204,6 +192,21 @@
     </ClCompile>
     <ClCompile Include="WarningErrorMsg.cpp">
       <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AddMapElement.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AddMapElement.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="AddMapElement.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Road.cpp">
+      <Filter>Source Files\MapElements</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,9 +228,6 @@
     <CustomBuild Include="MapEditorGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
     </CustomBuild>
-    <CustomBuild Include="AddBuilding.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="VisualisationGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
     </CustomBuild>
@@ -237,13 +237,16 @@
     <CustomBuild Include="ParkingSimulator.h">
       <Filter>Header Files\Windows</Filter>
     </CustomBuild>
-    <CustomBuild Include="AddBuilding.h">
-      <Filter>Header Files\Windows</Filter>
-    </CustomBuild>
     <CustomBuild Include="WarningErrorMsg.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="WarningErrorMsg.h">
+      <Filter>Header Files\Windows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddMapElement.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddMapElement.h">
       <Filter>Header Files\Windows</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -293,9 +296,6 @@
     <ClInclude Include="GeneratedFiles\ui_CreateMap.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="GeneratedFiles\ui_AddBuilding.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="Graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -311,11 +311,17 @@
     <ClInclude Include="NvgDrawHelper.h">
       <Filter>Header Files\Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="Road.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_WarningErrorMsg.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_AddMapElement.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Road.h">
+      <Filter>Header Files\MapElements</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

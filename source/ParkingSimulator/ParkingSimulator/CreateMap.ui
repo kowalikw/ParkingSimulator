@@ -115,7 +115,7 @@ QSpinBox::down-arrow:hover {
          <widget class="QLabel" name="label">
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <pointsize>11</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -132,7 +132,7 @@ QSpinBox::down-arrow:hover {
          <widget class="QSpinBox" name="mapWidth">
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="styleSheet">
@@ -150,7 +150,7 @@ QSpinBox::down-arrow:hover {
          <widget class="QLabel" name="label_2">
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <pointsize>11</pointsize>
             <weight>75</weight>
             <bold>true</bold>
            </font>
@@ -167,7 +167,7 @@ QSpinBox::down-arrow:hover {
          <widget class="QSpinBox" name="mapHeight">
           <property name="font">
            <font>
-            <pointsize>12</pointsize>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="styleSheet">

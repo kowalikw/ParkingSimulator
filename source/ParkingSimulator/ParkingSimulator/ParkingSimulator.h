@@ -6,9 +6,11 @@
 #include "ui_ParkingSimulator.h"
 #include "CreateMap.h"
 #include "WarningErrorMsg.h"
+#include "AddMapElement.h"
 #include "MapEditor.h"
 #include "Visualisation.h"
 #include "MapEditorGLHost.h"
+#include "Settings.h";
 
 using namespace Ui;
 
@@ -30,6 +32,9 @@ private:
 public slots:
 	void renderTimerCall();
 	void updateTimerCall();
+
+	void loadSettings();
+	void saveSettings();
 
 	void createMap();
 	void saveMap();
