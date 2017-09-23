@@ -21,13 +21,21 @@ public:
 	friend class boost::serialization::access;
 
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void save(Archive & ar, const unsigned int version) const
 	{
 		ar & boost::serialization::base_object<PathElement>(*this);
 		ar & from;
 		ar & to;
 	}
-//private:
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{
+		ar & boost::serialization::base_object<PathElement>(*this);
+		ar & from;
+		ar & to;
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
+private:
 	glm::vec2 from;
 	glm::vec2 to;
 };

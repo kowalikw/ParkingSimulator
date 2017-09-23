@@ -38,11 +38,11 @@ public:
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
 	{
-		//ar & map;
-		//ar & vehicle;
+		ar & *map;
+		ar & *vehicle;
 		ar & *path;
 
-		/*ar & (startPoint != NULL);
+		ar & (startPoint != NULL);
 		ar & (endPoint != NULL);
 		ar & (startParkingSpace != NULL);
 		ar & (endParkingSpace != NULL);
@@ -50,22 +50,20 @@ public:
 		if (startPoint != NULL) ar & *startPoint;
 		if (endPoint != NULL) ar & *endPoint;
 		if (startParkingSpace != NULL) ar & *startParkingSpace;
-		if (endParkingSpace != NULL) ar & *endParkingSpace;*/
-
-		int lala = 0;
+		if (endParkingSpace != NULL) ar & *endParkingSpace;
 	}
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
-		Path *p = new Path();
+		map = new Map();
+		vehicle = new Vehicle();
+		path = new Path();
 		bool isStartPoint, isEndPoint;
 		bool isStartParkingPlace, isEndParkingPlace;
 
-		ar & map;
-		ar & vehicle;
-		ar & *p;
-
-		path = p;
+		ar & *map;
+		ar & *vehicle;
+		ar & *path;
 
 		ar & isStartPoint;
 		ar & isEndPoint;
@@ -76,8 +74,6 @@ public:
 		if (isEndPoint) ar & *endPoint;
 		if (isStartParkingPlace) ar & *startParkingSpace;
 		if (isEndParkingPlace) ar & *endParkingSpace;
-
-		int lala = 0;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:

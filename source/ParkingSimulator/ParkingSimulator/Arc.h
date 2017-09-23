@@ -35,37 +35,6 @@ public:
 	friend class boost::serialization::access;
 
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
-	{
-		int tmp = 0;
-		glm::vec2 point;
-		int circleBasePointsCount = circleBasePoints.size();
-		bool isSave = (circleBasePoints.size() > 0);
-
-		ar & boost::serialization::base_object<PathElement>(*this);
-		ar & angleFrom;
-		ar & angleTo;
-		ar & radius;
-		ar & center;
-		ar & circleType;
-
-		/*ar & circleBasePointsCount;
-		if (isSave)
-		{
-			for (int i = 0; i < circleBasePoints.size(); i++)
-				ar & circleBasePoints[i];
-		}
-		else
-		{
-			for (int i = 0; i < circleBasePointsCount; i++)
-			{
-				ar & point;
-				circleBasePoints.push_back(point);
-			}
-		}*/
-	}
-
-	/*template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
 	{
 		ar & boost::serialization::base_object<PathElement>(*this);
@@ -74,16 +43,16 @@ public:
 		ar & radius;
 		ar & center;
 		ar & circleType;
-		
+
 		ar & circleBasePoints.size();
 		for (int i = 0; i < circleBasePoints.size(); i++)
 			ar & circleBasePoints[i];
 	}
 	template<class Archive>
-	void load(Archive & ar, const unsigned int version) const
+	void load(Archive & ar, const unsigned int version)
 	{
-		int circleBasePointsCount;
 		glm::vec2 point;
+		int circleBasePointsCount;
 
 		ar & boost::serialization::base_object<PathElement>(*this);
 		ar & angleFrom;
@@ -98,7 +67,9 @@ public:
 			ar & point;
 			circleBasePoints.push_back(point);
 		}
-	}*/
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
 //private:
 	double angleFrom;
 	double angleTo;

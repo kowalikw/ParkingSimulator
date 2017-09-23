@@ -321,16 +321,16 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 	}*/
 
 	int verticesCount = VerticesCount();
-	AddVertex(start->from.x, start->from.y); // verticesCount
-	AddVertex(start->to.x, start->to.y); // verticesCount + 1
-	AddVertex(end->from.x, end->from.y); // verticesCount + 2
-	AddVertex(end->to.x, end->to.y); // verticesCount + 3
+	AddVertex(start->GetFrom().x, start->GetFrom().y); // verticesCount
+	AddVertex(start->GetTo().x, start->GetTo().y); // verticesCount + 1
+	AddVertex(end->GetFrom().x, end->GetFrom().y); // verticesCount + 2
+	AddVertex(end->GetTo().x, end->GetTo().y); // verticesCount + 3
 
 	AddEdge(verticesCount, verticesCount + 1);
 	AddEdge(verticesCount + 2, verticesCount + 3);
 
-	glm::vec2 startTo = glm::vec2(start->to.x, start->to.y); // ostatni wierzcho³ek œcie¿ki wyjazdowej (verticesCount + 1)
-	glm::vec2 endFrom = glm::vec2(end->from.x, end->from.y); // pierwszy wierzcho³ak œcie¿ki wjazdowej (verticesCount + 2)
+	glm::vec2 startTo = glm::vec2(start->GetTo().x, start->GetTo().y); // ostatni wierzcho³ek œcie¿ki wyjazdowej (verticesCount + 1)
+	glm::vec2 endFrom = glm::vec2(end->GetFrom().x, end->GetFrom().y); // pierwszy wierzcho³ak œcie¿ki wjazdowej (verticesCount + 2)
 	for (int i = 0; i < verticesCount; i++)
 	{
 		bool addEdgeToStartTo = true;

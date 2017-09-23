@@ -7,6 +7,7 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
+#include <boost/serialization/split_member.hpp>
 
 #define M_PI 3.14159265358979323846
 
@@ -36,10 +37,16 @@ public:
 	friend class boost::serialization::access;
 
 	template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
+	void save(Archive & ar, const unsigned int version) const
 	{
 		ar & maneuverType;
 	}
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{
+		ar & maneuverType;
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 protected:
 	ManeuverType maneuverType;
 };

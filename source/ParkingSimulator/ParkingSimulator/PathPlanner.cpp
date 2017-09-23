@@ -65,8 +65,8 @@ Path * PathPlanner::CreateAdmissiblePath(Path * path)
 	for (int i = 0; i < pathElements.size(); i++)
 	{
 		if (i == 0)
-			points.push_back(dynamic_cast<Line*>(pathElements[i])->from);
-		points.push_back(dynamic_cast<Line*>(pathElements[i])->to);
+			points.push_back(dynamic_cast<Line*>(pathElements[i])->GetFrom());
+		points.push_back(dynamic_cast<Line*>(pathElements[i])->GetTo());
 	}
 
 	return CreateAdmissiblePath(points);
@@ -141,8 +141,6 @@ void PathPlanner::NewSimulation()
 	simulation->SetMap(&map);
 	simulation->SetVehicle(&vehicle);
 	simulation->SetPath(CreateAdmissiblePath(UserPoints()));
-
-	int lala = 0;
 }
 
 void PathPlanner::OpenSimulation(string filePath)
@@ -154,8 +152,6 @@ void PathPlanner::OpenSimulation(string filePath)
 	boost::archive::text_iarchive ia(ifs);
 
 	ia >> *simulation;
-
-	int lala = 0;
 }
 
 void PathPlanner::SaveSimulation(string filePath)
@@ -165,8 +161,6 @@ void PathPlanner::SaveSimulation(string filePath)
 	boost::archive::text_oarchive oa(f);
 
 	oa << *simulation;
-
-	int lala = 0;
 }
 
 bool PathPlanner::epsilonEquals(float f1, float f2)
