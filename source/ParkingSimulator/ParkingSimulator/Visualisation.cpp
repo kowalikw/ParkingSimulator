@@ -92,6 +92,13 @@ Visualisation::Visualisation()
 	mapa2 = mapa;
 	currentSimulation = new Simulation(mapa, vehicle, finalPath);
 
+	// serialize simulation start
+
+
+
+	// serialize simulation end
+
+
 	currentSimulation->SetSimulationTime(10);
 }
 

@@ -2,6 +2,13 @@
 
 PathPlanner::PathPlanner()
 {
+	simulation = new Simulation();
+
+	//temp
+	this->map = Map(567, 1024);
+	map.AddMapElement(new Obstacle(glm::vec2(100, 50), glm::vec2(300, 400), Building, "lala"));
+
+	vehicle = Vehicle(200, 55);
 }
 
 PathPlanner::PathPlanner(Map map, Vehicle vehicle)
@@ -125,6 +132,41 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 	}
 
 	return path;
+}
+
+void PathPlanner::NewSimulation()
+{
+	simulation = new Simulation();
+
+	simulation->SetMap(&map);
+	simulation->SetVehicle(&vehicle);
+	simulation->SetPath(CreateAdmissiblePath(UserPoints()));
+
+	int lala = 0;
+}
+
+void PathPlanner::OpenSimulation(string filePath)
+{
+	simulation = new Simulation();
+
+	std::ifstream ifs(filePath);
+
+	boost::archive::text_iarchive ia(ifs);
+
+	ia >> *simulation;
+
+	int lala = 0;
+}
+
+void PathPlanner::SaveSimulation(string filePath)
+{
+	ofstream f(filePath, ios::out);
+
+	boost::archive::text_oarchive oa(f);
+
+	oa << *simulation;
+
+	int lala = 0;
 }
 
 bool PathPlanner::epsilonEquals(float f1, float f2)

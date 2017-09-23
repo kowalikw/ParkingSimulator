@@ -11,6 +11,7 @@
 #include "Arc.h"
 #include "BSpline.h"
 #include "GeometryHelper.h"
+#include "Simulation.h"
 
 #define EPS 10e-3;
 
@@ -41,16 +42,26 @@ public:
 
 	Path *CreateAdmissiblePath(Path *path); // zak³adamy, ¿e ta œcie¿ka sk³ada siê z samych linii
 	Path *CreateAdmissiblePath(vector<glm::vec2> points);
-//private:
+
+	void NewSimulation();
+	void OpenSimulation(string filePath);
+	void SaveSimulation(string filePath);
+
+	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType = ParkManeuverType::Entry);
+	
+private:
+	Simulation *simulation = NULL;
+
 	Map map;
 	Vehicle vehicle;
+	Path path;
 	vector<glm::vec2> userPoints;
 	vector<glm::vec2> voronoiPoints;
 
 	bool epsilonEquals(float f1, float f2);
 	Path *createArcsBetweenSegments(vector<glm::vec2> points);
 	bool checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2);
-	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType = ParkManeuverType::Entry);
+	
 };
 
 #endif

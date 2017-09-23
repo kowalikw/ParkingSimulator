@@ -43,6 +43,27 @@ public:
 
 	glm::vec2 dirWheelbase;
 	glm::vec2 dirTrack;
+
+	friend class boost::serialization::access;
+
+	template<class Archive>
+	void save(Archive & ar, const unsigned int version) const
+	{
+		ar & wheelbase;
+		ar & track;
+		ar & maxInsideAngle;
+	}
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{
+		ar & wheelbase;
+		ar & track;
+		ar & maxInsideAngle;
+
+		dirWheelbase = glm::vec2(1.0f, 0.0f);
+		dirTrack = glm::vec2(0.0f, 1.0f);
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 #endif

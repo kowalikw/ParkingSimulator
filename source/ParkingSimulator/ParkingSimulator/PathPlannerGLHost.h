@@ -15,12 +15,16 @@ public:
 	virtual void mouseMoveEvent(QMouseEvent * event);
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void keyReleaseEvent(QKeyEvent * event);
+	void SetPathPlanner(PathPlanner *pathPlanner);
+	PathPlanner * GetPathPlanner();
 protected:
 	virtual void initializeGL() override;
 	virtual void resizeGL(int w, int h) override;
 	virtual void paintGL() override;
 private:
-	PathPlanner pathPlanner, pathPlanner2;
+	PathPlanner *pathPlanner;
+
+	PathPlanner pathPlanner1, pathPlanner2;
 	Path pathPolyline;
 	Path *pathAdmissible;
 	//BSpline bspline;

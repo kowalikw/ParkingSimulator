@@ -12,7 +12,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	this->setStyleSheet("background-color: #2a2a2a;");
 
 	((MapEditorGLHost*)ui.glMapEditor)->SetMapEditor(&mapEditor);
-	//((PathPlannerGLHost*)ui.glPathPlanner)->SetPathPlanner(&pathPlanner);
+	((PathPlannerGLHost*)ui.glPathPlanner)->SetPathPlanner(&pathPlanner);
 	((VisualisationGLHost*)ui.glVisualisation)->SetVisualisation(&visualisation);
 
 	renderTimer = new QTimer();
@@ -38,6 +38,14 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnAddRoad, SIGNAL(released()), this, SLOT(addRoad()));	
 	connect(ui.btnMapElementRemove, SIGNAL(released()), this, SLOT(mapElementRemove()));
 	connect(ui.btnMapElementSaveProperties, SIGNAL(released()), this, SLOT(mapElementSaveProperties()));
+
+	connect(ui.btnNewSimulation, SIGNAL(released()), this, SLOT(newSimulation()));
+	connect(ui.btnOpenSimulation, SIGNAL(released()), this, SLOT(openSimulation()));
+	connect(ui.btnSaveSimulation, SIGNAL(released()), this, SLOT(saveSimulation()));
+	connect(ui.btnSetMap, SIGNAL(released()), this, SLOT(setMap()));
+	connect(ui.btnSetVehicle, SIGNAL(released()), this, SLOT(setVehicle()));
+	connect(ui.btnSetStart, SIGNAL(released()), this, SLOT(setStart()));
+	connect(ui.btnSetEnd, SIGNAL(released()), this, SLOT(setEnd()));
 
 	connect(ui.btnAddSimulation, SIGNAL(released()), this, SLOT(addSimulation()));
 	connect(ui.btnRemoveSimulation, SIGNAL(released()), this, SLOT(removeSimulation()));
@@ -485,11 +493,50 @@ void ParkingSimulator::clearAddButtonsStyle()
 
 #pragma region Path planner.
 
+void ParkingSimulator::newSimulation()
+{
+	pathPlanner.NewSimulation();
+}
 
+void ParkingSimulator::openSimulation()
+{
+	QString filter = tr("Simulation files (*.simulation)");
+	QString filePath = QFileDialog::getOpenFileName(this, "Open simulation", QString(), tr("All files (*.*);;Simulation files (*.simulation)"), &filter);
+
+	if (filePath != "")
+		pathPlanner.OpenSimulation(filePath.toStdString());
+}
+
+void ParkingSimulator::saveSimulation()
+{
+	QString filter = tr("Simulation files (*.simulation)");
+	QString filePath = QFileDialog::getSaveFileName(this, "Save simulation", QString(), tr("All files (*.*);;Simulation files (*.simulation)"), &filter);
+
+	if (filePath != "")
+		pathPlanner.SaveSimulation(filePath.toStdString());
+}
+
+void ParkingSimulator::setMap()
+{
+}
+
+void ParkingSimulator::setVehicle()
+{
+}
+
+void ParkingSimulator::setStart()
+{
+}
+
+void ParkingSimulator::setEnd()
+{
+}
 
 #pragma endregion
 
 #pragma region Visualisation.
+
+
 
 void ParkingSimulator::addSimulation()
 {

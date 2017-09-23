@@ -39,11 +39,6 @@ void Vehicle::UpdateState(double x, double y, double z, double angle)
 
 void Vehicle::UpdateState(PathElement *pathElement)
 {
-	/*if (pathElement.type == PathElementType::Line)
-		UpdateState(pathElement.to);
-	else if (pathElement.type == PathElementType::Circle)
-		UpdateState(pathElement.GetCirclePoint(pathElement.angleTo), pathElement.circleType == Right ? -pathElement.angleTo : pathElement.angleTo);*/
-
 	if (dynamic_cast<Line*>(pathElement) != NULL)
 		UpdateState(dynamic_cast<Line*>(pathElement)->GetTo());
 	else if (dynamic_cast<Circle*>(pathElement) != NULL)

@@ -26,6 +26,7 @@ private:
 	QTimer *renderTimer;
 	QTimer *updateTimer;
 	MapEditor mapEditor;
+	PathPlanner pathPlanner;
 	Visualisation visualisation;
 
 	bool updateSimulationProgressBarEnable = false;
@@ -51,6 +52,15 @@ public slots:
 	void treeMapElementsSelectionChanged();
 	void clearAddButtons();
 	void clearAddButtonsStyle();
+
+	//path planner
+	void newSimulation();
+	void openSimulation();
+	void saveSimulation();
+	void setMap();
+	void setVehicle();
+	void setStart();
+	void setEnd();
 
 	// visualisation
 	void addSimulation();

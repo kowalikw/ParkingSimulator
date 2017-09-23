@@ -1,5 +1,9 @@
 #include "Line.h"
 
+Line::Line()
+{
+}
+
 Line::Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType)
 {
 	this->from = from;
