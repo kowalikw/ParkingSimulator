@@ -366,3 +366,73 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 
 	return path;
 }
+
+bool PathPlanner::GetSetStartPosition()
+{
+	return this->setStartPosition;
+}
+
+bool PathPlanner::GetSetEndPosition()
+{
+	return this->setEndPosition;
+}
+
+bool PathPlanner::GetShowVoronoiGraph()
+{
+	return this->showVoronoiGraph;
+}
+
+bool PathPlanner::GetShowFullVoronoiVisibilityGraph()
+{
+	return this->showFullVoronoiVisibilityGraph;
+}
+
+bool PathPlanner::ShowPolylinePath()
+{
+	return this->showPolylinePath;
+}
+
+bool PathPlanner::ShowFinalPath()
+{
+	return this->showFinalPath;
+}
+
+bool PathPlanner::ShowExpandedObstacles()
+{
+	return this->showExpandedObstacles;
+}
+
+void PathPlanner::SetSetStartPosition(bool setStartPosition)
+{
+	this->setStartPosition = setStartPosition;
+}
+
+void PathPlanner::SetSetEndPosition(bool setEndPosition)
+{
+	this->setEndPosition = setEndPosition;
+}
+
+void PathPlanner::SetShowVoronoiGraph(bool showVoronoiGraph)
+{
+	this->showVoronoiGraph = showVoronoiGraph;
+}
+
+void PathPlanner::SetShowFullVoronoiVisibilityGraph(bool showFullVoronoiVisibilityGraph)
+{
+	this->showFullVoronoiVisibilityGraph = showFullVoronoiVisibilityGraph;
+}
+
+void PathPlanner::SetShowPolylinePath(bool showPolylinePath)
+{
+	this->showPolylinePath = showPolylinePath;
+}
+
+void PathPlanner::SetShowFinalPath(bool showFinalPath)
+{
+	this->showFinalPath = showFinalPath;
+}
+
+void PathPlanner::SetShowExpandedObstacles(bool showExpandedObstacles)
+{
+	this->showExpandedObstacles = showExpandedObstacles;
+}

@@ -53,6 +53,22 @@ public:
 	void SetVehicle(Vehicle *vehicle);
 
 	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType = ParkManeuverType::Entry);
+
+	bool GetSetStartPosition();
+	bool GetSetEndPosition();
+	bool GetShowVoronoiGraph();
+	bool GetShowFullVoronoiVisibilityGraph();
+	bool ShowPolylinePath();
+	bool ShowFinalPath();
+	bool ShowExpandedObstacles();
+
+	void SetSetStartPosition(bool setStartPosition);
+	void SetSetEndPosition(bool setEndPosition);
+	void SetShowVoronoiGraph(bool showVoronoiGraph);
+	void SetShowFullVoronoiVisibilityGraph(bool showFullVoronoiVisibilityGraph);
+	void SetShowPolylinePath(bool showPolylinePath);
+	void SetShowFinalPath(bool showFinalPath);
+	void SetShowExpandedObstacles(bool showExpandedObstacles);
 	
 private:
 	Simulation *simulation = NULL;
@@ -61,6 +77,14 @@ private:
 	Vehicle *vehicle;
 	Path path;
 	vector<glm::vec2> userPoints;
+
+	bool setStartPosition = false;
+	bool setEndPosition = false;
+	bool showVoronoiGraph = false;
+	bool showFullVoronoiVisibilityGraph = false;
+	bool showPolylinePath = false;
+	bool showFinalPath = false;
+	bool showExpandedObstacles = false;
 
 	bool epsilonEquals(float f1, float f2);
 	Path *createArcsBetweenSegments(vector<glm::vec2> points);
