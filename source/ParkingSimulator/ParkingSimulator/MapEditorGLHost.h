@@ -17,6 +17,8 @@ class MapEditorGLHost : public OpenGLHost
 
 public:
 	MapEditorGLHost(QWidget *parent);
+	virtual void enterEvent(QEvent *event);
+	virtual void leaveEvent(QEvent *event);
 	virtual void mousePressEvent(QMouseEvent * event);
 	virtual void mouseReleaseEvent(QMouseEvent * event);
 	virtual void mouseMoveEvent(QMouseEvent * event);
@@ -35,7 +37,6 @@ private:
 	//void drawActiveElement();
 
 	MapEditor *mapEditor;
-	glm::vec2 lasPositionOnMap;
 	glm::vec2 positionOnMap;
 	int offsetX = 0;
 	int offsetY = 0;

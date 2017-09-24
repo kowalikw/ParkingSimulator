@@ -46,6 +46,12 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnSetVehicle, SIGNAL(released()), this, SLOT(setVehicle()));
 	connect(ui.btnSetStart, SIGNAL(released()), this, SLOT(setStart()));
 	connect(ui.btnSetEnd, SIGNAL(released()), this, SLOT(setEnd()));
+	connect(ui.btnShowVoronoiGraph, SIGNAL(released()), this, SLOT(showVoronoiGraph()));
+	connect(ui.btnShowFullVoronoiVisibilityGraph, SIGNAL(released()), this, SLOT(showFullVoronoiVisibilityGraph()));
+	connect(ui.btnShowPolylinePath, SIGNAL(released()), this, SLOT(showPolylinePath()));
+	connect(ui.btnShowFinalPath, SIGNAL(released()), this, SLOT(showFinalPath()));
+	connect(ui.btnShowExpandedObstacles, SIGNAL(released()), this, SLOT(showExpandedObstacles()));
+	connect(ui.btnFindPath, SIGNAL(released()), this, SLOT(findPath()));
 
 	connect(ui.btnAddSimulation, SIGNAL(released()), this, SLOT(addSimulation()));
 	connect(ui.btnRemoveSimulation, SIGNAL(released()), this, SLOT(removeSimulation()));
@@ -77,7 +83,7 @@ void ParkingSimulator::renderTimerCall()
 
 	if (mapEditor.GetResetAddButtons())
 	{
-		clearAddButtons();
+		clearMapEditorButtons();
 		updateMapElementsTree();
 	}
 }
@@ -161,6 +167,13 @@ void ParkingSimulator::updateTimerCall()
 		mapEditor.SetSelectedElementChanged(false);
 	}
 
+	if (pathPlanner.GetStartPositionChanged() || pathPlanner.GetEndPositionChanged())
+	{
+		clearPathPlannerButtons();
+		pathPlanner.SetStartPositionChanged(false);
+		pathPlanner.SetEndPositionChanged(false);
+	}
+
 	if (visualisation.GetCurrentSimulation() != NULL)
 	{
 		Simulation *simulation = visualisation.GetCurrentSimulation();
@@ -235,7 +248,7 @@ void ParkingSimulator::addBuilding()
 		return;
 
 	if (mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace() || mapEditor.GetAddRoad())
-		clearAddButtons();
+		clearMapEditorButtons();
 
 	if (!mapEditor.GetAddBuilding())
 	{
@@ -261,7 +274,7 @@ void ParkingSimulator::addDecoration()
 		return;
 
 	if (mapEditor.GetAddBuilding() || mapEditor.GetAddParkPlace() || mapEditor.GetAddRoad())
-		clearAddButtons();
+		clearMapEditorButtons();
 
 	if (!mapEditor.GetAddDecoration())
 	{
@@ -287,7 +300,7 @@ void ParkingSimulator::addRoad()
 		return;
 
 	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace())
-		clearAddButtons();
+		clearMapEditorButtons();
 
 	if (!mapEditor.GetAddRoad())
 	{
@@ -307,7 +320,7 @@ void ParkingSimulator::addParkPlace()
 		return;
 
 	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddRoad())
-		clearAddButtons();
+		clearMapEditorButtons();
 
 	if (!mapEditor.GetAddParkPlace())
 	{
@@ -467,17 +480,17 @@ void ParkingSimulator::treeMapElementsSelectionChanged()
 		mapEditor.SetSelectedElement(nullptr);
 }
 
-void ParkingSimulator::clearAddButtons()
+void ParkingSimulator::clearMapEditorButtons()
 {
 	mapEditor.SetAddBuilding(false);
 	mapEditor.SetAddDecoration(false);
 	mapEditor.SetAddParkPlace(false);
 	mapEditor.SetAddRoad(false);
 
-	clearAddButtonsStyle();
+	clearMapEditorButtonsStyle();
 }
 
-void ParkingSimulator::clearAddButtonsStyle()
+void ParkingSimulator::clearMapEditorButtonsStyle()
 {
 	if (!mapEditor.GetAddBuilding())
 		ui.btnAddBuilding->setStyleSheet("");
@@ -534,17 +547,137 @@ void ParkingSimulator::setVehicle()
 
 void ParkingSimulator::setStart()
 {
+	if (pathPlanner.GetSetEndPosition())
+		clearPathPlannerButtons();
+
+	if (pathPlanner.GetSetStartPosition())
+	{
+		pathPlanner.SetSetStartPosition(false);
+		ui.btnSetStart->setStyleSheet("");
+	}
+	else
+	{
+		pathPlanner.SetSetStartPosition(true);
+		ui.btnSetStart->setStyleSheet("background-color: #d86a39;");
+	}
 }
 
 void ParkingSimulator::setEnd()
 {
+	if (pathPlanner.GetSetStartPosition())
+		clearPathPlannerButtons();
+
+	if (pathPlanner.GetSetEndPosition())
+	{
+		pathPlanner.SetSetEndPosition(false);
+		ui.btnSetEnd->setStyleSheet("");
+	}
+	else
+	{
+		pathPlanner.SetSetEndPosition(true);
+		ui.btnSetEnd->setStyleSheet("background-color: #d86a39;");
+	}
+}
+
+void ParkingSimulator::showVoronoiGraph()
+{
+	if (pathPlanner.GetShowVoronoiGraph())
+	{
+		pathPlanner.SetShowVoronoiGraph(false);
+		ui.btnShowVoronoiGraph->setStyleSheet("");
+	}
+	else
+	{
+		pathPlanner.SetShowVoronoiGraph(true);
+		ui.btnShowVoronoiGraph->setStyleSheet("border: 3px solid #d86a39;");
+	}
+}
+
+void ParkingSimulator::showFullVoronoiVisibilityGraph()
+{
+	if (pathPlanner.GetShowFullVoronoiVisibilityGraph())
+	{
+		pathPlanner.SetShowFullVoronoiVisibilityGraph(false);
+		ui.btnShowFullVoronoiVisibilityGraph->setStyleSheet("");
+	}
+	else
+	{
+		pathPlanner.SetShowFullVoronoiVisibilityGraph(true);
+		ui.btnShowFullVoronoiVisibilityGraph->setStyleSheet("border: 3px solid #d86a39;");
+	}
+}
+
+void ParkingSimulator::showPolylinePath()
+{
+	if (pathPlanner.GetShowPolylinePath())
+	{
+		pathPlanner.SetShowPolylinePath(false);
+		ui.btnShowPolylinePath->setStyleSheet("");
+	}
+	else
+	{
+		pathPlanner.SetShowPolylinePath(true);
+		ui.btnShowPolylinePath->setStyleSheet("border: 3px solid #d86a39;");
+	}
+}
+
+void ParkingSimulator::showFinalPath()
+{
+	if (pathPlanner.GetShowFinalPath())
+	{
+		pathPlanner.SetShowFinalPath(false);
+		ui.btnShowFinalPath->setStyleSheet("");
+	}
+	else
+	{
+		pathPlanner.SetShowFinalPath(true);
+		ui.btnShowFinalPath->setStyleSheet("border: 3px solid #d86a39;");
+	}
+}
+
+void ParkingSimulator::showExpandedObstacles()
+{
+	if (pathPlanner.GetShowExpandedObstacles())
+	{
+		pathPlanner.SetShowExpandedObstacles(false);
+		ui.btnShowExpandedObstacles->setStyleSheet("");
+	}
+	else
+	{
+		pathPlanner.SetShowExpandedObstacles(true);
+		ui.btnShowExpandedObstacles->setStyleSheet("border: 3px solid #d86a39;");
+	}
+}
+
+void ParkingSimulator::findPath()
+{
+	FindPath findPathWindow;
+	findPathWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+	if (findPathWindow.exec())
+	{
+		//pathPlanner.SetMap(selectMapWindow.GetMap());
+	}
+}
+
+void ParkingSimulator::clearPathPlannerButtons()
+{
+	pathPlanner.SetSetStartPosition(false);
+	pathPlanner.SetSetEndPosition(false);
+
+	clearPathPlannerButtonsStyle();
+}
+
+void ParkingSimulator::clearPathPlannerButtonsStyle()
+{
+	if (!pathPlanner.GetSetStartPosition())
+		ui.btnSetStart->setStyleSheet("");
+	if (!pathPlanner.GetSetEndPosition())
+		ui.btnSetEnd->setStyleSheet("");
 }
 
 #pragma endregion
 
 #pragma region Visualisation.
-
-
 
 void ParkingSimulator::addSimulation()
 {

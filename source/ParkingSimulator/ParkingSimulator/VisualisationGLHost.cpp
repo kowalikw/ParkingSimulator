@@ -11,6 +11,16 @@ VisualisationGLHost::VisualisationGLHost(QWidget *parent) : OpenGLHost(parent)
 
 #pragma region User input events.
 
+void VisualisationGLHost::enterEvent(QEvent * event)
+{
+	OpenGLHost::enterEvent(event);
+}
+
+void VisualisationGLHost::leaveEvent(QEvent * event)
+{
+	OpenGLHost::leaveEvent(event);
+}
+
 void VisualisationGLHost::mousePressEvent(QMouseEvent * event)
 {
 	OpenGLHost::mousePressEvent(event);

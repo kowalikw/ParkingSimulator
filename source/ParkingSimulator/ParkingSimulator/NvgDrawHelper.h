@@ -38,9 +38,14 @@ public:
 	void DrawActiveElement(MapElement *mapElement, bool admissible);
 	void DrawHoverElement(MapElement *mapElement);
 	void DrawSelectedElement(MapElement *mapElement);
+	void DrawStartFlag(glm::vec2 position);
+	void DrawEndFlag(glm::vec2 position);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
+
+	const NVGcolor START_FLAG_COLOR = nvgRGBA(0, 255, 0, 255);
+	const NVGcolor END_FLAG_COLOR = nvgRGBA(255, 0, 0, 255);
 
 	const int ACTIVE_BORDER_WIDTH = 3;
 	const NVGcolor ACTIVE_GOOD_COLOR = nvgRGBA(135, 255, 145, 255);

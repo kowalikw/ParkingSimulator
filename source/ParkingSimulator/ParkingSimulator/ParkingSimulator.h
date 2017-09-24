@@ -13,6 +13,7 @@
 #include "Settings.h";
 #include "SelectMap.h"
 #include "SelectVehicle.h"
+#include "FindPath.h"
 
 using namespace Ui;
 
@@ -52,8 +53,8 @@ public slots:
 
 	void updateMapElementsTree();
 	void treeMapElementsSelectionChanged();
-	void clearAddButtons();
-	void clearAddButtonsStyle();
+	void clearMapEditorButtons();
+	void clearMapEditorButtonsStyle();
 
 	//path planner
 	void newSimulation();
@@ -63,6 +64,14 @@ public slots:
 	void setVehicle();
 	void setStart();
 	void setEnd();
+	void showVoronoiGraph();
+	void showFullVoronoiVisibilityGraph();
+	void showPolylinePath();
+	void showFinalPath();
+	void showExpandedObstacles();
+	void findPath();
+	void clearPathPlannerButtons();
+	void clearPathPlannerButtonsStyle();
 
 	// visualisation
 	void addSimulation();

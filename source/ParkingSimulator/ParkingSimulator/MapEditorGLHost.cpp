@@ -23,6 +23,16 @@ MapEditorGLHost::MapEditorGLHost(QWidget *parent) : OpenGLHost(parent)
 
 #pragma region User input events.
 
+void MapEditorGLHost::enterEvent(QEvent * event)
+{
+	OpenGLHost::enterEvent(event);
+}
+
+void MapEditorGLHost::leaveEvent(QEvent * event)
+{
+	OpenGLHost::leaveEvent(event);
+}
+
 void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 {
 	OpenGLHost::mousePressEvent(event);
@@ -99,7 +109,6 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 {
 	OpenGLHost::mouseMoveEvent(event);
 
-	lasPositionOnMap = positionOnMap;
 	positionOnMap = (glm::vec2(mouseLastX, mouseLastY) - drawAreaPosition - widgetOffset) / magnificationRatio;
 	MapElement *selectedElement = mapEditor->GetSelectedElement();
 

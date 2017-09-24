@@ -301,6 +301,34 @@ void NvgDrawHelper::DrawSelectedElement(MapElement * mapElement)
 	drawTransformShapes(mapElement);
 }
 
+void NvgDrawHelper::DrawStartFlag(glm::vec2 position)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	position = drawAreaPosition + position * magnificationRatio + offset;
+
+	nvgBeginPath(vg);
+	nvgEllipse(vg, position.x, position.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
+	nvgFillColor(vg, START_FLAG_COLOR);
+	nvgFill(vg);
+}
+
+void NvgDrawHelper::DrawEndFlag(glm::vec2 position)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	position = drawAreaPosition + position * magnificationRatio + offset;
+
+	nvgBeginPath(vg);
+	nvgEllipse(vg, position.x, position.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
+	nvgFillColor(vg, END_FLAG_COLOR);
+	nvgFill(vg);
+}
+
 #pragma endregion
 
 #pragma region Private methods.

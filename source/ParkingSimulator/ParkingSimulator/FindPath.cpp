@@ -5,7 +5,7 @@ FindPath::FindPath(QWidget *parent)
 {
 	ui.setupUi(this);
 
-	connect(ui.btnAccept, SIGNAL(released()), this, SLOT(findPath()));
+	connect(ui.btnFindPath, SIGNAL(released()), this, SLOT(findPath()));
 	connect(ui.btnCancel, SIGNAL(released()), this, SLOT(reject()));
 }
 

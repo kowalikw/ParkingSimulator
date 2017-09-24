@@ -4,11 +4,65 @@ PathPlannerGLHost::PathPlannerGLHost(QWidget *parent) : OpenGLHost(parent) { }
 
 #pragma region User input events.
 
+void PathPlannerGLHost::enterEvent(QEvent * event)
+{
+	OpenGLHost::enterEvent(event);
+
+	setFocus();
+}
+
+void PathPlannerGLHost::leaveEvent(QEvent * event)
+{
+	OpenGLHost::leaveEvent(event);
+}
+
 void PathPlannerGLHost::mousePressEvent(QMouseEvent * event)
 {
 	OpenGLHost::mousePressEvent(event);
 
-	pathPlanner1.AddUserPoint(glm::vec2(mouseClickX, mouseClickY));
+	if (pathPlanner->GetSetStartPosition())
+	{
+		if (pathPlanner->GetHoverElement(positionOnMap) != NULL)
+		{
+			if (dynamic_cast<ParkingSpace*>(pathPlanner->GetHoverElement(positionOnMap)) != NULL)
+			{
+				pathPlanner->SetStartParkingSpace(dynamic_cast<ParkingSpace*>(pathPlanner->GetHoverElement(positionOnMap)));
+				pathPlanner->SetStartPoint(nullptr);
+				pathPlanner->SetSetStartPosition(false);
+				pathPlanner->SetStartPositionChanged(true);
+			}
+		}
+		else
+		{
+			glm::vec2 *startPosition = new glm::vec2(positionOnMap.x, positionOnMap.y);
+			pathPlanner->SetStartParkingSpace(nullptr);
+			pathPlanner->SetStartPoint(startPosition);
+			pathPlanner->SetSetStartPosition(false);
+			pathPlanner->SetStartPositionChanged(true);
+		}
+	}
+
+	if (pathPlanner->GetSetEndPosition())
+	{
+		if (pathPlanner->GetHoverElement(positionOnMap) != NULL)
+		{
+			if (dynamic_cast<ParkingSpace*>(pathPlanner->GetHoverElement(positionOnMap)) != NULL)
+			{
+				pathPlanner->SetEndParkingSpace(dynamic_cast<ParkingSpace*>(pathPlanner->GetHoverElement(positionOnMap)));
+				pathPlanner->SetEndPoint(nullptr);
+				pathPlanner->SetSetEndPosition(false);
+				pathPlanner->SetEndPositionChanged(true);
+			}
+		}
+		else
+		{
+			glm::vec2 *endPosition = new glm::vec2(positionOnMap.x, positionOnMap.y);
+			pathPlanner->SetEndParkingSpace(nullptr);
+			pathPlanner->SetEndPoint(endPosition);
+			pathPlanner->SetSetEndPosition(false);
+			pathPlanner->SetEndPositionChanged(true);
+		}
+	}
 }
 
 void PathPlannerGLHost::mouseReleaseEvent(QMouseEvent * event)
@@ -19,6 +73,46 @@ void PathPlannerGLHost::mouseReleaseEvent(QMouseEvent * event)
 void PathPlannerGLHost::mouseMoveEvent(QMouseEvent * event)
 {
 	OpenGLHost::mouseMoveEvent(event);
+
+	positionOnMap = (glm::vec2(mouseLastX, mouseLastY) - drawAreaPosition - widgetOffset) / magnificationRatio;
+
+	if (pathPlanner->GetSetStartPosition())
+	{
+		if (pathPlanner->GetHoverElement(positionOnMap) != NULL)
+		{
+			if (dynamic_cast<ParkingSpace*>(pathPlanner->GetHoverElement(positionOnMap)) != NULL)
+			{
+				drawStartFlag = true;
+			}
+			else
+			{
+				drawStartFlag = false;
+			}
+		}
+		else
+		{
+			drawStartFlag = true;
+		}
+	}
+
+	if (pathPlanner->GetSetEndPosition())
+	{
+		if (pathPlanner->GetHoverElement(positionOnMap) != NULL)
+		{
+			if (dynamic_cast<ParkingSpace*>(pathPlanner->GetHoverElement(positionOnMap)) != NULL)
+			{
+				drawEndFlag = true;
+			}
+			else
+			{
+				drawEndFlag = false;
+			}
+		}
+		else
+		{
+			drawEndFlag = true;
+		}
+	}
 }
 
 void PathPlannerGLHost::keyPressEvent(QKeyEvent * event)
@@ -48,8 +142,6 @@ PathPlanner * PathPlannerGLHost::GetPathPlanner()
 void PathPlannerGLHost::initializeGL()
 {
 	OpenGLHost::initializeGL();
-
-	pathPlanner1 = PathPlanner(Map(), Vehicle(100, 50));
 
 	// normal path
 	pathPlanner->AddUserPoint(glm::vec2(200, 300));
@@ -96,16 +188,54 @@ void PathPlannerGLHost::paintGL()
 
 #pragma region Private methods.
 
-void PathPlannerGLHost::renderMap()
-{
-}
-
-void PathPlannerGLHost::renderVehicle()
-{
-}
-
 void PathPlannerGLHost::nvgRenderFrame()
 {
+	nvgHelper->DrawMap(pathPlanner->GetMap());
+
+	if (drawStartFlag)
+	{
+		if (pathPlanner->GetSetStartPosition())
+		{
+			if (mouseInsideGLHost)
+				nvgHelper->DrawStartFlag(positionOnMap);
+		}
+		else
+		{
+			if (pathPlanner->GetStartPoint() != NULL)
+			{
+				glm::vec2 position = *pathPlanner->GetStartPoint();
+				nvgHelper->DrawStartFlag(position);
+			}
+			else if (pathPlanner->GetStartParkingSpace() != NULL)
+			{
+				glm::vec2 position = pathPlanner->GetStartParkingSpace()->GetPosition();
+				nvgHelper->DrawStartFlag(position);
+			}
+		}
+	}
+
+	if (drawEndFlag)
+	{
+		if (pathPlanner->GetSetEndPosition())
+		{
+			if (mouseInsideGLHost)
+				nvgHelper->DrawEndFlag(positionOnMap);
+		}
+		else
+		{
+			if (pathPlanner->GetEndPoint() != NULL)
+			{
+				glm::vec2 position = *pathPlanner->GetEndPoint();
+				nvgHelper->DrawEndFlag(position);
+			}
+			else if (pathPlanner->GetEndParkingSpace() != NULL)
+			{
+				glm::vec2 position = pathPlanner->GetEndParkingSpace()->GetPosition();
+				nvgHelper->DrawEndFlag(position);
+			}
+		}
+	}
+
 	//pathAdmissible = pathPlanner->CreateAdmissiblePath(pathPlanner->UserPoints());
 	
 	//bspline = BSpline(pathPlanner.UserPoints());
@@ -135,14 +265,6 @@ void PathPlannerGLHost::nvgRenderFrame()
 	//drawBSpline();
 }
 
-void PathPlannerGLHost::renderVoronoiGraph()
-{
-}
-
-void PathPlannerGLHost::renderUserPoints()
-{
-}
-
 void PathPlannerGLHost::renderPathPolyline()
 {
 	nvgSave(vg);
@@ -154,12 +276,12 @@ void PathPlannerGLHost::renderPathPolyline()
 	nvgStrokeColor(vg, nvgRGBA(255, 0, 0, 255));
 	nvgBeginPath(vg);
 
-	if (pathPlanner1.UserPoints().size() < 2) return;
+	/*if (pathPlanner1.UserPoints().size() < 2) return;
 	for (int i = 1; i < pathPlanner1.UserPoints().size(); i++)
 	{
 		nvgMoveTo(vg, pathPlanner1.UserPoints()[i - 1].x,  pathPlanner1.UserPoints()[i - 1].y);
 		nvgLineTo(vg, pathPlanner1.UserPoints()[i].x, pathPlanner1.UserPoints()[i].y);
-	}
+	}*/
 
 	nvgStroke(vg);
 }

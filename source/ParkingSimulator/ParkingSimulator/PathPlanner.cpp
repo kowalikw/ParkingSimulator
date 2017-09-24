@@ -5,10 +5,10 @@ PathPlanner::PathPlanner()
 	simulation = new Simulation();
 
 	//temp
-	this->map = new Map(567, 1024);
+	/*this->map = new Map(567, 1024);
 	map->AddMapElement(new Obstacle(glm::vec2(100, 50), glm::vec2(300, 400), Building, "lala"));
 
-	vehicle = new Vehicle(200, 55);
+	vehicle = new Vehicle(200, 55);*/
 }
 
 PathPlanner::PathPlanner(Map map, Vehicle vehicle)
@@ -259,6 +259,46 @@ Vehicle * PathPlanner::GetVehicle()
 	return this->vehicle;
 }
 
+glm::vec2 * PathPlanner::GetStartPoint()
+{
+	return this->startPoint;
+}
+
+glm::vec2 * PathPlanner::GetEndPoint()
+{
+	return this->endPoint;
+}
+
+void PathPlanner::SetStartPoint(glm::vec2 * startPoint)
+{
+	this->startPoint = startPoint;
+}
+
+void PathPlanner::SetEndPoint(glm::vec2 * endPoint)
+{
+	this->endPoint = endPoint;
+}
+
+ParkingSpace * PathPlanner::GetStartParkingSpace()
+{
+	return this->startParkingSpace;
+}
+
+ParkingSpace * PathPlanner::GetEndParkingSpace()
+{
+	return this->endParkingSpace;
+}
+
+void PathPlanner::SetStartParkingSpace(ParkingSpace * startParkingSpace)
+{
+	this->startParkingSpace = startParkingSpace;
+}
+
+void PathPlanner::SetEndParkingSpace(ParkingSpace * endParkingSpace)
+{
+	this->endParkingSpace = endParkingSpace;
+}
+
 void PathPlanner::SetMap(Map * map)
 {
 	this->map = map;
@@ -377,6 +417,16 @@ bool PathPlanner::GetSetEndPosition()
 	return this->setEndPosition;
 }
 
+bool PathPlanner::GetStartPositionChanged()
+{
+	return this->startPositionChanged;
+}
+
+bool PathPlanner::GetEndPositionChanged()
+{
+	return this->endPositionChanged;
+}
+
 bool PathPlanner::GetShowVoronoiGraph()
 {
 	return this->showVoronoiGraph;
@@ -387,17 +437,17 @@ bool PathPlanner::GetShowFullVoronoiVisibilityGraph()
 	return this->showFullVoronoiVisibilityGraph;
 }
 
-bool PathPlanner::ShowPolylinePath()
+bool PathPlanner::GetShowPolylinePath()
 {
 	return this->showPolylinePath;
 }
 
-bool PathPlanner::ShowFinalPath()
+bool PathPlanner::GetShowFinalPath()
 {
 	return this->showFinalPath;
 }
 
-bool PathPlanner::ShowExpandedObstacles()
+bool PathPlanner::GetShowExpandedObstacles()
 {
 	return this->showExpandedObstacles;
 }
@@ -410,6 +460,16 @@ void PathPlanner::SetSetStartPosition(bool setStartPosition)
 void PathPlanner::SetSetEndPosition(bool setEndPosition)
 {
 	this->setEndPosition = setEndPosition;
+}
+
+void PathPlanner::SetStartPositionChanged(bool startPositionChanged)
+{
+	this->startPositionChanged = startPositionChanged;
+}
+
+void PathPlanner::SetEndPositionChanged(bool endPositionChanged)
+{
+	this->endPositionChanged = endPositionChanged;
 }
 
 void PathPlanner::SetShowVoronoiGraph(bool showVoronoiGraph)
@@ -435,4 +495,21 @@ void PathPlanner::SetShowFinalPath(bool showFinalPath)
 void PathPlanner::SetShowExpandedObstacles(bool showExpandedObstacles)
 {
 	this->showExpandedObstacles = showExpandedObstacles;
+}
+
+MapElement * PathPlanner::GetHoverElement(glm::vec2 mousePosition)
+{
+	MapElement *hoverElement = nullptr;
+	if (map != NULL)
+	{
+		std::vector<MapElement*> mapElements = map->GetMapElements();
+		for (int i = 0; i < mapElements.size(); i++)
+		{
+			if (mapElements[i] != hoverElement && (mapElements[i]->IsMoveActive() || mapElements[i]->IsRotationActive() || mapElements[i]->IsResizeActive()))
+				return nullptr;
+			if (GeometryHelper::CheckPolygonContainsPoint(mapElements[i]->GetPoints(), mousePosition))
+				hoverElement = mapElements[i];
+		}
+	}
+	return hoverElement;
 }

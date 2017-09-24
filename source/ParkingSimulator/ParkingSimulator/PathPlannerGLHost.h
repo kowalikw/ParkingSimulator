@@ -3,6 +3,7 @@
 
 #include "OpenGLHost.h"
 #include "PathPlanner.h"
+#include "NvgDrawHelper.h"
 
 class PathPlannerGLHost : public OpenGLHost
 {
@@ -10,6 +11,8 @@ class PathPlannerGLHost : public OpenGLHost
 
 public:
 	PathPlannerGLHost(QWidget *parent);
+	virtual void enterEvent(QEvent *event);
+	virtual void leaveEvent(QEvent *event);
 	virtual void mousePressEvent(QMouseEvent * event);
 	virtual void mouseReleaseEvent(QMouseEvent * event);
 	virtual void mouseMoveEvent(QMouseEvent * event);
@@ -23,17 +26,16 @@ protected:
 	virtual void paintGL() override;
 private:
 	PathPlanner *pathPlanner;
+	glm::vec2 positionOnMap;
 
-	PathPlanner pathPlanner1, pathPlanner2;
+	bool drawStartFlag = false;
+	bool drawEndFlag = false;
+
 	Path pathPolyline;
 	Path *pathAdmissible;
 	//BSpline bspline;
 
 	void nvgRenderFrame();
-	void renderMap();
-	void renderVehicle();
-	void renderVoronoiGraph();
-	void renderUserPoints();
 	void renderPathPolyline();
 	void renderPathAdmissible();
 	void drawBSpline();

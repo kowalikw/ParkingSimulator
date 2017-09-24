@@ -10,6 +10,16 @@ OpenGLHost::OpenGLHost(QWidget *parent) : QOpenGLWidget(parent)
 
 #pragma region User input events.
 
+void OpenGLHost::enterEvent(QEvent * event)
+{
+	mouseInsideGLHost = true;
+}
+
+void OpenGLHost::leaveEvent(QEvent * event)
+{
+	mouseInsideGLHost = false;
+}
+
 void OpenGLHost::mousePressEvent(QMouseEvent *event)
 {
 	mouseLastX = event->x();
