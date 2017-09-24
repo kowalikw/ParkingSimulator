@@ -33,7 +33,6 @@ public:
 	void SetUserPoints(vector<glm::vec2> userPoints);
 
 	vector<glm::vec2> UserPoints();
-	vector<glm::vec2> VoronoiPoints();
 
 	Path *CreateAdmissiblePath(ParkingSpace *start, ParkingSpace *end);
 	Path *CreateAdmissiblePath(ParkingSpace *start, glm::vec2 end);
@@ -47,16 +46,21 @@ public:
 	void OpenSimulation(string filePath);
 	void SaveSimulation(string filePath);
 
+	Map * GetMap();
+	Vehicle * GetVehicle();
+
+	void SetMap(Map *map);
+	void SetVehicle(Vehicle *vehicle);
+
 	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType = ParkManeuverType::Entry);
 	
 private:
 	Simulation *simulation = NULL;
 
-	Map map;
-	Vehicle vehicle;
+	Map *map;
+	Vehicle *vehicle;
 	Path path;
 	vector<glm::vec2> userPoints;
-	vector<glm::vec2> voronoiPoints;
 
 	bool epsilonEquals(float f1, float f2);
 	Path *createArcsBetweenSegments(vector<glm::vec2> points);

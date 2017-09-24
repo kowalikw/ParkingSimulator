@@ -217,6 +217,24 @@
     <ClCompile Include="SimulationInfo.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SelectVehicle.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SelectVehicle.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectVehicle.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SelectMap.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SelectMap.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectMap.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -262,6 +280,18 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="SimulationInfo.h">
+      <Filter>Header Files\Windows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SelectVehicle.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SelectVehicle.h">
+      <Filter>Header Files\Windows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SelectMap.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SelectMap.h">
       <Filter>Header Files\Windows</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -339,6 +369,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_SimulationInfo.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SelectVehicle.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_SelectMap.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -518,10 +518,18 @@ void ParkingSimulator::saveSimulation()
 
 void ParkingSimulator::setMap()
 {
+	SelectMap selectMapWindow(&mapEditor);
+	selectMapWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+	if (selectMapWindow.exec())
+		pathPlanner.SetMap(selectMapWindow.GetMap());
 }
 
 void ParkingSimulator::setVehicle()
 {
+	SelectVehicle selectVehicleWindow;
+	selectVehicleWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+	if (selectVehicleWindow.exec())
+		pathPlanner.SetVehicle(selectVehicleWindow.GetVehicle());
 }
 
 void ParkingSimulator::setStart()

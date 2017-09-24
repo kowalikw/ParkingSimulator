@@ -11,6 +11,8 @@
 #include "Visualisation.h"
 #include "MapEditorGLHost.h"
 #include "Settings.h";
+#include "SelectMap.h"
+#include "SelectVehicle.h"
 
 using namespace Ui;
 

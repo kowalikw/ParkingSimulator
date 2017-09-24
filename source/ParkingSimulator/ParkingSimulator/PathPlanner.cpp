@@ -5,16 +5,16 @@ PathPlanner::PathPlanner()
 	simulation = new Simulation();
 
 	//temp
-	this->map = Map(567, 1024);
-	map.AddMapElement(new Obstacle(glm::vec2(100, 50), glm::vec2(300, 400), Building, "lala"));
+	this->map = new Map(567, 1024);
+	map->AddMapElement(new Obstacle(glm::vec2(100, 50), glm::vec2(300, 400), Building, "lala"));
 
-	vehicle = Vehicle(200, 55);
+	vehicle = new Vehicle(200, 55);
 }
 
 PathPlanner::PathPlanner(Map map, Vehicle vehicle)
 {
-	this->map = map;
-	this->vehicle = vehicle;
+	this->map = &map;
+	this->vehicle = &vehicle;
 }
 
 void PathPlanner::AddUserPoint(glm::vec2 userPoint)
@@ -30,11 +30,6 @@ void PathPlanner::SetUserPoints(std::vector<glm::vec2> userPoints)
 std::vector<glm::vec2> PathPlanner::UserPoints()
 {
 	return this->userPoints;
-}
-
-std::vector<glm::vec2> PathPlanner::VoronoiPoints()
-{
-	return this->voronoiPoints;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * end)
@@ -138,8 +133,8 @@ void PathPlanner::NewSimulation()
 {
 	simulation = new Simulation();
 
-	simulation->SetMap(&map);
-	simulation->SetVehicle(&vehicle);
+	simulation->SetMap(map);
+	simulation->SetVehicle(vehicle);
 	simulation->SetPath(CreateAdmissiblePath(UserPoints()));
 }
 
@@ -195,7 +190,7 @@ Path * PathPlanner::createArcsBetweenSegments(vector<glm::vec2> points)
 		glm::vec2 n2(dir2.y, -dir2.x);
 
 		double length = l1 > l2 ? l2 : l1;
-		double radiusMin = vehicle.GetRMin(vehicle.maxInsideAngle);
+		double radiusMin = vehicle->GetRMin(vehicle->maxInsideAngle);
 		double radius;
 		glm::vec2 center;
 		do
@@ -252,6 +247,26 @@ bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2)
 	}
 
 	return true;
+}
+
+Map * PathPlanner::GetMap()
+{
+	return this->map;
+}
+
+Vehicle * PathPlanner::GetVehicle()
+{
+	return this->vehicle;
+}
+
+void PathPlanner::SetMap(Map * map)
+{
+	this->map = map;
+}
+
+void PathPlanner::SetVehicle(Vehicle * vehicle)
+{
+	this->vehicle = vehicle;
 }
 
 Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType)
