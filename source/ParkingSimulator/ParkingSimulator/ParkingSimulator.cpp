@@ -655,7 +655,8 @@ void ParkingSimulator::findPath()
 	findPathWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	if (findPathWindow.exec())
 	{
-		//pathPlanner.SetMap(selectMapWindow.GetMap());
+		int error;
+		pathPlanner.FindPath(&error);
 	}
 }
 

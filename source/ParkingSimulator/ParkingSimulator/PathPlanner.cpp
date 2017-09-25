@@ -49,6 +49,24 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 {
+	float expandSize = vehicle->GetTrack() / 4.0f;
+
+	Map *expandedMap = map->GetExpandedMap(expandSize);
+
+	Graph voronoi;
+	int indexStart, indexEnd;
+	glm::vec2 startDirection = *GetStartDirection();
+	glm::vec2 endDirection = *GetEndDirection();
+	Line* startLine = new Line(start, start + (float)vehicle->GetWheelbase() / 2.0f * startDirection);
+	Line* endLine = new Line(end, end + (float)vehicle->GetWheelbase() / 2.0f * endDirection);
+	voronoi.CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd);
+
+	Path *polylinePath = voronoi.FindPath(indexStart, indexEnd);
+
+	Path *finalPath = CreateAdmissiblePath(polylinePath);
+
+	this->path = finalPath;
+
 	return nullptr;
 }
 
@@ -259,6 +277,11 @@ Vehicle * PathPlanner::GetVehicle()
 	return this->vehicle;
 }
 
+Path * PathPlanner::GetFinalPath()
+{
+	return this->path;
+}
+
 glm::vec2 * PathPlanner::GetStartPoint()
 {
 	return this->startPoint;
@@ -277,6 +300,26 @@ void PathPlanner::SetStartPoint(glm::vec2 * startPoint)
 void PathPlanner::SetEndPoint(glm::vec2 * endPoint)
 {
 	this->endPoint = endPoint;
+}
+
+glm::vec2 * PathPlanner::GetStartDirection()
+{
+	return this->startDirection;
+}
+
+glm::vec2 * PathPlanner::GetEndDirection()
+{
+	return this->endDirection;
+}
+
+void PathPlanner::SetStartDirection(glm::vec2 * startDirection)
+{
+	this->startDirection = startDirection;
+}
+
+void PathPlanner::SetEndDrection(glm::vec2 * endDirection)
+{
+	this->endDirection = endDirection;
 }
 
 ParkingSpace * PathPlanner::GetStartParkingSpace()
@@ -417,6 +460,16 @@ bool PathPlanner::GetSetEndPosition()
 	return this->setEndPosition;
 }
 
+bool PathPlanner::GetSetStartDirection()
+{
+	return this->setStartDirection;
+}
+
+bool PathPlanner::GetSetEndDirection()
+{
+	return this->setEndDirection;
+}
+
 bool PathPlanner::GetStartPositionChanged()
 {
 	return this->startPositionChanged;
@@ -460,6 +513,16 @@ void PathPlanner::SetSetStartPosition(bool setStartPosition)
 void PathPlanner::SetSetEndPosition(bool setEndPosition)
 {
 	this->setEndPosition = setEndPosition;
+}
+
+void PathPlanner::SetSetStartDirection(bool setStartDirection)
+{
+	this->setStartDirection = setStartDirection;
+}
+
+void PathPlanner::SetSetEndDirection(bool setEndDirection)
+{
+	this->setEndDirection = setEndDirection;
 }
 
 void PathPlanner::SetStartPositionChanged(bool startPositionChanged)
@@ -512,4 +575,29 @@ MapElement * PathPlanner::GetHoverElement(glm::vec2 mousePosition)
 		}
 	}
 	return hoverElement;
+}
+
+void PathPlanner::FindPath(int *error)
+{
+	*error = 0;
+	if (startPoint != nullptr && endPoint != nullptr)
+	{
+		CreateAdmissiblePath(*startPoint, *endPoint);
+	}
+	else if (startPoint != nullptr && endParkingSpace != nullptr)
+	{
+		CreateAdmissiblePath(*startPoint, endParkingSpace);
+	}
+	else if (startParkingSpace != nullptr && endPoint != nullptr)
+	{
+		CreateAdmissiblePath(startParkingSpace, *endPoint);
+	}
+	else if (startParkingSpace != nullptr && endParkingSpace != nullptr)
+	{
+		CreateAdmissiblePath(startParkingSpace, endParkingSpace);
+	}
+	else
+	{
+		*error = 1;
+	}
 }

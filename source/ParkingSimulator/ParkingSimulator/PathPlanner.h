@@ -13,6 +13,7 @@
 #include "GeometryHelper.h"
 #include "Simulation.h"
 #include "ParkingSpace.h"
+#include "Graph.h"
 
 #define EPS 10e-3;
 
@@ -49,11 +50,17 @@ public:
 
 	Map * GetMap();
 	Vehicle * GetVehicle();
+	Path * GetFinalPath();
 
 	glm::vec2 * GetStartPoint();
 	glm::vec2 * GetEndPoint();
 	void SetStartPoint(glm::vec2 * startPoint);
 	void SetEndPoint(glm::vec2 * endPoint);
+
+	glm::vec2 * GetStartDirection();
+	glm::vec2 * GetEndDirection();
+	void SetStartDirection(glm::vec2 * startDirection);
+	void SetEndDrection(glm::vec2 * endDirection);
 
 	ParkingSpace * GetStartParkingSpace();
 	ParkingSpace * GetEndParkingSpace();
@@ -67,6 +74,8 @@ public:
 
 	bool GetSetStartPosition();
 	bool GetSetEndPosition();
+	bool GetSetStartDirection();
+	bool GetSetEndDirection();
 	bool GetStartPositionChanged();
 	bool GetEndPositionChanged();
 	bool GetShowVoronoiGraph();
@@ -77,6 +86,8 @@ public:
 
 	void SetSetStartPosition(bool setStartPosition);
 	void SetSetEndPosition(bool setEndPosition);
+	void SetSetStartDirection(bool setStartDirection);
+	void SetSetEndDirection(bool setEndDirection);
 	void SetStartPositionChanged(bool startPositionChanged);
 	void SetEndPositionChanged(bool endPositionChanged);
 	void SetShowVoronoiGraph(bool showVoronoiGraph);
@@ -86,6 +97,8 @@ public:
 	void SetShowExpandedObstacles(bool showExpandedObstacles);
 
 	MapElement * GetHoverElement(glm::vec2 mousePosition);
+
+	void FindPath(int *error);
 	
 private:
 	Simulation *simulation = NULL;
@@ -97,6 +110,9 @@ private:
 	glm::vec2 *startPoint = NULL;
 	glm::vec2 *endPoint = NULL;
 
+	glm::vec2 *startDirection = NULL;
+	glm::vec2 *endDirection = NULL;
+
 	ParkingSpace *startParkingSpace = NULL;
 	ParkingSpace *endParkingSpace = NULL;
 
@@ -104,6 +120,8 @@ private:
 
 	bool setStartPosition = false;
 	bool setEndPosition = false;
+	bool setStartDirection = false;
+	bool setEndDirection = false;
 	bool startPositionChanged = false;
 	bool endPositionChanged = false;
 	bool showVoronoiGraph = false;

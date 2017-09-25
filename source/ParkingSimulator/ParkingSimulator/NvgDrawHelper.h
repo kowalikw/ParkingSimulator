@@ -40,6 +40,7 @@ public:
 	void DrawSelectedElement(MapElement *mapElement);
 	void DrawStartFlag(glm::vec2 position);
 	void DrawEndFlag(glm::vec2 position);
+	void DrawArrow(glm::vec2 point, glm::vec2 direction);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);

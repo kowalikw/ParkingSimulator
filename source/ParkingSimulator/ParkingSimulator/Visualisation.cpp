@@ -69,16 +69,10 @@ Visualisation::Visualisation()
 //	voronoi.CreateVoronoiGraph(mapa);
 	voronoi.CreateVoronoiVisibilityFullGraph(expandedMap, start, end, &indexStart, &indexEnd);
 
-	double **estimated = new double*[voronoi.VerticesCount()];
-	for (int i = 0; i < voronoi.VerticesCount(); i++)
-		estimated[i] = new double[voronoi.VerticesCount()];
-
-	for (int i = 0; i < voronoi.VerticesCount(); i++)
-		for (int j = 0; j < voronoi.VerticesCount(); j++)
-			estimated[i][j] = 999;
 	
 	
-	auto path2 = voronoi.FindPath(indexStart, indexEnd, estimated);
+	
+	auto path2 = voronoi.FindPath(indexStart, indexEnd);
 		
 	auto path3 = pathPlanner.CreateAdmissiblePath(path2);
 

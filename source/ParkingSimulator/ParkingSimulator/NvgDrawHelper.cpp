@@ -329,6 +329,22 @@ void NvgDrawHelper::DrawEndFlag(glm::vec2 position)
 	nvgFill(vg);
 }
 
+void NvgDrawHelper::DrawArrow(glm::vec2 point, glm::vec2 direction)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	auto from = drawAreaPosition + point * magnificationRatio + offset;
+	auto to = from + 50.0f * direction;
+
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, from.x, from.y);
+	nvgLineTo(vg, to.x, to.y);
+	nvgFillColor(vg, nvgRGBA(255, 0, 0, 255));
+	nvgFill(vg);
+}
+
 #pragma endregion
 
 #pragma region Private methods.

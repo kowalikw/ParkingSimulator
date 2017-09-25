@@ -7,8 +7,6 @@ PathPlannerGLHost::PathPlannerGLHost(QWidget *parent) : OpenGLHost(parent) { }
 void PathPlannerGLHost::enterEvent(QEvent * event)
 {
 	OpenGLHost::enterEvent(event);
-
-	setFocus();
 }
 
 void PathPlannerGLHost::leaveEvent(QEvent * event)
@@ -34,11 +32,22 @@ void PathPlannerGLHost::mousePressEvent(QMouseEvent * event)
 		}
 		else
 		{
-			glm::vec2 *startPosition = new glm::vec2(positionOnMap.x, positionOnMap.y);
-			pathPlanner->SetStartParkingSpace(nullptr);
-			pathPlanner->SetStartPoint(startPosition);
-			pathPlanner->SetSetStartPosition(false);
-			pathPlanner->SetStartPositionChanged(true);
+			if (pathPlanner->GetSetStartDirection())
+			{
+				glm::vec2 startDirection = glm::normalize(positionOnMap - *pathPlanner->GetStartPoint());
+				pathPlanner->SetStartDirection(new glm::vec2(startDirection.x, startDirection.y));
+
+				pathPlanner->SetSetStartPosition(false);
+				pathPlanner->SetSetStartDirection(false);
+				pathPlanner->SetStartPositionChanged(true);
+			}
+			else
+			{
+				glm::vec2 *startPosition = new glm::vec2(positionOnMap.x, positionOnMap.y);
+				pathPlanner->SetStartParkingSpace(nullptr);
+				pathPlanner->SetStartPoint(startPosition);
+				pathPlanner->SetSetStartDirection(true);
+			}
 		}
 	}
 
@@ -56,11 +65,22 @@ void PathPlannerGLHost::mousePressEvent(QMouseEvent * event)
 		}
 		else
 		{
-			glm::vec2 *endPosition = new glm::vec2(positionOnMap.x, positionOnMap.y);
-			pathPlanner->SetEndParkingSpace(nullptr);
-			pathPlanner->SetEndPoint(endPosition);
-			pathPlanner->SetSetEndPosition(false);
-			pathPlanner->SetEndPositionChanged(true);
+			if (pathPlanner->GetSetEndDirection())
+			{
+				glm::vec2 endDirection = glm::normalize(positionOnMap - *pathPlanner->GetEndPoint());
+				pathPlanner->SetEndDrection(new glm::vec2(endDirection.x, endDirection.y));
+
+				pathPlanner->SetSetEndPosition(false);
+				pathPlanner->SetSetEndDirection(false);
+				pathPlanner->SetEndPositionChanged(true);
+			}
+			else
+			{
+				glm::vec2 *endPosition = new glm::vec2(positionOnMap.x, positionOnMap.y);
+				pathPlanner->SetEndParkingSpace(nullptr);
+				pathPlanner->SetEndPoint(endPosition);
+				pathPlanner->SetSetEndDirection(true);
+			}
 		}
 	}
 }
@@ -192,19 +212,30 @@ void PathPlannerGLHost::nvgRenderFrame()
 {
 	nvgHelper->DrawMap(pathPlanner->GetMap());
 
+	if (pathPlanner->GetFinalPath() != NULL)
+		nvgHelper->DrawPath(pathPlanner->GetFinalPath());
+
 	if (drawStartFlag)
 	{
 		if (pathPlanner->GetSetStartPosition())
 		{
-			if (mouseInsideGLHost)
+			if (pathPlanner->GetSetStartDirection())
+			{
+				glm::vec2 direction = GeometryHelper::GetLineDirection(*pathPlanner->GetStartPoint(), positionOnMap);
+				nvgHelper->DrawStartFlag(*pathPlanner->GetStartPoint());
+				nvgHelper->DrawArrow(*pathPlanner->GetStartPoint(), direction);
+			}
+			else if (mouseInsideGLHost)
+			{
 				nvgHelper->DrawStartFlag(positionOnMap);
+			}
 		}
 		else
 		{
 			if (pathPlanner->GetStartPoint() != NULL)
 			{
-				glm::vec2 position = *pathPlanner->GetStartPoint();
-				nvgHelper->DrawStartFlag(position);
+				nvgHelper->DrawStartFlag(*pathPlanner->GetStartPoint());
+				nvgHelper->DrawArrow(*pathPlanner->GetStartPoint(), *pathPlanner->GetStartDirection());
 			}
 			else if (pathPlanner->GetStartParkingSpace() != NULL)
 			{
@@ -218,15 +249,23 @@ void PathPlannerGLHost::nvgRenderFrame()
 	{
 		if (pathPlanner->GetSetEndPosition())
 		{
-			if (mouseInsideGLHost)
+			if (pathPlanner->GetSetEndDirection())
+			{
+				glm::vec2 direction = GeometryHelper::GetLineDirection(*pathPlanner->GetEndPoint(), positionOnMap);
+				nvgHelper->DrawEndFlag(*pathPlanner->GetEndPoint());
+				nvgHelper->DrawArrow(*pathPlanner->GetEndPoint(), direction);
+			}
+			else if (mouseInsideGLHost)
+			{
 				nvgHelper->DrawEndFlag(positionOnMap);
+			}
 		}
 		else
 		{
 			if (pathPlanner->GetEndPoint() != NULL)
 			{
-				glm::vec2 position = *pathPlanner->GetEndPoint();
-				nvgHelper->DrawEndFlag(position);
+				nvgHelper->DrawEndFlag(*pathPlanner->GetEndPoint());
+				nvgHelper->DrawArrow(*pathPlanner->GetEndPoint(), *pathPlanner->GetEndDirection());
 			}
 			else if (pathPlanner->GetEndParkingSpace() != NULL)
 			{
@@ -235,55 +274,6 @@ void PathPlannerGLHost::nvgRenderFrame()
 			}
 		}
 	}
-
-	//pathAdmissible = pathPlanner->CreateAdmissiblePath(pathPlanner->UserPoints());
-	
-	//bspline = BSpline(pathPlanner.UserPoints());
-
-
-	/*nvgSave(vg);
-
-	nvgLineCap(vg, NVG_ROUND);
-	nvgLineJoin(vg, NVG_MITER);
-
-	nvgStrokeWidth(vg, 1.0f);
-	nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
-	nvgFillColor(vg, nvgRGBA(255, 0, 0, 255));
-
-	nvgBeginPath(vg);
-
-	for (glm::vec2 point : pathPlanner1.UserPoints())
-	{
-		//nvgCircle(vg, point.x, point.y, 5);
-	}
-	nvgFill(vg);
-
-	nvgStroke(vg);
-
-	renderPathPolyline();
-	renderPathAdmissible();*/
-	//drawBSpline();
-}
-
-void PathPlannerGLHost::renderPathPolyline()
-{
-	nvgSave(vg);
-
-	nvgLineCap(vg, NVG_ROUND);
-	nvgLineJoin(vg, NVG_MITER);
-
-	nvgStrokeWidth(vg, 1.0f);
-	nvgStrokeColor(vg, nvgRGBA(255, 0, 0, 255));
-	nvgBeginPath(vg);
-
-	/*if (pathPlanner1.UserPoints().size() < 2) return;
-	for (int i = 1; i < pathPlanner1.UserPoints().size(); i++)
-	{
-		nvgMoveTo(vg, pathPlanner1.UserPoints()[i - 1].x,  pathPlanner1.UserPoints()[i - 1].y);
-		nvgLineTo(vg, pathPlanner1.UserPoints()[i].x, pathPlanner1.UserPoints()[i].y);
-	}*/
-
-	nvgStroke(vg);
 }
 
 void PathPlannerGLHost::renderPathAdmissible()

@@ -356,7 +356,7 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 	*indexTo = verticesCount + 3;
 }
 
-Path * Graph::FindPath(int s, int t, double **estimatedDist)
+Path * Graph::FindPath(int s, int t)
 {
 	Path *path = new Path();
 	std::vector<int> pathVertices;
@@ -371,6 +371,14 @@ Path * Graph::FindPath(int s, int t, double **estimatedDist)
 		T.push_back(vertices[i]);
 	}
 	dist[s] = 0;
+
+	double **estimatedDist = new double*[VerticesCount()];
+	for (int i = 0; i < VerticesCount(); i++)
+		estimatedDist[i] = new double[VerticesCount()];
+
+	for (int i = 0; i < VerticesCount(); i++)
+		for (int j = 0; j < VerticesCount(); j++)
+			estimatedDist[i][j] = 999;
 
 	while (!T.empty())
 	{

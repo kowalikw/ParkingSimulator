@@ -103,7 +103,7 @@ public:
 	void CreateVoronoiGraph(Map *map);
 	void CreateVoronoiFullGraph(Map *map);
 	void CreateVoronoiVisibilityFullGraph(Map *map, Line *from, Line *to, int *indexFrom, int *indexTo);
-	Path *FindPath(int s, int t, double **estimatedDist);
+	Path *FindPath(int s, int t);
 private:
 	bool directed;
 	std::vector<GraphVertex*> vertices;
