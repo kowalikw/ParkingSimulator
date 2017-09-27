@@ -210,6 +210,8 @@ void PathPlannerGLHost::paintGL()
 
 void PathPlannerGLHost::nvgRenderFrame()
 {
+	
+
 	nvgHelper->DrawMap(pathPlanner->GetMap());
 
 	if (pathPlanner->GetFinalPath() != NULL)
@@ -274,6 +276,29 @@ void PathPlannerGLHost::nvgRenderFrame()
 			}
 		}
 	}
+
+	if (pathPlanner->GetShowVoronoiGraph() && pathPlanner->GetVoronoiGraph() != NULL)
+	{
+		nvgHelper->DrawGraph(pathPlanner->GetVoronoiGraph());
+	}
+
+	if (pathPlanner->GetShowFullVoronoiVisibilityGraph() && pathPlanner->GetFullVoronoiVisibilityGraph() != NULL)
+	{
+		nvgHelper->DrawGraph(pathPlanner->GetFullVoronoiVisibilityGraph());
+	}
+
+	if (pathPlanner->GetShowPolylinePath())
+	{
+		nvgHelper->DrawPath(pathPlanner->GetPolylinePath());
+	}
+
+	if (pathPlanner->GetShowFinalPath())
+	{
+		nvgHelper->DrawPath(pathPlanner->GetFinalPath());
+	}
+
+	if (pathPlanner->GetShowExpandedObstacles())
+		nvgHelper->DrawMap(pathPlanner->GetExpandedMap());
 }
 
 void PathPlannerGLHost::renderPathAdmissible()

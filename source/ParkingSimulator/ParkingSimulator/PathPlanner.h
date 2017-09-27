@@ -49,8 +49,12 @@ public:
 	void SaveSimulation(string filePath);
 
 	Map * GetMap();
+	Map * GetExpandedMap();
 	Vehicle * GetVehicle();
+	Path * GetPolylinePath();
 	Path * GetFinalPath();
+	Graph * GetVoronoiGraph();
+	Graph * GetFullVoronoiVisibilityGraph();
 
 	glm::vec2 * GetStartPoint();
 	glm::vec2 * GetEndPoint();
@@ -104,8 +108,12 @@ private:
 	Simulation *simulation = NULL;
 
 	Map *map = NULL;
+	Map *expandedMap = NULL;
 	Vehicle *vehicle = NULL;
-	Path *path = NULL;
+	Path *polylinePath = NULL;
+	Path *finalPath = NULL;
+	Graph *voronoiGraph = NULL;
+	Graph *fullVoronoiVisibilityGraph = NULL;
 
 	glm::vec2 *startPoint = NULL;
 	glm::vec2 *endPoint = NULL;

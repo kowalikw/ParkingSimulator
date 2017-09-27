@@ -49,23 +49,22 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 {
-	float expandSize = vehicle->GetTrack() / 4.0f;
+	float expandSize = 2 * vehicle->GetTrack() / 4.0f;
 
-	Map *expandedMap = map->GetExpandedMap(expandSize);
+	expandedMap = map->GetExpandedMap(expandSize);
 
-	Graph voronoi;
 	int indexStart, indexEnd;
 	glm::vec2 startDirection = *GetStartDirection();
 	glm::vec2 endDirection = *GetEndDirection();
 	Line* startLine = new Line(start, start + (float)vehicle->GetWheelbase() / 2.0f * startDirection);
 	Line* endLine = new Line(end, end + (float)vehicle->GetWheelbase() / 2.0f * endDirection);
-	voronoi.CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd);
 
-	Path *polylinePath = voronoi.FindPath(indexStart, indexEnd);
+	voronoiGraph = new Graph(true);
+	voronoiGraph->CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd);
 
-	Path *finalPath = CreateAdmissiblePath(polylinePath);
+	polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
 
-	this->path = finalPath;
+	finalPath = CreateAdmissiblePath(polylinePath);
 
 	return nullptr;
 }
@@ -102,7 +101,7 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 
 	int iter = 0;
 	int arc1, arc2;
-	while (!checkArcsCorrectness(pathTmp, &arc1, &arc2) && iter < 100)
+	/*while (!checkArcsCorrectness(pathTmp, &arc1, &arc2) && iter < 100)
 	{
 		std::vector<glm::vec2> newPoints;
 		for (int i = 0; i < points.size() - 2; i++)
@@ -118,7 +117,7 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 		pathTmp = createArcsBetweenSegments(newPoints);
 
 		iter++;
-	}
+	}*/
 
 	for (int i = 0; i < pathTmp->GetElements().size(); i++)
 	{
@@ -272,14 +271,34 @@ Map * PathPlanner::GetMap()
 	return this->map;
 }
 
+Map * PathPlanner::GetExpandedMap()
+{
+	return this->expandedMap;
+}
+
 Vehicle * PathPlanner::GetVehicle()
 {
 	return this->vehicle;
 }
 
+Path * PathPlanner::GetPolylinePath()
+{
+	return this->polylinePath;
+}
+
 Path * PathPlanner::GetFinalPath()
 {
-	return this->path;
+	return this->finalPath;
+}
+
+Graph * PathPlanner::GetVoronoiGraph()
+{
+	return this->voronoiGraph;
+}
+
+Graph * PathPlanner::GetFullVoronoiVisibilityGraph()
+{
+	return this->fullVoronoiVisibilityGraph;
 }
 
 glm::vec2 * PathPlanner::GetStartPoint()

@@ -20,7 +20,7 @@ Vehicle * SelectVehicle::GetVehicle()
 
 void SelectVehicle::selectVehicle()
 {
-	this->vehicle = new Vehicle(200, 100);
+	this->vehicle = new Vehicle(100, 50);
 	this->vehicle->SetName("Renault Scenic");
 
 	accept();
