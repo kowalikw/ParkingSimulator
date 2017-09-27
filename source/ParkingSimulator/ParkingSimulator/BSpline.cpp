@@ -62,3 +62,23 @@ glm::vec2 BSpline::CalculatePoint(double u)
 
 	return P[k - s][p - s];
 }
+
+double BSpline::GetLength()
+{
+	return 0.0;
+}
+
+double BSpline::GetAngle(double t)
+{
+	return 0.0;
+}
+
+glm::vec2 BSpline::GetPoint(double t)
+{
+	return CalculatePoint(t);
+}
+
+SimulationState BSpline::GetSimulationState(double t)
+{
+	return SimulationState();
+}

@@ -13,6 +13,11 @@ public:
 	BSpline(vector<glm::vec2> controlPoints, int p = 3);
 
 	glm::vec2 CalculatePoint(double u);
+
+	virtual double GetLength();
+	virtual double GetAngle(double t);
+	virtual glm::vec2 GetPoint(double t);
+	virtual SimulationState GetSimulationState(double t);
 private:
 	int n; // n+1 control points
 	int m; // m+1 knots

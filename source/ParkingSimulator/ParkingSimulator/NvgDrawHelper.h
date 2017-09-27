@@ -10,6 +10,7 @@
 #include "Line.h"
 #include "Arc.h"
 #include "Simulation.h"
+#include "BezierCurve.h"
 #include <glm.hpp>
 
 #define GLEW_STATIC
@@ -41,6 +42,7 @@ public:
 	void DrawStartFlag(glm::vec2 position);
 	void DrawEndFlag(glm::vec2 position);
 	void DrawArrow(glm::vec2 point, glm::vec2 direction);
+	void DrawBezierCurve(BezierCurve *bezierCurve);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);

@@ -244,6 +244,9 @@
     <ClCompile Include="FindPath.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="BezierCurve.cpp">
+      <Filter>Source Files\PathElements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -394,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_FindPath.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierCurve.h">
+      <Filter>Header Files\PathElements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

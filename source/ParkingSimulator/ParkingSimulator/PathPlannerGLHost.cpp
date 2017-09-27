@@ -164,12 +164,12 @@ void PathPlannerGLHost::initializeGL()
 	OpenGLHost::initializeGL();
 
 	// normal path
-	pathPlanner->AddUserPoint(glm::vec2(200, 300));
-	pathPlanner->AddUserPoint(glm::vec2(200, 500));
-	pathPlanner->AddUserPoint(glm::vec2(500, 500));
-	pathPlanner->AddUserPoint(glm::vec2(500, 300));
+	pathPlanner->AddUserPoint(glm::vec2(100, 100));
+	pathPlanner->AddUserPoint(glm::vec2(300, 100));
+	pathPlanner->AddUserPoint(glm::vec2(350, 400));
+	pathPlanner->AddUserPoint(glm::vec2(400, 400));
 
-	pathPlanner->AddUserPoint(glm::vec2(700, 300));
+	/*pathPlanner->AddUserPoint(glm::vec2(700, 300));
 	pathPlanner->AddUserPoint(glm::vec2(300, 100));
 
 	pathPlanner->AddUserPoint(glm::vec2(100, 100));
@@ -182,7 +182,7 @@ void PathPlannerGLHost::initializeGL()
 	pathPlanner->AddUserPoint(glm::vec2(678, 186));
 	pathPlanner->AddUserPoint(glm::vec2(697, 488));
 	pathPlanner->AddUserPoint(glm::vec2(988, 517));
-	pathPlanner->AddUserPoint(glm::vec2(1000, 100));
+	pathPlanner->AddUserPoint(glm::vec2(1000, 100));*/
 }
 
 void PathPlannerGLHost::resizeGL(int w, int h)
@@ -210,8 +210,28 @@ void PathPlannerGLHost::paintGL()
 
 void PathPlannerGLHost::nvgRenderFrame()
 {
-	
+	BezierCurve curve(pathPlanner->UserPoints());
+	BSpline spline(pathPlanner->UserPoints());
 
+	glm::vec2 ps = spline.GetPoint(0);
+	auto points = pathPlanner->UserPoints();
+	
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, points[0].x, points[0].y);
+	nvgLineTo(vg, points[1].x, points[1].y);
+	nvgLineTo(vg, points[2].x, points[2].y);
+	nvgLineTo(vg, points[3].x, points[3].y);
+
+	nvgMoveTo(vg, ps.x, ps.y);
+	for (double t = 0; t < 1; t += 0.01)
+	{
+		glm::vec2 p = spline.GetPoint(t);
+		nvgLineTo(vg, p.x, p.y);
+	}
+	nvgStrokeWidth(vg, 3);
+	nvgStrokeColor(vg, nvgRGBA(255, 0, 0, 255));
+	nvgStroke(vg);
+	/*
 	nvgHelper->DrawMap(pathPlanner->GetMap());
 
 	if (pathPlanner->GetFinalPath() != NULL)
@@ -298,7 +318,7 @@ void PathPlannerGLHost::nvgRenderFrame()
 	}
 
 	if (pathPlanner->GetShowExpandedObstacles())
-		nvgHelper->DrawMap(pathPlanner->GetExpandedMap());
+		nvgHelper->DrawMap(pathPlanner->GetExpandedMap());*/
 }
 
 void PathPlannerGLHost::renderPathAdmissible()
