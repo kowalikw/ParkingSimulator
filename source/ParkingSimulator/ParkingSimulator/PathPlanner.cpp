@@ -96,6 +96,10 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 			path.AddElement(points[i]);
 		return path;
 	}*/
+
+	int element1, element2;
+	bool ok = checkPolylinePathCorectness(points, &element1, &element2);
+
 	
 	pathTmp = createArcsBetweenSegments(points);
 
@@ -259,6 +263,25 @@ bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2)
 		{
 			*arc1 = i;
 			*arc2 = i + 1;
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool PathPlanner::checkPolylinePathCorectness(vector<glm::vec2> points, int * element1, int * element2)
+{
+	if (points.size() < 3) return true;
+
+	for (int i = 0; i < points.size() - 2; i++)
+	{
+		glm::vec2 v1 = glm::vec2(points[i + 1] - points[i]);
+		glm::vec2 v2 = glm::vec2(points[i + 2] - points[i + 1]);
+		if (GeometryHelper::GetAngleBetweenVectors(v1, v2) > M_PI / 2.0f)
+		{
+			*element1 = i;
+			*element2 = i + 1;
 			return false;
 		}
 	}

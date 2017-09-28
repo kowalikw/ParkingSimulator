@@ -345,6 +345,41 @@ void NvgDrawHelper::DrawArrow(glm::vec2 point, glm::vec2 direction)
 	nvgFill(vg);
 }
 
+void NvgDrawHelper::DrawBSpline(BSpline *bSpline, bool drawPolyline)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	std::vector<glm::vec2> controlPoints = bSpline->GetControlPoints();
+
+	if (drawPolyline)
+	{
+		nvgBeginPath(vg);
+		nvgMoveTo(vg, controlPoints[0].x, controlPoints[0].y);
+		for (int i = 0; i < controlPoints.size(); i++)
+			nvgLineTo(vg, controlPoints[1].x, controlPoints[1].y);
+		nvgStrokeWidth(vg, 3);
+		nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
+		nvgStroke(vg);
+	}
+
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, controlPoints[0].x, controlPoints[0].y);
+	for (double t = 0; t < 1; t += 0.01)
+	{
+		if (t < bSpline->knots[bSpline->n] || t > bSpline->knots[bSpline->m - bSpline->n]) continue;
+		
+		auto x = bSpline->GetPointX(t);
+		auto y = bSpline->GetPointY(t);
+
+		nvgLineTo(vg, x, y);
+	}
+	nvgStrokeWidth(vg, 3);
+	nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
+	nvgStroke(vg);
+}
+
 #pragma endregion
 
 #pragma region Private methods.

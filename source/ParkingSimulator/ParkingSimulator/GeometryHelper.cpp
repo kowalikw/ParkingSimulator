@@ -153,6 +153,11 @@ double GeometryHelper::GetAngleVector(glm::vec2 p1, glm::vec2 p2, CircleType dir
 	return alfa;
 }
 
+double GeometryHelper::GetAngleBetweenVectors(glm::vec2 v1, glm::vec2 v2)
+{
+	return acos(glm::dot(glm::normalize(v1), glm::normalize(v2)));
+}
+
 CircleType GeometryHelper::GetVectorsDirection(glm::vec2 v1, glm::vec2 v2)
 {
 	double crossProduct = CrossProduct(v1, v2);

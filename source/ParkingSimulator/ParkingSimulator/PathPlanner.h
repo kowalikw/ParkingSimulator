@@ -141,7 +141,7 @@ private:
 	bool epsilonEquals(float f1, float f2);
 	Path *createArcsBetweenSegments(vector<glm::vec2> points);
 	bool checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2);
-	
+	bool checkPolylinePathCorectness(vector<glm::vec2> points, int *element1, int *element2);
 };
 
 #endif

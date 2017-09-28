@@ -17,6 +17,7 @@ public:
 	static bool IsEnclosedByRect(glm::vec2 point, glm::vec2 cornerA, glm::vec2 cornerB);
 	static double GetDistanceBetweenPoints(glm::vec2 p1, glm::vec2 p2);
 	static double GetAngleVector(glm::vec2 p1, glm::vec2 p2, CircleType direction);
+	static double GetAngleBetweenVectors(glm::vec2 v1, glm::vec2 v2);
 	static CircleType GetVectorsDirection(glm::vec2 v1, glm::vec2 v2);
 	static CircleType GetVectorsDirection(glm::vec2 p1, glm::vec2 p2, glm::vec2 commonPoint);
 	static glm::vec2 GetLineDirection(glm::vec2 p1, glm::vec2 p2);
