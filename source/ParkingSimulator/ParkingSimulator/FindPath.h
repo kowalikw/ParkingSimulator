@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include "ui_FindPath.h"
+#include "PathPlanner.h";
 
 using namespace Ui;
 
@@ -13,8 +14,14 @@ public:
 	FindPath(QWidget *parent = Q_NULLPTR);
 	~FindPath();
 
+	double GetExpandSizePercent();
+	PathPlanningAlgorithm GetAlgorithm();
+
 private:
 	FindPathClass ui;
+
+	double expandSizePercent;
+	PathPlanningAlgorithm algorithm;
 public slots:
 	void findPath();
 };

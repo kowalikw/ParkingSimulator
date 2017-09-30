@@ -11,6 +11,15 @@ Line::Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType)
 	this->maneuverType = maneuverType;
 }
 
+Line::Line(glm::vec2 from, glm::vec2 to, int v1, int v2, ManeuverType maneuverType)
+{
+	this->from = from;
+	this->to = to;
+	this->v1 = v1;
+	this->v2 = v2;
+	this->maneuverType = maneuverType;
+}
+
 glm::vec2 Line::GetFrom() const
 {
 	return this->from;
@@ -31,6 +40,16 @@ void Line::SetTo(glm::vec2 to)
 	this->to = to;
 }
 
+int Line::GetV1() const
+{
+	return this->v1;
+}
+
+int Line::GetV2() const
+{
+	return this->v2;
+}
+
 double Line::GetLength()
 {
 	return sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
@@ -39,6 +58,16 @@ double Line::GetLength()
 double Line::GetAngle(double t)
 {
 	return atan2(to.y - from.y, to.x - from.x);
+}
+
+glm::vec2 Line::GetFirstPoint()
+{
+	return GetPoint(0);
+}
+
+glm::vec2 Line::GetLastPoint()
+{
+	return GetPoint(1);
 }
 
 glm::vec2 Line::GetPoint(double t)

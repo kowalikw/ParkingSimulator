@@ -87,9 +87,23 @@ PathElement * Path::GetElement(double t)
 	for (int i = 0; i < elements.size(); i++)
 	{
 		tmpLength += elements[i]->GetLength();
-		if (tmpLength > currentLength)
+		if (tmpLength >= currentLength)
 			return elements[i];
 	}
 
 	return nullptr;
+}
+
+SimulationState Path::GetSimulationState(double t)
+{
+	PathElement *pathElement = GetElement(t);
+
+	double pathLength = GetLength();
+	double lengthToPathElementExclude = GetLengthToElement(pathElement);
+	double lengthToPathElementInclude = GetLength() + lengthToPathElementExclude;
+
+	double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
+	SimulationState simulationState = pathElement->GetSimulationState(u);
+
+	return simulationState;
 }

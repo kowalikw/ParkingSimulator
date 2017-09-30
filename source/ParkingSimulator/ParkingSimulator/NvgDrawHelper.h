@@ -44,6 +44,7 @@ public:
 	void DrawEndFlag(glm::vec2 position);
 	void DrawArrow(glm::vec2 point, glm::vec2 direction);
 	void DrawBSpline(BSpline *bSpline, bool drawPolyline = false);
+	void DrawPathElement(PathElement *pathElement);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
@@ -99,10 +100,10 @@ public:
 	const int GRAPH_VERTEX_RADIUS = 3;
 	const NVGcolor GRAPH_VERTEX_COLOR = nvgRGBA(140, 140, 140, 255);
 
-	const int PATH_LINE_WIDTH = 3;
-	const NVGcolor PATH_LINE_COLOR = nvgRGBA(255, 0, 255, 255);
+	const int PATH_LINE_WIDTH = 2;
+	const NVGcolor PATH_LINE_COLOR = nvgRGBA(0, 0, 255, 255);
 
-	const int PATH_CIRCLE_WIDTH = 3;
+	const int PATH_CIRCLE_WIDTH = 2;
 	const NVGcolor PATH_CIRCLE_COLOR = nvgRGBA(255, 0, 255, 255);
 
 	const int POLYGON_BORDER_WIDTH = 3;

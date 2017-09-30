@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddSimulationClass</class>
+ <widget class="QWidget" name="AddSimulationClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>309</width>
+    <height>135</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AddSimulation</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {
+	background-color: #2a2a2a;
+	border: 3px solid #3b3e41;
+	border-radius: 3px;
+}
+
+QPushButton#btnLoadFromPathPlanner, QPushButton#btnLoadFromFile, QPushButton#btnCancel {
+    background-color: #3b3e41;
+    border-radius: 3px;
+    border: 1px solid #757575;
+    font: bold 12px;
+	color: white;
+    min-width: 6em;
+    padding: 6px;
+}
+
+QPushButton#btnLoadFromPathPlanner:hover, QPushButton#btnLoadFromFile:hover, QPushButton#btnCancel:hover {
+    background-color: #85b448;
+	cursor: pointer;
+}
+
+QPushButton#btnLoadFromPathPlanner:pressed, QPushButton#btnLoadFromFile:pressed, QPushButton#btnCancel:pressed {
+    background-color: #d86a39;
+}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="leftMargin">
+      <number>20</number>
+     </property>
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="rightMargin">
+      <number>20</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="btnLoadFromPathPlanner">
+       <property name="text">
+        <string>Load simulation from path planner</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnLoadFromFile">
+       <property name="text">
+        <string>Load simulation from file</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

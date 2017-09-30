@@ -20,8 +20,56 @@ public:
 
 	virtual double GetLength();
 	virtual double GetAngle(double t);
+	virtual glm::vec2 GetFirstPoint();
+	virtual glm::vec2 GetLastPoint();
 	virtual glm::vec2 GetPoint(double t);
 	virtual SimulationState GetSimulationState(double t);
+
+	friend class boost::serialization::access;
+
+	template<class Archive>
+	void save(Archive & ar, const unsigned int version) const
+	{
+		ar & boost::serialization::base_object<PathElement>(*this);
+		ar & n;
+		ar & m;
+		ar & p;
+
+		ar & controlPoints.size();
+		for (int i = 0; i < controlPoints.size(); i++)
+			ar & controlPoints[i];
+
+		ar & knots.size();
+		for (int i = 0; i < knots.size(); i++)
+			ar & knots[i];
+	}
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{
+		double knot;
+		glm::vec2 point;
+		int controlPointsCount, knotsCount;
+
+		ar & boost::serialization::base_object<PathElement>(*this);
+		ar & n;
+		ar & m;
+		ar & p;
+
+		ar & controlPointsCount;
+		for (int i = 0; i < controlPointsCount; i++)
+		{
+			ar & point;
+			controlPoints.push_back(point);
+		}
+
+		ar & knotsCount;
+		for (int i = 0; i < knotsCount; i++)
+		{
+			ar & knot;
+			knots.push_back(knot);
+		}
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 //private:
 	int n; // n+1 control points
 	int m; // m+1 knots

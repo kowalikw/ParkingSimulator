@@ -25,6 +25,12 @@ enum ParkManeuverType
 	Exit
 };
 
+enum PathPlanningAlgorithm
+{
+	Spline,
+	Arcs
+};
+
 class PathPlanner
 {
 public:
@@ -55,6 +61,7 @@ public:
 	Path * GetFinalPath();
 	Graph * GetVoronoiGraph();
 	Graph * GetFullVoronoiVisibilityGraph();
+	Simulation * GetSimulation();
 
 	glm::vec2 * GetStartPoint();
 	glm::vec2 * GetEndPoint();
@@ -70,6 +77,11 @@ public:
 	ParkingSpace * GetEndParkingSpace();
 	void SetStartParkingSpace(ParkingSpace *startParkingSpace);
 	void SetEndParkingSpace(ParkingSpace *endParkingSpace);
+
+	PathPlanningAlgorithm GetAlgorithm();
+	void SetAlgorithm(PathPlanningAlgorithm algorithm);
+
+	GraphEdge * ChackPathCollision(Path *path, Map *Map);
 
 	void SetMap(Map *map);
 	void SetVehicle(Vehicle *vehicle);
@@ -126,6 +138,8 @@ private:
 
 	vector<glm::vec2> userPoints;
 
+	PathPlanningAlgorithm algorithm = PathPlanningAlgorithm::Arcs;
+
 	bool setStartPosition = false;
 	bool setEndPosition = false;
 	bool setStartDirection = false;
@@ -141,7 +155,8 @@ private:
 	bool epsilonEquals(float f1, float f2);
 	Path *createArcsBetweenSegments(vector<glm::vec2> points);
 	bool checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2);
-	bool checkPolylinePathCorectness(vector<glm::vec2> points, int *element1, int *element2);
+	bool checkArcsCorrectness(Path *pathArcs, int arc1, int arc2);
+	bool checkPolylinePathCorectness(Path *path, int *element1, int *element2);
 };
 
 #endif

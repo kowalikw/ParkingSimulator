@@ -216,21 +216,29 @@ void PathPlannerGLHost::nvgRenderFrame()
 {
 	/*std::vector<glm::vec2> pp;
 	pp.push_back(glm::vec2(100, 100));
+	pp.push_back(glm::vec2(100, 100));
+	pp.push_back(glm::vec2(100, 100));
+
 	pp.push_back(glm::vec2(300, 100));
+	pp.push_back(glm::vec2(400, 200));
 	pp.push_back(glm::vec2(350, 400));
+
+	pp.push_back(glm::vec2(500, 400));
+	pp.push_back(glm::vec2(500, 400));
 	pp.push_back(glm::vec2(500, 400));
 
 	BezierCurve curve(pathPlanner->UserPoints());
-	BSpline spline(pathPlanner->UserPoints());
+	BSpline spline(pp);
 
 	glm::vec2 ps = curve.GetPoint(0);
 	auto points = pathPlanner->UserPoints();
 	
 	nvgBeginPath(vg);
-	nvgMoveTo(vg, points[2].x, points[2].y);
-	nvgLineTo(vg, points[3].x, points[3].y);
-	nvgLineTo(vg, points[4].x, points[4].y);
-	nvgLineTo(vg, points[5].x, points[5].y);
+	for (int i = 2; i < pp.size() - 2; i++)
+	{
+		nvgMoveTo(vg, pp[i - 1].x, pp[i - 1].y);
+		nvgLineTo(vg, pp[i].x, pp[i].y);
+	}
 
 	nvgMoveTo(vg, ps.x, ps.y);
 	for (double t = 0; t < 1; t += 0.01)
@@ -240,10 +248,10 @@ void PathPlannerGLHost::nvgRenderFrame()
 	}
 	nvgStrokeWidth(vg, 3);
 	nvgStrokeColor(vg, nvgRGBA(255, 0, 0, 255));
-	nvgStroke(vg);*/
+	nvgStroke(vg);
 
 
-	//nvgHelper->DrawBSpline(&spline);
+	nvgHelper->DrawBSpline(&spline);*/
 
 	
 	nvgHelper->DrawMap(pathPlanner->GetMap());

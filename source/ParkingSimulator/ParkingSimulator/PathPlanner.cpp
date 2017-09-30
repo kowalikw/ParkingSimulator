@@ -64,7 +64,33 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 
 	polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
 
+	int element1, element2;
+	/*while (!checkPolylinePathCorectness(polylinePath, &element1, &element2) && polylinePath->GetElements().size() > 1)
+	{
+		Line *line;
+		if (element2 != polylinePath->GetElements().size() - 1)
+			line = dynamic_cast<Line*>(polylinePath->GetAt(element2));
+		else
+			line = dynamic_cast<Line*>(polylinePath->GetAt(element1));
+
+		voronoiGraph->RemoveEdge(line->GetV1(), line->GetV2());
+
+		polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+	}*/
+
 	finalPath = CreateAdmissiblePath(polylinePath);
+
+	GraphEdge *collisionEdge = ChackPathCollision(finalPath, map);
+	while (collisionEdge != NULL && finalPath->GetElements().size() > 0)
+	{
+		voronoiGraph->RemoveEdge(collisionEdge);
+
+		polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+
+		finalPath = CreateAdmissiblePath(polylinePath);
+
+		collisionEdge = ChackPathCollision(finalPath, map);
+	}
 
 	return nullptr;
 }
@@ -97,57 +123,149 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 		return path;
 	}*/
 
-	int element1, element2;
-	bool ok = checkPolylinePathCorectness(points, &element1, &element2);
-
-	
-	pathTmp = createArcsBetweenSegments(points);
-
-	int iter = 0;
-	int arc1, arc2;
-	/*while (!checkArcsCorrectness(pathTmp, &arc1, &arc2) && iter < 100)
+	if (algorithm == PathPlanningAlgorithm::Spline)
 	{
-		std::vector<glm::vec2> newPoints;
-		for (int i = 0; i < points.size() - 2; i++)
-		{
-			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetAt(arc2));
-			if (!epsilonEquals(points[i].x, circle->circleBasePoints[1].x) || !epsilonEquals(points[i].y, circle->circleBasePoints[1].y))
-				newPoints.push_back(points[i]);
-		}
-		newPoints.push_back(points[(int)points.size() - 2]);
-		newPoints.push_back(points[(int)points.size() - 1]);
+		path->AddElement(new BSpline(points));
 
-		points = newPoints;
-		pathTmp = createArcsBetweenSegments(newPoints);
-
-		iter++;
-	}*/
-
-	for (int i = 0; i < pathTmp->GetElements().size(); i++)
-	{
-		if (i == 0)
-		{
-			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[0]);
-			path->AddElement(new Line(points[0], glm::vec2(circle->GetPointForAngle(circle->angleFrom))));
-		}		
-
-		if (i > 0)
-		{
-			Circle *prevCircle = dynamic_cast<Circle*>(pathTmp->GetAt(i - 1));
-			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetAt(i));
-			path->AddElement(new Line(glm::vec2(prevCircle->GetPointForAngle(prevCircle->GetAngleTo())), glm::vec2(circle->GetPointForAngle(circle->angleFrom))));
-		}
-
-		path->AddElement(pathTmp->GetAt(i));
-
-		if (i == (int)pathTmp->GetElements().size() - 1)
-		{
-			Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[pathTmp->GetElements().size() - 1]);
-			path->AddElement(new Line(glm::vec2(circle->GetPointForAngle(circle->angleTo)), points[points.size() - 1]));
-		}
+		return path;
 	}
+	else
+	{
+		pathTmp = createArcsBetweenSegments(points);
 
-	return path;
+		int iter = 0;
+		int arc1, arc2;
+		/*while (!checkArcsCorrectness(pathTmp, &arc1, &arc2) && iter < 100)
+		{
+			std::vector<glm::vec2> newPoints;
+			for (int i = 0; i < points.size() - 2; i++)
+			{
+				Circle *circle = dynamic_cast<Circle*>(pathTmp->GetAt(arc2));
+				if (!epsilonEquals(points[i].x, circle->circleBasePoints[1].x) || !epsilonEquals(points[i].y, circle->circleBasePoints[1].y))
+					newPoints.push_back(points[i]);
+			}
+			newPoints.push_back(points[(int)points.size() - 2]);
+			newPoints.push_back(points[(int)points.size() - 1]);
+
+			points = newPoints;
+			pathTmp = createArcsBetweenSegments(newPoints);
+
+			iter++;
+		}*/
+
+		/*Path * newPathTmp = new Path();
+		for (int i = 0; i < pathTmp->GetElements().size(); i++)
+		{
+			std::vector<int> invalidArcs;
+			invalidArcs.push_back(i);
+			while (i < pathTmp->GetElements().size() - 1 && !checkArcsCorrectness(pathTmp, i, i + 1))
+			{
+				invalidArcs.push_back(i + 1);
+
+				if (invalidArcs.size() < 4)
+					i++;
+				else
+					break;
+			}
+
+			//tutaj naprawianie
+			if (invalidArcs.size() == 4)
+			{
+				Circle *circle1 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[0]));
+				Circle *circle2 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[1]));
+				Circle *circle3 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[2]));
+				Circle *circle4 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[3]));
+
+				std::vector<glm::vec2> bsplinePoints;
+				bsplinePoints.push_back(circle1->GetPoint(1));
+				bsplinePoints.push_back(circle1->GetPoint(1));
+				bsplinePoints.push_back(circle1->GetPoint(1));
+				bsplinePoints.push_back(circle2->GetCircleBasePoints()[1]);
+				bsplinePoints.push_back(circle3->GetCircleBasePoints()[1]);
+				bsplinePoints.push_back(circle4->GetPoint(0));
+				bsplinePoints.push_back(circle4->GetPoint(0));
+				bsplinePoints.push_back(circle4->GetPoint(0));
+
+				BSpline *bspline = new BSpline(bsplinePoints);
+				newPathTmp->AddElement(bspline);
+			}
+			else if (invalidArcs.size() == 3)
+			{
+				Circle *circle1 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[0]));
+				Circle *circle2 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[1]));
+				Circle *circle3 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[2]));
+
+				std::vector<glm::vec2> bsplinePoints;
+				bsplinePoints.push_back(circle1->GetPoint(0));
+				bsplinePoints.push_back(circle1->GetPoint(0));
+				bsplinePoints.push_back(circle1->GetPoint(0));
+				bsplinePoints.push_back(circle1->GetCircleBasePoints()[1]);
+				bsplinePoints.push_back(circle2->GetCircleBasePoints()[1]);
+				bsplinePoints.push_back(circle3->GetPoint(0));
+				bsplinePoints.push_back(circle3->GetPoint(0));
+				bsplinePoints.push_back(circle3->GetPoint(0));
+
+				BSpline *bspline = new BSpline(bsplinePoints);
+				newPathTmp->AddElement(bspline);
+			}
+			else if (invalidArcs.size() == 2)
+			{
+				Circle *circle1 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[0]));
+				Circle *circle2 = dynamic_cast<Circle*>(pathTmp->GetAt(invalidArcs[1]));
+
+				std::vector<glm::vec2> bsplinePoints;
+				bsplinePoints.push_back(circle1->GetPoint(0));
+				bsplinePoints.push_back(circle1->GetPoint(0));
+				bsplinePoints.push_back(circle1->GetPoint(0));
+				bsplinePoints.push_back(circle1->GetCircleBasePoints()[1]);
+				bsplinePoints.push_back(circle2->GetCircleBasePoints()[1]);
+				bsplinePoints.push_back(circle2->GetPoint(1));
+				bsplinePoints.push_back(circle2->GetPoint(1));
+				bsplinePoints.push_back(circle2->GetPoint(1));
+
+				BSpline *bspline = new BSpline(bsplinePoints);
+				newPathTmp->AddElement(bspline);
+			}
+			else
+			{
+				newPathTmp->AddElement(pathTmp->GetAt(i));
+			}
+		}*/
+
+		Path *newPathTmp = pathTmp;
+
+		for (int i = 0; i < newPathTmp->GetElements().size(); i++)
+		{
+			if (i == 0)
+			{
+				/*Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[0]);
+				path->AddElement(new Line(points[0], glm::vec2(circle->GetPointForAngle(circle->angleFrom))));*/
+
+				path->AddElement(new Line(points[0], newPathTmp->GetAt(0)->GetFirstPoint()));
+			}
+
+			if (i > 0)
+			{
+				/*Circle *prevCircle = dynamic_cast<Circle*>(pathTmp->GetAt(i - 1));
+				Circle *circle = dynamic_cast<Circle*>(pathTmp->GetAt(i));
+				path->AddElement(new Line(glm::vec2(prevCircle->GetPointForAngle(prevCircle->GetAngleTo())), glm::vec2(circle->GetPointForAngle(circle->angleFrom))));*/
+
+				path->AddElement(new Line(newPathTmp->GetAt(i - 1)->GetLastPoint(), newPathTmp->GetAt(i)->GetFirstPoint()));
+			}
+
+			path->AddElement(newPathTmp->GetAt(i));
+
+			if (i == (int)newPathTmp->GetElements().size() - 1)
+			{
+				/*Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[pathTmp->GetElements().size() - 1]);
+				path->AddElement(new Line(glm::vec2(circle->GetPointForAngle(circle->angleTo)), points[points.size() - 1]));*/
+
+				path->AddElement(new Line(newPathTmp->GetAt(newPathTmp->GetElements().size() - 1)->GetLastPoint(), points[points.size() - 1]));
+			}
+		}
+
+		return path;
+	}
 }
 
 void PathPlanner::NewSimulation()
@@ -172,11 +290,42 @@ void PathPlanner::OpenSimulation(string filePath)
 
 void PathPlanner::SaveSimulation(string filePath)
 {
+	simulation = new Simulation(map, vehicle, finalPath);
+
 	ofstream f(filePath, ios::out);
 
 	boost::archive::text_oarchive oa(f);
 
 	oa << *simulation;
+}
+
+PathPlanningAlgorithm PathPlanner::GetAlgorithm()
+{
+	return this->algorithm;
+}
+
+void PathPlanner::SetAlgorithm(PathPlanningAlgorithm algorithm)
+{
+	this->algorithm = algorithm;
+}
+
+GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map)
+{
+	auto mapElements = map->GetMapElements();
+	for (double t = 0; t < 1; t += 0.1)
+	{
+		SimulationState simulationState = path->GetSimulationState(t);
+		vehicle->UpdateState(simulationState);
+		for (int i = 0; i < mapElements.size(); i++)
+		{
+			if (GeometryHelper::CheckPolygonIntersection(mapElements[i]->GetPoints(), vehicle->GetPoints()))
+			{
+				Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t));
+				return voronoiGraph->GetEdge(line->GetV1(), line->GetV2());
+			}
+		}
+	}
+	return nullptr;
 }
 
 bool PathPlanner::epsilonEquals(float f1, float f2)
@@ -270,14 +419,39 @@ bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2)
 	return true;
 }
 
-bool PathPlanner::checkPolylinePathCorectness(vector<glm::vec2> points, int * element1, int * element2)
+bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int arc1, int arc2)
 {
-	if (points.size() < 3) return true;
+	std::vector<PathElement*> arcs = pathArcs->GetElements();
 
-	for (int i = 0; i < points.size() - 2; i++)
+	Circle *circle = dynamic_cast<Circle*>(arcs[arc1]);
+	Circle *nextCircle = dynamic_cast<Circle*>(arcs[arc2]);
+
+	auto p1 = circle->GetPointForAngle(circle->angleTo);
+	auto p2 = nextCircle->GetPointForAngle(nextCircle->angleFrom);
+
+	if (p1 == p2) return true;
+
+	auto dir1 = GeometryHelper::GetLineDirection(p1, p2);
+	auto dir2 = GeometryHelper::GetLineDirection(circle->circleBasePoints[1], circle->circleBasePoints[2]);
+
+	if (!epsilonEquals(dir1.x, dir2.x) || !epsilonEquals(dir1.y, dir2.y))
+		return false;
+
+	return true;
+}
+
+bool PathPlanner::checkPolylinePathCorectness(Path *path, int * element1, int * element2)
+{
+	if (path->GetElements().size() < 2) return true;
+
+	for (int i = 0; i < path->GetElements().size() - 2; i++)
 	{
-		glm::vec2 v1 = glm::vec2(points[i + 1] - points[i]);
-		glm::vec2 v2 = glm::vec2(points[i + 2] - points[i + 1]);
+		Line *line1 = dynamic_cast<Line*>(path->GetElements()[i]);
+		Line *line2 = dynamic_cast<Line*>(path->GetElements()[i + 1]);
+
+		glm::vec2 v1 = line1->GetFrom() - line1->GetTo();
+		glm::vec2 v2 = line2->GetFrom() - line2->GetTo();
+
 		if (GeometryHelper::GetAngleBetweenVectors(v1, v2) > M_PI / 2.0f)
 		{
 			*element1 = i;
@@ -322,6 +496,13 @@ Graph * PathPlanner::GetVoronoiGraph()
 Graph * PathPlanner::GetFullVoronoiVisibilityGraph()
 {
 	return this->fullVoronoiVisibilityGraph;
+}
+
+Simulation * PathPlanner::GetSimulation()
+{
+	simulation = new Simulation(map, vehicle, finalPath);
+
+	return this->simulation;
 }
 
 glm::vec2 * PathPlanner::GetStartPoint()

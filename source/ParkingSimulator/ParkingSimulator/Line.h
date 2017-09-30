@@ -8,13 +8,19 @@ class Line : public PathElement
 public:
 	Line();
 	Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType = ManeuverType::Front);
+	Line(glm::vec2 from, glm::vec2 to, int v1, int v2, ManeuverType maneuverType = ManeuverType::Front);
 	glm::vec2 GetFrom() const;
 	glm::vec2 GetTo() const;
 	void SetFrom(glm::vec2 from);
 	void SetTo(glm::vec2 to);
 
+	int GetV1() const;
+	int GetV2() const;
+
 	virtual double GetLength();
 	virtual double GetAngle(double t);
+	virtual glm::vec2 GetFirstPoint();
+	virtual glm::vec2 GetLastPoint();
 	virtual glm::vec2 GetPoint(double t);
 	virtual SimulationState GetSimulationState(double t);
 
@@ -38,6 +44,9 @@ public:
 private:
 	glm::vec2 from;
 	glm::vec2 to;
+
+	int v1;
+	int v2;
 };
 
 #endif

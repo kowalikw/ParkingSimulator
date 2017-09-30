@@ -24,6 +24,16 @@ double BezierCurve::GetAngle(double t)
 	return 0.0;
 }
 
+glm::vec2 BezierCurve::GetFirstPoint()
+{
+	return glm::vec2();
+}
+
+glm::vec2 BezierCurve::GetLastPoint()
+{
+	return glm::vec2();
+}
+
 glm::vec2 BezierCurve::GetPoint(double t)
 {
 	return DeCasteljau(t);

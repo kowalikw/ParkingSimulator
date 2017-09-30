@@ -14,6 +14,7 @@
 #include "SelectMap.h"
 #include "SelectVehicle.h"
 #include "FindPath.h"
+#include "AddSimulation.h"
 
 using namespace Ui;
 

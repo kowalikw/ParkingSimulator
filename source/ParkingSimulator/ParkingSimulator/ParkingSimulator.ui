@@ -85,7 +85,7 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -1437,6 +1437,12 @@ margin-left: 8px;</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">color: white;</string>
+                </property>
+                <property name="minimum">
+                 <number>1</number>
+                </property>
+                <property name="value">
+                 <number>10</number>
                 </property>
                </widget>
               </item>

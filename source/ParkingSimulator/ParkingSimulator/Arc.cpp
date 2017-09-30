@@ -94,6 +94,16 @@ double Circle::GetAngle(double t)
 	return angleFrom < angleTo ? angleFrom + t * (angleTo - angleFrom) : angleTo + t * (angleFrom - angleTo);
 }
 
+glm::vec2 Circle::GetFirstPoint()
+{
+	return GetPointForAngle(angleFrom);
+}
+
+glm::vec2 Circle::GetLastPoint()
+{
+	return GetPointForAngle(angleTo);
+}
+
 glm::vec2 Circle::GetPoint(double t)
 {
 	double angle = GetAngle(t);

@@ -8,33 +8,48 @@ Vehicle::Vehicle(double wheelbase, double track)
 {
 	this->position = glm::vec2(0.0f, 0.0f);
 	this->rotation = 0.0;
-	this->size = glm::vec2(1.0f, 1.0f);
+	this->size = glm::vec2(wheelbase, track);
 	this->wheelbase = wheelbase;
 	this->track = track;
 	this->dirWheelbase = glm::vec2(1.0f, 0.0f);
 	this->dirTrack = glm::vec2(0.0f, 1.0f);
+
+	this->points.push_back(glm::vec2(-size.x / 2.0f, -size.y / 2.0f));
+	this->points.push_back(glm::vec2(size.x / 2.0f, -size.y / 2.0f));
+	this->points.push_back(glm::vec2(size.x / 2.0f, size.y / 2.0f));
+	this->points.push_back(glm::vec2(-size.x / 2.0f, size.y / 2.0f));
+
+	transform();
 }
 
 void Vehicle::UpdateState(double angle)
 {
 	this->rotation = angle;
+
+	transform();
 }
 
 void Vehicle::UpdateState(glm::vec2 position)
 {
 	this->position = position;
+
+	transform();
 }
 
 void Vehicle::UpdateState(glm::vec2 position, double angle)
 {
 	this->position = position;
 	this->rotation = angle;
+
+	transform();
 }
 
 void Vehicle::UpdateState(double x, double y, double z, double angle)
 {
 	this->position = glm::vec2(x, y);
 	this->rotation = angle;
+
+	transform();
 }
 
 void Vehicle::UpdateState(PathElement *pathElement)
@@ -46,12 +61,16 @@ void Vehicle::UpdateState(PathElement *pathElement)
 		Circle *circle = dynamic_cast<Circle*>(pathElement);
 		UpdateState(circle->GetPointForAngle(circle->GetAngleTo()), circle->GetCircleType() == Right ? -circle->GetAngleTo() : circle->GetAngleTo());
 	}
+
+	transform();
 }
 
 void Vehicle::UpdateState(SimulationState simulationState)
 {
 	this->position = simulationState.position;
 	this->rotation = simulationState.angle;
+
+	transform();
 }
 
 double Vehicle::GetR(double angle)

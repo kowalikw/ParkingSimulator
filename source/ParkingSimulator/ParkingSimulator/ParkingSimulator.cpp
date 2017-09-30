@@ -655,6 +655,8 @@ void ParkingSimulator::findPath()
 	findPathWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	if (findPathWindow.exec())
 	{
+		pathPlanner.SetAlgorithm(findPathWindow.GetAlgorithm());
+
 		int error;
 		pathPlanner.FindPath(&error);
 	}
@@ -682,17 +684,10 @@ void ParkingSimulator::clearPathPlannerButtonsStyle()
 
 void ParkingSimulator::addSimulation()
 {
-	/*Map map;
-	Vehicle vehicle(200, 100);
-	Path path;
-
-	MapElement *parkingSpace = new ParkingSpace(glm::vec2(200, 200), glm::vec2(300, 120));
-	map.AddMapElement(parkingSpace);
-
-	Simulation *simulation = new Simulation(map, vehicle, path);
-	visualisation.AddSimulation(simulation);*/
-
-	int lala2 = 0;
+	AddSimulation addSimulationWindow(&pathPlanner);
+	addSimulationWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+	if (addSimulationWindow.exec())
+		visualisation.SetCurrentSimulation(addSimulationWindow.GetSimulation());
 }
 
 void ParkingSimulator::removeSimulation()
@@ -713,6 +708,7 @@ void ParkingSimulator::playPauseSimulation()
 		else
 		{
 			float t = ui.simulationPrograssBar->value() / 1000.0f;
+			simulation->SetSimulationTime(ui.simulationLength->value());
 			simulation->SetCurrentSimulationTime(t * simulation->GetSimulationTime());
 			simulation->Start();
 		}

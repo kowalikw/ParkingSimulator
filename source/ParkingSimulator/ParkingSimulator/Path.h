@@ -27,6 +27,8 @@ public:
 	double GetLengthToElement(PathElement *pathElement);
 	PathElement *GetElement(double t);
 
+	SimulationState GetSimulationState(double t);
+
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
 	{
@@ -43,6 +45,11 @@ public:
 			{
 				ar & std::string("Circle");
 				ar & *dynamic_cast<Circle*>(elements[i]);
+			}
+			else if (elementType == std::string(typeid(BSpline).name()))
+			{
+				ar & std::string("BSpline");
+				ar & *dynamic_cast<BSpline*>(elements[i]);
 			}
 		}
 	}
@@ -66,6 +73,12 @@ public:
 			else if (elementType == std::string("Circle"))
 			{
 				Circle *element = new Circle();
+				ar & *element;
+				elements.push_back(element);
+			}
+			else if (elementType == std::string("BSpline"))
+			{
+				BSpline *element = new BSpline();
 				ar & *element;
 				elements.push_back(element);
 			}

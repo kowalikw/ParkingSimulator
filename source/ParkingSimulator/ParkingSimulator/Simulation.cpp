@@ -105,14 +105,7 @@ void Simulation::UpdateSimulationState()
 		return;
 	}
 
-	PathElement *pathElement = path->GetElement(timeRatio);
-
-	double pathLength = path->GetLength();
-	double lengthToPathElementExclude = path->GetLengthToElement(pathElement);
-	double lengthToPathElementInclude = pathElement->GetLength() + lengthToPathElementExclude;
-
-	double t = abs((lengthToPathElementExclude - (timeRatio * pathLength)) / pathElement->GetLength());
-	SimulationState simulationState = pathElement->GetSimulationState(t);
+	SimulationState simulationState = path->GetSimulationState(timeRatio);
 
 	this->vehicle->UpdateState(simulationState);
 }

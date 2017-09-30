@@ -201,23 +201,23 @@ void Graph::CreateVoronoiGraph(Map * map)
 
 	construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), &vd);
 
-	vertices.resize(vd.num_vertices());
+	/*vertices.resize(vd.num_vertices());
 	for (int i = 0; i < vd.num_vertices(); i++)
-		vertices[i] = new GraphVertex(0, 0);
-
-	edges.resize(vd.num_vertices());
-	for (int i = 0; i < vd.num_vertices(); i++)
-		edges[i].resize(vd.num_vertices());
-
-	for (int i = 0; i < vd.num_vertices(); i++)
-		for (int j = 0; j < vd.num_vertices(); j++)
-			edges[i][j] = nullptr;
+		vertices[i] = new GraphVertex(0, 0);*/
 
 	for (int i = 0; i < vd.num_vertices(); i++)
 	{
-		GraphVertex *v = new GraphVertex(vd.vertices().at(i).x(), vd.vertices().at(i).y());
-		vertices[i] = v;
+		if(vd.vertices().at(i).x() >= 0 && vd.vertices().at(i).y() >= 0 && vd.vertices().at(i).x() <= map->GetWidth() && vd.vertices().at(i).y() <= map->GetHeight())
+			vertices.push_back(new GraphVertex(vd.vertices().at(i).x(), vd.vertices().at(i).y()));
 	}
+
+	edges.resize(vertices.size());
+	for (int i = 0; i < vertices.size(); i++)
+		edges[i].resize(vertices.size());
+
+	for (int i = 0; i < vertices.size(); i++)
+		for (int j = 0; j < vertices.size(); j++)
+			edges[i][j] = nullptr;
 
 	for (voronoi_diagram<double>::const_cell_iterator it = vd.cells().begin(); it != vd.cells().end(); ++it) {
 		const voronoi_diagram<double>::cell_type &cell = *it;
@@ -258,7 +258,8 @@ void Graph::CreateVoronoiGraph(Map * map)
 				int from = FindIndexOfVector(edge->vertex0()->x(), edge->vertex0()->y());
 				int to = FindIndexOfVector(edge->vertex1()->x(), edge->vertex1()->y());
 
-				AddEdge(from, to);
+				if(from > 0 && to > 0)
+					AddEdge(from, to);
 			}
 
 			edge = edge->next();
@@ -335,11 +336,14 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 	{
 		bool addEdgeToStartTo = true;
 		bool addEdgeToEndFrom = true;
+		bool addEdgeBetweenStartEnd = true;
 		GraphVertex *v = GetVertex(i);
 		std::vector<MapElement*> mapElements = map->GetMapElements();
 
 		for (int j = 0; j < mapElements.size(); j++)
 		{
+			if (GeometryHelper::CheckPolygonSegmentIntersection(glm::vec2(GetVertex(verticesCount + 1)->x, GetVertex(verticesCount + 2)->y), glm::vec2(GetVertex(verticesCount + 2)->x, GetVertex(verticesCount + 2)->y), mapElements[j]->GetPoints()))
+				addEdgeBetweenStartEnd = false;
 			if (GeometryHelper::CheckPolygonSegmentIntersection(startTo, glm::vec2(v->x, v->y), mapElements[j]->GetPoints()))
 				addEdgeToStartTo = false;
 			if (GeometryHelper::CheckPolygonSegmentIntersection(endFrom, glm::vec2(v->x, v->y), mapElements[j]->GetPoints()))
@@ -350,6 +354,8 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 			AddEdge(verticesCount + 1, i);
 		if(addEdgeToEndFrom)
 			AddEdge(i, verticesCount + 2);
+		if(addEdgeBetweenStartEnd)
+			AddEdge(verticesCount + 1, verticesCount + 2);
 	}
 
 	*indexFrom = verticesCount;
@@ -419,7 +425,7 @@ Path * Graph::FindPath(int s, int t)
 	std::reverse(pathVertices.begin(), pathVertices.end());
 
 	for (int i = 0; i < pathVertices.size() - 1; i++)
-		path->AddElement(new Line(glm::vec2(vertices[pathVertices[i]]->x, vertices[pathVertices[i]]->y), glm::vec2(vertices[pathVertices[i + 1]]->x, vertices[pathVertices[i + 1]]->y)));
+		path->AddElement(new Line(glm::vec2(vertices[pathVertices[i]]->x, vertices[pathVertices[i]]->y), glm::vec2(vertices[pathVertices[i + 1]]->x, vertices[pathVertices[i + 1]]->y), pathVertices[i], pathVertices[i + 1]));
 
 	return path;
 }

@@ -247,6 +247,15 @@
     <ClCompile Include="BezierCurve.cpp">
       <Filter>Source Files\PathElements</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_AddSimulation.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_AddSimulation.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="AddSimulation.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -310,6 +319,12 @@
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="FindPath.h">
+      <Filter>Header Files\Windows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddSimulation.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="AddSimulation.h">
       <Filter>Header Files\Windows</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -400,6 +415,9 @@
     </ClInclude>
     <ClInclude Include="BezierCurve.h">
       <Filter>Header Files\PathElements</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_AddSimulation.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
