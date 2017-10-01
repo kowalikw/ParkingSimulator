@@ -13,6 +13,7 @@ Circle::Circle(glm::vec2 centre, double radius, double angleFrom, double angleTo
 	this->circleBasePoints = circleBasePoints;
 	this->circleType = circleType;
 	this->maneuverType = maneuverType;
+	this->length = abs(angleFrom - angleTo) * radius;
 }
 
 double Circle::GetAngleFrom() const
@@ -85,7 +86,7 @@ glm::vec2 Circle::GetPointForAngle(double angle)
 
 double Circle::GetLength()
 {
-	return abs(angleFrom - angleTo) * radius;
+	return this->length;
 }
 double Circle::GetAngle(double t)
 {

@@ -30,8 +30,20 @@ BSpline::BSpline(vector<glm::vec2> controlPoints, int p)
 
 	for (int i = 0; i < m + 1; i++)
 		knots[i] = i * 1.0 / m;
-	/*knots[0] = knots[1] = knots[2] = knots[3] = 0;
-	knots[4] = knots[5] = knots[6] = knots[7] = 1;*/
+	
+	// calculate length
+	glm::vec2 currentPoint, prevPoint;
+	for (double t = 0; t < 1.0; t += 0.01)
+	{
+		if (t == 0)
+			prevPoint = GetPoint(t);
+		else
+		{
+			prevPoint = currentPoint;
+			currentPoint = GetPoint(t);
+			this->length += GeometryHelper::GetDistanceBetweenPoints(prevPoint, currentPoint);
+		}
+	}
 }
 
 glm::vec2 BSpline::CalculatePoint(double t)
@@ -203,20 +215,7 @@ std::vector<glm::vec2> BSpline::GetControlPoints()
 
 double BSpline::GetLength()
 {
-	double length = 0;
-	glm::vec2 currentPoint, prevPoint;
-	for (double t = 0; t < 1.0; t += 0.001)
-	{
-		if (t == 0) 
-			prevPoint = GetPoint(t);
-		else
-		{
-			prevPoint = currentPoint;
-			currentPoint = GetPoint(t);
-			length += GeometryHelper::GetDistanceBetweenPoints(prevPoint, currentPoint);
-		}
-	}
-	return length;
+	return this->length;
 }
 
 double BSpline::GetAngle(double t)

@@ -28,6 +28,7 @@ public:
 	PathElement *GetElement(double t);
 
 	SimulationState GetSimulationState(double t);
+	std::vector<SimulationState> GetAllSimulationStates(double step);
 
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
@@ -87,6 +88,8 @@ public:
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:
 	std::vector<PathElement*> elements;
+
+	double calculateLengthToElement(PathElement *pathElement);
 
 	friend class boost::serialization::access;
 };

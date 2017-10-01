@@ -29,6 +29,9 @@ public:
 	ManeuverType GetManeuverType();
 	void SetManeuverType(ManeuverType maneuvertype);
 
+	double GetLengthToElement();
+	void SetLengthToElement(double length);
+
 	virtual double GetLength() = 0;
 	virtual double GetAngle(double t) = 0;
 	virtual glm::vec2 GetFirstPoint() = 0;
@@ -51,6 +54,8 @@ public:
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 protected:
 	ManeuverType maneuverType;
+	double length = 0;
+	double lengthToElement = 0;
 };
 
 #endif

@@ -9,6 +9,7 @@ Line::Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType)
 	this->from = from;
 	this->to = to;
 	this->maneuverType = maneuverType;
+	this->length = sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
 }
 
 Line::Line(glm::vec2 from, glm::vec2 to, int v1, int v2, ManeuverType maneuverType)
@@ -18,6 +19,7 @@ Line::Line(glm::vec2 from, glm::vec2 to, int v1, int v2, ManeuverType maneuverTy
 	this->v1 = v1;
 	this->v2 = v2;
 	this->maneuverType = maneuverType;
+	this->length = sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
 }
 
 glm::vec2 Line::GetFrom() const
@@ -52,7 +54,7 @@ int Line::GetV2() const
 
 double Line::GetLength()
 {
-	return sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
+	return this->length;
 }
 
 double Line::GetAngle(double t)

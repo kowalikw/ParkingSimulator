@@ -89,6 +89,9 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 
 		finalPath = CreateAdmissiblePath(polylinePath);
 
+		if (finalPath->GetElements().size() == 0)
+			return nullptr;
+
 		collisionEdge = ChackPathCollision(finalPath, map);
 	}
 
@@ -238,18 +241,11 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 		{
 			if (i == 0)
 			{
-				/*Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[0]);
-				path->AddElement(new Line(points[0], glm::vec2(circle->GetPointForAngle(circle->angleFrom))));*/
-
 				path->AddElement(new Line(points[0], newPathTmp->GetAt(0)->GetFirstPoint()));
 			}
 
 			if (i > 0)
 			{
-				/*Circle *prevCircle = dynamic_cast<Circle*>(pathTmp->GetAt(i - 1));
-				Circle *circle = dynamic_cast<Circle*>(pathTmp->GetAt(i));
-				path->AddElement(new Line(glm::vec2(prevCircle->GetPointForAngle(prevCircle->GetAngleTo())), glm::vec2(circle->GetPointForAngle(circle->angleFrom))));*/
-
 				path->AddElement(new Line(newPathTmp->GetAt(i - 1)->GetLastPoint(), newPathTmp->GetAt(i)->GetFirstPoint()));
 			}
 
@@ -257,9 +253,6 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 
 			if (i == (int)newPathTmp->GetElements().size() - 1)
 			{
-				/*Circle *circle = dynamic_cast<Circle*>(pathTmp->GetElements()[pathTmp->GetElements().size() - 1]);
-				path->AddElement(new Line(glm::vec2(circle->GetPointForAngle(circle->angleTo)), points[points.size() - 1]));*/
-
 				path->AddElement(new Line(newPathTmp->GetAt(newPathTmp->GetElements().size() - 1)->GetLastPoint(), points[points.size() - 1]));
 			}
 		}
@@ -312,7 +305,7 @@ void PathPlanner::SetAlgorithm(PathPlanningAlgorithm algorithm)
 GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map)
 {
 	auto mapElements = map->GetMapElements();
-	for (double t = 0; t < 1; t += 0.1)
+	for (double t = 0; t < 1; t += 0.01)
 	{
 		SimulationState simulationState = path->GetSimulationState(t);
 		vehicle->UpdateState(simulationState);
@@ -377,7 +370,7 @@ Path * PathPlanner::createArcsBetweenSegments(vector<glm::vec2> points)
 			radius = glm::length(P - center);
 
 			length -= 0.1;
-		} while (radius >= radiusMin);
+		} while (radius >= radiusMin); // minimalizacja promienia
 
 		CircleType arcType = GeometryHelper::GetVectorsDirection(p1, p3, p2);
 		double angleFrom = GeometryHelper::GetAngleVector(p1, p2, arcType);

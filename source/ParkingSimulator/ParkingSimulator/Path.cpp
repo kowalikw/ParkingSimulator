@@ -42,6 +42,8 @@ vector<PathElement*> Path::GetElements()
 void Path::AddElement(PathElement *element)
 {
 	this->elements.push_back(element);
+
+	element->SetLengthToElement(calculateLengthToElement(element));
 }
 
 void Path::RemoveElement(PathElement * element)
@@ -68,14 +70,7 @@ double Path::GetLength()
 
 double Path::GetLengthToElement(PathElement *pathElement)
 {
-	double length = 0;
-	for (int i = 0; i < elements.size(); i++)
-	{
-		if (elements[i] == pathElement)
-			return length;
-		length += elements[i]->GetLength();
-	}
-	return length;
+	return pathElement->GetLengthToElement();
 }
 
 PathElement * Path::GetElement(double t)
@@ -113,4 +108,24 @@ SimulationState Path::GetSimulationState(double t)
 	{
 		int lala = 0;
 	}
+}
+
+std::vector<SimulationState> Path::GetAllSimulationStates(double step)
+{
+	std::vector<SimulationState> simulationStates;
+	for (double t = 0; t < 1.0; t += step)
+		simulationStates.push_back(GetSimulationState(t));
+	return simulationStates;
+}
+
+double Path::calculateLengthToElement(PathElement *pathElement)
+{
+	double length = 0;
+	for (int i = 0; i < elements.size(); i++)
+	{
+		if (elements[i] == pathElement)
+			return length;
+		length += elements[i]->GetLength();
+	}
+	return length;
 }
