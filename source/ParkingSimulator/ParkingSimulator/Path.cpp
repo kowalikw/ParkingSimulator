@@ -96,14 +96,21 @@ PathElement * Path::GetElement(double t)
 
 SimulationState Path::GetSimulationState(double t)
 {
-	PathElement *pathElement = GetElement(t);
+	try
+	{
+		PathElement *pathElement = GetElement(t);
 
-	double pathLength = GetLength();
-	double lengthToPathElementExclude = GetLengthToElement(pathElement);
-	double lengthToPathElementInclude = GetLength() + lengthToPathElementExclude;
+		double pathLength = GetLength();
+		double lengthToPathElementExclude = GetLengthToElement(pathElement);
+		double lengthToPathElementInclude = GetLength() + lengthToPathElementExclude;
 
-	double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
-	SimulationState simulationState = pathElement->GetSimulationState(u);
+		double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
+		SimulationState simulationState = pathElement->GetSimulationState(u);
 
-	return simulationState;
+		return simulationState;
+	}
+	catch (std::exception e)
+	{
+		int lala = 0;
+	}
 }

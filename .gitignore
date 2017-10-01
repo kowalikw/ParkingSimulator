@@ -65,3 +65,9 @@ CMakeLists.txt.user*
 *.map
 /source/ParkingSimulator/ParkingSimulator/Visualisation.cpp~RF2344fe5d.TMP
 *.simulation
+*.gz
+*.aux
+*.log
+*.toc
+*.lof
+*.lot
