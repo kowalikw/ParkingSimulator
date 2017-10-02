@@ -4,7 +4,6 @@
 #include <vector>
 #include <glm.hpp>
 #include "Line.h"
-#include "Point.h"
 #include "Arc.h"
 
 #define EPS 10e-6

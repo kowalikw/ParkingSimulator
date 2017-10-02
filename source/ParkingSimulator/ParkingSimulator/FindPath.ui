@@ -65,6 +65,19 @@
     </rect>
    </property>
   </widget>
+  <widget class="QCheckBox" name="checkBoxAdmissibleArcsOnly">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>150</y>
+     <width>151</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Use admissible arcs only</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

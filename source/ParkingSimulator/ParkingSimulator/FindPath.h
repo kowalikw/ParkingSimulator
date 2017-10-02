@@ -16,6 +16,7 @@ public:
 
 	double GetExpandSizePercent();
 	PathPlanningAlgorithm GetAlgorithm();
+	bool UseOnlyAdmissibleArcs();
 
 private:
 	FindPathClass ui;
@@ -24,4 +25,5 @@ private:
 	PathPlanningAlgorithm algorithm;
 public slots:
 	void findPath();
+	void algorithmChanged();
 };

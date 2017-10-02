@@ -7,9 +7,12 @@ FindPath::FindPath(QWidget *parent)
 
 	connect(ui.btnFindPath, SIGNAL(released()), this, SLOT(findPath()));
 	connect(ui.btnCancel, SIGNAL(released()), this, SLOT(reject()));
+	//connect(ui.comboBoxAlgorithm, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](const QString &text) { algorithmChanged(); });
+	connect(ui.comboBoxAlgorithm, SIGNAL(currentIndexChanged(int)), this, SLOT(algorithmChanged()));
 
 	ui.comboBoxAlgorithm->addItem(QString("BSpline"));
 	ui.comboBoxAlgorithm->addItem(QString("Arcs"));
+	ui.checkBoxAdmissibleArcsOnly->hide();
 }
 
 FindPath::~FindPath()
@@ -24,6 +27,19 @@ double FindPath::GetExpandSizePercent()
 PathPlanningAlgorithm FindPath::GetAlgorithm()
 {
 	return this->algorithm;
+}
+
+bool FindPath::UseOnlyAdmissibleArcs()
+{
+	return ui.checkBoxAdmissibleArcsOnly->isChecked();
+}
+
+void FindPath::algorithmChanged()
+{
+	if (ui.comboBoxAlgorithm->currentIndex() == 1)
+		ui.checkBoxAdmissibleArcsOnly->show();
+	else
+		ui.checkBoxAdmissibleArcsOnly->hide();
 }
 
 void FindPath::findPath()

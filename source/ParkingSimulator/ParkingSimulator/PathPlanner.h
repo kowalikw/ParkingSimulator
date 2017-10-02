@@ -6,7 +6,6 @@
 #include "Map.h"
 #include "Vehicle.h"
 #include "Path.h"
-#include "Point.h"
 #include "Line.h"
 #include "Arc.h"
 #include "BSpline.h"
@@ -81,6 +80,9 @@ public:
 	PathPlanningAlgorithm GetAlgorithm();
 	void SetAlgorithm(PathPlanningAlgorithm algorithm);
 
+	bool GetUseAdmissibleArcsOnly();
+	void SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly);
+
 	GraphEdge * ChackPathCollision(Path *path, Map *Map);
 
 	void SetMap(Map *map);
@@ -139,6 +141,7 @@ private:
 	vector<glm::vec2> userPoints;
 
 	PathPlanningAlgorithm algorithm = PathPlanningAlgorithm::Arcs;
+	bool useAdmissibleArcsOnly = false;
 
 	bool setStartPosition = false;
 	bool setEndPosition = false;
@@ -157,6 +160,8 @@ private:
 	bool checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2);
 	bool checkArcsCorrectness(Path *pathArcs, int arc1, int arc2);
 	bool checkPolylinePathCorectness(Path *path, int *element1, int *element2);
+
+	const double RADIUS_EPS = 3;
 };
 
 #endif

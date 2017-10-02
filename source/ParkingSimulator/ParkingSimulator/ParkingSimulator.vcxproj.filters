@@ -130,9 +130,6 @@
     <ClCompile Include="PathElement.cpp">
       <Filter>Source Files\PathElements</Filter>
     </ClCompile>
-    <ClCompile Include="Point.cpp">
-      <Filter>Source Files\PathElements</Filter>
-    </ClCompile>
     <ClCompile Include="MapElement.cpp">
       <Filter>Source Files\MapElements</Filter>
     </ClCompile>
@@ -354,9 +351,6 @@
       <Filter>Header Files\PathElements</Filter>
     </ClInclude>
     <ClInclude Include="PathElement.h">
-      <Filter>Header Files\PathElements</Filter>
-    </ClInclude>
-    <ClInclude Include="Point.h">
       <Filter>Header Files\PathElements</Filter>
     </ClInclude>
     <ClInclude Include="MapElement.h">

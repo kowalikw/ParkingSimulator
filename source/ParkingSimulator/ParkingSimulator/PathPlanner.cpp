@@ -65,7 +65,7 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 	polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
 
 	int element1, element2;
-	/*while (!checkPolylinePathCorectness(polylinePath, &element1, &element2) && polylinePath->GetElements().size() > 1)
+	while (!checkPolylinePathCorectness(polylinePath, &element1, &element2) && polylinePath->GetElements().size() > 1)
 	{
 		Line *line;
 		if (element2 != polylinePath->GetElements().size() - 1)
@@ -76,7 +76,7 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 		voronoiGraph->RemoveEdge(line->GetV1(), line->GetV2());
 
 		polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
-	}*/
+	}
 
 	finalPath = CreateAdmissiblePath(polylinePath);
 
@@ -302,6 +302,16 @@ void PathPlanner::SetAlgorithm(PathPlanningAlgorithm algorithm)
 	this->algorithm = algorithm;
 }
 
+bool PathPlanner::GetUseAdmissibleArcsOnly()
+{
+	return this->useAdmissibleArcsOnly;
+}
+
+void PathPlanner::SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly)
+{
+	this->useAdmissibleArcsOnly = useAdmissibleArcsOnly;
+}
+
 GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map)
 {
 	auto mapElements = map->GetMapElements();
@@ -370,7 +380,23 @@ Path * PathPlanner::createArcsBetweenSegments(vector<glm::vec2> points)
 			radius = glm::length(P - center);
 
 			length -= 0.1;
-		} while (radius >= radiusMin); // minimalizacja promienia
+		} while (radius - RADIUS_EPS > radiusMin); // minimalizacja promienia
+
+		while (useAdmissibleArcsOnly && radius + RADIUS_EPS < radiusMin)
+		{
+			glm::vec2 P = p2 - (float)length * dir1;
+			glm::vec2 K = p2 + (float)length * dir2;
+
+			glm::vec2 P1 = P;
+			glm::vec2 P2 = P + n1;
+			glm::vec2 P3 = K;
+			glm::vec2 P4 = K + n2;
+
+			center = GeometryHelper::GetLineIntersectionPoint(P1, P2, P3, P4);
+			radius = glm::length(P - center);
+
+			length += 0.1;
+		}
 
 		CircleType arcType = GeometryHelper::GetVectorsDirection(p1, p3, p2);
 		double angleFrom = GeometryHelper::GetAngleVector(p1, p2, arcType);
@@ -445,7 +471,7 @@ bool PathPlanner::checkPolylinePathCorectness(Path *path, int * element1, int * 
 		glm::vec2 v1 = line1->GetFrom() - line1->GetTo();
 		glm::vec2 v2 = line2->GetFrom() - line2->GetTo();
 
-		if (GeometryHelper::GetAngleBetweenVectors(v1, v2) > M_PI / 2.0f)
+		if (GeometryHelper::GetAngleBetweenVectors(v1, v2) > 9 * M_PI / 10.0f)
 		{
 			*element1 = i;
 			*element2 = i + 1;

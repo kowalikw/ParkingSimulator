@@ -330,6 +330,8 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 	AddEdge(verticesCount, verticesCount + 1);
 	AddEdge(verticesCount + 2, verticesCount + 3);
 
+	//AddEdge(verticesCount, verticesCount + 2);
+
 	glm::vec2 startTo = glm::vec2(start->GetTo().x, start->GetTo().y); // ostatni wierzcho³ek œcie¿ki wyjazdowej (verticesCount + 1)
 	glm::vec2 endFrom = glm::vec2(end->GetFrom().x, end->GetFrom().y); // pierwszy wierzcho³ak œcie¿ki wjazdowej (verticesCount + 2)
 	for (int i = 0; i < verticesCount; i++)

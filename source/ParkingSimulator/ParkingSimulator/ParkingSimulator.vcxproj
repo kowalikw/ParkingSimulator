@@ -177,7 +177,6 @@
     <ClCompile Include="PathElement.cpp" />
     <ClCompile Include="PathPlanner.cpp" />
     <ClCompile Include="PathPlannerGLHost.cpp" />
-    <ClCompile Include="Point.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="SelectMap.cpp" />
     <ClCompile Include="SelectVehicle.cpp" />
@@ -332,7 +331,6 @@
     <ClInclude Include="Path.h" />
     <ClInclude Include="PathElement.h" />
     <ClInclude Include="PathPlanner.h" />
-    <ClInclude Include="Point.h" />
     <ClInclude Include="Vehicle.h" />
     <CustomBuild Include="VisualisationGLHost.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

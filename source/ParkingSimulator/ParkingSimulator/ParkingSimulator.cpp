@@ -656,6 +656,7 @@ void ParkingSimulator::findPath()
 	if (findPathWindow.exec())
 	{
 		pathPlanner.SetAlgorithm(findPathWindow.GetAlgorithm());
+		pathPlanner.SetUseAdmissibleArcsOnly(findPathWindow.UseOnlyAdmissibleArcs());
 
 		int error;
 		pathPlanner.FindPath(&error);
