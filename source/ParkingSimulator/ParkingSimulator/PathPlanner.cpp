@@ -49,7 +49,7 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 {
-	float expandSize = 2 * vehicle->GetTrack() / 4.0f;
+	float expandSize = expandSizePercent / 100.0 *  vehicle->GetTrack();
 
 	expandedMap = map->GetExpandedMap(expandSize);
 
@@ -126,7 +126,7 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 		return path;
 	}*/
 
-	if (algorithm == PathPlanningAlgorithm::Spline)
+	if (pathPlanningAlgorithm == PathPlanningAlgorithm::Spline)
 	{
 		path->AddElement(new BSpline(points));
 
@@ -267,7 +267,7 @@ void PathPlanner::NewSimulation()
 
 	simulation->SetMap(map);
 	simulation->SetVehicle(vehicle);
-	simulation->SetPath(CreateAdmissiblePath(UserPoints()));
+	simulation->SetFinalPath(CreateAdmissiblePath(UserPoints()));
 }
 
 void PathPlanner::OpenSimulation(string filePath)
@@ -283,7 +283,22 @@ void PathPlanner::OpenSimulation(string filePath)
 
 void PathPlanner::SaveSimulation(string filePath)
 {
-	simulation = new Simulation(map, vehicle, finalPath);
+	simulation = new Simulation();
+	simulation->SetMap(map);
+	simulation->SetExpandedMap(expandedMap);
+	simulation->SetVehicle(vehicle);
+	simulation->SetPolylinePath(polylinePath);
+	simulation->SetFinalPath(finalPath);
+	simulation->SetStartPoint(startPoint);
+	simulation->SetEndPoint(endPoint);
+	simulation->SetStartDirection(startDirection);
+	simulation->SetEndDirection(endDirection);
+	simulation->SetStartParkingSpace(startParkingSpace);
+	simulation->SetEndParkingSpace(endParkingSpace);
+	simulation->SetExpandSize(expandSizePercent);
+	simulation->SetCollisionDetectionDensity(collisionDetectionDensity);
+	simulation->SetPathPlanningAlgorithm(pathPlanningAlgorithm);
+	simulation->SetUseAdmissibleArcsOnly(useAdmissibleArcsOnly);
 
 	ofstream f(filePath, ios::out);
 
@@ -292,14 +307,34 @@ void PathPlanner::SaveSimulation(string filePath)
 	oa << *simulation;
 }
 
+double PathPlanner::GetExpandSizePercent()
+{
+	return this->expandSizePercent;
+}
+
+void PathPlanner::SetExpandSizePercent(double expandSizePercent)
+{
+	this->expandSizePercent = expandSizePercent;
+}
+
+double PathPlanner::GetCollisionDetectionDensity()
+{
+	return this->collisionDetectionDensity;
+}
+
+void PathPlanner::SetCollisionDetectionDensity(double collisionDetectionDensity)
+{
+	this->collisionDetectionDensity = collisionDetectionDensity;
+}
+
 PathPlanningAlgorithm PathPlanner::GetAlgorithm()
 {
-	return this->algorithm;
+	return this->pathPlanningAlgorithm;
 }
 
 void PathPlanner::SetAlgorithm(PathPlanningAlgorithm algorithm)
 {
-	this->algorithm = algorithm;
+	this->pathPlanningAlgorithm = algorithm;
 }
 
 bool PathPlanner::GetUseAdmissibleArcsOnly()
@@ -314,8 +349,9 @@ void PathPlanner::SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly)
 
 GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map)
 {
+	double dt = 1.0 / collisionDetectionDensity;
 	auto mapElements = map->GetMapElements();
-	for (double t = 0; t < 1; t += 0.01)
+	for (double t = 0; t < 1; t += dt)
 	{
 		SimulationState simulationState = path->GetSimulationState(t);
 		vehicle->UpdateState(simulationState);

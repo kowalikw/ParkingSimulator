@@ -24,6 +24,11 @@ double FindPath::GetExpandSizePercent()
 	return this->expandSizePercent;
 }
 
+double FindPath::GetCollisionDetectionDensity()
+{
+	return this->collisionDetectionDensity;
+}
+
 PathPlanningAlgorithm FindPath::GetAlgorithm()
 {
 	return this->algorithm;
@@ -31,7 +36,7 @@ PathPlanningAlgorithm FindPath::GetAlgorithm()
 
 bool FindPath::UseOnlyAdmissibleArcs()
 {
-	return ui.checkBoxAdmissibleArcsOnly->isChecked();
+	return this->useAdmissibleArcsOnly;
 }
 
 void FindPath::algorithmChanged()
@@ -45,6 +50,7 @@ void FindPath::algorithmChanged()
 void FindPath::findPath()
 {
 	this->expandSizePercent = ui.expandSizePercent->value();
+	this->collisionDetectionDensity = ui.sliderCollisionDetectionDensity->value();
 	switch (ui.comboBoxAlgorithm->currentIndex())
 	{
 	case 0:
@@ -54,6 +60,7 @@ void FindPath::findPath()
 		this->algorithm = PathPlanningAlgorithm::Arcs;
 		break;
 	}
+	this->useAdmissibleArcsOnly = ui.checkBoxAdmissibleArcsOnly->isChecked();
 
 	accept();
 }

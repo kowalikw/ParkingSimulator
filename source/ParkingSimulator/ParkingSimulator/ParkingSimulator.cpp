@@ -655,6 +655,8 @@ void ParkingSimulator::findPath()
 	findPathWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	if (findPathWindow.exec())
 	{
+		pathPlanner.SetExpandSizePercent(findPathWindow.GetExpandSizePercent());
+		pathPlanner.SetCollisionDetectionDensity(findPathWindow.GetCollisionDetectionDensity());
 		pathPlanner.SetAlgorithm(findPathWindow.GetAlgorithm());
 		pathPlanner.SetUseAdmissibleArcsOnly(findPathWindow.UseOnlyAdmissibleArcs());
 

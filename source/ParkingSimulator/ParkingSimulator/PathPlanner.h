@@ -14,7 +14,7 @@
 #include "ParkingSpace.h"
 #include "Graph.h"
 
-#define EPS 10e-3;
+#define EPS 10e-3
 
 using namespace std;
 
@@ -22,12 +22,6 @@ enum ParkManeuverType
 {
 	Entry,
 	Exit
-};
-
-enum PathPlanningAlgorithm
-{
-	Spline,
-	Arcs
 };
 
 class PathPlanner
@@ -76,6 +70,12 @@ public:
 	ParkingSpace * GetEndParkingSpace();
 	void SetStartParkingSpace(ParkingSpace *startParkingSpace);
 	void SetEndParkingSpace(ParkingSpace *endParkingSpace);
+
+	double GetExpandSizePercent();
+	void SetExpandSizePercent(double expandSizePercent);
+
+	double GetCollisionDetectionDensity();
+	void SetCollisionDetectionDensity(double collisionDetectionDensity);
 
 	PathPlanningAlgorithm GetAlgorithm();
 	void SetAlgorithm(PathPlanningAlgorithm algorithm);
@@ -138,10 +138,13 @@ private:
 	ParkingSpace *startParkingSpace = NULL;
 	ParkingSpace *endParkingSpace = NULL;
 
-	vector<glm::vec2> userPoints;
-
-	PathPlanningAlgorithm algorithm = PathPlanningAlgorithm::Arcs;
+	double expandSizePercent;
+	double collisionDetectionDensity;
+	PathPlanningAlgorithm pathPlanningAlgorithm = PathPlanningAlgorithm::Arcs;
 	bool useAdmissibleArcsOnly = false;
+
+
+	vector<glm::vec2> userPoints;
 
 	bool setStartPosition = false;
 	bool setEndPosition = false;

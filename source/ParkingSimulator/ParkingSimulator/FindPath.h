@@ -15,6 +15,7 @@ public:
 	~FindPath();
 
 	double GetExpandSizePercent();
+	double GetCollisionDetectionDensity();
 	PathPlanningAlgorithm GetAlgorithm();
 	bool UseOnlyAdmissibleArcs();
 
@@ -22,7 +23,9 @@ private:
 	FindPathClass ui;
 
 	double expandSizePercent;
+	double collisionDetectionDensity;
 	PathPlanningAlgorithm algorithm;
+	bool useAdmissibleArcsOnly;
 public slots:
 	void findPath();
 	void algorithmChanged();

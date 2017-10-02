@@ -26,7 +26,7 @@ void AddSimulation::loadSimulationFromPathPlanner()
 	this->simulation = pathPlanner->GetSimulation();
 	this->simulation->SetSimulationTime(10);
 
-	if (simulation != NULL && simulation->GetMap() != NULL && simulation->GetVehicle() != NULL && simulation->GetPath() != NULL)
+	if (simulation != NULL && simulation->GetMap() != NULL && simulation->GetVehicle() != NULL && simulation->GetFinalPath() != NULL)
 		accept();
 	else
 	{

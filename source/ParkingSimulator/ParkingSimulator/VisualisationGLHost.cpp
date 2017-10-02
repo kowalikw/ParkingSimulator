@@ -100,7 +100,7 @@ void VisualisationGLHost::nvgRenderFrame()
 
 		bool showPath = visualisation->GetShowPath();
 		if (visualisation->GetShowPath())
-			nvgHelper->DrawPath(visualisation->GetCurrentSimulation()->GetPath());
+			nvgHelper->DrawPath(visualisation->GetCurrentSimulation()->GetFinalPath());
 	}
 	//auto mapElements = visualisation->mapa2->GetMapElements();
 	//auto vehicle = visualisation->GetCurrentSimulation()->GetVehicle();
