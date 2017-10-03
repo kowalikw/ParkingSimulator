@@ -2,6 +2,8 @@
 
 Simulation::Simulation()
 {
+	this->simulationTime = 0;
+	this->currentSimulationTime = 0;
 }
 
 Simulation::Simulation(Map *map, Vehicle *vehicle, Path *path)

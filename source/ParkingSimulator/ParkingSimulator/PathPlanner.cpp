@@ -265,9 +265,21 @@ void PathPlanner::NewSimulation()
 {
 	simulation = new Simulation();
 
-	simulation->SetMap(map);
-	simulation->SetVehicle(vehicle);
-	simulation->SetFinalPath(CreateAdmissiblePath(UserPoints()));
+	map = NULL;
+	expandedMap = NULL;
+	vehicle = NULL;
+	polylinePath = NULL;
+	finalPath = NULL;
+	startPoint = NULL;
+	endPoint = NULL;
+	startDirection = NULL;
+	endDirection = NULL;
+	startParkingSpace = NULL;
+	endParkingSpace = NULL;
+	expandSizePercent = 0;
+	collisionDetectionDensity = 0;
+	pathPlanningAlgorithm = PathPlanningAlgorithm::Spline;
+	useAdmissibleArcsOnly = false;
 }
 
 void PathPlanner::OpenSimulation(string filePath)
@@ -279,6 +291,22 @@ void PathPlanner::OpenSimulation(string filePath)
 	boost::archive::text_iarchive ia(ifs);
 
 	ia >> *simulation;
+
+	map = simulation->GetMap();
+	expandedMap = simulation->GetExpandedMap();
+	vehicle = simulation->GetVehicle();
+	polylinePath = simulation->GetPolylinePath();
+	finalPath = simulation->GetFinalPath();
+	startPoint = simulation->GetStartPoint();
+	endPoint = simulation->GetEndPoint();
+	startDirection = simulation->GetStartDirection();
+	endDirection = simulation->GetEndDirection();
+	startParkingSpace = simulation->GetStartParkingSpace();
+	endParkingSpace = simulation->GetEndParkingSpace();
+	expandSizePercent = simulation->GetExpandSize();
+	collisionDetectionDensity = simulation->GetCollisionDetectionDensity();
+	pathPlanningAlgorithm = simulation->GetPathPlanningAlgorithm();
+	useAdmissibleArcsOnly = simulation->GetUseAdmissibleArcsOnly();
 }
 
 void PathPlanner::SaveSimulation(string filePath)

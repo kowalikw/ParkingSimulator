@@ -128,12 +128,36 @@ public:
 		ar & isStartParkingPlace;
 		ar & isEndParkingPlace;
 
-		if (isStartPoint) ar & *startPoint;
-		if (isEndPoint) ar & *endPoint;
-		if (isStartDirection) ar & *startDirection;
-		if (isEndDirection) ar & *endDirection;
-		if (isStartParkingPlace) ar & *startParkingSpace;
-		if (isEndParkingPlace) ar & *endParkingSpace;
+		if (isStartPoint)
+		{
+			startPoint = new glm::vec2();
+			ar & *startPoint;
+		}
+		if (isEndPoint)
+		{
+			endPoint = new glm::vec2();
+			ar & *endPoint;
+		}
+		if (isStartDirection)
+		{
+			startDirection = new glm::vec2();
+			ar & *startDirection;
+		}
+		if (isEndDirection)
+		{
+			endDirection = new glm::vec2();
+			ar & *endDirection;
+		}
+		if (isStartParkingPlace)
+		{
+			startParkingSpace = new ParkingSpace();
+			ar & *startParkingSpace;
+		}
+		if (isEndParkingPlace)
+		{
+			endParkingSpace = new ParkingSpace();
+			ar & *endParkingSpace;
+		}
 
 		ar & expandSize;
 		ar & collisionDetectionDensity;

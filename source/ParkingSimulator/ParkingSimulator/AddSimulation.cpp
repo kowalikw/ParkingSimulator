@@ -26,11 +26,11 @@ void AddSimulation::loadSimulationFromPathPlanner()
 	this->simulation = pathPlanner->GetSimulation();
 	this->simulation->SetSimulationTime(10);
 
-	if (simulation != NULL && simulation->GetMap() != NULL && simulation->GetVehicle() != NULL && simulation->GetFinalPath() != NULL)
+	if (simulation != NULL && simulation->GetMap() != NULL && simulation->GetVehicle() != NULL && simulation->GetFinalPath() != NULL) //TODO:
 		accept();
 	else
 	{
-		WarningErrorMsg warningWindow("No map in Map Editor!", "There is not a map in map editor or its size is 0!", MessageType::Warning);
+		WarningErrorMsg warningWindow("No simulation in path planner!", "There is not complete simulation in path planer!", MessageType::Warning);
 		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 		warningWindow.exec();
 	}
@@ -49,7 +49,7 @@ void AddSimulation::loadSimulationFromFile()
 
 		boost::archive::text_iarchive ia(ifs);
 
-		ia >> this->simulation;
+		ia >> *simulation;
 
 		accept();
 	}

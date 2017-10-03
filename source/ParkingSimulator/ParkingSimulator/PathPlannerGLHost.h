@@ -37,9 +37,7 @@ private:
 	//BSpline bspline;
 
 	void nvgRenderFrame();
-	void renderPathPolyline();
 	void renderPathAdmissible();
-	void drawBSpline();
 };
 
 #endif
