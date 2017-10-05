@@ -39,6 +39,7 @@ public:
 	Path *CreateAdmissiblePath(ParkingSpace *start, glm::vec2 end);
 	Path *CreateAdmissiblePath(glm::vec2 start, ParkingSpace *end);
 	Path *CreateAdmissiblePath(glm::vec2 start, glm::vec2 end);
+	Path *CreateAdmissiblePath(Line *startLine, Line *endLine);
 
 	Path *CreateAdmissiblePath(Path *path); // zak³adamy, ¿e ta œcie¿ka sk³ada siê z samych linii
 	Path *CreateAdmissiblePath(vector<glm::vec2> points);
@@ -83,7 +84,7 @@ public:
 	bool GetUseAdmissibleArcsOnly();
 	void SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly);
 
-	GraphEdge * ChackPathCollision(Path *path, Map *Map);
+	GraphEdge * ChackPathCollision(Path *path, Map *Map, bool useGraph = true);
 
 	void SetMap(Map *map);
 	void SetVehicle(Vehicle *vehicle);
@@ -159,6 +160,7 @@ private:
 	bool showExpandedObstacles = false;
 
 	bool epsilonEquals(float f1, float f2);
+	Path * createDirectPolylinePath(Line *startLine, Line *endLine);
 	Path *createArcsBetweenSegments(vector<glm::vec2> points);
 	bool checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2);
 	bool checkArcsCorrectness(Path *pathArcs, int arc1, int arc2);

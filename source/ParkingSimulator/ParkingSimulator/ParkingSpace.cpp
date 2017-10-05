@@ -60,6 +60,12 @@ bool ParkingSpace::ContainVehicle(Vehicle vehicle)
 	auto dirTrack = vehicle.GetDirTrack();
 
 	auto p0 = position;
+	/*auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
+	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
+	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
+	auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
+	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
+	auto p6 = p4 - (float)(track / 2.0) * dirTrack;*/
 	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
 	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
 	auto p3 = p1 - (float)(track / 2.0) * dirTrack;

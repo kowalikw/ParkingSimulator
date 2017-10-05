@@ -34,68 +34,134 @@ std::vector<glm::vec2> PathPlanner::UserPoints()
 
 Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * end)
 {
-	return nullptr;
+	Path *path;
+
+	Path *pStart = createParkingPath(*vehicle, *start, Entry);
+	Path *pEnd = createParkingPath(*vehicle, *end, Exit);
+
+	Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
+	Line* endLine = dynamic_cast<Line*>(pEnd->GetFirstElement());
+
+	pStart->RemoveElement(startLine);
+
+	path = CreateAdmissiblePath(startLine, endLine);
+
+	std::vector<Path*> pathParts;
+	pathParts.push_back(pStart);
+	pathParts.push_back(path);
+	pathParts.push_back(pEnd);
+
+	path = new Path(pathParts);
+
+	return path;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 {
+	Path *pStart = createParkingPath(*vehicle, *start, Entry);
+
+	Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
+	glm::vec2 endDirection = *GetEndDirection();
+	Line* endLine = new Line(end, end + (float)vehicle->GetWheelbase() / 2.0f * endDirection);
+
+	Path *path = CreateAdmissiblePath(startLine, endLine);
+
+	std::vector<Path*> pathParts;
+	pathParts.push_back(pStart);
+	//pathParts.push_back(path);
+
+	finalPath = new Path(pathParts);
+
 	return nullptr;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 {
-	return nullptr;
+	Path *pEnd = createParkingPath(*vehicle, *end, Exit);
+
+	glm::vec2 startDirection = *GetStartDirection();
+	Line* startLine = new Line(start, start + (float)vehicle->GetWheelbase() / 2.0f * startDirection);
+	Line* endLine = dynamic_cast<Line*>(pEnd->GetFirstElement());
+
+	Path *path = CreateAdmissiblePath(startLine, endLine);
+
+	std::vector<Path*> pathParts;
+	pathParts.push_back(path);
+	pathParts.push_back(pEnd);
+
+	return new Path(pathParts);
 }
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 {
-	float expandSize = expandSizePercent / 100.0 *  vehicle->GetTrack();
-
-	expandedMap = map->GetExpandedMap(expandSize);
-
-	int indexStart, indexEnd;
 	glm::vec2 startDirection = *GetStartDirection();
 	glm::vec2 endDirection = *GetEndDirection();
 	Line* startLine = new Line(start, start + (float)vehicle->GetWheelbase() / 2.0f * startDirection);
 	Line* endLine = new Line(end, end + (float)vehicle->GetWheelbase() / 2.0f * endDirection);
 
+	return CreateAdmissiblePath(startLine, endLine);
+}
+
+Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
+{
+	Path *path;
+
+	float expandSize = expandSizePercent / 100.0 *  vehicle->GetTrack();
+
+	expandedMap = map->GetExpandedMap(expandSize);
+
+	int indexStart, indexEnd;
+
 	voronoiGraph = new Graph(true);
 	voronoiGraph->CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd);
 
-	polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+	//œcie¿ka bezpoœrednia
 
-	int element1, element2;
-	while (!checkPolylinePathCorectness(polylinePath, &element1, &element2) && polylinePath->GetElements().size() > 1)
-	{
-		Line *line;
-		if (element2 != polylinePath->GetElements().size() - 1)
-			line = dynamic_cast<Line*>(polylinePath->GetAt(element2));
-		else
-			line = dynamic_cast<Line*>(polylinePath->GetAt(element1));
-
-		voronoiGraph->RemoveEdge(line->GetV1(), line->GetV2());
-
-		polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
-	}
+	polylinePath = createDirectPolylinePath(startLine, endLine);
 
 	finalPath = CreateAdmissiblePath(polylinePath);
 
-	GraphEdge *collisionEdge = ChackPathCollision(finalPath, map);
-	while (collisionEdge != NULL && finalPath->GetElements().size() > 0)
-	{
-		voronoiGraph->RemoveEdge(collisionEdge);
+	GraphEdge *collisionEdge = ChackPathCollision(finalPath, map, false);
 
+	if (collisionEdge != nullptr)
+	{
 		polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+
+		return nullptr;
+
+		int element1, element2;
+		while (!checkPolylinePathCorectness(polylinePath, &element1, &element2) && polylinePath->GetElements().size() > 1)
+		{
+			Line *line;
+			if (element2 != polylinePath->GetElements().size() - 1)
+				line = dynamic_cast<Line*>(polylinePath->GetAt(element2));
+			else
+				line = dynamic_cast<Line*>(polylinePath->GetAt(element1));
+
+			voronoiGraph->RemoveEdge(line->GetV1(), line->GetV2());
+
+			polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+		}
 
 		finalPath = CreateAdmissiblePath(polylinePath);
 
-		if (finalPath->GetElements().size() == 0)
-			return nullptr;
+		GraphEdge *collisionEdge = ChackPathCollision(finalPath, map);
+		while (collisionEdge != NULL && finalPath->GetElements().size() > 0)
+		{
+			voronoiGraph->RemoveEdge(collisionEdge);
 
-		collisionEdge = ChackPathCollision(finalPath, map);
+			polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+
+			finalPath = CreateAdmissiblePath(polylinePath);
+
+			if (finalPath->GetElements().size() == 0)
+				return nullptr;
+
+			collisionEdge = ChackPathCollision(finalPath, map);
+		}
 	}
 
-	return nullptr;
+	return finalPath;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(Path * path)
@@ -119,12 +185,10 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 	Path *path = new Path();
 
 	// path contains less than 3 points
-	/*if (points.size() < 3)
+	if (points.size() < 3)
 	{
-		for (int i = 0; i < points.size(); i++)
-			path.AddElement(points[i]);
 		return path;
-	}*/
+	}
 
 	if (pathPlanningAlgorithm == PathPlanningAlgorithm::Spline)
 	{
@@ -375,7 +439,7 @@ void PathPlanner::SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly)
 	this->useAdmissibleArcsOnly = useAdmissibleArcsOnly;
 }
 
-GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map)
+GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGraph)
 {
 	double dt = 1.0 / collisionDetectionDensity;
 	auto mapElements = map->GetMapElements();
@@ -387,8 +451,10 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map)
 		{
 			if (GeometryHelper::CheckPolygonIntersection(mapElements[i]->GetPoints(), vehicle->GetPoints()))
 			{
-				Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t));
-				return voronoiGraph->GetEdge(line->GetV1(), line->GetV2());
+				Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t)); //TODO: use graph ?
+				if(useGraph)
+					return voronoiGraph->GetEdge(line->GetV1(), line->GetV2());
+				return new GraphEdge();
 			}
 		}
 	}
@@ -658,6 +724,18 @@ void PathPlanner::SetVehicle(Vehicle * vehicle)
 	this->vehicle = vehicle;
 }
 
+Path * PathPlanner::createDirectPolylinePath(Line *startLine, Line *endLine)
+{
+	Path *path = new Path();
+
+	glm::vec2 intersectionPoint = GeometryHelper::GetLineIntersectionPoint(startLine->GetFrom(), startLine->GetTo(), endLine->GetFrom(), endLine->GetTo());
+
+	path->AddElement(new Line(startLine->GetFrom(), intersectionPoint));
+	path->AddElement(new Line(intersectionPoint, endLine->GetTo()));
+
+	return path;
+}
+
 Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType)
 {
 	PathElement *lastElement;
@@ -685,7 +763,7 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 		double insideAngle = vehicle.GetMaxInsideAngle();
 		double angleFrom = 0;
 		double angleTo = 0;
-		while (parkingSpace.ContainVehicle(vehicle)) // ³uki
+		while (parkingSpace.ContainVehicle(vehicle) || arcCount % 2 == 1) // ³uki
 		{
 			Circle* circle = vehicle.GetTurnCircle(insideAngle, Left);
 
