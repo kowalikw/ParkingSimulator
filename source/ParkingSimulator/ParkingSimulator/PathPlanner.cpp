@@ -1,5 +1,11 @@
 #include "PathPlanner.h"
 
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream> 
+
+#include <windows.h>
+
 PathPlanner::PathPlanner()
 {
 	simulation = new Simulation();
@@ -64,11 +70,12 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 	glm::vec2 endDirection = *GetEndDirection();
 	Line* endLine = new Line(end, end + (float)vehicle->GetWheelbase() / 2.0f * endDirection);
 
+	pStart->RemoveElement(pStart->GetLastElement());
 	Path *path = CreateAdmissiblePath(startLine, endLine);
 
 	std::vector<Path*> pathParts;
 	pathParts.push_back(pStart);
-	//pathParts.push_back(path);
+	pathParts.push_back(path);
 
 	finalPath = new Path(pathParts);
 
@@ -89,7 +96,9 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 	pathParts.push_back(path);
 	pathParts.push_back(pEnd);
 
-	return new Path(pathParts);
+	finalPath = new Path(pathParts);
+
+	return nullptr;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
@@ -117,17 +126,22 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 	//œcie¿ka bezpoœrednia
 
+	GraphEdge *collisionEdge = nullptr;
+
 	polylinePath = createDirectPolylinePath(startLine, endLine);
 
-	finalPath = CreateAdmissiblePath(polylinePath);
+	if (polylinePath != nullptr)
+	{
+		finalPath = CreateAdmissiblePath(polylinePath);
 
-	GraphEdge *collisionEdge = ChackPathCollision(finalPath, map, false);
+		collisionEdge = ChackPathCollision(finalPath, map, false);
+	}
 
 	if (collisionEdge != nullptr)
 	{
 		polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
 
-		return nullptr;
+		//return nullptr;
 
 		int element1, element2;
 		while (!checkPolylinePathCorectness(polylinePath, &element1, &element2) && polylinePath->GetElements().size() > 1)
@@ -148,6 +162,14 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 		GraphEdge *collisionEdge = ChackPathCollision(finalPath, map);
 		while (collisionEdge != NULL && finalPath->GetElements().size() > 0)
 		{
+			std::ostringstream ss;
+			ss << "V1: " << collisionEdge->v1->x << endl;
+			ss << "V2: " << collisionEdge->v2->x << endl;
+			ss << endl;
+			std::string s(ss.str());
+
+			OutputDebugStringA(s.c_str());
+
 			voronoiGraph->RemoveEdge(collisionEdge);
 
 			polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
@@ -447,12 +469,20 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 	{
 		SimulationState simulationState = path->GetSimulationState(t);
 		vehicle->UpdateState(simulationState);
+
+		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), vehicle->GetPoints()))
+		{
+			if (useGraph)
+				return new GraphEdge(); //TODO:
+			return new GraphEdge();
+		}
+
 		for (int i = 0; i < mapElements.size(); i++)
 		{
 			if (GeometryHelper::CheckPolygonIntersection(mapElements[i]->GetPoints(), vehicle->GetPoints()))
 			{
 				Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t)); //TODO: use graph ?
-				if(useGraph)
+				if (useGraph)
 					return voronoiGraph->GetEdge(line->GetV1(), line->GetV2());
 				return new GraphEdge();
 			}
@@ -730,6 +760,9 @@ Path * PathPlanner::createDirectPolylinePath(Line *startLine, Line *endLine)
 
 	glm::vec2 intersectionPoint = GeometryHelper::GetLineIntersectionPoint(startLine->GetFrom(), startLine->GetTo(), endLine->GetFrom(), endLine->GetTo());
 
+	if (isnan(intersectionPoint.x) || isnan(intersectionPoint.y) || isinf(intersectionPoint.x), isinf(intersectionPoint.y))
+		return nullptr;
+
 	path->AddElement(new Line(startLine->GetFrom(), intersectionPoint));
 	path->AddElement(new Line(intersectionPoint, endLine->GetTo()));
 
@@ -743,13 +776,13 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 
 	if (parkingSpace.GetType() == ParkingSpaceType::Paralell)
 	{
-		if (parkingSpace.GetSize().x < vehicle.GetWheelbase())
-			return path;
+		//if (parkingSpace.GetSize().x < vehicle.GetWheelbase())
+		//	return path;
 
 		// zak³adamy, ¿e pojazd jest w tej samej orientacji co miejsce parkingowe
 
-
-		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetWheelbase() / 2.0) * vehicle.GetDirWheelbase()); // ustawienie auta na œrodku miejsca
+		vehicle.UpdateState(0.0);
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetWheelbase() / 2.0) * vehicle.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
 
 		auto p1 = vehicle.GetPosition();
 

@@ -1,4 +1,9 @@
 #include "Path.h"
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream> 
+
+#include <windows.h>
 
 Path::Path()
 {
@@ -8,9 +13,15 @@ Path::Path(std::vector<Path*> pathParts)
 {
 	for (int i = 0; i < pathParts.size(); i++)
 	{
+		if (pathParts[i] == NULL) continue;
+
 		for (int j = 0; j < pathParts[i]->elements.size(); j++)
 		{
+			auto element = pathParts[i]->elements[j];
+
 			elements.push_back(pathParts[i]->elements[j]);
+
+			element->SetLengthToElement(calculateLengthToElement(element));
 		}
 	}
 }
@@ -101,6 +112,18 @@ SimulationState Path::GetSimulationState(double t)
 
 		double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
 		SimulationState simulationState = pathElement->GetSimulationState(u);
+
+		std::ostringstream ss;
+		ss << "PathLength: " << pathLength << endl;
+		ss << "lengthToPathElementExclude: " << lengthToPathElementExclude << endl;
+		ss << "lengthToPathElementInclude: " << lengthToPathElementInclude << endl;
+
+		ss << "u: " << u << endl;
+
+		ss << endl;
+		std::string s(ss.str());
+
+		OutputDebugStringA(s.c_str());
 
 		return simulationState;
 	}

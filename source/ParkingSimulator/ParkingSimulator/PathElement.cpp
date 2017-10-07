@@ -12,6 +12,8 @@ void PathElement::SetManeuverType(ManeuverType maneuverType)
 
 double PathElement::GetLengthToElement()
 {
+	if (this == NULL)
+		return 0;
 	return this->lengthToElement;
 }
 
