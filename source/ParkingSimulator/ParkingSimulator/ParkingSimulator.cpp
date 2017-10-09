@@ -73,6 +73,14 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 
 	ui.treeMapElements->setColumnCount(1);
 	ui.treeMapElements->insertTopLevelItems(0, *mapEditor.GetMapElementsTreeItems());
+
+	// Path planner start
+
+	ui.mapPropertiesForm->hide();
+	ui.vehiclePropertiesForm->hide();
+	ui.pathElementsList->hide();
+
+	// Path planner end
 }
 
 void ParkingSimulator::renderTimerCall()
@@ -85,6 +93,98 @@ void ParkingSimulator::renderTimerCall()
 	{
 		clearMapEditorButtons();
 		updateMapElementsTree();
+	}
+}
+
+void ParkingSimulator::setMapProperties()
+{
+	if (pathPlanner.GetMap() != NULL)
+	{
+		Map *map = pathPlanner.GetMap();
+
+		ui.isMapSet->hide();
+		ui.mapPropertiesForm->show();
+		ui.mapWidthLabel->setText(QString("%1 m").arg(map->GetWidth()));
+		ui.mapHeightLabel->setText(QString("%1 m").arg(map->GetHeight()));
+		ui.mapElementsCountLabel->setText(QString("%1").arg(map->GetMapElements().size()));
+	}
+	else
+	{
+		ui.isMapSet->show();
+		ui.mapPropertiesForm->hide();
+	}
+}
+
+void ParkingSimulator::setVehicleProperties()
+{
+	if (pathPlanner.GetVehicle() != NULL)
+	{
+		Vehicle *vehicle = pathPlanner.GetVehicle();
+
+		ui.isVehicleSet->hide();
+		ui.vehiclePropertiesForm->show();
+		ui.vehicleNameLabel->setText(QString::fromStdString(vehicle->GetName()));
+		ui.vehicleWheelbaseLabel->setText(QString("%1 m").arg(vehicle->GetWheelbase()));
+		ui.vehicleTrackLabel->setText(QString("%1 m").arg(vehicle->GetTrack()));
+		ui.vehicleMaxAngleLabel->setText(QString("%1 deg").arg(glm::degrees(vehicle->GetMaxInsideAngle())));
+	}
+	else
+	{
+		ui.isVehicleSet->show();
+		ui.vehiclePropertiesForm->hide();
+	}
+}
+
+void ParkingSimulator::setPathProperties()
+{
+	if (pathPlanner.GetStartPoint() != NULL)
+	{
+		glm::vec2 *startPoint = pathPlanner.GetStartPoint();
+		glm::vec2 *startDirection = pathPlanner.GetStartDirection();
+		float angle = glm::degrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *startDirection));
+
+		ui.pathStartPositionLabel->setStyleSheet("");
+		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(startPoint->x).arg(startPoint->y).arg(angle));
+	}
+
+	if (pathPlanner.GetEndPoint() != NULL)
+	{
+		glm::vec2 *endPoint = pathPlanner.GetEndPoint();
+		glm::vec2 *endDirection = pathPlanner.GetEndDirection();
+		float angle = glm::degrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *endDirection));
+
+		ui.pathEndPositionLabel->setStyleSheet("");
+		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(endPoint->x).arg(endPoint->y).arg(angle));
+	}
+
+	if (pathPlanner.GetStartParkingSpace() != NULL)
+	{
+		ParkingSpace *startParkingSpace = pathPlanner.GetStartParkingSpace();
+
+		ui.pathStartPositionLabel->setStyleSheet("");
+		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(startParkingSpace->GetPosition().x).arg(startParkingSpace->GetPosition().y).arg(startParkingSpace->GetRotation()));
+	}
+
+	if (pathPlanner.GetEndParkingSpace() != NULL)
+	{
+		ParkingSpace *endParkingSpace = pathPlanner.GetEndParkingSpace();
+
+		ui.pathEndPositionLabel->setStyleSheet("");
+		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(endParkingSpace->GetPosition().x).arg(endParkingSpace->GetPosition().y).arg(endParkingSpace->GetRotation()));
+	}
+
+	if (pathPlanner.GetFinalPath() != NULL && pathPlanner.GetFinalPath()->GetElements().size() > 0)
+	{
+		Path *path = pathPlanner.GetFinalPath();
+
+		ui.isPathSet->hide();
+		ui.pathElementsList->show();
+		ui.pathElementsList->addItem(new QListWidgetItem("nowy item"));
+	}
+	else
+	{
+		ui.isPathSet->show();
+		ui.pathElementsList->hide();
 	}
 }
 
@@ -169,6 +269,7 @@ void ParkingSimulator::updateTimerCall()
 
 	if (pathPlanner.GetStartPositionChanged() || pathPlanner.GetEndPositionChanged())
 	{
+		setPathProperties();
 		clearPathPlannerButtons();
 		pathPlanner.SetStartPositionChanged(false);
 		pathPlanner.SetEndPositionChanged(false);
@@ -534,7 +635,10 @@ void ParkingSimulator::setMap()
 	SelectMap selectMapWindow(&mapEditor);
 	selectMapWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	if (selectMapWindow.exec())
+	{
 		pathPlanner.SetMap(selectMapWindow.GetMap());
+		setMapProperties();
+	}
 }
 
 void ParkingSimulator::setVehicle()
@@ -542,7 +646,10 @@ void ParkingSimulator::setVehicle()
 	SelectVehicle selectVehicleWindow;
 	selectVehicleWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	if (selectVehicleWindow.exec())
+	{
 		pathPlanner.SetVehicle(selectVehicleWindow.GetVehicle());
+		setVehicleProperties();
+	}
 }
 
 void ParkingSimulator::setStart()
@@ -621,6 +728,10 @@ void ParkingSimulator::showPolylinePath()
 	}
 }
 
+void ParkingSimulator::showParkingPath()
+{
+}
+
 void ParkingSimulator::showFinalPath()
 {
 	if (pathPlanner.GetShowFinalPath())
@@ -662,6 +773,8 @@ void ParkingSimulator::findPath()
 
 		int error;
 		pathPlanner.FindPath(&error);
+
+		setPathProperties();
 	}
 }
 

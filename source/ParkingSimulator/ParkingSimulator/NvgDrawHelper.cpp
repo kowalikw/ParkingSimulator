@@ -131,6 +131,8 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 
 void NvgDrawHelper::DrawPath(Path * path)
 {
+	if (path == NULL) return;
+
 	std::vector<PathElement*> pathElements = path->GetElements();
 	for (int i = 0; i < pathElements.size(); i++)
 	{

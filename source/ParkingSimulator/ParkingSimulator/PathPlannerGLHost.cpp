@@ -214,46 +214,9 @@ void PathPlannerGLHost::paintGL()
 
 void PathPlannerGLHost::nvgRenderFrame()
 {
-	/*std::vector<glm::vec2> pp;
-	pp.push_back(glm::vec2(100, 100));
-	pp.push_back(glm::vec2(100, 100));
-	pp.push_back(glm::vec2(100, 100));
+	if (pathPlanner->GetShowExpandedObstacles())
+		nvgHelper->DrawMap(pathPlanner->GetExpandedMap());
 
-	pp.push_back(glm::vec2(300, 100));
-	pp.push_back(glm::vec2(400, 200));
-	pp.push_back(glm::vec2(350, 400));
-
-	pp.push_back(glm::vec2(500, 400));
-	pp.push_back(glm::vec2(500, 400));
-	pp.push_back(glm::vec2(500, 400));
-
-	BezierCurve curve(pathPlanner->UserPoints());
-	BSpline spline(pp);
-
-	glm::vec2 ps = curve.GetPoint(0);
-	auto points = pathPlanner->UserPoints();
-	
-	nvgBeginPath(vg);
-	for (int i = 2; i < pp.size() - 2; i++)
-	{
-		nvgMoveTo(vg, pp[i - 1].x, pp[i - 1].y);
-		nvgLineTo(vg, pp[i].x, pp[i].y);
-	}
-
-	nvgMoveTo(vg, ps.x, ps.y);
-	for (double t = 0; t < 1; t += 0.01)
-	{
-		glm::vec2 p = curve.GetPoint(t);
-		nvgLineTo(vg, p.x, p.y);
-	}
-	nvgStrokeWidth(vg, 3);
-	nvgStrokeColor(vg, nvgRGBA(255, 0, 0, 255));
-	nvgStroke(vg);
-
-
-	nvgHelper->DrawBSpline(&spline);*/
-
-	
 	nvgHelper->DrawMap(pathPlanner->GetMap());
 
 	if (pathPlanner->GetFinalPath() != NULL)
@@ -338,51 +301,6 @@ void PathPlannerGLHost::nvgRenderFrame()
 	{
 		nvgHelper->DrawPath(pathPlanner->GetFinalPath());
 	}
-
-	if (pathPlanner->GetShowExpandedObstacles())
-		nvgHelper->DrawMap(pathPlanner->GetExpandedMap());
-}
-
-void PathPlannerGLHost::renderPathAdmissible()
-{
-	nvgSave(vg);
-
-	nvgLineCap(vg, NVG_ROUND);
-	nvgLineJoin(vg, NVG_MITER);
-
-	nvgStrokeWidth(vg, 1.0f);
-	nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
-
-	nvgBeginPath(vg);
-
-	//for (glm::vec2 point : pathPlanner.UserPoints())
-	//{
-		for (PathElement *pathElement : pathAdmissible->GetElements())
-		{
-			if (dynamic_cast<Line*>(pathElement) != NULL)
-			{
-				Line *line = dynamic_cast<Line*>(pathElement);
-				nvgMoveTo(vg, line->GetFrom().x, line->GetFrom().y);
-				nvgLineTo(vg, line->GetTo().x, line->GetTo().y);
-			}
-			else if (dynamic_cast<Circle*>(pathElement) != NULL)
-			{
-				Circle *circle = dynamic_cast<Circle*>(pathElement);
-				for (double angle = circle->angleFrom; angle < circle->angleTo; angle += 0.01)
-				{
-					if (angle == circle->angleFrom)
-					{
-						auto p = circle->GetPointForAngle(angle);
-						nvgMoveTo(vg, p.x, p.y);
-					}
-					auto p = circle->GetPointForAngle(angle);
-					nvgLineTo(vg, p.x, p.y);
-				}
-			}
-		}
-	//}
-
-	nvgStroke(vg);
 }
 
 #pragma endregion

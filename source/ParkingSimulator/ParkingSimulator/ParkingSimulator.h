@@ -34,6 +34,10 @@ private:
 	Visualisation visualisation;
 
 	bool updateSimulationProgressBarEnable = false;
+
+	void setMapProperties();
+	void setVehicleProperties();
+	void setPathProperties();
 public slots:
 	void renderTimerCall();
 	void updateTimerCall();
@@ -68,6 +72,7 @@ public slots:
 	void showVoronoiGraph();
 	void showFullVoronoiVisibilityGraph();
 	void showPolylinePath();
+	void showParkingPath();
 	void showFinalPath();
 	void showExpandedObstacles();
 	void findPath();
