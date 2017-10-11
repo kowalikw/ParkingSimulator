@@ -71,6 +71,12 @@ void Path::SetElements(std::vector<PathElement*> elements)
 	this->elements = elements;
 }
 
+void Path::CalculatePathElementsLength()
+{
+	for (int i = 0; i < elements.size(); i++)
+		elements[i]->SetLengthToElement(calculateLengthToElement(elements[i]));
+}
+
 double Path::GetLength()
 {
 	double pathLength = 0;

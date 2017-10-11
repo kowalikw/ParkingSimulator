@@ -23,6 +23,7 @@ public:
 	void AddElement(PathElement *element);
 	void RemoveElement(PathElement *element);
 	void SetElements(std::vector<PathElement*> elements);
+	void CalculatePathElementsLength();
 	double GetLength();
 	double GetLengthToElement(PathElement *pathElement);
 	PathElement *GetElement(double t);
@@ -84,6 +85,8 @@ public:
 				elements.push_back(element);
 			}
 		}
+
+		CalculatePathElementsLength();
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:

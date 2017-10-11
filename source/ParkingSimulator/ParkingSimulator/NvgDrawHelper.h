@@ -43,8 +43,7 @@ public:
 	void DrawStartFlag(glm::vec2 position);
 	void DrawEndFlag(glm::vec2 position);
 	void DrawArrow(glm::vec2 point, glm::vec2 direction);
-	void DrawBSpline(BSpline *bSpline, bool drawPolyline = false);
-	void DrawPathElement(PathElement *pathElement);
+	void DrawPathElement(PathElement *pathElement, bool isSelected = false);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
@@ -106,6 +105,12 @@ public:
 	const int PATH_CIRCLE_WIDTH = 2;
 	const NVGcolor PATH_CIRCLE_COLOR = nvgRGBA(255, 0, 255, 255);
 
+	const int PATH_BSPLINE_WIDTH = 2;
+	const NVGcolor PATH_BSPLINE_COLOR = nvgRGBA(255, 255, 0, 255);
+
+	const int PATH_ELEMENT_SELECTED_WIDTH = 2;
+	const NVGcolor PATH_ELEMENT_SELECTED_COLOR = nvgRGBA(255, 255, 255, 255);
+
 	const int POLYGON_BORDER_WIDTH = 3;
 	const NVGcolor POLYGON_COLOR = nvgRGBA(255, 255, 0, 255);
 	const NVGcolor POLYGON_BORDER_COLOR = nvgRGBA(255, 255, 0, 255);
@@ -133,8 +138,9 @@ private:
 	void drawObstacle(Obstacle *obstacle);
 	void drawParkingSpace(ParkingSpace *parkingSpace);
 	void drawRoad(Road *road);
-	void drawLine(Line *line);
-	void drawCircle(Circle *circle);
+	void drawLine(Line *line, bool isSelected = false);
+	void drawCircle(Circle *circle, bool isSelected = false);
+	void drawBSpline(BSpline *bSpline, bool isSelected = false, bool drawPolyline = false);
 	void drawResizeShape(MapElement *mapElement);
 	void drawMoveShape(MapElement *mapElement);
 	void drawRotateShape(MapElement *mapElement);

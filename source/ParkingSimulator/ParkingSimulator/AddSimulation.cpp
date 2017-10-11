@@ -25,6 +25,7 @@ void AddSimulation::loadSimulationFromPathPlanner()
 {
 	this->simulation = pathPlanner->GetSimulation();
 	this->simulation->SetSimulationTime(10);
+	this->simulation->SetName("Simulation from path planner");
 
 	if (simulation != NULL && simulation->GetMap() != NULL && simulation->GetVehicle() != NULL && simulation->GetFinalPath() != NULL) //TODO:
 		accept();
@@ -43,13 +44,16 @@ void AddSimulation::loadSimulationFromFile()
 
 	if (filePath != "")
 	{
-		simulation = new Simulation();
+		this->simulation = new Simulation();
 
 		std::ifstream ifs(filePath.toStdString());
 
 		boost::archive::text_iarchive ia(ifs);
 
 		ia >> *simulation;
+
+		this->simulation->SetSimulationTime(10);
+		this->simulation->SetName(filePath.toStdString());
 
 		accept();
 	}

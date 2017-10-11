@@ -1976,8 +1976,194 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_14">
               <property name="topMargin">
-               <number>100</number>
+               <number>0</number>
               </property>
+              <item>
+               <widget class="QFrame" name="pathElementProperties">
+                <property name="styleSheet">
+                 <string notr="true">QFrame { 
+	background-color: #303335;
+ 	color: white;
+	border: 1px solid #757575;
+	border-radius: 3px;
+	width: 100px;
+	padding: 3px;
+}
+
+QLabel {
+	border: 0px;
+}
+
+QDoubleSpinBox, QTextEdit {
+    padding-right: 15px; /* make room for the arrows */
+	background-color: #3b3e41;
+    border: 1px solid #757575;
+	border-radius: 0px;
+	padding: 1px 3px;
+	border-radius: 0px;
+	color: white;
+}
+
+QDoubleSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right; /* position at the top right corner */
+    width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+    border: 0px;
+}
+
+QDoubleSpinBox::up-arrow {
+    image: url(Resources/arrow_up.png);
+    width: 12px;
+    height: 12px;
+	padding-top: 3px;
+	padding-right: 3px;
+}
+
+QDoubleSpinBox::up-arrow:hover {
+	image: url(Resources/arrow_up_hover.png);
+}
+
+QDoubleSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right; /* position at bottom right corner */
+    width: 16px;
+    border: 0px;
+    border-top-width: 0;
+}
+
+QDoubleSpinBox::down-arrow {
+    image: url(Resources/arrow_down.png);
+    width: 12px;
+    height: 12px;
+	padding-bottom: 3px;
+	padding-right: 3px;
+}
+
+QDoubleSpinBox::down-arrow:hover {
+	image: url(Resources/arrow_down_hover.png);
+}</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_12">
+                 <property name="leftMargin">
+                  <number>5</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>5</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>5</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>5</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_13">
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                     <weight>75</weight>
+                     <bold>true</bold>
+                     <underline>true</underline>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Path Element Properties</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QFormLayout" name="formLayout">
+                   <property name="topMargin">
+                    <number>5</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label_20">
+                     <property name="font">
+                      <font>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Type: </string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="pathElementType">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_22">
+                     <property name="font">
+                      <font>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>From: </string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_24">
+                     <property name="font">
+                      <font>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>To: </string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QLabel" name="label_25">
+                     <property name="font">
+                      <font>
+                       <weight>75</weight>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="text">
+                      <string>Length: </string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLabel" name="pathElementFrom">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QLabel" name="pathElementTo">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QLabel" name="pathElementLength">
+                     <property name="text">
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
              </layout>
             </item>
             <item>

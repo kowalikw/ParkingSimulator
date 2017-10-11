@@ -54,6 +54,8 @@ int Line::GetV2() const
 
 double Line::GetLength()
 {
+	if(this->length == 0)
+		this->length = sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
 	return this->length;
 }
 
@@ -87,6 +89,7 @@ SimulationState Line::GetSimulationState(double t)
 {
 	SimulationState simulationState;
 	simulationState.position = GetPoint(t);
+	auto alal = GetAngle(t);
 	simulationState.angle = M_PI - GetAngle(t);
 
 	return simulationState;

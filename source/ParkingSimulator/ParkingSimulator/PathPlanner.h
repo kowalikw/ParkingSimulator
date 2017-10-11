@@ -53,6 +53,8 @@ public:
 	Vehicle * GetVehicle();
 	Path * GetPolylinePath();
 	Path * GetFinalPath();
+	Path * GetParkingPathStart();
+	Path * GetParkingPathEnd();
 	Graph * GetVoronoiGraph();
 	Graph * GetFullVoronoiVisibilityGraph();
 	Simulation * GetSimulation();
@@ -71,6 +73,9 @@ public:
 	ParkingSpace * GetEndParkingSpace();
 	void SetStartParkingSpace(ParkingSpace *startParkingSpace);
 	void SetEndParkingSpace(ParkingSpace *endParkingSpace);
+
+	PathElement * GetSelectedPathElement();
+	void SetSelectedPathElement(PathElement * selectedPathElement);
 
 	double GetExpandSizePercent();
 	void SetExpandSizePercent(double expandSizePercent);
@@ -100,6 +105,7 @@ public:
 	bool GetShowVoronoiGraph();
 	bool GetShowFullVoronoiVisibilityGraph();
 	bool GetShowPolylinePath();
+	bool GetShowParkingPath();
 	bool GetShowFinalPath();
 	bool GetShowExpandedObstacles();
 
@@ -112,8 +118,12 @@ public:
 	void SetShowVoronoiGraph(bool showVoronoiGraph);
 	void SetShowFullVoronoiVisibilityGraph(bool showFullVoronoiVisibilityGraph);
 	void SetShowPolylinePath(bool showPolylinePath);
+	void SetShowParkingPath(bool showParkingPath);
 	void SetShowFinalPath(bool showFinalPath);
 	void SetShowExpandedObstacles(bool showExpandedObstacles);
+
+	bool GetPathElementPropertiesChanged();
+	void SetPathElementPropertiesChanged(bool pathElementPropertiesChanged);
 
 	MapElement * GetHoverElement(glm::vec2 mousePosition);
 
@@ -126,6 +136,8 @@ private:
 	Map *expandedMap = NULL;
 	Vehicle *vehicle = NULL;
 	Path *polylinePath = NULL;
+	Path *parkingPathStart = NULL;
+	Path *parkingPathEnd = NULL;
 	Path *finalPath = NULL;
 	Graph *voronoiGraph = NULL;
 	Graph *fullVoronoiVisibilityGraph = NULL;
@@ -139,11 +151,12 @@ private:
 	ParkingSpace *startParkingSpace = NULL;
 	ParkingSpace *endParkingSpace = NULL;
 
+	PathElement *selectedPathElement = NULL;
+
 	double expandSizePercent;
 	double collisionDetectionDensity;
 	PathPlanningAlgorithm pathPlanningAlgorithm = PathPlanningAlgorithm::Arcs;
 	bool useAdmissibleArcsOnly = false;
-
 
 	vector<glm::vec2> userPoints;
 
@@ -156,8 +169,11 @@ private:
 	bool showVoronoiGraph = false;
 	bool showFullVoronoiVisibilityGraph = false;
 	bool showPolylinePath = false;
+	bool showParkingPath = false;
 	bool showFinalPath = false;
 	bool showExpandedObstacles = false;
+
+	bool pathElementPropertiesChanged = false;
 
 	bool epsilonEquals(float f1, float f2);
 	Path * createDirectPolylinePath(Line *startLine, Line *endLine);

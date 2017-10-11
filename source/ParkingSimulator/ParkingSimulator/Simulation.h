@@ -5,8 +5,8 @@
 #include "Map.h"
 #include "Vehicle.h"
 #include "Path.h"
-//#include "PathPlanner.h"
 #include "Graph.h"
+#include <string.h>
 
 enum PathPlanningAlgorithm
 {
@@ -20,10 +20,14 @@ public:
 	Simulation();
 	Simulation(Map *map, Vehicle *vehicle, Path *path);
 	Simulation(Map *map, Vehicle *vehicle, Path *path, float simulationTime);
+
+	std::string GetName();
 	Map *GetMap();
 	Map *GetExpandedMap();
 	Vehicle *GetVehicle();
 	Path *GetPolylinePath();
+	Path *GetParkingPathStart();
+	Path *GetParkingPathEnd();
 	Path *GetFinalPath();
 	Graph *GetVoronoiGraph();
 	Graph *GetFullVoronoiVisibilityGraph();
@@ -40,11 +44,13 @@ public:
 	float GetSimulationTime();
 	float GetCurrentSimulationTime();
 
-
+	void SetName(std::string name);
 	void SetMap(Map *map);
 	void SetExpandedMap(Map *map);
 	void SetVehicle(Vehicle *vehicle);
 	void SetPolylinePath(Path *path);
+	void SetParkingPathStart(Path *parkingPathStart);
+	void SetParkingPathEnd(Path *parkingPathEnd);
 	void SetFinalPath(Path *path);
 	void SetVoronoiGraph(Graph *graph);
 	void SetFullVoronoiVisibilityGraph(Graph *graph);
@@ -60,8 +66,7 @@ public:
 	void SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly);
 	void SetSimulationTime(float simulationTime);
 	void SetCurrentSimulationTime(float currentSimulationPath);
-
-
+	
 	void UpdateSimulationState();
 
 	void Start();
@@ -78,12 +83,13 @@ public:
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
 	{
-		ar & *map;
-		ar & *expandedMap;
-		ar & *vehicle;
-		ar & *polylinePath;
-		ar & *finalPath;
-
+		ar & (map != NULL);
+		ar & (expandedMap != NULL);
+		ar & (vehicle != NULL);
+		ar & (polylinePath != NULL);
+		ar & (parkingPathStart != NULL);
+		ar & (parkingPathEnd != NULL);
+		ar & (finalPath != NULL);
 		ar & (startPoint != NULL);
 		ar & (endPoint != NULL);
 		ar & (startDirection != NULL);
@@ -91,6 +97,13 @@ public:
 		ar & (startParkingSpace != NULL);
 		ar & (endParkingSpace != NULL);
 
+		if (map != NULL) ar & *map;
+		if (expandedMap != NULL) ar & *expandedMap;
+		if (vehicle != NULL) ar & *vehicle;
+		if (polylinePath != NULL) ar & *polylinePath;
+		if (parkingPathStart != NULL) ar & *parkingPathStart;
+		if (parkingPathEnd != NULL) ar & *parkingPathEnd;
+		if (finalPath != NULL) ar & *finalPath;
 		if (startPoint != NULL) ar & *startPoint;
 		if (endPoint != NULL) ar & *endPoint;
 		if (startDirection != NULL) ar & *startDirection;
@@ -106,27 +119,67 @@ public:
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
-		map = new Map();
-		expandedMap = new Map();
-		vehicle = new Vehicle();
-		polylinePath = new Path();
-		finalPath = new Path();
+		bool isMap, isExpandedMap, isVehicle;
+		bool isPolylinePath, isParkingPathStart, isParkingPathEnd, isFinalPath;
 		bool isStartPoint, isEndPoint;
 		bool isStartDirection, isEndDirection;
 		bool isStartParkingPlace, isEndParkingPlace;
 
-		ar & *map;
-		ar & *expandedMap;
-		ar & *vehicle;
-		ar & *polylinePath;
-		ar & *finalPath;
-
+		ar & isMap;
+		ar & isExpandedMap;
+		ar & isVehicle;
+		ar & isPolylinePath;
+		ar & isParkingPathStart;
+		ar & isParkingPathEnd;
+		ar & isFinalPath;
 		ar & isStartPoint;
 		ar & isEndPoint;
 		ar & isStartDirection;
 		ar & isEndDirection;
 		ar & isStartParkingPlace;
 		ar & isEndParkingPlace;
+
+		if (isMap)
+		{
+			map = new Map();
+			ar & *map;
+		}
+
+		if (isExpandedMap)
+		{
+			expandedMap = new Map();
+			ar & *expandedMap;
+		}
+
+		if (isVehicle)
+		{
+			vehicle = new Vehicle();
+			ar & *vehicle;
+		}
+
+		if (isPolylinePath)
+		{
+			polylinePath = new Path();
+			ar & *polylinePath;
+		}
+
+		if (isParkingPathStart)
+		{
+			parkingPathStart = new Path();
+			ar & *parkingPathStart;
+		}
+
+		if (isParkingPathEnd)
+		{
+			parkingPathEnd = new Path();
+			ar & *parkingPathEnd;
+		}
+
+		if (isFinalPath)
+		{
+			finalPath = new Path();
+			ar & *finalPath;
+		}
 
 		if (isStartPoint)
 		{
@@ -166,10 +219,14 @@ public:
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:
+	std::string name;
+
 	Map *map;
 	Map *expandedMap;
 	Vehicle *vehicle;
 	Path *polylinePath;
+	Path *parkingPathStart;
+	Path *parkingPathEnd;
 	Path *finalPath;
 	Graph *voronoiGraph;
 	Graph *fullVoronoiVisibilityGraph;

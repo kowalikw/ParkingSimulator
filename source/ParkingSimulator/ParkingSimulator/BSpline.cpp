@@ -215,6 +215,21 @@ std::vector<glm::vec2> BSpline::GetControlPoints()
 
 double BSpline::GetLength()
 {
+	if (this->length == 0)
+	{
+		glm::vec2 currentPoint, prevPoint;
+		for (double t = 0; t < 1.0; t += 0.01)
+		{
+			if (t == 0)
+				prevPoint = GetPoint(t);
+			else
+			{
+				prevPoint = currentPoint;
+				currentPoint = GetPoint(t);
+				this->length += GeometryHelper::GetDistanceBetweenPoints(prevPoint, currentPoint);
+			}
+		}
+	}
 	return this->length;
 }
 

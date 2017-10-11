@@ -24,6 +24,11 @@ Simulation::Simulation(Map *map, Vehicle *vehicle, Path *path, float simulationT
 	this->simulationTime = simulationTime;
 }
 
+std::string Simulation::GetName()
+{
+	return this->name;
+}
+
 Map * Simulation::GetMap()
 {
 	return this->map;
@@ -42,6 +47,16 @@ Vehicle * Simulation::GetVehicle()
 Path * Simulation::GetPolylinePath()
 {
 	return this->polylinePath;
+}
+
+Path * Simulation::GetParkingPathStart()
+{
+	return this->parkingPathStart;
+}
+
+Path * Simulation::GetParkingPathEnd()
+{
+	return this->parkingPathEnd;
 }
 
 Path * Simulation::GetFinalPath()
@@ -119,6 +134,11 @@ float Simulation::GetCurrentSimulationTime()
 	return this->currentSimulationTime;
 }
 
+void Simulation::SetName(std::string name)
+{
+	this->name = name;
+}
+
 void Simulation::SetMap(Map *map)
 {
 	this->map = map;
@@ -137,6 +157,16 @@ void Simulation::SetVehicle(Vehicle *vehicle)
 void Simulation::SetPolylinePath(Path * polylinePath)
 {
 	this->polylinePath = polylinePath;
+}
+
+void Simulation::SetParkingPathStart(Path * parkingPathStart)
+{
+	this->parkingPathStart = parkingPathStart;
+}
+
+void Simulation::SetParkingPathEnd(Path * parkingPathEnd)
+{
+	this->parkingPathEnd = parkingPathEnd;
 }
 
 void Simulation::SetFinalPath(Path * finalPath)
@@ -208,7 +238,7 @@ void Simulation::SetSimulationTime(float simulationTime)
 {
 	this->simulationTime = simulationTime;
 
-	Step();
+	//Step();
 }
 
 void Simulation::SetCurrentSimulationTime(float currentSimulationTime)

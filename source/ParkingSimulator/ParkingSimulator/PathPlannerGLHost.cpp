@@ -297,6 +297,12 @@ void PathPlannerGLHost::nvgRenderFrame()
 		nvgHelper->DrawPath(pathPlanner->GetPolylinePath());
 	}
 
+	if (pathPlanner->GetShowParkingPath())
+	{
+		nvgHelper->DrawPath(pathPlanner->GetParkingPathStart());
+		nvgHelper->DrawPath(pathPlanner->GetParkingPathEnd());
+	}
+
 	if (pathPlanner->GetShowFinalPath())
 	{
 		nvgHelper->DrawPath(pathPlanner->GetFinalPath());

@@ -86,13 +86,6 @@ Visualisation::Visualisation()
 	mapa2 = mapa;
 	currentSimulation = new Simulation(mapa, vehicle, finalPath);
 
-	// serialize simulation start
-
-
-
-	// serialize simulation end
-
-
 	currentSimulation->SetSimulationTime(10);
 }
 
@@ -148,4 +141,9 @@ void Visualisation::AddSimulation(Simulation * simulation)
 
 void Visualisation::RemoveSimulation(Simulation * simulation)
 {
+	std::vector<Simulation*> newSimulations;
+	for (int i = 0; i < simulations.size(); i++)
+		if (simulations[i] != simulation)
+			newSimulations.push_back(simulations[i]);
+	this->simulations = newSimulations;
 }

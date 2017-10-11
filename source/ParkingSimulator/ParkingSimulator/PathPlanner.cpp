@@ -9,12 +9,6 @@
 PathPlanner::PathPlanner()
 {
 	simulation = new Simulation();
-
-	//temp
-	/*this->map = new Map(567, 1024);
-	map->AddMapElement(new Obstacle(glm::vec2(100, 50), glm::vec2(300, 400), Building, "lala"));
-
-	vehicle = new Vehicle(200, 55);*/
 }
 
 PathPlanner::PathPlanner(Map map, Vehicle vehicle)
@@ -355,6 +349,8 @@ void PathPlanner::NewSimulation()
 	expandedMap = NULL;
 	vehicle = NULL;
 	polylinePath = NULL;
+	parkingPathStart = NULL;
+	parkingPathEnd = NULL;
 	finalPath = NULL;
 	startPoint = NULL;
 	endPoint = NULL;
@@ -382,6 +378,8 @@ void PathPlanner::OpenSimulation(string filePath)
 	expandedMap = simulation->GetExpandedMap();
 	vehicle = simulation->GetVehicle();
 	polylinePath = simulation->GetPolylinePath();
+	parkingPathStart = simulation->GetParkingPathStart();
+	parkingPathEnd = simulation->GetParkingPathEnd();
 	finalPath = simulation->GetFinalPath();
 	startPoint = simulation->GetStartPoint();
 	endPoint = simulation->GetEndPoint();
@@ -402,6 +400,8 @@ void PathPlanner::SaveSimulation(string filePath)
 	simulation->SetExpandedMap(expandedMap);
 	simulation->SetVehicle(vehicle);
 	simulation->SetPolylinePath(polylinePath);
+	simulation->SetParkingPathStart(parkingPathStart);
+	simulation->SetParkingPathEnd(parkingPathEnd);
 	simulation->SetFinalPath(finalPath);
 	simulation->SetStartPoint(startPoint);
 	simulation->SetEndPoint(endPoint);
@@ -470,10 +470,11 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 		SimulationState simulationState = path->GetSimulationState(t);
 		vehicle->UpdateState(simulationState);
 
-		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), vehicle->GetPoints()))
+		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), vehicle->GetPoints())) // check whether vehicle is all on the map
 		{
+			Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t));
 			if (useGraph)
-				return new GraphEdge(); //TODO:
+				return voronoiGraph->GetEdge(line->GetV1(), line->GetV2()); //TODO: Sprawdzic czy to dzia³a
 			return new GraphEdge();
 		}
 
@@ -662,6 +663,16 @@ Path * PathPlanner::GetPolylinePath()
 	return this->polylinePath;
 }
 
+Path * PathPlanner::GetParkingPathStart()
+{
+	return this->parkingPathStart;
+}
+
+Path * PathPlanner::GetParkingPathEnd()
+{
+	return this->parkingPathEnd;
+}
+
 Path * PathPlanner::GetFinalPath()
 {
 	return this->finalPath;
@@ -742,6 +753,18 @@ void PathPlanner::SetStartParkingSpace(ParkingSpace * startParkingSpace)
 void PathPlanner::SetEndParkingSpace(ParkingSpace * endParkingSpace)
 {
 	this->endParkingSpace = endParkingSpace;
+}
+
+PathElement * PathPlanner::GetSelectedPathElement()
+{
+	return this->selectedPathElement;
+}
+
+void PathPlanner::SetSelectedPathElement(PathElement * selectedPathElement)
+{
+	this->selectedPathElement = selectedPathElement;
+
+	SetPathElementPropertiesChanged(true);
 }
 
 void PathPlanner::SetMap(Map * map)
@@ -912,6 +935,11 @@ bool PathPlanner::GetShowPolylinePath()
 	return this->showPolylinePath;
 }
 
+bool PathPlanner::GetShowParkingPath()
+{
+	return this->showParkingPath;
+}
+
 bool PathPlanner::GetShowFinalPath()
 {
 	return this->showFinalPath;
@@ -967,6 +995,11 @@ void PathPlanner::SetShowPolylinePath(bool showPolylinePath)
 	this->showPolylinePath = showPolylinePath;
 }
 
+void PathPlanner::SetShowParkingPath(bool showParkingPath)
+{
+	this->showParkingPath = showParkingPath;
+}
+
 void PathPlanner::SetShowFinalPath(bool showFinalPath)
 {
 	this->showFinalPath = showFinalPath;
@@ -975,6 +1008,16 @@ void PathPlanner::SetShowFinalPath(bool showFinalPath)
 void PathPlanner::SetShowExpandedObstacles(bool showExpandedObstacles)
 {
 	this->showExpandedObstacles = showExpandedObstacles;
+}
+
+bool PathPlanner::GetPathElementPropertiesChanged()
+{
+	return this->pathElementPropertiesChanged;
+}
+
+void PathPlanner::SetPathElementPropertiesChanged(bool pathElementPropertiesChanged)
+{
+	this->pathElementPropertiesChanged = pathElementPropertiesChanged;
 }
 
 MapElement * PathPlanner::GetHoverElement(glm::vec2 mousePosition)

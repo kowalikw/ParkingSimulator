@@ -49,9 +49,11 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnShowVoronoiGraph, SIGNAL(released()), this, SLOT(showVoronoiGraph()));
 	connect(ui.btnShowFullVoronoiVisibilityGraph, SIGNAL(released()), this, SLOT(showFullVoronoiVisibilityGraph()));
 	connect(ui.btnShowPolylinePath, SIGNAL(released()), this, SLOT(showPolylinePath()));
+	connect(ui.btnShowParkingPath, SIGNAL(released()), this, SLOT(showParkingPath()));
 	connect(ui.btnShowFinalPath, SIGNAL(released()), this, SLOT(showFinalPath()));
 	connect(ui.btnShowExpandedObstacles, SIGNAL(released()), this, SLOT(showExpandedObstacles()));
 	connect(ui.btnFindPath, SIGNAL(released()), this, SLOT(findPath()));
+	connect(ui.pathElementsList, SIGNAL(itemSelectionChanged()), this, SLOT(pathElementSelectionChange()));
 
 	connect(ui.btnAddSimulation, SIGNAL(released()), this, SLOT(addSimulation()));
 	connect(ui.btnRemoveSimulation, SIGNAL(released()), this, SLOT(removeSimulation()));
@@ -64,10 +66,12 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.simulationPrograssBar, SIGNAL(sliderMoved(int)), this, SLOT(simulationProgressBarChange(int)));
 	connect(ui.simulationPrograssBar, SIGNAL(sliderPressed()), this, SLOT(simulationProgressBarPressed()));
 	connect(ui.simulationPrograssBar, SIGNAL(sliderReleased()), this, SLOT(simulationProgressBarReleased()));
+	connect(ui.listSimulations, SIGNAL(itemSelectionChanged()), this, SLOT(simulationSelectionChange()));
 
 	connect(ui.treeMapElements, SIGNAL(itemSelectionChanged()), this, SLOT(treeMapElementsSelectionChanged()));
 
 	ui.mapElementProperties->hide();
+	ui.pathElementProperties->hide();
 
 	ui.simulationPrograssBar->setTracking(false);
 
@@ -175,11 +179,13 @@ void ParkingSimulator::setPathProperties()
 
 	if (pathPlanner.GetFinalPath() != NULL && pathPlanner.GetFinalPath()->GetElements().size() > 0)
 	{
-		Path *path = pathPlanner.GetFinalPath();
+		int pathElementsCount = pathPlanner.GetFinalPath()->GetElements().size();
 
 		ui.isPathSet->hide();
+		ui.pathElementsList->clear();
+		for (int i = 0; i < pathElementsCount; i++)
+			ui.pathElementsList->addItem(new QListWidgetItem(QString("Path Element %1").arg(i + 1)));
 		ui.pathElementsList->show();
-		ui.pathElementsList->addItem(new QListWidgetItem("nowy item"));
 	}
 	else
 	{
@@ -208,6 +214,43 @@ void ParkingSimulator::updateTimerCall()
 		ui.mapElementRotation->setValue(glm::degrees(mapElement->GetRotation()));
 
 		mapEditor.SetMapElementsPropertiesChanged(false);
+	}
+
+	if (pathPlanner.GetSelectedPathElement() != NULL && pathPlanner.GetPathElementPropertiesChanged()) //TODO:
+	{
+		PathElement *pathElement = pathPlanner.GetSelectedPathElement();
+		if (dynamic_cast<Line*>(pathElement) != NULL)
+		{
+			Line *line = dynamic_cast<Line*>(pathElement);
+
+			ui.pathElementType->setText(QString("Line"));
+			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(pathElement->GetFirstPoint().x).arg(pathElement->GetFirstPoint().y));
+			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(pathElement->GetLastPoint().x).arg(pathElement->GetLastPoint().y));
+		}
+		else if (dynamic_cast<Circle*>(pathElement) != NULL)
+		{
+			Circle *circle = dynamic_cast<Circle*>(pathElement);
+
+			ui.pathElementType->setText(QString("Circle"));
+			ui.pathElementFrom->setText(QString("%1 deg").arg(glm::degrees(circle->GetAngleFrom())));
+			ui.pathElementTo->setText(QString("%1 deg").arg(glm::degrees(circle->GetAngleTo())));
+		}
+		else if (dynamic_cast<BSpline*>(pathElement) != NULL)
+		{
+			BSpline *bSpline = dynamic_cast<BSpline*>(pathElement);
+
+			ui.pathElementType->setText(QString("B-Spline"));
+			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(pathElement->GetFirstPoint().x).arg(pathElement->GetFirstPoint().y));
+			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(pathElement->GetLastPoint().x).arg(pathElement->GetLastPoint().y));
+		}
+		ui.pathElementLength->setText(QString("%1 m").arg(pathElement->GetLength()));
+		ui.pathElementProperties->show();
+
+		pathPlanner.SetPathElementPropertiesChanged(false);
+	}
+	else
+	{
+		ui.pathElementProperties->hide();
 	}
 
 	if (mapEditor.GetSelectedElementChanged())
@@ -730,6 +773,16 @@ void ParkingSimulator::showPolylinePath()
 
 void ParkingSimulator::showParkingPath()
 {
+	if (pathPlanner.GetShowParkingPath())
+	{
+		pathPlanner.SetShowFinalPath(false);
+		ui.btnShowParkingPath->setStyleSheet("");
+	}
+	else
+	{
+		pathPlanner.SetShowParkingPath(true);
+		ui.btnShowParkingPath->setStyleSheet("border: 3px solid #d86a39;");
+	}
 }
 
 void ParkingSimulator::showFinalPath()
@@ -764,6 +817,16 @@ void ParkingSimulator::findPath()
 {
 	FindPath findPathWindow;
 	findPathWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+
+	if (pathPlanner.GetMap() == NULL || pathPlanner.GetVehicle() == NULL 
+		|| (pathPlanner.GetStartPoint() != NULL && pathPlanner.GetStartDirection() != NULL && pathPlanner.GetStartParkingSpace() != NULL)
+		|| (pathPlanner.GetEndPoint() != NULL && pathPlanner.GetEndDirection() != NULL && pathPlanner.GetEndParkingSpace() != NULL))
+	{
+		WarningErrorMsg warningWindow("An error occured!", "It was impossible to find a path, because not all required parameters were set.", MessageType::Error);
+		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		warningWindow.exec();
+	}
+
 	if (findPathWindow.exec())
 	{
 		pathPlanner.SetExpandSizePercent(findPathWindow.GetExpandSizePercent());
@@ -773,6 +836,13 @@ void ParkingSimulator::findPath()
 
 		int error;
 		pathPlanner.FindPath(&error);
+
+		if (pathPlanner.GetFinalPath() == NULL)
+		{
+			WarningErrorMsg warningWindow("Path not found!", "A path between start and end position was not found!\nTry again with another parameters.", MessageType::Warning);
+			warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+			warningWindow.exec();
+		}
 
 		setPathProperties();
 	}
@@ -794,6 +864,13 @@ void ParkingSimulator::clearPathPlannerButtonsStyle()
 		ui.btnSetEnd->setStyleSheet("");
 }
 
+void ParkingSimulator::pathElementSelectionChange()
+{
+	int selectedIndex = ui.pathElementsList->currentRow();
+	if (selectedIndex > 0 && selectedIndex < pathPlanner.GetFinalPath()->GetElements().size())
+		pathPlanner.SetSelectedPathElement(pathPlanner.GetFinalPath()->GetElements()[selectedIndex]);
+}
+
 #pragma endregion
 
 #pragma region Visualisation.
@@ -803,15 +880,48 @@ void ParkingSimulator::addSimulation()
 	AddSimulation addSimulationWindow(&pathPlanner);
 	addSimulationWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	if (addSimulationWindow.exec())
-		visualisation.SetCurrentSimulation(addSimulationWindow.GetSimulation());
+	{
+		Simulation *simulation = addSimulationWindow.GetSimulation();
+
+		visualisation.AddSimulation(simulation);
+		visualisation.SetCurrentSimulation(simulation);
+		ui.listSimulations->addItem(new QListWidgetItem(QString::fromStdString(simulation->GetName())));
+		ui.listSimulations->setCurrentRow(visualisation.GetSimulations().size() - 1);
+	}
 }
 
 void ParkingSimulator::removeSimulation()
 {
+	int selectedIndex = ui.listSimulations->currentRow();
+	if (selectedIndex >= 0 && selectedIndex < visualisation.GetSimulations().size())
+	{
+		Simulation *selectedSimulation = visualisation.GetSimulations()[selectedIndex];
+		visualisation.RemoveSimulation(selectedSimulation);
+		
+		ui.listSimulations->clear();
+		std::vector<Simulation*> simulations = visualisation.GetSimulations();
+		for (int i = 0; i < simulations.size(); i++)
+			ui.listSimulations->addItem(new QListWidgetItem(QString::fromStdString(simulations[i]->GetName())));
+		if (simulations.size() > 0)
+		{
+			if (selectedIndex < simulations.size())
+				ui.listSimulations->setCurrentRow(selectedIndex);
+			else
+				ui.listSimulations->setCurrentRow(selectedIndex - 1);
+		}
+	}
 }
 
 void ParkingSimulator::infoSimulation()
 {
+	int selectedIndex = ui.listSimulations->currentRow();
+	if (selectedIndex >= 0 && selectedIndex < visualisation.GetSimulations().size())
+	{
+		Simulation *selectedSimulation = visualisation.GetSimulations()[selectedIndex];
+		SimulationInfo simulationInfoWindow(selectedSimulation);
+		simulationInfoWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		simulationInfoWindow.exec();
+	}
 }
 
 void ParkingSimulator::playPauseSimulation()
@@ -887,6 +997,15 @@ void ParkingSimulator::simulationProgressBarPressed()
 void ParkingSimulator::simulationProgressBarReleased()
 {
 
+}
+
+void ParkingSimulator::simulationSelectionChange()
+{
+	int selectedIndex = ui.listSimulations->currentRow();
+	if (selectedIndex >= 0 && selectedIndex < visualisation.GetSimulations().size())
+		visualisation.SetCurrentSimulation(visualisation.GetSimulations()[selectedIndex]);
+	else
+		visualisation.SetCurrentSimulation(nullptr);
 }
 
 #pragma endregion

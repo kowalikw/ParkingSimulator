@@ -68,6 +68,12 @@
     <Filter Include="Source Files\Windows">
       <UniqueIdentifier>{f0f82aab-8ba2-4439-bb54-8bda0737a812}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\OpenGLFramework">
+      <UniqueIdentifier>{c074b175-e149-4429-9d96-7b59937bbafb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OpenGLFramework">
+      <UniqueIdentifier>{99da0b8d-394f-4802-b4fe-9400b19c44f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

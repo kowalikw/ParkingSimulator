@@ -336,63 +336,25 @@ void NvgDrawHelper::DrawArrow(glm::vec2 point, glm::vec2 direction)
 	nvgFill(vg);
 }
 
-void NvgDrawHelper::DrawBSpline(BSpline *bSpline, bool drawPolyline)
-{
-	glm::vec2 offset = *this->offset;
-	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
-	float magnificationRatio = (*this->magnificationRatio);
-
-	std::vector<glm::vec2> controlPoints = bSpline->GetControlPoints();
-
-	if (drawPolyline)
-	{
-		nvgBeginPath(vg);
-		nvgMoveTo(vg, controlPoints[0].x, controlPoints[0].y);
-		for (int i = 0; i < controlPoints.size(); i++)
-			nvgLineTo(vg, controlPoints[1].x, controlPoints[1].y);
-		nvgStrokeWidth(vg, 3);
-		nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
-		nvgStroke(vg);
-	}
-
-	nvgBeginPath(vg);
-	auto startPoint = drawAreaPosition + controlPoints[0] * magnificationRatio + offset;
-	nvgMoveTo(vg, startPoint.x, startPoint.y);
-	for (double t = 0; t < 1; t += 0.01)
-	{
-		if (t < bSpline->knots[bSpline->n] || t > bSpline->knots[bSpline->m - bSpline->n]) continue;
-		
-		/*auto x = bSpline->GetPointX(t);
-		auto y = bSpline->GetPointY(t);*/
-
-		auto p = drawAreaPosition + bSpline->GetPoint(t) * magnificationRatio + offset;
-
-		nvgLineTo(vg, p.x, p.y);
-	}
-	nvgStrokeWidth(vg, 3);
-	nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
-	nvgStroke(vg);
-}
-
-void NvgDrawHelper::DrawPathElement(PathElement * pathElement)
+void NvgDrawHelper::DrawPathElement(PathElement * pathElement, bool isSelected)
 {
 	if (dynamic_cast<Line*>(pathElement) != NULL)
 	{
 		Line *line = dynamic_cast<Line*>(pathElement);
 
-		drawLine(line);
+		drawLine(line, isSelected);
 	}
 	else if (dynamic_cast<Circle*>(pathElement) != NULL)
 	{
 		Circle *circle = dynamic_cast<Circle*>(pathElement);
 
-		drawCircle(circle);
+		drawCircle(circle, isSelected);
 	}
 	else if (dynamic_cast<BSpline*>(pathElement) != NULL)
 	{
 		BSpline *bSpline = dynamic_cast<BSpline*>(pathElement);
 
-		DrawBSpline(bSpline);
+		drawBSpline(bSpline, isSelected);
 	}
 }
 
@@ -484,7 +446,7 @@ void NvgDrawHelper::drawRoad(Road *road)
 	
 }
 
-void NvgDrawHelper::drawLine(Line *line)
+void NvgDrawHelper::drawLine(Line *line, bool isSelected)
 {
 	glm::vec2 offset = *this->offset;
 	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
@@ -496,12 +458,12 @@ void NvgDrawHelper::drawLine(Line *line)
 	nvgBeginPath(vg);
 	nvgMoveTo(vg, from.x, from.y);
 	nvgLineTo(vg, to.x, to.y);
-	nvgStrokeWidth(vg, PATH_LINE_WIDTH);
-	nvgStrokeColor(vg, PATH_LINE_COLOR);
+	nvgStrokeWidth(vg, isSelected ? PATH_ELEMENT_SELECTED_WIDTH : PATH_LINE_WIDTH);
+	nvgStrokeColor(vg, isSelected ? PATH_ELEMENT_SELECTED_COLOR : PATH_LINE_COLOR);
 	nvgStroke(vg);
 }
 
-void NvgDrawHelper::drawCircle(Circle *circle)
+void NvgDrawHelper::drawCircle(Circle *circle, bool isSelected)
 {
 	glm::vec2 offset = *this->offset;
 	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
@@ -521,8 +483,8 @@ void NvgDrawHelper::drawCircle(Circle *circle)
 			auto p = drawAreaPosition + circle->GetPointForAngle(angle) * magnificationRatio + offset;
 			nvgLineTo(vg, p.x, p.y);
 		}
-		nvgStrokeWidth(vg, PATH_CIRCLE_WIDTH);
-		nvgStrokeColor(vg, PATH_CIRCLE_COLOR);
+		nvgStrokeWidth(vg, isSelected ? PATH_ELEMENT_SELECTED_WIDTH : PATH_CIRCLE_WIDTH);
+		nvgStrokeColor(vg, isSelected ? PATH_ELEMENT_SELECTED_COLOR : PATH_CIRCLE_COLOR);
 		nvgStroke(vg);
 	}
 	else
@@ -539,10 +501,48 @@ void NvgDrawHelper::drawCircle(Circle *circle)
 			auto p = drawAreaPosition + circle->GetPointForAngle(angle) * magnificationRatio + offset;
 			nvgLineTo(vg, p.x, p.y);
 		}
-		nvgStrokeWidth(vg, PATH_CIRCLE_WIDTH);
-		nvgStrokeColor(vg, PATH_CIRCLE_COLOR);
+		nvgStrokeWidth(vg, isSelected ? PATH_ELEMENT_SELECTED_WIDTH : PATH_CIRCLE_WIDTH);
+		nvgStrokeColor(vg, isSelected ? PATH_ELEMENT_SELECTED_COLOR : PATH_CIRCLE_COLOR);
 		nvgStroke(vg);
 	}
+}
+
+void NvgDrawHelper::drawBSpline(BSpline *bSpline, bool isSelected, bool drawPolyline)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	std::vector<glm::vec2> controlPoints = bSpline->GetControlPoints();
+
+	if (drawPolyline)
+	{
+		nvgBeginPath(vg);
+		nvgMoveTo(vg, controlPoints[0].x, controlPoints[0].y);
+		for (int i = 0; i < controlPoints.size(); i++)
+			nvgLineTo(vg, controlPoints[1].x, controlPoints[1].y);
+		nvgStrokeWidth(vg, 3);
+		nvgStrokeColor(vg, nvgRGBA(255, 255, 0, 255));
+		nvgStroke(vg);
+	}
+
+	nvgBeginPath(vg);
+	auto startPoint = drawAreaPosition + controlPoints[0] * magnificationRatio + offset;
+	nvgMoveTo(vg, startPoint.x, startPoint.y);
+	for (double t = 0; t < 1; t += 0.01)
+	{
+		if (t < bSpline->knots[bSpline->n] || t > bSpline->knots[bSpline->m - bSpline->n]) continue;
+
+		/*auto x = bSpline->GetPointX(t);
+		auto y = bSpline->GetPointY(t);*/
+
+		auto p = drawAreaPosition + bSpline->GetPoint(t) * magnificationRatio + offset;
+
+		nvgLineTo(vg, p.x, p.y);
+	}
+	nvgStrokeWidth(vg, isSelected ? PATH_ELEMENT_SELECTED_WIDTH : PATH_BSPLINE_WIDTH);
+	nvgStrokeColor(vg, isSelected ? PATH_ELEMENT_SELECTED_COLOR : PATH_BSPLINE_COLOR);
+	nvgStroke(vg);
 }
 
 void NvgDrawHelper::drawResizeShape(MapElement * mapElement)

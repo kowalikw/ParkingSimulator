@@ -86,6 +86,8 @@ glm::vec2 Circle::GetPointForAngle(double angle)
 
 double Circle::GetLength()
 {
+	if(this->length == 0)
+		this->length = abs(angleFrom - angleTo) * radius;
 	return this->length;
 }
 double Circle::GetAngle(double t)

@@ -15,6 +15,7 @@
 #include "SelectVehicle.h"
 #include "FindPath.h"
 #include "AddSimulation.h"
+#include "SimulationInfo.h"
 
 using namespace Ui;
 
@@ -78,6 +79,7 @@ public slots:
 	void findPath();
 	void clearPathPlannerButtons();
 	void clearPathPlannerButtonsStyle();
+	void pathElementSelectionChange();
 
 	// visualisation
 	void addSimulation();
@@ -91,4 +93,5 @@ public slots:
 	void simulationProgressBarChange(int time);
 	void simulationProgressBarPressed();
 	void simulationProgressBarReleased();
+	void simulationSelectionChange();
 };
