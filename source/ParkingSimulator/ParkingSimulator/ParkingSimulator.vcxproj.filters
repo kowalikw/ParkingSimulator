@@ -259,6 +259,27 @@
     <ClCompile Include="AddSimulation.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_OpenGLHost3D.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_OpenGLHost3D.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\OpenGLFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source Files\OpenGLFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\OpenGLFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\OpenGLFramework</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLHost3D.cpp">
+      <Filter>Source Files\OpenGLHosts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -329,6 +350,9 @@
     </CustomBuild>
     <CustomBuild Include="AddSimulation.h">
       <Filter>Header Files\Windows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="OpenGLHost3D.h">
+      <Filter>Header Files\OpenGLHosts</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +442,18 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_AddSimulation.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\OpenGLFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\OpenGLFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\OpenGLFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Header Files\OpenGLFramework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

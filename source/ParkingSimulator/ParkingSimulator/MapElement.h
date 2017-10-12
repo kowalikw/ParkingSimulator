@@ -48,6 +48,13 @@ public:
 	bool IsAdmissible();
 	void SetIsAdmissible(bool isAdmissible);
 
+	std::string GetModelPath();
+	std::string GetThumbnailPath();
+	std::string GetMapThumbnailPath();
+	void SetModelPath(std::string modelPath);
+	void SetThumbnailPath(std::string thumbnailPath);
+	void SetMapThumbnailPath(std::string thumbnailPath);
+
 	friend class boost::serialization::access;
 	// When the class Archive corresponds to an output archive, the
 	// & operator is defined similar to <<.  Likewise, when the class Archive
@@ -60,6 +67,9 @@ public:
 		ar & position;
 		ar & size;
 		ar & points;
+		ar & modelPath;
+		ar & thumbnailPath;
+		ar & mapThumbnailPath;
 	}
 protected:
 	std::string name;
@@ -76,6 +86,10 @@ protected:
 	bool isAdmissible = true;
 	int resizeHoverCorner;
 	std::vector<glm::vec2> points;
+
+	std::string modelPath;
+	std::string thumbnailPath;
+	std::string mapThumbnailPath;
 
 	void move();
 	void rotate();

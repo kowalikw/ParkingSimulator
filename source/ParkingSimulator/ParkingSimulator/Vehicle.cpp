@@ -80,8 +80,7 @@ double Vehicle::GetR(double angle)
 
 double Vehicle::GetRMin(double insideAngle)
 {
-	auto lalala = abs(wheelbase / tan(insideAngle));
-	return lalala;
+	return abs(wheelbase / tan(insideAngle));
 }
 
 double Vehicle::GetRMax(double insideAngle)

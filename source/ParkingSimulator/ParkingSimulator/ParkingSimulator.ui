@@ -85,7 +85,7 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>4</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -2483,6 +2483,16 @@ margin-left: 30px;</string>
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>TEST</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_10">
+        <item row="0" column="0">
+         <widget class="OpenGLHost3D" name="glVisualisation3D"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -2509,6 +2519,11 @@ margin-left: 30px;</string>
    <class>VisualisationGLHost</class>
    <extends>QOpenGLWidget</extends>
    <header>VisualisationGLHost.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OpenGLHost3D</class>
+   <extends>QOpenGLWidget</extends>
+   <header>OpenGLHost3D.h</header>
   </customwidget>
  </customwidgets>
  <resources>

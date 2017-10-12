@@ -238,6 +238,36 @@ void MapElement::move()
 		points[i] = glm::vec2(points[i].x + position.x, points[i].y + position.y);
 }
 
+std::string MapElement::GetModelPath()
+{
+	return this->modelPath;
+}
+
+std::string MapElement::GetThumbnailPath()
+{
+	return this->thumbnailPath;
+}
+
+std::string MapElement::GetMapThumbnailPath()
+{
+	return this->thumbnailPath;
+}
+
+void MapElement::SetModelPath(std::string modelPath)
+{
+	this->modelPath = modelPath;
+}
+
+void MapElement::SetThumbnailPath(std::string thumbnailPath)
+{
+	this->thumbnailPath = thumbnailPath;
+}
+
+void MapElement::SetMapThumbnailPath(std::string mapThumbnailPath)
+{
+	this->mapThumbnailPath = mapThumbnailPath;
+}
+
 void MapElement::rotate()
 {
 	glm::mat4 mtx;

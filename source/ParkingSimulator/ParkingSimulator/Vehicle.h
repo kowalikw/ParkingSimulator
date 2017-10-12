@@ -49,6 +49,7 @@ public:
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
 	{
+		ar & boost::serialization::base_object<MapElement>(*this);
 		ar & wheelbase;
 		ar & track;
 		ar & maxInsideAngle;
@@ -56,6 +57,7 @@ public:
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
+		ar & boost::serialization::base_object<MapElement>(*this);
 		ar & wheelbase;
 		ar & track;
 		ar & maxInsideAngle;
