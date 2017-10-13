@@ -14,10 +14,15 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	((MapEditorGLHost*)ui.glMapEditor)->SetMapEditor(&mapEditor);
 	((PathPlannerGLHost*)ui.glPathPlanner)->SetPathPlanner(&pathPlanner);
 	((VisualisationGLHost*)ui.glVisualisation)->SetVisualisation(&visualisation);
+	((OpenGLHost3D*)ui.glVisualisation3D)->SetVisualisation(&visualisation);
 
 	renderTimer = new QTimer();
 	renderTimer->setInterval(10);
 	renderTimer->start();
+
+	render3DTimer = new QTimer();
+	render3DTimer->setInterval(10);
+	render3DTimer->start();
 
 	updateTimer = new QTimer();
 	updateTimer->setInterval(20);
@@ -27,7 +32,9 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnSaveSettings, SIGNAL(released()), this, SLOT(saveSettings()));
 
 	connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderTimerCall()));
+	connect(render3DTimer, SIGNAL(timeout()), this, SLOT(render3DTimerCall()));
 	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimerCall()));
+
 	connect(ui.btnNewMap, SIGNAL(released()), this, SLOT(createMap()));
 	connect(ui.btnSaveMap, SIGNAL(released()), this, SLOT(saveMap()));
 	connect(ui.btnLoadMap, SIGNAL(released()), this, SLOT(loadMap()));
@@ -98,6 +105,11 @@ void ParkingSimulator::renderTimerCall()
 		clearMapEditorButtons();
 		updateMapElementsTree();
 	}
+}
+
+void ParkingSimulator::render3DTimerCall()
+{
+	ui.glVisualisation3D->repaint();
 }
 
 void ParkingSimulator::setMapProperties()

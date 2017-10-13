@@ -29,6 +29,7 @@ public:
 private:
 	ParkingSimulatorClass ui;
 	QTimer *renderTimer;
+	QTimer *render3DTimer;
 	QTimer *updateTimer;
 	MapEditor mapEditor;
 	PathPlanner pathPlanner;
@@ -41,6 +42,7 @@ private:
 	void setPathProperties();
 public slots:
 	void renderTimerCall();
+	void render3DTimerCall();
 	void updateTimerCall();
 
 	void loadSettings();

@@ -14,6 +14,7 @@
 #include "Camera.h"
 #include "Model.h"
 #include "Simulation.h"
+#include "Visualisation.h"
 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
@@ -33,13 +34,15 @@ public:
 	void keyPressEvent(QKeyEvent *event);
 	void keyReleaseEvent(QKeyEvent * event);
 
+	void SetVisualisation(Visualisation *visualisation);
+
 protected:
 	void initializeGL();
 	void resizeGL(int w, int h);
 	void paintGL();
 
 private:
-	Simulation *simulation;
+	Visualisation *visualization = nullptr;
 
 	GLuint WIDTH = 800, HEIGHT = 600;
 	GLuint VBO, VAO, EBO;
@@ -65,7 +68,13 @@ private:
 	// Light attributes
 	glm::vec3 lightPos;
 
+	Model *mapModel;
+	Model *vehicleModel;
+	std::vector<Model*> mapElementsModels;
+
 	void MoveCamera();
+
+	void initializeVisualization();
 };
 
 #endif

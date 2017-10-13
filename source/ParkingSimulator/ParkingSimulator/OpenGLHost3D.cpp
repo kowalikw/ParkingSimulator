@@ -61,6 +61,11 @@ void OpenGLHost3D::keyReleaseEvent(QKeyEvent * event)
 		keys[key] = false;
 }
 
+void OpenGLHost3D::SetVisualisation(Visualisation * visualisation)
+{
+	this->visualization = visualisation;
+}
+
 #pragma endregion
 
 #pragma region OpenGL methods.
@@ -77,146 +82,18 @@ void OpenGLHost3D::initializeGL()
 	textureShader = new Shader("Resources/shaders/textureVS.glsl", "Resources/shaders/textureFS.glsl");
 	phongShader = new Shader("Resources/shaders/phongVS.glsl", "Resources/shaders/phongFS.glsl");
 
-	camera = new Camera(glm::vec3(0.0f, 7.0f, 3.0f));
+	camera = new Camera(glm::vec3(0.0f, 1000.0f, 0.0));
 
 	// Light attributes
 	lightPos = glm::vec3(0.0f, 5.0f, 0.0f);
+
+	if (visualization->GetCurrentSimulation() != NULL)
+		initializeVisualization();
 
 	myModel = new Model("Resources/models/plane/plane.obj");
 	box = new Model("Resources/models/box/box.obj");
 	car = new Model("Resources/models/car/Car.obj");
 	car->Scale(glm::vec3(0.00001f, 0.00001f, 0.00001f));
-
-	/*for (int i = 0; i < simulation.GetMap().GetMapElements().size(); i++)
-	{
-		MapElement *mapElement = simulation.GetMap().GetMapElements().at(i);
-		if (dynamic_cast<Obstacle*>(mapElement) != nullptr)
-		{
-			Obstacle *obstacle = dynamic_cast<Obstacle*>(mapElement);
-			switch (obstacle->GetType())
-			{
-			case ObstacleType::Box:
-				models.push_back(Model("Resources/models/box/box.obj", glm::vec3(obstacle->GetPosX(), 0.5f, obstacle->GetPosY())));
-				break;
-			case ObstacleType::Lala:
-				models.push_back(Model("Resources/models/box/box.obj", glm::vec3(obstacle->GetPosX(), 0.5f, obstacle->GetPosY()), glm::vec3(), glm::vec3(2.0f, 1.0f, 0.5f)));
-				break;
-			}
-
-		}
-		else if (dynamic_cast<ParkingSpace*>(mapElement) != nullptr)
-		{
-			ParkingSpace *parkingSpace = dynamic_cast<ParkingSpace*>(mapElement);
-			//models.push_back(Model("Resources/models/ParkingSpace/ParkingSpace.obj", parkingSpace->GetPosition(), parkingSpace->GetRotation(), parkingSpace->GetSize()));
-		}
-	}*/
-
-	int lala = 0;
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	/*
-	GLfloat vertices[] = {
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-	0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-	0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-	0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
-	};
-
-	GLuint indices[] = {
-	0, 1, 3, // First Triangle
-	1, 2, 3  // Second Triangle
-	};
-
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	glGenTextures(1, &texture1);
-	glGenTextures(1, &texture2);
-
-	glBindVertexArray(VAO); // Bind VAO
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(3 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(1);
-
-	//glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
-	//glEnableVertexAttribArray(2);
-
-	glBindVertexArray(0); // Unbind VAO
-
-	glBindTexture(GL_TEXTURE_2D, texture1); // Bind texture
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	unsigned char* image1 = SOIL_load_image("Resources/textures/container.jpg", &width, &height, 0, SOIL_LOAD_RGB);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image1);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image1);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture
-
-
-	glBindTexture(GL_TEXTURE_2D, texture2); // Bind texture
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	unsigned char* image2 = SOIL_load_image("Resources/textures/awesomeface.png", &width, &height, 0, SOIL_LOAD_RGB);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image2);
-	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image2);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture */
 }
 
 void OpenGLHost3D::resizeGL(int w, int h)
@@ -228,6 +105,12 @@ void OpenGLHost3D::resizeGL(int w, int h)
 
 void OpenGLHost3D::paintGL()
 {
+	if (visualization->GetVisualisationChanged())
+	{
+		initializeVisualization();
+		visualization->SetVisualisationChanged(false);
+	}
+
 	// Set frame time
 	GLfloat currentFrame = time.currentTime().msecsSinceStartOfDay() / 1000.0f;
 	deltaTime = currentFrame - lastFrame;
@@ -267,15 +150,35 @@ void OpenGLHost3D::paintGL()
 
 
 	//glm::mat4 projection = glm::ortho(-5.0f, 5.0f, 5.0f, -5.0f, 0.01f, 100.0f);
-	glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 10000.0f);
 	glm::mat4 view = camera->GetViewMatrix();
 	//glm::mat4 view;
 	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-	// Draw the loaded model
 	glm::mat4 model;
-	model = glm::translate(model, glm::vec3(1.5f, 0.0f, 2.0f)); // Translate it down a bit so it's at the center of the scene
+
+	if (visualization->GetCurrentSimulation() != NULL)
+	{
+		// Draw map
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(mapModel->GetModelMatrix()));
+		mapModel->Draw(*textureShader);
+
+		Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
+		vehicleModel->Translate(glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y));
+		vehicleModel->RotateY(vehicle->GetRotation());
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
+		vehicleModel->Draw(*textureShader);
+
+		for (int i = 0; i < mapElementsModels.size(); i++)
+		{
+			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(mapElementsModels[i]->GetModelMatrix()));
+			mapElementsModels[i]->Draw(*textureShader);
+		}
+	}
+
+	// Draw the loaded model
+	/*model = glm::translate(model, glm::vec3(1.5f, 0.0f, 2.0f)); // Translate it down a bit so it's at the center of the scene
 	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// It's a bit too big for our scene, so scale it down
 	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
 	box->Draw(*textureShader);
@@ -390,4 +293,31 @@ void OpenGLHost3D::MoveCamera()
 		camera->ProcessKeyboard(LEFT, deltaTime);
 	if (keys[Key::Key_D])
 		camera->ProcessKeyboard(RIGHT, deltaTime);
+}
+
+void OpenGLHost3D::initializeVisualization()
+{
+	camera->Position = glm::vec3(visualization->GetCurrentSimulation()->GetMap()->GetWidth() / 2.0, camera->Position.y, visualization->GetCurrentSimulation()->GetMap()->GetHeight() / 2.0);
+
+	mapModel = new Model("Resources/models/map/map.obj");
+	mapModel->Translate(glm::vec3(visualization->GetCurrentSimulation()->GetMap()->GetWidth() / 2.0, 1.0, visualization->GetCurrentSimulation()->GetMap()->GetHeight() / 2.0));
+	mapModel->Rotate(glm::vec3());
+	mapModel->Scale(glm::vec3(visualization->GetCurrentSimulation()->GetMap()->GetWidth() / 100.0, 1.0, visualization->GetCurrentSimulation()->GetMap()->GetHeight() / 100.0));
+
+	//car->Scale(glm::vec3(0.00001f, 0.00001f, 0.00001f));
+
+	Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
+	vehicleModel = new Model("Resources/models/vehicle/vehicle.obj");
+	vehicleModel->Translate(glm::vec3());
+	vehicleModel->Rotate(glm::vec3());
+	vehicleModel->Scale(glm::vec3(vehicle->GetWheelbase(), 50, vehicle->GetTrack()));
+
+	std::vector<MapElement*> mapElements = visualization->GetCurrentSimulation()->GetMap()->GetMapElements();
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		mapElementsModels.push_back(new Model("Resources/models/box/box.obj"));
+		mapElementsModels[i]->Translate(glm::vec3(mapElements[i]->GetPosition().x, 0, mapElements[i]->GetPosition().y));
+		mapElementsModels[i]->Rotate(glm::vec3(0, mapElements[i]->GetRotation(), 0));
+		mapElementsModels[i]->Scale(glm::vec3(mapElements[i]->GetSize().x, 100, mapElements[i]->GetSize().y));
+	}
 }

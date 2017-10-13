@@ -147,3 +147,13 @@ void Visualisation::RemoveSimulation(Simulation * simulation)
 			newSimulations.push_back(simulations[i]);
 	this->simulations = newSimulations;
 }
+
+bool Visualisation::GetVisualisationChanged()
+{
+	return this->visualisationChanged;
+}
+
+void Visualisation::SetVisualisationChanged(bool visualisationChanged)
+{
+	this->visualisationChanged = visualisationChanged;
+}

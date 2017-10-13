@@ -22,7 +22,8 @@ public:
 	void AddSimulation(Simulation *simulation);
 	void RemoveSimulation(Simulation *simulation);
 
-	
+	bool GetVisualisationChanged();
+	void SetVisualisationChanged(bool visualisationChanged);
 
 	//temp
 	Graph voronoi;
@@ -31,6 +32,7 @@ private:
 	bool showPath = false;
 	bool visualisation2D = false;
 	bool visualisation3D = false;
+	bool visualisationChanged = false;
 	Simulation *currentSimulation;
 	std::vector<Simulation*> simulations;
 };
