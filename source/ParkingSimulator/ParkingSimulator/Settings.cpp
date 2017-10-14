@@ -48,7 +48,7 @@ void Settings::SaveSettings()
 	QSettings settings(settingsFile, QSettings::IniFormat);
 
 	settings.setValue("BuildingsCount", buildings.size());
-	for (int i = 0; i < buildings.size(); i++)
+	for (int i = 0; i < 6; i++)
 	{
 		settings.setValue(QString("Building_%1_Name").arg(i), QString::fromStdString(buildings[i].name));
 		settings.setValue(QString("Building_%1_Thumbnail").arg(i), QString::fromStdString(buildings[i].thumbnail));

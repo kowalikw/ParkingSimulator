@@ -41,6 +41,8 @@ public:
 	/*  Functions  */
 	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures);
 	void Draw(Shader shader);
+	glm::vec3 GetMeshMinCoordinates();
+	glm::vec3 GetMeshMaxCoordinates();
 
 private:
 	/*  Render data  */

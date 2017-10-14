@@ -87,13 +87,9 @@ void OpenGLHost3D::initializeGL()
 	// Light attributes
 	lightPos = glm::vec3(0.0f, 5.0f, 0.0f);
 
+	// Initialize visualisation models
 	if (visualization->GetCurrentSimulation() != NULL)
 		initializeVisualization();
-
-	myModel = new Model("Resources/models/plane/plane.obj");
-	box = new Model("Resources/models/box/box.obj");
-	car = new Model("Resources/models/car/Car.obj");
-	car->Scale(glm::vec3(0.00001f, 0.00001f, 0.00001f));
 }
 
 void OpenGLHost3D::resizeGL(int w, int h)
@@ -164,11 +160,14 @@ void OpenGLHost3D::paintGL()
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(mapModel->GetModelMatrix()));
 		mapModel->Draw(*textureShader);
 
+		/*glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(box->GetModelMatrix()));
+		box->Draw(*textureShader);*/
+
 		Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
 		vehicleModel->Translate(glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y));
 		vehicleModel->RotateY(vehicle->GetRotation());
-		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
-		vehicleModel->Draw(*textureShader);
+		glUniformMatrix4fv(glGetUniformLocation(phongShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
+		vehicleModel->Draw(*phongShader);
 
 		for (int i = 0; i < mapElementsModels.size(); i++)
 		{
@@ -176,18 +175,6 @@ void OpenGLHost3D::paintGL()
 			mapElementsModels[i]->Draw(*textureShader);
 		}
 	}
-
-	// Draw the loaded model
-	/*model = glm::translate(model, glm::vec3(1.5f, 0.0f, 2.0f)); // Translate it down a bit so it's at the center of the scene
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// It's a bit too big for our scene, so scale it down
-	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-	box->Draw(*textureShader);
-
-	/*model = glm::translate(model, glm::vec3(0.0f, 0.0f, -1.0f)); // Translate it down a bit so it's at the center of the scene
-	model = glm::rotate(model, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// It's a bit too big for our scene, so scale it down
-	glUniformMatrix4fv(glGetUniformLocation(phongShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model));
-	car->Draw(*phongShader);*/
 
 	/*for (int i = 0; i < models.size(); i++)
 	{
@@ -297,14 +284,20 @@ void OpenGLHost3D::MoveCamera()
 
 void OpenGLHost3D::initializeVisualization()
 {
+	if (visualization->GetCurrentSimulation() == NULL) return;
+
 	camera->Position = glm::vec3(visualization->GetCurrentSimulation()->GetMap()->GetWidth() / 2.0, camera->Position.y, visualization->GetCurrentSimulation()->GetMap()->GetHeight() / 2.0);
 
+	Map *map = visualization->GetCurrentSimulation()->GetMap();
 	mapModel = new Model("Resources/models/map/map.obj");
-	mapModel->Translate(glm::vec3(visualization->GetCurrentSimulation()->GetMap()->GetWidth() / 2.0, 1.0, visualization->GetCurrentSimulation()->GetMap()->GetHeight() / 2.0));
+	mapModel->Translate(glm::vec3(map->GetWidth() / 2.0, 1.0, map->GetHeight() / 2.0));
 	mapModel->Rotate(glm::vec3());
-	mapModel->Scale(glm::vec3(visualization->GetCurrentSimulation()->GetMap()->GetWidth() / 100.0, 1.0, visualization->GetCurrentSimulation()->GetMap()->GetHeight() / 100.0));
+	mapModel->Scale(glm::vec3(map->GetWidth() / 100.0, 1.0, map->GetHeight() / 100.0));
 
-	//car->Scale(glm::vec3(0.00001f, 0.00001f, 0.00001f));
+	box = new Model("Resources/models/buildings/building1/houseF.obj");
+	box->Translate(glm::vec3(glm::vec3(map->GetWidth() / 2.0, 1.0, map->GetHeight() / 2.0)));
+	box->Rotate(glm::vec3());
+	box->Scale(glm::vec3(10, 10, 10));
 
 	Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
 	vehicleModel = new Model("Resources/models/vehicle/vehicle.obj");
@@ -312,12 +305,15 @@ void OpenGLHost3D::initializeVisualization()
 	vehicleModel->Rotate(glm::vec3());
 	vehicleModel->Scale(glm::vec3(vehicle->GetWheelbase(), 50, vehicle->GetTrack()));
 
+	mapElementsModels.clear();
 	std::vector<MapElement*> mapElements = visualization->GetCurrentSimulation()->GetMap()->GetMapElements();
 	for (int i = 0; i < mapElements.size(); i++)
 	{
-		mapElementsModels.push_back(new Model("Resources/models/box/box.obj"));
+		mapElementsModels.push_back(new Model(mapElements[i]->GetModelPath()));
+		glm::vec3 measure = mapElementsModels[i]->MeasureModel();
+		double scaleRatio = mapElements[i]->GetSize().x / measure.x;
 		mapElementsModels[i]->Translate(glm::vec3(mapElements[i]->GetPosition().x, 0, mapElements[i]->GetPosition().y));
 		mapElementsModels[i]->Rotate(glm::vec3(0, mapElements[i]->GetRotation(), 0));
-		mapElementsModels[i]->Scale(glm::vec3(mapElements[i]->GetSize().x, 100, mapElements[i]->GetSize().y));
+		mapElementsModels[i]->Scale(glm::vec3(scaleRatio, scaleRatio, scaleRatio));
 	}
 }

@@ -8,6 +8,8 @@ MapEditor::MapEditor()
 void MapEditor::CreateMap(int width, int height)
 {
 	map = new Map(width, height);
+
+	mapElementsChanged = true;
 }
 
 void MapEditor::SaveMap(string filePath)

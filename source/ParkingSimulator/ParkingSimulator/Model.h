@@ -26,6 +26,7 @@ public:
 	/*  Functions   */
 	// Constructor, expects a filepath to a 3D model.
 	Model(GLchar* path);
+	Model(std::string path);
 	Model(GLchar* path, glm::vec3 translation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale);
@@ -41,6 +42,7 @@ public:
 	void Scale(glm::vec3 scale);
 
 	glm::mat4 GetModelMatrix();
+	glm::vec3 MeasureModel();
 
 private:
 	/* Model matrix data */
@@ -67,6 +69,9 @@ private:
 	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 
 	GLint textureFromFile(const char* path, string directory);
+	GLint textureFromColor(aiColor4D color);
+
+	
 };
 
 #endif

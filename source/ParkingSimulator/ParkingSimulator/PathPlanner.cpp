@@ -374,8 +374,8 @@ void PathPlanner::OpenSimulation(string filePath)
 
 	ia >> *simulation;
 
-	map = simulation->GetMap();
-	expandedMap = simulation->GetExpandedMap();
+	map = simulation->GetMap() != NULL ? simulation->GetMap() : nullptr;
+	expandedMap = simulation->GetExpandedMap() != NULL ? simulation->GetExpandedMap() : nullptr;
 	vehicle = simulation->GetVehicle();
 	polylinePath = simulation->GetPolylinePath();
 	parkingPathStart = simulation->GetParkingPathStart();

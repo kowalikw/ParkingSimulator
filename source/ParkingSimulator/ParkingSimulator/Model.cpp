@@ -1,6 +1,12 @@
 #include "Model.h"
+#define INF 10e9;
 
 Model::Model(GLchar *path)
+{
+	this->loadModel(path);
+}
+
+Model::Model(std::string path)
 {
 	this->loadModel(path);
 }
@@ -119,10 +125,13 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 		vector.z = mesh->mVertices[i].z;
 		vertex.Position = vector;
 		// Normals
-		vector.x = mesh->mNormals[i].x;
-		vector.y = mesh->mNormals[i].y;
-		vector.z = mesh->mNormals[i].z;
-		vertex.Normal = vector;
+		/*if (mesh->mNormals[i] != nullptr)
+		{
+			vector.x = mesh->mNormals[i].x;
+			vector.y = mesh->mNormals[i].y;
+			vector.z = mesh->mNormals[i].z;
+			vertex.Normal = vector;
+		}*/
 		// Texture Coordinates
 		if (mesh->mTextureCoords[0]) // Does the mesh contain texture coordinates?
 		{
@@ -173,6 +182,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
 {
 	vector<Texture> textures;
+
 	for (GLuint i = 0; i < mat->GetTextureCount(type); i++)
 	{
 		aiString str;
@@ -198,6 +208,18 @@ vector<Texture> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type,
 			this->textures_loaded.push_back(texture);  // Store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
 		}
 	}
+
+	aiColor4D color;
+	if (textures.size() == 0 && aiGetMaterialColor(mat, AI_MATKEY_COLOR_DIFFUSE, &color) == AI_SUCCESS)
+	{
+		Texture texture;
+		texture.id = textureFromColor(color);
+		texture.type = typeName;
+		texture.path = "";
+		textures.push_back(texture);
+		this->textures_loaded.push_back(texture);
+	}
+
 	return textures;
 }
 
@@ -223,4 +245,47 @@ GLint Model::textureFromFile(const char* path, string directory)
 	glBindTexture(GL_TEXTURE_2D, 0);
 	SOIL_free_image_data(image);
 	return textureID;
+}
+
+GLint Model::textureFromColor(aiColor4D color)
+{
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+
+	float data[4];
+	data[0] = color.r;
+	data[1] = color.g;
+	data[2] = color.b;
+	data[3] = color.a;
+
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, 1, 1, 0, GL_RGBA, GL_FLOAT, data);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return textureID;
+}
+
+glm::vec3 Model::MeasureModel()
+{
+	double minX = INF;
+	double maxX = -INF;
+	double minY = INF;
+	double maxY = -INF;
+	double minZ = INF;
+	double maxZ = -INF;
+
+	for (int i = 0; i < meshes.size(); i++)
+	{
+		glm::vec3 minCoordinates = meshes[i].GetMeshMinCoordinates();
+		glm::vec3 maxCoordinates = meshes[i].GetMeshMaxCoordinates();
+
+		if (minCoordinates.x < minX) minX = minCoordinates.x;
+		if (minCoordinates.y < minY) minY = minCoordinates.y;
+		if (minCoordinates.z < minZ) minZ = minCoordinates.z;
+		if (maxCoordinates.x > maxX) maxX = maxCoordinates.x;
+		if (maxCoordinates.y > maxY) maxY = maxCoordinates.y;
+		if (maxCoordinates.z > maxZ) maxZ = maxCoordinates.z;
+	}
+
+	return glm::vec3(maxX - minX, maxY - minY, maxZ - minZ);
 }

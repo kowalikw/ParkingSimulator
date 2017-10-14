@@ -85,7 +85,7 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -1742,7 +1742,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                     </font>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">color: #d50000;</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>NOT SET</string>
@@ -1765,7 +1765,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                  <item row="1" column="1">
                   <widget class="QLabel" name="pathEndPositionLabel">
                    <property name="styleSheet">
-                    <string notr="true">color: #d50000;</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>NOT SET</string>
@@ -2442,6 +2442,16 @@ margin-left: 30px;</string>
              </widget>
             </item>
             <item>
+             <widget class="OpenGLHost3D" name="glVisualisation3D">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <item>
                <widget class="QToolButton" name="btnPlayPauseSimulation">
@@ -2487,11 +2497,7 @@ margin-left: 30px;</string>
        <attribute name="title">
         <string>TEST</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_10">
-        <item row="0" column="0">
-         <widget class="OpenGLHost3D" name="glVisualisation3D"/>
-        </item>
-       </layout>
+       <layout class="QGridLayout" name="gridLayout_10"/>
       </widget>
      </widget>
     </item>

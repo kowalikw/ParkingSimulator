@@ -122,6 +122,8 @@ void Visualisation::SetShowPath(bool showPath)
 void Visualisation::SetCurrentSimulation(Simulation * simulation)
 {
 	this->currentSimulation = simulation;
+
+	this->visualisationChanged = true;
 }
 
 Simulation * Visualisation::GetCurrentSimulation()

@@ -39,7 +39,7 @@ MapElement * AddMapElement::GetNewMapElement()
 void AddMapElement::initBuildings()
 {
 	buildings = Settings::getInstance()->GetBuildings();
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < buildings.size(); i++)
 	{
 		QIcon icon;
 		icon.addFile(QString::fromStdString(buildings[i].thumbnail), QSize(), QIcon::Normal, QIcon::Off);
@@ -158,6 +158,8 @@ void AddMapElement::addElement()
 	newMapElement->SetSize(glm::vec2(ui.newElementWidth->value(), ui.newElementHeight->value()));
 	newMapElement->SetName(ui.newElementName->text().toStdString());
 	newMapElement->SetRotation(glm::radians(ui.newElementRotation->value()));
+	newMapElement->SetThumbnailPath(model->thumbnail);
+	newMapElement->SetModelPath(model->model);
 
 	accept();
 }

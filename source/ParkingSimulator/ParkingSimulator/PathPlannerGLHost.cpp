@@ -307,6 +307,11 @@ void PathPlannerGLHost::nvgRenderFrame()
 	{
 		nvgHelper->DrawPath(pathPlanner->GetFinalPath());
 	}
+
+	if (pathPlanner->GetSelectedPathElement() != NULL)
+	{
+		nvgHelper->DrawPathElement(pathPlanner->GetSelectedPathElement(), true);
+	}
 }
 
 #pragma endregion

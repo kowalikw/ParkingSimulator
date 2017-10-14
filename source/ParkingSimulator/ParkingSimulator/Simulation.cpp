@@ -4,6 +4,22 @@ Simulation::Simulation()
 {
 	this->simulationTime = 0;
 	this->currentSimulationTime = 0;
+
+	this->map = nullptr;
+	this->expandedMap = nullptr;
+	this->vehicle = nullptr;
+	this->polylinePath = nullptr;
+	this->parkingPathStart = nullptr;
+	this->parkingPathEnd = nullptr;
+	this->finalPath = nullptr;
+	this->startPoint = nullptr;
+	this->endPoint = nullptr;
+	this->startDirection = nullptr;
+	this->endDirection = nullptr;
+	this->startParkingSpace = nullptr;
+	this->endParkingSpace = nullptr;
+	this->voronoiGraph = nullptr;
+	this->fullVoronoiVisibilityGraph = nullptr;
 }
 
 Simulation::Simulation(Map *map, Vehicle *vehicle, Path *path)

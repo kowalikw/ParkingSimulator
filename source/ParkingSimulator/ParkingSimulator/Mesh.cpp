@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#define INF 10e9;
 
 Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures)
 {
@@ -73,3 +74,36 @@ void Mesh::setupMesh()
 
 	glBindVertexArray(0);
 }
+
+glm::vec3 Mesh::GetMeshMinCoordinates()
+{
+	double minX = INF;
+	double minY = INF;
+	double minZ = INF;
+
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		if (vertices[i].Position.x < minX && !isnan(vertices[i].Position.x)) minX = vertices[i].Position.x;
+		if (vertices[i].Position.y < minY && !isnan(vertices[i].Position.y)) minY = vertices[i].Position.y;
+		if (vertices[i].Position.z < minZ && !isnan(vertices[i].Position.z)) minZ = vertices[i].Position.z;
+	}
+
+	return glm::vec3(minX, minY, minZ);
+}
+
+glm::vec3 Mesh::GetMeshMaxCoordinates()
+{
+	double maxX = -INF;
+	double maxY = -INF;
+	double maxZ = -INF;
+
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		if (vertices[i].Position.x > maxX && !isnan(vertices[i].Position.x)) maxX = vertices[i].Position.x;
+		if (vertices[i].Position.y > maxY && !isnan(vertices[i].Position.y)) maxY = vertices[i].Position.y;
+		if (vertices[i].Position.z > maxZ && !isnan(vertices[i].Position.z)) maxZ = vertices[i].Position.z;
+	}
+
+	return glm::vec3(maxX, maxY, maxZ);
+}
+

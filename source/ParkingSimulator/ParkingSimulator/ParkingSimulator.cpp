@@ -92,6 +92,8 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	ui.pathElementsList->hide();
 
 	// Path planner end
+
+	ui.glVisualisation3D->hide();
 }
 
 void ParkingSimulator::renderTimerCall()
@@ -159,7 +161,6 @@ void ParkingSimulator::setPathProperties()
 		glm::vec2 *startDirection = pathPlanner.GetStartDirection();
 		float angle = glm::degrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *startDirection));
 
-		ui.pathStartPositionLabel->setStyleSheet("");
 		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(startPoint->x).arg(startPoint->y).arg(angle));
 	}
 
@@ -169,7 +170,6 @@ void ParkingSimulator::setPathProperties()
 		glm::vec2 *endDirection = pathPlanner.GetEndDirection();
 		float angle = glm::degrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *endDirection));
 
-		ui.pathEndPositionLabel->setStyleSheet("");
 		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(endPoint->x).arg(endPoint->y).arg(angle));
 	}
 
@@ -177,7 +177,6 @@ void ParkingSimulator::setPathProperties()
 	{
 		ParkingSpace *startParkingSpace = pathPlanner.GetStartParkingSpace();
 
-		ui.pathStartPositionLabel->setStyleSheet("");
 		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(startParkingSpace->GetPosition().x).arg(startParkingSpace->GetPosition().y).arg(startParkingSpace->GetRotation()));
 	}
 
@@ -185,8 +184,17 @@ void ParkingSimulator::setPathProperties()
 	{
 		ParkingSpace *endParkingSpace = pathPlanner.GetEndParkingSpace();
 
-		ui.pathEndPositionLabel->setStyleSheet("");
 		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(endParkingSpace->GetPosition().x).arg(endParkingSpace->GetPosition().y).arg(endParkingSpace->GetRotation()));
+	}
+
+	if (pathPlanner.GetStartPoint() == NULL && pathPlanner.GetStartParkingSpace() == NULL)
+	{
+		ui.pathStartPositionLabel->setText(QString("NOT SET"));
+	}
+
+	if (pathPlanner.GetEndPoint() == NULL && pathPlanner.GetEndParkingSpace() == NULL)
+	{
+		ui.pathEndPositionLabel->setText(QString("NOT SET"));
 	}
 
 	if (pathPlanner.GetFinalPath() != NULL && pathPlanner.GetFinalPath()->GetElements().size() > 0)
@@ -259,10 +267,6 @@ void ParkingSimulator::updateTimerCall()
 		ui.pathElementProperties->show();
 
 		pathPlanner.SetPathElementPropertiesChanged(false);
-	}
-	else
-	{
-		ui.pathElementProperties->hide();
 	}
 
 	if (mapEditor.GetSelectedElementChanged())
@@ -665,6 +669,10 @@ void ParkingSimulator::clearMapEditorButtonsStyle()
 void ParkingSimulator::newSimulation()
 {
 	pathPlanner.NewSimulation();
+	setMapProperties();
+	setVehicleProperties();
+	setPathProperties();
+	ui.pathElementProperties->hide();
 }
 
 void ParkingSimulator::openSimulation()
@@ -673,7 +681,13 @@ void ParkingSimulator::openSimulation()
 	QString filePath = QFileDialog::getOpenFileName(this, "Open simulation", QString(), tr("All files (*.*);;Simulation files (*.simulation)"), &filter);
 
 	if (filePath != "")
+	{
 		pathPlanner.OpenSimulation(filePath.toStdString());
+		setMapProperties();
+		setVehicleProperties();
+		setPathProperties();
+		ui.pathElementProperties->hide();
+	}
 }
 
 void ParkingSimulator::saveSimulation()
@@ -841,6 +855,7 @@ void ParkingSimulator::findPath()
 
 	if (findPathWindow.exec())
 	{
+		pathPlanner.SetSelectedPathElement(nullptr);
 		pathPlanner.SetExpandSizePercent(findPathWindow.GetExpandSizePercent());
 		pathPlanner.SetCollisionDetectionDensity(findPathWindow.GetCollisionDetectionDensity());
 		pathPlanner.SetAlgorithm(findPathWindow.GetAlgorithm());
@@ -969,6 +984,8 @@ void ParkingSimulator::enableVisualisation2D()
 	visualisation.SetVisualisation3D(false);
 	ui.btnVisualisation2D->setStyleSheet("border: 3px solid #d86a39;");
 	ui.btnVisualisation3D->setStyleSheet("");
+	ui.glVisualisation->show();
+	ui.glVisualisation3D->hide();
 }
 
 void ParkingSimulator::enableVisualisation3D()
@@ -977,6 +994,8 @@ void ParkingSimulator::enableVisualisation3D()
 	visualisation.SetVisualisation3D(true);
 	ui.btnVisualisation2D->setStyleSheet("");
 	ui.btnVisualisation3D->setStyleSheet("border: 3px solid #d86a39;");
+	ui.glVisualisation->hide();
+	ui.glVisualisation3D->show();
 }
 
 void ParkingSimulator::showSimulationPath(int checked)
