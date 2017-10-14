@@ -115,7 +115,7 @@ void OpenGLHost3D::paintGL()
 	MoveCamera();
 
 	// Clear the colorbuffer
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.1647058823529412f, 0.1647058823529412f, 0.1647058823529412f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	textureShader->Use();
@@ -294,10 +294,11 @@ void OpenGLHost3D::initializeVisualization()
 	mapModel->Rotate(glm::vec3());
 	mapModel->Scale(glm::vec3(map->GetWidth() / 100.0, 1.0, map->GetHeight() / 100.0));
 
-	box = new Model("Resources/models/buildings/building1/houseF.obj");
+	box = new Model("Resources/models/decorations/decoration2/fountain.obj");
+	auto measure = box->MeasureModel();
 	box->Translate(glm::vec3(glm::vec3(map->GetWidth() / 2.0, 1.0, map->GetHeight() / 2.0)));
 	box->Rotate(glm::vec3());
-	box->Scale(glm::vec3(10, 10, 10));
+	box->Scale(glm::vec3(1, 1, 1));
 
 	Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
 	vehicleModel = new Model("Resources/models/vehicle/vehicle.obj");
@@ -316,4 +317,6 @@ void OpenGLHost3D::initializeVisualization()
 		mapElementsModels[i]->Rotate(glm::vec3(0, mapElements[i]->GetRotation(), 0));
 		mapElementsModels[i]->Scale(glm::vec3(scaleRatio, scaleRatio, scaleRatio));
 	}
+
+	int lala = 0;
 }

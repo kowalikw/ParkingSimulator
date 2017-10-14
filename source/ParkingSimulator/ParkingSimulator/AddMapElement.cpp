@@ -13,14 +13,17 @@ AddMapElement::AddMapElement(AddMapElementType type, QWidget *parent)
 	case B:
 		initBuildings();
 		ui.addMapElementDescription->setText(QString("Select building type:"));
+		ui.newElementName->setText(QString("Building - box"));
 		break;
 	case D:
 		initDecorations();
 		ui.addMapElementDescription->setText(QString("Select decoration type:"));
+		ui.newElementName->setText(QString("Decoration - box"));
 		break;
 	case P:
 		initParkingSpaces();
 		ui.addMapElementDescription->setText(QString("Select parking place type:"));
+		ui.newElementName->setText(QString("Parking place - plane"));
 		break;
 	}
 
