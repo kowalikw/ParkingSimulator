@@ -41,6 +41,18 @@ void Settings::LoadSettings()
 
 		parkingPlaces.push_back(MapElementModel(parkingPlaceName, parkingPlaceThumbnail, parkingPlaceModel, parkingPlaceWidth, parkingPlaceHeight));
 	}
+
+	int vehiclesCount = settings.value("VehiclesCount").toInt();
+	for (int i = 0; i < vehiclesCount; i++)
+	{
+		std::string vehicleName = settings.value(QString("Vehicle_%1_Name").arg(i)).toString().toStdString();
+		std::string vehicleThumbnail = settings.value(QString("Vehicle_%1_Thumbnail").arg(i)).toString().toStdString();
+		std::string vehicleModel = settings.value(QString("Vehicle_%1_Model").arg(i)).toString().toStdString();
+		double vehicleWidth = settings.value(QString("Vehicle_%1_DefaultWidth").arg(i)).toDouble();
+		double vehicleHeight = settings.value(QString("Vehicle_%1_DefaultHeight").arg(i)).toDouble();
+
+		vehicles.push_back(MapElementModel(vehicleName, vehicleThumbnail, vehicleModel, vehicleWidth, vehicleHeight));
+	}
 }
 
 void Settings::SaveSettings()
@@ -75,6 +87,16 @@ void Settings::SaveSettings()
 		settings.setValue(QString("ParkingPlace_%1_Model").arg(i), QString::fromStdString(parkingPlaces[i].model));
 		settings.setValue(QString("ParkingPlace_%1_DefaultWidth").arg(i), parkingPlaces[i].defaultWidth);
 		settings.setValue(QString("ParkingPlace_%1_DefaultHeight").arg(i), parkingPlaces[i].defaultHeight);
+	}
+
+	settings.setValue("VehiclesCount", vehicles.size());
+	for (int i = 0; i < parkingPlaces.size(); i++)
+	{
+		settings.setValue(QString("Vehicle_%1_Name").arg(i), QString::fromStdString(vehicles[i].name));
+		settings.setValue(QString("Vehicle_%1_Thumbnail").arg(i), QString::fromStdString(vehicles[i].thumbnail));
+		settings.setValue(QString("Vehicle_%1_Model").arg(i), QString::fromStdString(parkingPlaces[i].model));
+		settings.setValue(QString("Vehicle_%1_DefaultWidth").arg(i), vehicles[i].defaultWidth);
+		settings.setValue(QString("Vehicle_%1_DefaultHeight").arg(i), vehicles[i].defaultHeight);
 	}
 }
 

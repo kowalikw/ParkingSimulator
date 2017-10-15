@@ -54,8 +54,9 @@ public slots:
 	void clearMap();
 	void addBuilding();
 	void addDecoration();
-	void addRoad();
+	void addCar();
 	void addParkPlace();
+	void addTerrain();
 	void mapElementRemove();
 	void mapElementSaveProperties();
 

@@ -42,7 +42,8 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnAddBuilding, SIGNAL(released()), this, SLOT(addBuilding()));
 	connect(ui.btnAddDecoration, SIGNAL(released()), this, SLOT(addDecoration()));
 	connect(ui.btnAddParkPlace, SIGNAL(released()), this, SLOT(addParkPlace()));
-	connect(ui.btnAddRoad, SIGNAL(released()), this, SLOT(addRoad()));	
+	connect(ui.btnAddCar, SIGNAL(released()), this, SLOT(addCar()));	
+	connect(ui.btnAddTerrain, SIGNAL(released()), this, SLOT(addTerrain()));
 	connect(ui.btnMapElementRemove, SIGNAL(released()), this, SLOT(mapElementRemove()));
 	connect(ui.btnMapElementSaveProperties, SIGNAL(released()), this, SLOT(mapElementSaveProperties()));
 
@@ -308,9 +309,15 @@ void ParkingSimulator::updateTimerCall()
 				}
 				ui.treeMapElements->setCurrentIndex(newIndex);
 			}
-			else if (dynamic_cast<Road*>(mapEditor.GetSelectedElement()) != NULL)
+			else if (dynamic_cast<Vehicle*>(mapEditor.GetSelectedElement()) != NULL)
 			{
-
+				int index = 0;
+				while (mapEditor.GetMap()->GetVehicles()[index] != mapEditor.GetSelectedElement())
+					index++;
+				QModelIndex root = ui.treeMapElements->indexAt(QPoint(0, 0));
+				QModelIndex parkingPlaces = root.child(2, 0);
+				QModelIndex newIndex = parkingPlaces.child(index, 0);
+				ui.treeMapElements->setCurrentIndex(newIndex);
 			}
 			else if (dynamic_cast<ParkingSpace*>(mapEditor.GetSelectedElement()) != NULL)
 			{
@@ -407,7 +414,7 @@ void ParkingSimulator::addBuilding()
 	if (mapEditor.GetMap() == NULL)
 		return;
 
-	if (mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace() || mapEditor.GetAddRoad())
+	if (mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace() || mapEditor.GetAddCar() || mapEditor.GetAddTerrain())
 		clearMapEditorButtons();
 
 	if (!mapEditor.GetAddBuilding())
@@ -433,7 +440,7 @@ void ParkingSimulator::addDecoration()
 	if (mapEditor.GetMap() == NULL)
 		return;
 
-	if (mapEditor.GetAddBuilding() || mapEditor.GetAddParkPlace() || mapEditor.GetAddRoad())
+	if (mapEditor.GetAddBuilding() || mapEditor.GetAddParkPlace() || mapEditor.GetAddCar() || mapEditor.GetAddTerrain())
 		clearMapEditorButtons();
 
 	if (!mapEditor.GetAddDecoration())
@@ -454,23 +461,29 @@ void ParkingSimulator::addDecoration()
 	}
 }
 
-void ParkingSimulator::addRoad()
+void ParkingSimulator::addCar()
 {
 	if (mapEditor.GetMap() == NULL)
 		return;
 
-	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace())
+	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddParkPlace() || mapEditor.GetAddTerrain())
 		clearMapEditorButtons();
 
-	if (!mapEditor.GetAddRoad())
+	if (!mapEditor.GetAddCar())
 	{
-		ui.btnAddRoad->setStyleSheet("background-color: #d86a39;");
-		mapEditor.SetAddRoad(true);
+		AddMapElement addMapElementWindow(AddMapElementType::C);
+		addMapElementWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		if (addMapElementWindow.exec())
+		{
+			ui.btnAddCar->setStyleSheet("background-color: #d86a39;");
+			mapEditor.SetAddCar(true);
+			mapEditor.AddNewMapElement(addMapElementWindow.GetNewMapElement());
+		}
 	}
 	else
 	{
-		ui.btnAddRoad->setStyleSheet("");
-		mapEditor.SetAddRoad(false);
+		ui.btnAddCar->setStyleSheet("");
+		mapEditor.SetAddCar(false);
 	}
 }
 
@@ -479,7 +492,7 @@ void ParkingSimulator::addParkPlace()
 	if (mapEditor.GetMap() == NULL)
 		return;
 
-	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddRoad())
+	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddCar() || mapEditor.GetAddTerrain())
 		clearMapEditorButtons();
 
 	if (!mapEditor.GetAddParkPlace())
@@ -497,6 +510,32 @@ void ParkingSimulator::addParkPlace()
 	{
 		ui.btnAddParkPlace->setStyleSheet("");
 		mapEditor.SetAddParkPlace(false);
+	}
+}
+
+void ParkingSimulator::addTerrain()
+{
+	if (mapEditor.GetMap() == NULL)
+		return;
+
+	if (mapEditor.GetAddBuilding() || mapEditor.GetAddDecoration() || mapEditor.GetAddCar() || mapEditor.GetAddParkPlace())
+		clearMapEditorButtons();
+
+	if (!mapEditor.GetAddTerrain())
+	{
+		AddMapElement addMapElementWindow(AddMapElementType::P);
+		addMapElementWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		if (addMapElementWindow.exec())
+		{
+			ui.btnAddParkPlace->setStyleSheet("background-color: #d86a39;");
+			mapEditor.SetAddParkPlace(true);
+			mapEditor.AddNewMapElement(addMapElementWindow.GetNewMapElement());
+		}
+	}
+	else
+	{
+		ui.btnAddTerrain->setStyleSheet("");
+		mapEditor.SetAddTerrain(false);
 	}
 }
 
@@ -627,9 +666,10 @@ void ParkingSimulator::treeMapElementsSelectionChanged()
 		else
 			mapEditor.SetSelectedElement(nullptr);
 	}
-	else if (parentItemTitle == "Roads")
+	else if (parentItemTitle == "Vehicles")
 	{
-		//mapEditor.SetSelectedElement(mapEditor.GetMap()->GetMapElements()[index - 5]);
+		if (currentIndex.row() < mapEditor.GetMap()->GetVehicles().size())
+			mapEditor.SetSelectedElement(mapEditor.GetMap()->GetVehicles()[currentIndex.row()]);
 	}
 	else if (parentItemTitle == "Park places")
 	{
@@ -645,7 +685,8 @@ void ParkingSimulator::clearMapEditorButtons()
 	mapEditor.SetAddBuilding(false);
 	mapEditor.SetAddDecoration(false);
 	mapEditor.SetAddParkPlace(false);
-	mapEditor.SetAddRoad(false);
+	mapEditor.SetAddCar(false);
+	mapEditor.SetAddTerrain(false);
 
 	clearMapEditorButtonsStyle();
 }
@@ -658,8 +699,10 @@ void ParkingSimulator::clearMapEditorButtonsStyle()
 		ui.btnAddDecoration->setStyleSheet("");
 	if (!mapEditor.GetAddParkPlace())
 		ui.btnAddParkPlace->setStyleSheet("");
-	if (!mapEditor.GetAddRoad())
-		ui.btnAddRoad->setStyleSheet("");
+	if (!mapEditor.GetAddCar())
+		ui.btnAddCar->setStyleSheet("");
+	if (!mapEditor.GetAddTerrain())
+		ui.btnAddTerrain->setStyleSheet("");
 }
 
 #pragma endregion

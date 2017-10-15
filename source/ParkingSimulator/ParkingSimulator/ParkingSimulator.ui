@@ -85,7 +85,7 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
@@ -162,7 +162,7 @@ QTreeView::branch:open:has-children:has-siblings  {
         image: url(Resources/TreeWidgetIcons/branch-open.png);
 }
 
-QPushButton#btnAddBuilding, QPushButton#btnAddDecoration, QPushButton#btnAddRoad, QPushButton#btnAddParkPlace {
+QPushButton#btnAddBuilding, QPushButton#btnAddDecoration, QPushButton#btnAddCar, QPushButton#btnAddParkPlace, QPushButton#btnAddTerrain {
     background-color: #3b3e41;
     border-radius: 3px;
     border: 1px solid #757575;
@@ -171,11 +171,11 @@ QPushButton#btnAddBuilding, QPushButton#btnAddDecoration, QPushButton#btnAddRoad
     padding: 6px;
 }
 
-QPushButton#btnAddBuilding:hover, QPushButton#btnAddDecoration:hover, QPushButton#btnAddRoad:hover, QPushButton#btnAddParkPlace:hover {
+QPushButton#btnAddBuilding:hover, QPushButton#btnAddDecoration:hover, QPushButton#btnAddCar:hover, QPushButton#btnAddParkPlace:hover, QPushButton#btnAddTerrain:hover {
     background-color: #85b448;
 }
 
-QPushButton#btnAddBuilding:pressed, QPushButton#btnAddDecoration:pressed, QPushButton#btnAddRoad:pressed, QPushButton#btnAddParkPlace:pressed {
+QPushButton#btnAddBuilding:pressed, QPushButton#btnAddDecoration:pressed, QPushButton#btnAddCar:pressed, QPushButton#btnAddParkPlace:pressed, QPushButton#btnAddTerrain:pressed {
     background-color: #d86a39;
 }</string>
        </property>
@@ -450,7 +450,7 @@ border-radius: 3px;</string>
                  <number>0</number>
                 </property>
                 <item row="1" column="0">
-                 <widget class="QPushButton" name="btnAddRoad">
+                 <widget class="QPushButton" name="btnAddCar">
                   <property name="minimumSize">
                    <size>
                     <width>110</width>
@@ -471,7 +471,7 @@ border-radius: 3px;</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/MapEditorIcons/roadIcon.png</normaloff>Resources/MapEditorIcons/roadIcon.png</iconset>
+                    <normaloff>Resources/MapEditorIcons/carIcon.png</normaloff>Resources/MapEditorIcons/carIcon.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -578,6 +578,26 @@ border-radius: 3px;</string>
                  </widget>
                 </item>
                </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnAddTerrain">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/MapEditorIcons/terrainIcon.png</normaloff>Resources/MapEditorIcons/terrainIcon.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+               </widget>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_9">

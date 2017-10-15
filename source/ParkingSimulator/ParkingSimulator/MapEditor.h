@@ -25,8 +25,9 @@ public:
 
 	bool GetAddBuilding();
 	bool GetAddDecoration();
-	bool GetAddRoad();
+	bool GetAddCar();
 	bool GetAddParkPlace();
+	bool GetAddTerrain();
 	bool GetResetAddButtons();
 	bool GetSelectedElementChanged();
 	bool GetMapElementsChanged();
@@ -36,8 +37,9 @@ public:
 	void SetMap(Map *map);
 	void SetAddBuilding(bool addBuilding);
 	void SetAddDecoration(bool addDecoration);
-	void SetAddRoad(bool addRoad);
+	void SetAddCar(bool addCar);
 	void SetAddParkPlace(bool addParkPlace);
+	void SetAddTerrain(bool addTerrain);
 	void SetResetAddButtons(bool resetAddButtons);
 	void SetSelectedElementChanged(bool selectedElementChanged);
 	void SetMapElementsChanged(bool mapElementsChanged);
@@ -67,14 +69,15 @@ private:
 	QTreeWidgetItem *mapElementsTree = NULL;
 	QTreeWidgetItem *buildingsTree = NULL;
 	QTreeWidgetItem *decorationsTree = NULL;
-	QTreeWidgetItem *roadsTree = NULL;
+	QTreeWidgetItem *vehiclesTree = NULL;
 	QTreeWidgetItem *parkingPlacesTree = NULL;
 
 	Map *map = NULL;
 	bool addBuilding = false;
 	bool addDecoration = false;
-	bool addRoad = false;
+	bool addCar = false;
 	bool addParkPlace = false;
+	bool addTerrain = false;
 	bool resetAddButtons = false;
 	bool selectedElementChanged = false;
 	bool mapElementsChanged = false;

@@ -38,19 +38,6 @@ private:
 	static Settings *s_instance;
 	Settings()
 	{
-		// TODO:
-		/*for (int i = 0; i < 6; i++)
-		{
-			buildings.push_back(MapElementModel("budynek", "Resources/MapEditorIcons/AddBuildingIcons/default.png", "", 100, 100));
-		}
-		for (int i = 0; i < 4; i++)
-		{
-			decorations.push_back(MapElementModel("dekoracja", "Resources/MapEditorIcons/AddBuildingIcons/default.png", "", 100, 100));
-		}
-		for (int i = 0; i < 2; i++)
-		{
-			parkingPlaces.push_back(MapElementModel("miejsce parkowania", "Resources/MapEditorIcons/AddBuildingIcons/default.png", "", 200, 100));
-		}*/
 		LoadSettings();
 	}
 

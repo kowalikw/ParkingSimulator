@@ -88,14 +88,19 @@ bool MapEditor::GetAddDecoration()
 	return this->addDecoration;
 }
 
-bool MapEditor::GetAddRoad()
+bool MapEditor::GetAddCar()
 {
-	return this->addRoad;
+	return this->addCar;
 }
 
 bool MapEditor::GetAddParkPlace()
 {
 	return this->addParkPlace;
+}
+
+bool MapEditor::GetAddTerrain()
+{
+	return this->addTerrain;
 }
 
 bool MapEditor::GetResetAddButtons()
@@ -143,14 +148,19 @@ void MapEditor::SetAddDecoration(bool addDecoration)
 	this->addDecoration = addDecoration;
 }
 
-void MapEditor::SetAddRoad(bool addRoad)
+void MapEditor::SetAddCar(bool addCar)
 {
-	this->addRoad = addRoad;
+	this->addCar = addCar;
 }
 
 void MapEditor::SetAddParkPlace(bool addParkPlace)
 {
 	this->addParkPlace = addParkPlace;
+}
+
+void MapEditor::SetAddTerrain(bool addTerrain)
+{
+	this->addTerrain = addTerrain;
 }
 
 void MapEditor::SetResetAddButtons(bool resetAddButtons)
@@ -355,9 +365,9 @@ void MapEditor::updateMapElementsTreeItem()
 		mapElementsTreeItemsExpanded.append(decorationsTree->isExpanded());
 	decorationsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Decorations")));
 
-	if (roadsTree != NULL)
-		mapElementsTreeItemsExpanded.append(roadsTree->isExpanded());
-	roadsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Roads")));
+	if (vehiclesTree != NULL)
+		mapElementsTreeItemsExpanded.append(vehiclesTree->isExpanded());
+	vehiclesTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Vehicles")));
 
 	if (parkingPlacesTree != NULL)
 		mapElementsTreeItemsExpanded.append(parkingPlacesTree->isExpanded());
@@ -367,7 +377,7 @@ void MapEditor::updateMapElementsTreeItem()
 	mapElementsTreeItems->append(mapElementsTree);
 	mapElementsTreeItems->append(buildingsTree);
 	mapElementsTreeItems->append(decorationsTree);
-	mapElementsTreeItems->append(roadsTree);
+	mapElementsTreeItems->append(vehiclesTree);
 	mapElementsTreeItems->append(parkingPlacesTree);
 
 	if (map != NULL)
@@ -381,6 +391,10 @@ void MapEditor::updateMapElementsTreeItem()
 		for (int i = 0; i < decorations.size(); ++i)
 			if (decorations[i]->GetType() == ObstacleType::Decoration)
 				mapElementsTreeItems->append(new QTreeWidgetItem(decorationsTree, QStringList(QString::fromStdString(decorations[i]->GetName()))));
+
+		std::vector<Vehicle*> vehicles = map->GetVehicles();
+		for (int i = 0; i < vehicles.size(); ++i)
+			mapElementsTreeItems->append(new QTreeWidgetItem(vehiclesTree, QStringList(QString::fromStdString(vehicles[i]->GetName()))));
 
 		std::vector<ParkingSpace*> parkingSpaces = map->GetParkingSpaces();
 		for (int i = 0; i < parkingSpaces.size(); ++i)

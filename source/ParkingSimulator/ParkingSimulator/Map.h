@@ -46,6 +46,7 @@ public:
 	void RemoveMapElement(MapElement *mapElement);
 	std::vector<MapElement*> GetMapElements();
 	std::vector<Obstacle*> GetObstacles();
+	std::vector<Vehicle*> GetVehicles();
 	std::vector<ParkingSpace*> GetParkingSpaces();
 	std::vector<glm::vec2> GetPoints();
 	Map *GetExpandedMap(float expandSize);
@@ -65,14 +66,18 @@ public:
 		ar & parkingSpaces.size();
 		for (int i = 0; i < parkingSpaces.size(); i++)
 			ar & *parkingSpaces[i];
+		ar & vehicles.size();
+		for (int i = 0; i < vehicles.size(); i++)
+			ar & *vehicles[i];
 	}
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
-		int pointsCount, obstaclesCount, parkingSpacesCount;
+		int pointsCount, obstaclesCount, parkingSpacesCount, vehiclesCount;
 		glm::vec2 point;
 		Obstacle *obstacle;
 		ParkingSpace *parkingSpace;
+		Vehicle *vehicle;
 
 		ar & width;
 		ar & height;
@@ -101,6 +106,15 @@ public:
 			parkingSpaces.push_back(parkingSpace);
 			mapElements.push_back(parkingSpace);
 		}
+
+		ar & vehiclesCount;
+		for (int i = 0; i < vehiclesCount; i++)
+		{
+			vehicle = new Vehicle();
+			ar & *vehicle;
+			vehicles.push_back(vehicle);
+			mapElements.push_back(vehicle);
+		}
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:
@@ -108,20 +122,11 @@ private:
 	int height;
 	std::vector<MapElement*> mapElements;
 	std::vector<Obstacle*> obstacles;
+	std::vector<Vehicle*> vehicles;
 	std::vector<ParkingSpace*> parkingSpaces;
 	std::vector<glm::vec2> points;
 
 	friend class boost::serialization::access;
-	// When the class Archive corresponds to an output archive, the
-	// & operator is defined similar to <<.  Likewise, when the class Archive
-	// is a type of input archive the & operator is defined similar to >>.
-	/*template<class Archive>
-	void serialize(Archive & ar, const unsigned int version)
-	{
-		ar & width;
-		ar & height;
-		ar & points;
-	}*/
 };
 
 #endif

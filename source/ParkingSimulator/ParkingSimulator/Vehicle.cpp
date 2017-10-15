@@ -2,6 +2,20 @@
 
 Vehicle::Vehicle()
 {
+	this->position = glm::vec2(0, 0);
+	this->size = glm::vec2(0, 0);
+	this->rotation = 0;
+	this->wheelbase = 0;
+	this->track = 0;
+	this->dirWheelbase = glm::vec2(1.0f, 0.0f);
+	this->dirTrack = glm::vec2(0.0f, 1.0f);
+
+	this->points.push_back(glm::vec2(-size.x / 2.0f, -size.y / 2.0f));
+	this->points.push_back(glm::vec2(size.x / 2.0f, -size.y / 2.0f));
+	this->points.push_back(glm::vec2(size.x / 2.0f, size.y / 2.0f));
+	this->points.push_back(glm::vec2(-size.x / 2.0f, size.y / 2.0f));
+
+	transform();
 }
 
 Vehicle::Vehicle(double wheelbase, double track)

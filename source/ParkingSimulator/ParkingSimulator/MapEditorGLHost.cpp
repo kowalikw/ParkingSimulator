@@ -79,11 +79,11 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 		}
 	}
 
-	if (mapEditor->GetAddBuilding() || mapEditor->GetAddDecoration() || mapEditor->GetAddParkPlace())
+	if (mapEditor->GetAddBuilding() || mapEditor->GetAddDecoration() || mapEditor->GetAddParkPlace() || mapEditor->GetAddCar())
 	{
 		mapEditor->AddObstacleConfirm();
 	}
-	else if (mapEditor->GetAddRoad())
+	else if (mapEditor->GetAddTerrain())
 	{
 
 	}

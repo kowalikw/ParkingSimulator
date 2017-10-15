@@ -32,6 +32,8 @@ void Map::AddMapElement(MapElement *mapElement)
 	this->mapElements.push_back(mapElement);
 	if (dynamic_cast<Obstacle*>(mapElement) != NULL)
 		this->obstacles.push_back((Obstacle*)mapElement);
+	else if (dynamic_cast<Vehicle*>(mapElement) != NULL)
+		this->vehicles.push_back((Vehicle*)mapElement);
 	else if (dynamic_cast<ParkingSpace*>(mapElement) != NULL)
 		this->parkingSpaces.push_back((ParkingSpace*)mapElement);
 }
@@ -54,6 +56,14 @@ void Map::RemoveMapElement(MapElement * mapElement)
 			newObstacles.push_back(obstacles[i]);
 	this->obstacles = newObstacles;
 
+	std::vector<Vehicle*> newVehicles;
+	for (int i = 0; i < vehicles.size(); i++)
+		if (vehicles[i] == mapElement)
+			continue;
+		else
+			newVehicles.push_back(vehicles[i]);
+	this->vehicles = newVehicles;
+
 	std::vector<ParkingSpace*> newParkingSpaces;
 	for (int i = 0; i < parkingSpaces.size(); i++)
 		if (parkingSpaces[i] == mapElement)
@@ -71,6 +81,11 @@ vector<MapElement*> Map::GetMapElements()
 std::vector<Obstacle*> Map::GetObstacles()
 {
 	return this->obstacles;
+}
+
+std::vector<Vehicle*> Map::GetVehicles()
+{
+	return this->vehicles;
 }
 
 std::vector<ParkingSpace*> Map::GetParkingSpaces()

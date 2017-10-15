@@ -25,6 +25,11 @@ AddMapElement::AddMapElement(AddMapElementType type, QWidget *parent)
 		ui.addMapElementDescription->setText(QString("Select parking place type:"));
 		ui.newElementName->setText(QString("Parking place - plane"));
 		break;
+	case C:
+		initVehicles();
+		ui.addMapElementDescription->setText(QString("Select vehicle model:"));
+		ui.newElementName->setText(QString("Kia Rio"));
+		break;
 	}
 
 	this->type = type;
@@ -108,6 +113,33 @@ void AddMapElement::initParkingSpaces()
 	}
 }
 
+void AddMapElement::initVehicles()
+{
+	vehicles = Settings::getInstance()->GetVehicles();
+	for (int i = 0; i < vehicles.size(); i++)
+	{
+		QIcon icon;
+		icon.addFile(QString::fromStdString(vehicles[i].thumbnail), QSize(), QIcon::Normal, QIcon::Off);
+
+		QPushButton *mapElement;
+		mapElement = new QPushButton(this);
+		mapElement->setCursor(QCursor(Qt::PointingHandCursor));
+		mapElement->setStyleSheet(QString("margin-left: 0px;"));
+		mapElement->setIcon(icon);
+		mapElement->setIconSize(QSize(64, 64));
+		mapElement->setToolTip(QString::fromStdString(vehicles[i].name));
+		if (i == 0)
+			mapElement->setStyleSheet("border: 3px solid #d86a39;");
+		ui.mapElementsContainer->addWidget(mapElement);
+
+		QObject::connect(mapElement, SIGNAL(clicked()), this, SLOT(clickedSlot()));
+	}
+}
+
+void AddMapElement::initTerrains()
+{
+}
+
 void AddMapElement::createElement(int index)
 {
 	switch (type)
@@ -123,6 +155,10 @@ void AddMapElement::createElement(int index)
 	case P:
 		model = &parkingPlaces[index];
 		newMapElement = new ParkingSpace(glm::vec2(), index == 0 ? ParkingSpaceType::Paralell : ParkingSpaceType::Perpendicular);
+		break;
+	case C:
+		model = &vehicles[index];
+		newMapElement = new Vehicle();
 		break;
 	}
 }

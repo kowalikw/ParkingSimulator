@@ -14,6 +14,7 @@ enum AddMapElementType
 {
 	B,
 	D,
+	C,
 	P
 };
 
@@ -41,6 +42,8 @@ private:
 	void initBuildings();
 	void initDecorations();
 	void initParkingSpaces();
+	void initVehicles();
+	void initTerrains();
 	void createElement(int index);
 public slots:
 	void addElement();

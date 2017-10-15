@@ -115,7 +115,7 @@ void OpenGLHost3D::paintGL()
 	MoveCamera();
 
 	// Clear the colorbuffer
-	glClearColor(0.1647058823529412f, 0.1647058823529412f, 0.1647058823529412f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	textureShader->Use();
@@ -157,13 +157,13 @@ void OpenGLHost3D::paintGL()
 	if (visualization->GetCurrentSimulation() != NULL)
 	{
 		// Draw map
-		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(mapModel->GetModelMatrix()));
-		mapModel->Draw(*textureShader);
+		/*glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(mapModel->GetModelMatrix()));
+		mapModel->Draw(*textureShader);*/
 
-		/*glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(box->GetModelMatrix()));
-		box->Draw(*textureShader);*/
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(box->GetModelMatrix()));
+		box->Draw(*textureShader);
 
-		Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
+		/*Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
 		vehicleModel->Translate(glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y));
 		vehicleModel->RotateY(vehicle->GetRotation());
 		glUniformMatrix4fv(glGetUniformLocation(phongShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
@@ -173,7 +173,7 @@ void OpenGLHost3D::paintGL()
 		{
 			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(mapElementsModels[i]->GetModelMatrix()));
 			mapElementsModels[i]->Draw(*textureShader);
-		}
+		}*/
 	}
 
 	/*for (int i = 0; i < models.size(); i++)
@@ -294,7 +294,7 @@ void OpenGLHost3D::initializeVisualization()
 	mapModel->Rotate(glm::vec3());
 	mapModel->Scale(glm::vec3(map->GetWidth() / 100.0, 1.0, map->GetHeight() / 100.0));
 
-	box = new Model("Resources/models/decorations/decoration2/fountain.obj");
+	box = new Model("Resources/models/vehicles/vehicle4/russianCar.obj");
 	auto measure = box->MeasureModel();
 	box->Translate(glm::vec3(glm::vec3(map->GetWidth() / 2.0, 1.0, map->GetHeight() / 2.0)));
 	box->Rotate(glm::vec3());
@@ -317,6 +317,4 @@ void OpenGLHost3D::initializeVisualization()
 		mapElementsModels[i]->Rotate(glm::vec3(0, mapElements[i]->GetRotation(), 0));
 		mapElementsModels[i]->Scale(glm::vec3(scaleRatio, scaleRatio, scaleRatio));
 	}
-
-	int lala = 0;
 }
