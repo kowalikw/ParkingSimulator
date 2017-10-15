@@ -1,5 +1,10 @@
 #include "Map.h"
 
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream> 
+#include <Windows.h>
+
 Map::Map()
 {
 	this->width = 0;
@@ -10,6 +15,18 @@ Map::Map(int width, int height)
 {
 	this->width = width;
 	this->height = height;
+	this->terrainWidthCount = (int)(width / TERRAIN_SLICE_SIZE);
+	this->terrainHeightCount = (int)(height / TERRAIN_SLICE_SIZE);
+
+	for (int i = 0; i < terrainWidthCount; i++)
+	{
+		this->terrain.push_back(std::vector<Terrain*>());
+		for (int j = 0; j < terrainHeightCount; j++)
+		{
+			Terrain *terrainSlice = new Terrain(glm::vec2(i * TERRAIN_SLICE_SIZE, j * TERRAIN_SLICE_SIZE));
+			this->terrain[i].push_back(terrainSlice);
+		}
+	}
 
 	this->points.push_back(glm::vec2(0.0f, 0.0f));
 	this->points.push_back(glm::vec2(width, 0.0f));
@@ -73,6 +90,51 @@ void Map::RemoveMapElement(MapElement * mapElement)
 	this->parkingSpaces = newParkingSpaces;
 }
 
+std::vector<std::vector<Terrain*>> Map::GetTerrain()
+{
+	return this->terrain;
+}
+
+int Map::GetTerrainWidthCount()
+{
+	return this->terrainWidthCount;
+}
+
+int Map::GetTerrainHeightCount()
+{
+	return this->terrainHeightCount;
+}
+
+Terrain * Map::GetTerrainSlice(int i, int j)
+{
+	return this->terrain[i][j];
+}
+
+Terrain * Map::GetTerrainSlice(double x, double y)
+{
+	if (x > width || y > height || x < 0 || y < 0) return nullptr;
+
+	int i = (int)(x / TERRAIN_SLICE_SIZE);
+	int j = (int)(y / TERRAIN_SLICE_SIZE);
+
+	return this->terrain[i][j];
+}
+
+void Map::SetTerrainSlice(Terrain *terrain, int i, int j)
+{
+	this->terrain[i][j] = terrain;
+}
+
+void Map::SetTerrainSlice(Terrain *terrain, double x, double y)
+{
+	if (x > width || y > height || x < 0 || y < 0) return;
+
+	int i = (int)(x / TERRAIN_SLICE_SIZE);
+	int j = (int)(y / TERRAIN_SLICE_SIZE);
+
+	this->terrain[i][j] = terrain;
+}
+
 vector<MapElement*> Map::GetMapElements()
 {
 	return this->mapElements;
@@ -112,11 +174,15 @@ Map * Map::GetExpandedMap(float expandSize)
 			Obstacle *obstacle = dynamic_cast<Obstacle*>(mapElements[i]);
 			newElement = new Obstacle(obstacle->GetPosition(), obstacle->GetSize(), obstacle->GetRotation(), expandedPoints, obstacle->GetType());
 		}
+		else if (dynamic_cast<Vehicle*>(mapElements[i]) != NULL)
+		{
+			Vehicle *parkingSpace = dynamic_cast<Vehicle*>(mapElements[i]);
+			newElement = new Vehicle(parkingSpace->GetPosition(), parkingSpace->GetSize(), parkingSpace->GetRotation(), expandedPoints);
+		}
 		else if (dynamic_cast<ParkingSpace*>(mapElements[i]) != NULL)
 		{
 			ParkingSpace *parkingSpace = dynamic_cast<ParkingSpace*>(mapElements[i]);
 			newElement = new ParkingSpace(parkingSpace->GetPosition(), parkingSpace->GetSize(), parkingSpace->GetRotation(), expandedPoints, parkingSpace->GetType());
-			
 		}
 		expandedMap->AddMapElement(newElement);
 	}

@@ -18,6 +18,15 @@ Vehicle::Vehicle()
 	transform();
 }
 
+Vehicle::Vehicle(glm::vec2 position, glm::vec2 size, double rotation, std::vector<glm::vec2> points)
+{
+	this->position = position;
+	this->size = size;
+	this->rotation = rotation;
+	this->points = points;
+	this->isRectangular = false;
+}
+
 Vehicle::Vehicle(double wheelbase, double track)
 {
 	this->position = glm::vec2(0.0f, 0.0f);

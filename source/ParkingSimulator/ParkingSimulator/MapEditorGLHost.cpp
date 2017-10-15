@@ -37,6 +37,8 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 {
 	OpenGLHost::mousePressEvent(event);
 
+	this->mouseMoveEvent(event);
+
 	if (mapEditor->GetSelectedElement() != NULL)
 	{
 		int resizeCorner;
@@ -204,6 +206,13 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 		else
 			this->setCursor(DEFAULT_CURSOR);
 	}
+
+	if (mapEditor->GetNewTerrain() != nullptr && mouseLeftPressed)
+	{
+		Terrain *terrain = mapEditor->GetNewTerrain();
+		terrain->SetPosition(positionOnMap);
+		mapEditor->GetMap()->SetTerrainSlice(new Terrain(terrain->GetModelPath(), terrain->GetColor(), terrain->GetPosition()), positionOnMap.x, positionOnMap.y);
+	}
 	
 	if (mapEditor->GetNewElement() != nullptr)
 	{
@@ -301,6 +310,12 @@ void MapEditorGLHost::nvgRenderFrame()
 	if (mapEditor->GetMap() == NULL) return;
 
 	nvgHelper->DrawMap(mapEditor->GetMap());
+
+	if (mapEditor->GetAddTerrain())
+	{
+		//nvgHelper->DrawMeshOnMap(mapEditor->GetMap());
+		nvgHelper->DrawTerrain(mapEditor->GetHoverTerrain(positionOnMap), true);
+	}
 
 	if(mapEditor->GetSelectedElement() == NULL || 
 		(!mapEditor->GetSelectedElement()->IsMoveHover() && !mapEditor->GetSelectedElement()->IsRotationHover() && !mapEditor->GetSelectedElement()->IsResizeHover()))

@@ -33,14 +33,22 @@ void NvgDrawHelper::DrawMap(Map * map)
 	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
 
 	nvgBeginPath(vg);
-	nvgRect(vg, drawAreaPosition->x + offset.x, drawAreaPosition->y + offset.y, drawAreaSize->x + 2 * MAP_BORDER_WIDTH, drawAreaSize->y + 2 * MAP_BORDER_WIDTH);
+	nvgRect(vg, drawAreaPosition->x + offset.x, drawAreaPosition->y + offset.y, drawAreaSize->x, drawAreaSize->y);
+	nvgStrokeWidth(vg, 5);
+	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStroke(vg);
 	nvgFillColor(vg, MAP_BORDER_COLOR);
 	nvgFill(vg);
 
-	nvgBeginPath(vg);
-	nvgRect(vg, drawAreaPosition->x + offset.x + MAP_BORDER_WIDTH, drawAreaPosition->y + offset.y + MAP_BORDER_WIDTH, drawAreaSize->x, drawAreaSize->y);
-	nvgFillColor(vg, MAP_COLOR);
-	nvgFill(vg);
+	for (int i = 0; i < map->GetTerrainWidthCount(); i++)
+	{
+		for (int j = 0; j < map->GetTerrainHeightCount(); j++)
+		{
+			DrawTerrain(map->GetTerrainSlice(i, j));
+		}
+	}
+
+	DrawMeshOnMap(map, 1);
 
 	drawMapElements(map->GetMapElements());
 }
@@ -358,6 +366,48 @@ void NvgDrawHelper::DrawPathElement(PathElement * pathElement, bool isSelected)
 	}
 }
 
+void NvgDrawHelper::DrawMeshOnMap(Map * map, int width)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	nvgBeginPath(vg);	
+	for (int i = meshOnMapSize; i < map->GetWidth(); i += meshOnMapSize)
+	{
+		auto from = drawAreaPosition + glm::vec2(i, 0) * magnificationRatio + offset;
+		auto to = drawAreaPosition + glm::vec2(i, map->GetHeight()) * magnificationRatio + offset;
+
+		nvgMoveTo(vg, from.x, from.y);
+		nvgLineTo(vg, to.x, to.y);
+	}
+	for (int i = meshOnMapSize; i < map->GetHeight(); i += meshOnMapSize)
+	{
+		auto from = drawAreaPosition + glm::vec2(0, i) * magnificationRatio + offset;
+		auto to = drawAreaPosition + glm::vec2(map->GetWidth(), i) * magnificationRatio + offset;
+
+		nvgMoveTo(vg, from.x, from.y);
+		nvgLineTo(vg, to.x, to.y);
+	}
+	nvgStrokeWidth(vg, width);
+	nvgStrokeColor(vg, MAP_BORDER_COLOR);
+	nvgStroke(vg);
+}
+
+void NvgDrawHelper::DrawTerrain(Terrain * terrain, bool isHover)
+{
+	if (terrain == NULL) return;
+
+	glm::vec2 offset = *this->offset;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	nvgBeginPath(vg);
+	nvgRect(vg, drawAreaPosition.x + terrain->GetPosition().x * magnificationRatio + offset.x, drawAreaPosition.y + terrain->GetPosition().y * magnificationRatio + offset.y, TERRAIN_SLICE_SIZE * magnificationRatio, TERRAIN_SLICE_SIZE * magnificationRatio);
+	nvgFillColor(vg, isHover ? TERRAIN_HOVER_COLOR : nvgRGBA(terrain->GetColor().r, terrain->GetColor().g, terrain->GetColor().b, 255));
+	nvgFill(vg);
+}
+
 #pragma endregion
 
 #pragma region Private methods.
@@ -375,6 +425,11 @@ void NvgDrawHelper::drawMapElements(std::vector<MapElement*> mapElements)
 		{
 			auto obstacle = dynamic_cast<Obstacle*>(mapElements[i]);
 			drawObstacle(obstacle);
+		}
+		else if (dynamic_cast<Vehicle*>(mapElements[i]) != NULL)
+		{
+			auto vehicle = dynamic_cast<Vehicle*>(mapElements[i]);
+			drawVehicle(vehicle);
 		}
 		else if (dynamic_cast<ParkingSpace*>(mapElements[i]) != NULL)
 		{
@@ -417,6 +472,30 @@ void NvgDrawHelper::drawObstacle(Obstacle * obstacle)
 	nvgFill(vg);
 }
 
+void NvgDrawHelper::drawVehicle(Vehicle * vehicle)
+{
+	glm::vec2 offset = *this->offset;
+	glm::vec2 widgetSize = *this->widgetSize;
+	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
+	float magnificationRatio = (*this->magnificationRatio);
+
+	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
+	if (vehicle == NULL) return;
+
+	std::vector<glm::vec2> points = vehicle->GetPoints();
+	glm::vec2 parkingSpacePosition = drawAreaPosition + vehicle->GetPosition() * magnificationRatio + offset;
+
+	nvgBeginPath(vg);
+	nvgMoveTo(vg, drawAreaPosition.x + points[0].x * magnificationRatio + offset.x, drawAreaPosition.y + points[0].y * magnificationRatio + offset.y);
+	for (int i = 0; i <= points.size(); i++)
+		nvgLineTo(vg, drawAreaPosition.x + points[i % points.size()].x * magnificationRatio + offset.x, drawAreaPosition.y + points[i % points.size()].y * magnificationRatio + offset.y);
+	nvgStrokeColor(vg, VEHICLE_BORDER_COLOR);
+	nvgStrokeWidth(vg, VEHICLE_BORDER_WIDTH);
+	nvgStroke(vg);
+	nvgFillColor(vg, VEHICLE_COLOR);
+	nvgFill(vg);
+}
+
 void NvgDrawHelper::drawParkingSpace(ParkingSpace * parkingSpace)
 {
 	glm::vec2 offset = *this->offset;
@@ -439,11 +518,6 @@ void NvgDrawHelper::drawParkingSpace(ParkingSpace * parkingSpace)
 	nvgStroke(vg);
 	nvgFillColor(vg, PARKING_SPACE_COLOR);
 	nvgFill(vg);
-}
-
-void NvgDrawHelper::drawRoad(Road *road)
-{
-	
 }
 
 void NvgDrawHelper::drawLine(Line *line, bool isSelected)

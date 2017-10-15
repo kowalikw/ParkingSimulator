@@ -337,6 +337,29 @@ bool MapEditor::MapElementIntersectsMapElement(MapElement * mapElement)
 	return false;
 }
 
+void MapEditor::SetNewTerrain(Terrain * terrain)
+{
+	this->newTerrain = terrain;
+}
+
+Terrain * MapEditor::GetNewTerrain()
+{
+	return this->newTerrain;
+}
+
+Terrain * MapEditor::GetHoverTerrain(glm::vec2 mousePosition)
+{
+	std::ostringstream ss;
+	ss << "X: " << mousePosition.x << endl;
+	ss << "Y: " << mousePosition.y << endl;
+	ss << endl;
+	std::string s(ss.str());
+
+	OutputDebugStringA(s.c_str());
+
+	return map->GetTerrainSlice(mousePosition.x, mousePosition.y);
+}
+
 QList<bool> MapEditor::GetMapElementsTreeItemsExpanded()
 {
 	return this->mapElementsTreeItemsExpanded;

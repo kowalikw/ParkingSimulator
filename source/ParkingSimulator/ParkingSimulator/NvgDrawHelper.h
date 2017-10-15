@@ -44,6 +44,8 @@ public:
 	void DrawEndFlag(glm::vec2 position);
 	void DrawArrow(glm::vec2 point, glm::vec2 direction);
 	void DrawPathElement(PathElement *pathElement, bool isSelected = false);
+	void DrawMeshOnMap(Map *map, int width = 3);
+	void DrawTerrain(Terrain *terrain, bool isHover = false);
 
 	const int SELECTED_MARKER_SIZE = 5;
 	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
@@ -63,11 +65,7 @@ public:
 
 	const int MAP_BORDER_WIDTH = 3;
 	const NVGcolor MAP_COLOR = nvgRGBA(58, 124, 37, 255);
-	const NVGcolor MAP_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
-
-	const int VEHICLE_BORDER_WIDTH = 3;
-	const NVGcolor VEHICLE_COLOR = nvgRGBA(8, 73, 171, 255);
-	const NVGcolor VEHICLE_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
+	const NVGcolor MAP_BORDER_COLOR = nvgRGBA(5, 90, 20, 255);
 
 	const int MAP_ELEMENT_HOVER_BORDER_WIDTH = 3;
 	const NVGcolor MAP_ELEMENT_HOVER_COLOR = nvgRGBA(140, 140, 140, 255);
@@ -89,9 +87,9 @@ public:
 	const NVGcolor PARKING_SPACE_COLOR = nvgRGBA(153, 51, 102, 255);
 	const NVGcolor PARKING_SPACE_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
 
-	const int ROAD_BORDER_WIDTH = 3;
-	const NVGcolor ROAD_COLOR = nvgRGBA(140, 140, 140, 255);
-	const NVGcolor ROAD_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
+	const int VEHICLE_BORDER_WIDTH = 3;
+	const NVGcolor VEHICLE_COLOR = nvgRGBA(8, 73, 171, 255);
+	const NVGcolor VEHICLE_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
 
 	const int GRAPH_EDGE_WIDTH = 2;
 	const NVGcolor GRAPH_EDGE_COLOR = nvgRGBA(255, 255, 140, 255);
@@ -124,6 +122,10 @@ public:
 	const NVGcolor TRANSFORM_SHAPE_RESIZE_COLOR = nvgRGBA(255, 0, 0, 255);
 	const NVGcolor TRANSFORM_SHAPE_HOVER_COLOR = nvgRGBA(255, 255, 0, 255);
 
+	const NVGcolor TERRAIN_HOVER_COLOR = nvgRGBA(255, 255, 140, 255);
+
+	const int meshOnMapSize = 25;
+
 private:
 	NVGcontext *vg;
 	glm::vec2 *widgetSize;
@@ -136,8 +138,8 @@ private:
 	void updateDrawAreaProperties();
 	void drawMapElements(std::vector<MapElement*> mapElements);
 	void drawObstacle(Obstacle *obstacle);
+	void drawVehicle(Vehicle *vehicle);
 	void drawParkingSpace(ParkingSpace *parkingSpace);
-	void drawRoad(Road *road);
 	void drawLine(Line *line, bool isSelected = false);
 	void drawCircle(Circle *circle, bool isSelected = false);
 	void drawBSpline(BSpline *bSpline, bool isSelected = false, bool drawPolyline = false);

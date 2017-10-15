@@ -16,6 +16,7 @@ class Vehicle : public MapElement
 {
 public:
 	Vehicle();
+	Vehicle(glm::vec2 position, glm::vec2 size, double rotation, std::vector<glm::vec2> points);
 	Vehicle(double wheelbase, double track);
 	void UpdateState(double angle);
 	void UpdateState(glm::vec2 position);

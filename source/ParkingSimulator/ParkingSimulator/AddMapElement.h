@@ -7,6 +7,7 @@
 #include "MapElement.h"
 #include "Obstacle.h"
 #include "ParkingSpace.h"
+#include "Terrain.h"
 
 using namespace Ui;
 
@@ -15,7 +16,8 @@ enum AddMapElementType
 	B,
 	D,
 	C,
-	P
+	P,
+	T
 };
 
 class AddMapElement : public QDialog
@@ -26,11 +28,13 @@ public:
 	AddMapElement(AddMapElementType type, QWidget *parent = Q_NULLPTR);
 	~AddMapElement();
 	MapElement * GetNewMapElement();
+	Terrain * GetNewTerrain();
 
 private:
 	AddMapElementClass ui;
 	AddMapElementType type;
 
+	Terrain *newTerrain = NULL;
 	MapElement *newMapElement = NULL;
 	MapElementModel *model = NULL;
 
@@ -38,6 +42,7 @@ private:
 	std::vector<MapElementModel> decorations;
 	std::vector<MapElementModel> parkingPlaces;
 	std::vector<MapElementModel> vehicles;
+	std::vector<MapElementModel> terrains;
 
 	void initBuildings();
 	void initDecorations();

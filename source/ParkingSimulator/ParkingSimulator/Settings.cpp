@@ -53,6 +53,19 @@ void Settings::LoadSettings()
 
 		vehicles.push_back(MapElementModel(vehicleName, vehicleThumbnail, vehicleModel, vehicleWidth, vehicleHeight));
 	}
+
+	int terrainsCount = settings.value("TerrainsCount").toInt();
+	for (int i = 0; i < terrainsCount; i++)
+	{
+		std::string terrainName = settings.value(QString("Terrain_%1_Name").arg(i)).toString().toStdString();
+		std::string terrainThumbnail = settings.value(QString("Terrain_%1_Thumbnail").arg(i)).toString().toStdString();
+		std::string terrainModel = settings.value(QString("Terrain_%1_Model").arg(i)).toString().toStdString();
+		int r = settings.value(QString("Terrain_%1_R").arg(i)).toInt();
+		int g = settings.value(QString("Terrain_%1_G").arg(i)).toInt();
+		int b = settings.value(QString("Terrain_%1_B").arg(i)).toInt();
+
+		terrains.push_back(MapElementModel(terrainName, terrainThumbnail, terrainModel, r, g, b));
+	}
 }
 
 void Settings::SaveSettings()
@@ -118,4 +131,9 @@ std::vector<MapElementModel> Settings::GetParkingPlaces()
 std::vector<MapElementModel> Settings::GetVehicles()
 {
 	return this->vehicles;
+}
+
+std::vector<MapElementModel> Settings::GetTerrains()
+{
+	return this->terrains;
 }

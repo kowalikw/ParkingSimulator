@@ -280,6 +280,9 @@
     <ClCompile Include="OpenGLHost3D.cpp">
       <Filter>Source Files\OpenGLHosts</Filter>
     </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files\MapElements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -454,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files\OpenGLFramework</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files\MapElements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

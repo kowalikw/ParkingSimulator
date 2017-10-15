@@ -30,6 +30,18 @@ AddMapElement::AddMapElement(AddMapElementType type, QWidget *parent)
 		ui.addMapElementDescription->setText(QString("Select vehicle model:"));
 		ui.newElementName->setText(QString("Kia Rio"));
 		break;
+	case T:
+		initTerrains();
+		ui.addMapElementDescription->setText(QString("Select type of terrain:"));
+		ui.newElementName->setText(QString("Grass"));
+		ui.newElementName->setEnabled(false);
+		ui.newElementWidth->hide();
+		ui.newElementHeight->hide();
+		ui.newElementRotation->hide();
+		ui.newElementWidthLabel->hide();
+		ui.newElementHeightLabel->hide();
+		ui.newElementRotationLabel->hide();
+		break;
 	}
 
 	this->type = type;
@@ -42,6 +54,11 @@ AddMapElement::~AddMapElement()
 MapElement * AddMapElement::GetNewMapElement()
 {
 	return this->newMapElement;
+}
+
+Terrain * AddMapElement::GetNewTerrain()
+{
+	return this->newTerrain;
 }
 
 void AddMapElement::initBuildings()
@@ -138,6 +155,25 @@ void AddMapElement::initVehicles()
 
 void AddMapElement::initTerrains()
 {
+	terrains = Settings::getInstance()->GetTerrains();
+	for (int i = 0; i < terrains.size(); i++)
+	{
+		QIcon icon;
+		icon.addFile(QString::fromStdString(terrains[i].thumbnail), QSize(), QIcon::Normal, QIcon::Off);
+
+		QPushButton *mapElement;
+		mapElement = new QPushButton(this);
+		mapElement->setCursor(QCursor(Qt::PointingHandCursor));
+		mapElement->setStyleSheet(QString("margin-left: 0px;"));
+		mapElement->setIcon(icon);
+		mapElement->setIconSize(QSize(64, 64));
+		mapElement->setToolTip(QString::fromStdString(terrains[i].name));
+		if (i == 0)
+			mapElement->setStyleSheet("border: 3px solid #d86a39;");
+		ui.mapElementsContainer->addWidget(mapElement);
+
+		QObject::connect(mapElement, SIGNAL(clicked()), this, SLOT(clickedSlot()));
+	}
 }
 
 void AddMapElement::createElement(int index)
@@ -159,6 +195,10 @@ void AddMapElement::createElement(int index)
 	case C:
 		model = &vehicles[index];
 		newMapElement = new Vehicle();
+		break;
+	case T:
+		model = &terrains[index];
+		newTerrain = new Terrain(model->model, glm::vec3(model->r, model->g, model->b), glm::vec2());
 		break;
 	}
 }
@@ -191,14 +231,19 @@ void AddMapElement::clickedSlot()
 
 void AddMapElement::addElement()
 {
-	if(newMapElement == NULL)
+	if(newMapElement == NULL && newTerrain == NULL)
 		createElement(0);
-
-	newMapElement->SetSize(glm::vec2(ui.newElementWidth->value(), ui.newElementHeight->value()));
-	newMapElement->SetName(ui.newElementName->text().toStdString());
-	newMapElement->SetRotation(glm::radians(ui.newElementRotation->value()));
-	newMapElement->SetThumbnailPath(model->thumbnail);
-	newMapElement->SetModelPath(model->model);
+	else
+	{
+		if (newMapElement != NULL)
+		{
+			newMapElement->SetSize(glm::vec2(ui.newElementWidth->value(), ui.newElementHeight->value()));
+			newMapElement->SetName(ui.newElementName->text().toStdString());
+			newMapElement->SetRotation(glm::radians(ui.newElementRotation->value()));
+			newMapElement->SetThumbnailPath(model->thumbnail);
+			newMapElement->SetModelPath(model->model);
+		}
+	}
 
 	accept();
 }

@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 
+#include "Terrain.h"
 #include "MapElement.h"
 #include "Obstacle.h"
 #include "ParkingSpace.h"
@@ -12,26 +13,6 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
-
-BOOST_SERIALIZATION_SPLIT_FREE(glm::vec2)
-
-namespace boost
-{
-	namespace serialization
-	{
-
-		template<class Archive> void save(Archive& ar, const glm::vec2& v, unsigned int version)
-		{
-			ar & v.x & v.y;
-		}
-
-		template<class Archive> void load(Archive& ar, glm::vec2& v, unsigned int version)
-		{
-			ar & v.x & v.y;
-		}
-
-	}
-}
 
 using namespace std;
 
@@ -44,6 +25,13 @@ public:
 	int GetHeight();
 	void AddMapElement(MapElement *mapElement);
 	void RemoveMapElement(MapElement *mapElement);
+	std::vector<std::vector<Terrain*>> GetTerrain();
+	int GetTerrainWidthCount();
+	int GetTerrainHeightCount();
+	Terrain * GetTerrainSlice(int i, int j);
+	Terrain * GetTerrainSlice(double x, double y);
+	void SetTerrainSlice(Terrain *terrain, int i, int j);
+	void SetTerrainSlice(Terrain *terrain, double x, double y);
 	std::vector<MapElement*> GetMapElements();
 	std::vector<Obstacle*> GetObstacles();
 	std::vector<Vehicle*> GetVehicles();
@@ -69,15 +57,22 @@ public:
 		ar & vehicles.size();
 		for (int i = 0; i < vehicles.size(); i++)
 			ar & *vehicles[i];
+		ar & terrain.size();
+		ar & terrain[0].size();
+		for (int i = 0; i < terrain.size(); i++)
+			for (int j = 0; j < terrain[i].size(); j++)
+				ar & terrain[i][j];
 	}
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
 		int pointsCount, obstaclesCount, parkingSpacesCount, vehiclesCount;
+		int terrainWidthCount, terrainHeightCount;
 		glm::vec2 point;
 		Obstacle *obstacle;
 		ParkingSpace *parkingSpace;
 		Vehicle *vehicle;
+		Terrain *terrain;
 
 		ar & width;
 		ar & height;
@@ -115,11 +110,27 @@ public:
 			vehicles.push_back(vehicle);
 			mapElements.push_back(vehicle);
 		}
+
+		ar & terrainWidthCount;
+		ar & terrainHeightCount;
+		for (int i = 0; i < terrainWidthCount; i++)
+		{
+			this->terrain.push_back(std::vector<Terrain*>());
+			for (int j = 0; j < terrainHeightCount; j++)
+			{
+				terrain = new Terrain();
+				ar & *terrain;
+				this->terrain[i].push_back(terrain);
+			}
+		}
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:
 	int width;
 	int height;
+	int terrainWidthCount;
+	int terrainHeightCount;
+	std::vector<std::vector<Terrain*>> terrain;
 	std::vector<MapElement*> mapElements;
 	std::vector<Obstacle*> obstacles;
 	std::vector<Vehicle*> vehicles;

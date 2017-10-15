@@ -523,13 +523,13 @@ void ParkingSimulator::addTerrain()
 
 	if (!mapEditor.GetAddTerrain())
 	{
-		AddMapElement addMapElementWindow(AddMapElementType::P);
+		AddMapElement addMapElementWindow(AddMapElementType::T);
 		addMapElementWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 		if (addMapElementWindow.exec())
 		{
-			ui.btnAddParkPlace->setStyleSheet("background-color: #d86a39;");
-			mapEditor.SetAddParkPlace(true);
-			mapEditor.AddNewMapElement(addMapElementWindow.GetNewMapElement());
+			ui.btnAddTerrain->setStyleSheet("background-color: #d86a39;");
+			mapEditor.SetAddTerrain(true);
+			mapEditor.SetNewTerrain(addMapElementWindow.GetNewTerrain());
 		}
 	}
 	else

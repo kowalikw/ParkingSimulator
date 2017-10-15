@@ -6,6 +6,11 @@
 #include <qlist.h>
 #include <qtreewidget.h>
 
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream> 
+#include <Windows.h>
+
 class MapEditor
 {
 public:
@@ -61,6 +66,11 @@ public:
 	bool MapContainsMapElement(MapElement *mapElement);
 	bool MapElementIntersectsMapElement(MapElement *mapElement);
 
+	void SetNewTerrain(Terrain * terrain);
+
+	Terrain * GetNewTerrain();
+	Terrain * GetHoverTerrain(glm::vec2 mousePosition);
+
 	QList<bool> GetMapElementsTreeItemsExpanded();
 	QList<QTreeWidgetItem*> * GetMapElementsTreeItems();
 private:
@@ -85,6 +95,7 @@ private:
 	bool selectedElementChangedOnMap = false;
 	MapElement *newElement = NULL;
 	MapElement *selectedElement = NULL;
+	Terrain *newTerrain = NULL;
 
 	void updateMapElementsTreeItem();
 
