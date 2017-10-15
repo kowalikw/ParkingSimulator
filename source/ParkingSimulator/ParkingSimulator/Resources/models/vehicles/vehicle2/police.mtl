@@ -1,0 +1,188 @@
+newmtl AluminiumPolished
+illum 4
+Kd 0.83 0.83 0.83
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 2.90 2.90 2.90
+Ns 36.00
+newmtl CarPaintClearcoatDarkGray
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd MLE-texture.jpg
+map_Ka MLE-texture.jpg
+Ni 1.50
+Ks 0.08 0.14 0.23
+Ns 34.00
+newmtl Glass_Standart_01
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 0.70 0.70 0.70
+Ni 1.50
+Ks 1.03 1.03 1.03
+Ns 42.00
+newmtl Glass_Standart_04
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 0.70 0.70 0.70
+Ni 1.50
+Ks 0.93 0.93 0.93
+Ns 20.00
+newmtl Glass_Standart_07
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 0.90 0.90 0.90
+Ni 1.50
+Ks 1.03 1.03 1.03
+Ns 50.00
+newmtl Glass_Standartdas
+illum 4
+Kd 0.59 0.59 0.59
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.00 0.00 0.00
+Ns 10.00
+newmtl Material__520
+illum 4
+Kd 0.59 0.59 0.59
+Ka 0.00 0.00 0.00
+Tf 0.85 0.85 0.85
+Ni 1.50
+Ks 1.39 1.39 1.39
+Ns 48.00
+newmtl Material__521
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 0.70 0.70 0.70
+Ni 1.50
+Ks 0.69 0.69 0.69
+Ns 72.00
+newmtl Material__521sds
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 0.70 0.70 0.70
+Ni 1.50
+Ks 0.77 0.77 0.77
+Ns 34.00
+newmtl Material__549
+illum 4
+Kd 0.59 0.59 0.59
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.86 0.86 0.86
+Ns 56.00
+newmtl Material__971
+illum 4
+Kd 0.91 0.91 0.91
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.63 0.63 0.63
+Ns 30.00
+newmtl Material__990
+illum 4
+Kd 0.64 0.64 0.64
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.74 0.74 0.74
+Ns 23.00
+newmtl Material__992
+illum 4
+Kd 1.00 0.04 0.04
+Ka 0.00 0.00 0.00
+Tf 0.80 0.80 0.80
+Ni 1.50
+Ks 1.03 1.03 1.03
+Ns 58.00
+newmtl MetalChromeObject_02
+illum 4
+Kd 0.83 0.94 0.99
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.74 0.74 0.74
+Ns 23.00
+newmtl Metal_aluminium_dark_polished
+illum 4
+Kd 0.13 0.13 0.13
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.62 0.62 0.62
+Ns 28.00
+newmtl Mitsubishi__Evo_ment_car_body_02
+illum 4
+Kd 0.18 0.18 0.18
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.09 0.09 0.09
+Ns 10.00
+newmtl Mitsubishi__Evo_ment_reshotki_0fdfd1
+illum 4
+Kd 0.17 0.17 0.17
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.29 0.29 0.29
+Ns 10.00
+newmtl Mitsubishi__Evo_ment_wheel_01
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd MLE-wheel.jpg
+map_Ka MLE-wheel.jpg
+Ni 1.50
+Ks 0.00 0.00 0.00
+Ns 10.00
+newmtl VR_crohme_glossysasa
+illum 4
+Kd 0.59 0.59 0.59
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.00 0.00 0.00
+Ns 10.00
+newmtl ___Default
+illum 4
+Kd 0.59 0.59 0.59
+Ka 0.00 0.00 0.00
+Tf 0.35 0.35 0.35
+Ni 1.50
+Ks 1.62 1.62 1.62
+Ns 40.00
+newmtl ___Default2
+illum 4
+Kd 0.19 0.19 0.19
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 1.60 1.60 1.60
+Ns 51.00
+newmtl ___Default4
+illum 4
+Kd 0.04 0.29 0.95
+Ka 0.00 0.00 0.00
+Tf 0.80 0.80 0.80
+Ni 1.50
+Ks 1.03 1.03 1.03
+Ns 58.00
+newmtl black
+illum 4
+Kd 0.15 0.15 0.15
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.00 0.00 0.00
+Ns 10.00
