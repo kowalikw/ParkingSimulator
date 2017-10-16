@@ -61,13 +61,12 @@ public:
 		ar & terrain[0].size();
 		for (int i = 0; i < terrain.size(); i++)
 			for (int j = 0; j < terrain[i].size(); j++)
-				ar & terrain[i][j];
+				ar & *terrain[i][j];
 	}
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
 		int pointsCount, obstaclesCount, parkingSpacesCount, vehiclesCount;
-		int terrainWidthCount, terrainHeightCount;
 		glm::vec2 point;
 		Obstacle *obstacle;
 		ParkingSpace *parkingSpace;

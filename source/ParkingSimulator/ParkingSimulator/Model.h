@@ -43,6 +43,7 @@ public:
 
 	glm::mat4 GetModelMatrix();
 	glm::vec3 MeasureModel();
+	glm::vec3 GetMeasure();
 
 private:
 	/* Model matrix data */
@@ -71,7 +72,7 @@ private:
 	GLint textureFromFile(const char* path, string directory);
 	GLint textureFromColor(aiColor4D color);
 
-	
+	glm::vec3 measure;
 };
 
 #endif

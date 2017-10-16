@@ -15,6 +15,7 @@
 #include "Model.h"
 #include "Simulation.h"
 #include "Visualisation.h"
+#include <map.h>
 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
@@ -70,11 +71,14 @@ private:
 
 	Model *mapModel;
 	Model *vehicleModel;
-	std::vector<Model*> mapElementsModels;
+	//std::vector<Model*> mapElementsModels;
+
+	std::map<std::string, Model*> loadedModels;
 
 	void MoveCamera();
 
 	void initializeVisualization();
+	void loadModel(std::string modelPath);
 };
 
 #endif

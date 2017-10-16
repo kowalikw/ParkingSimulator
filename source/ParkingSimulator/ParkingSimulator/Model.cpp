@@ -287,5 +287,12 @@ glm::vec3 Model::MeasureModel()
 		if (maxCoordinates.z > maxZ) maxZ = maxCoordinates.z;
 	}
 
-	return glm::vec3(maxX - minX, maxY - minY, maxZ - minZ);
+	this->measure = glm::vec3(maxX - minX, maxY - minY, maxZ - minZ);
+
+	return this->measure;
+}
+
+glm::vec3 Model::GetMeasure()
+{
+	return this->measure;
 }
