@@ -46,7 +46,7 @@ public:
 
 private:
 	/*  Render data  */
-	GLuint VAO, VBO, EBO;
+	GLuint VAO, VBO, EBO, tbo;
 
 	/*  Functions    */
 	void setupMesh();

@@ -185,8 +185,8 @@ void OpenGLHost3D::paintGL()
 		Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
 		vehicleModel->Translate(glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y));
 		vehicleModel->RotateY(vehicle->GetRotation());
-		glUniformMatrix4fv(glGetUniformLocation(phongShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
-		vehicleModel->Draw(*phongShader);
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
+		vehicleModel->Draw(*textureShader);
 
 		/*for (int i = 0; i < mapElementsModels.size(); i++)
 		{

@@ -39,8 +39,12 @@ void Mesh::Draw(Shader shader)
 
 	// Draw mesh
 	glBindVertexArray(this->VAO);
-	glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
-	//glDrawElementsInstanced(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, nullptr, 0);
+
+
+
+
+	//glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElementsInstanced(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0, 8);
 	glBindVertexArray(0);
 }
 
@@ -72,6 +76,31 @@ void Mesh::setupMesh()
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
 		(GLvoid*)offsetof(Vertex, TexCoords));
+
+	// generate and bind the vertex buffer object containing the
+	// instance offsets
+	glGenBuffers(1, &tbo);
+	glBindBuffer(GL_ARRAY_BUFFER, this->tbo);
+
+	// the offsets
+	GLfloat translationData[] = {
+		20.0f,0.0f, 0.0f,  // cube 0
+		40.0f,0.0f,0.0f,  // cube 1
+		60.0f,0.0f,0.0f,  // cube 2
+		80.0f,0.0f,0.0f,  // cube 3
+		100.0f, 0.0f,0.0f,  // cube 4
+		120.0f,0.0f,0.0f,  // cube 5
+		130.0f,0.0f,0.0f,  // cube 6
+		140.0f,0.0f,0.0f,  // cube 7
+	}; // 8 offsets with 3 components each
+
+	   // fill with data
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * 8, translationData, GL_DYNAMIC_DRAW);
+
+	// set up generic attrib pointers
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(0));
+	glVertexAttribDivisor(3, 1);
 
 	glBindVertexArray(0);
 }

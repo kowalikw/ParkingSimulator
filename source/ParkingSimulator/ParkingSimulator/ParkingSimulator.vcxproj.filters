@@ -465,4 +465,18 @@
   <ItemGroup>
     <ResourceCompile Include="ParkingSimulator.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\shaders\phongFS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\shaders\phongVS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\shaders\textureFS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\shaders\textureVS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

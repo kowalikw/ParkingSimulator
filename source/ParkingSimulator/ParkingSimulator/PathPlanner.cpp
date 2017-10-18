@@ -116,7 +116,7 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 	int indexStart, indexEnd;
 
 	voronoiGraph = new Graph(true);
-	voronoiGraph->CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd);
+	voronoiGraph->CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd, true);
 
 	//œcie¿ka bezpoœrednia
 

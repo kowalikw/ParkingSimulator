@@ -72,3 +72,4 @@ CMakeLists.txt.user*
 *.lof
 *.lot
 *.psd
+*.csv

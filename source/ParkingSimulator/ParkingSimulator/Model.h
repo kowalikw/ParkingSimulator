@@ -45,6 +45,8 @@ public:
 	glm::vec3 MeasureModel();
 	glm::vec3 GetMeasure();
 
+	bool instanced = false;
+
 private:
 	/* Model matrix data */
 	glm::vec3 translation;

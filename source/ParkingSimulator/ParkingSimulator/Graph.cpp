@@ -201,10 +201,6 @@ void Graph::CreateVoronoiGraph(Map * map)
 
 	construct_voronoi(points.begin(), points.end(), segments.begin(), segments.end(), &vd);
 
-	/*vertices.resize(vd.num_vertices());
-	for (int i = 0; i < vd.num_vertices(); i++)
-		vertices[i] = new GraphVertex(0, 0);*/
-
 	for (int i = 0; i < vd.num_vertices(); i++)
 	{
 		if(vd.vertices().at(i).x() >= 0 && vd.vertices().at(i).y() >= 0 && vd.vertices().at(i).x() <= map->GetWidth() && vd.vertices().at(i).y() <= map->GetHeight())
@@ -267,9 +263,32 @@ void Graph::CreateVoronoiGraph(Map * map)
 	}
 }
 
-void Graph::CreateVoronoiFullGraph(Map * map)
+void Graph::CreateVoronoiGraphWithExtraVertices(Map *map)
 {
 	CreateVoronoiGraph(map);
+
+	int densityWidth = 10;
+	int densityHeight = 10;
+
+	double w = map->GetWidth() / densityWidth;
+	double h = map->GetHeight() / densityHeight;
+
+
+	for (double i = w; i < map->GetWidth(); i += w)
+	{
+		for (double j = h; j < map->GetHeight(); j += h)
+		{
+			AddVertex(i, j);
+		}
+	}
+}
+
+void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices)
+{
+	if (addExtraVertices)
+		CreateVoronoiGraphWithExtraVertices(map);
+	else
+		CreateVoronoiGraph(map);
 
 	for (int i = 0; i < VerticesCount(); i++)
 	{
@@ -292,9 +311,9 @@ void Graph::CreateVoronoiFullGraph(Map * map)
 	}
 }
 
-void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end, int *indexFrom, int *indexTo)
+void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end, int *indexFrom, int *indexTo, bool addExtraVertices)
 {
-	CreateVoronoiFullGraph(map);
+	CreateVoronoiFullGraph(map, addExtraVertices);
 
 	for (int i = 0; i < VerticesCount(); i++)
 	{
@@ -312,14 +331,6 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 			}
 		}
 	}
-
-	/*for (int i = 0; i < VerticesCount(); i++)
-	{
-		std::vector<MapElement*> mapElements = map->GetMapElements();
-		for (int k = 0; k < mapElements.size(); k++)
-			if (GeometryHelper::CheckPolygonContainsPoint(mapElements[k]->GetPoints(), glm::vec2(vertices[i]->x, vertices[i]->y)))
-				RemoveVertex(i);
-	}*/
 
 	int verticesCount = VerticesCount();
 	AddVertex(start->GetFrom().x, start->GetFrom().y); // verticesCount
