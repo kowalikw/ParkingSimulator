@@ -88,10 +88,6 @@ void OpenGLHost3D::initializeGL()
 
 	// Light attributes
 	lightPos = glm::vec3(0.0f, 5.0f, 0.0f);
-
-	// Initialize visualisation models
-	if (visualization->GetCurrentSimulation() != NULL)
-		initializeVisualization();
 }
 
 void OpenGLHost3D::resizeGL(int w, int h)
@@ -182,11 +178,11 @@ void OpenGLHost3D::paintGL()
 		//glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(box->GetModelMatrix()));
 		//box->Draw(*textureShader);
 
-		Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
+		/*Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
 		vehicleModel->Translate(glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y));
 		vehicleModel->RotateY(vehicle->GetRotation());
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
-		vehicleModel->Draw(*textureShader);
+		vehicleModel->Draw(*textureShader);*/
 
 		/*for (int i = 0; i < mapElementsModels.size(); i++)
 		{
@@ -194,7 +190,7 @@ void OpenGLHost3D::paintGL()
 			mapElementsModels[i]->Draw(*textureShader);
 		}*/
 
-		std::vector<MapElement*> mapElements = visualization->GetCurrentSimulation()->GetMap()->GetMapElements();
+		/*std::vector<MapElement*> mapElements = visualization->GetCurrentSimulation()->GetMap()->GetMapElements();
 		for (int i = 0; i < mapElements.size(); i++)
 		{
 			double translateY = 0;
@@ -212,6 +208,15 @@ void OpenGLHost3D::paintGL()
 
 			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model->GetModelMatrix()));
 			model->Draw(*textureShader);
+		}*/
+
+		for (std::map<std::string, Model*>::iterator iterator = loadedModels.begin(); iterator != loadedModels.end(); iterator++) 
+		{
+			// iterator->first = key
+			// iterator->second = value
+			// Repeat if you also want to iterate through the second map.
+			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(iterator->second->GetModelMatrix()));
+			iterator->second->Draw(*textureShader);
 		}
 	}
 
@@ -329,6 +334,63 @@ void OpenGLHost3D::initializeVisualization()
 
 	loadedModels.clear();
 
+	std::map<std::string, std::vector<InstanceData>> instances;
+	Map *map = visualization->GetCurrentSimulation()->GetMap();
+
+	for (int i = 0; i < map->GetTerrainWidthCount(); i++)
+	{
+		for (int j = 0; j < map->GetTerrainHeightCount(); j++)
+		{
+			Terrain *terrain = map->GetTerrainSlice(i, j);
+
+			InstanceData instance;
+			instance.Position = glm::vec3(glm::vec3(terrain->GetPosition().x, 0, terrain->GetPosition().y));
+			instance.Rotation = glm::vec3();
+			instance.Scale = glm::vec3(1, 1, 1);
+
+			if (instances.count(terrain->GetModelPath()) > 0)
+				instances[terrain->GetModelPath()].push_back(instance);
+			else
+			{
+				std::vector<InstanceData> instancesVector;
+				instancesVector.push_back(instance);
+				instances.insert(std::pair<std::string, std::vector<InstanceData>>(terrain->GetModelPath(), instancesVector));
+			}
+		}
+	}
+
+	std::vector<MapElement*> mapElements = map->GetMapElements();
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		Model *model = new Model(mapElements[i]->GetModelPath());
+		model->MeasureModel();
+
+		double positionY = 0;
+		if (dynamic_cast<ParkingSpace*>(mapElements[i]) != NULL)
+			positionY = 0.01;
+
+		double scaleRatioX = mapElements[i]->GetSize().x / model->GetMeasure().x;
+		double scaleRatioZ = mapElements[i]->GetSize().y / model->GetMeasure().z;
+		double scaleRatioY = (scaleRatioX + scaleRatioZ) / 2.0f;
+
+		delete model;
+
+		InstanceData instance;
+		instance.Position = glm::vec3(glm::vec3(mapElements[i]->GetPosition().x, positionY, mapElements[i]->GetPosition().y));
+		instance.Rotation = glm::vec3(0, mapElements[i]->GetRotation(), 0);
+		//instance.Scale = glm::vec3(scaleRatioX, scaleRatioY, scaleRatioZ);
+		instance.Scale = glm::vec3(scaleRatioX, scaleRatioY, scaleRatioZ);
+
+		if (instances.count(mapElements[i]->GetModelPath()) > 0)
+			instances[mapElements[i]->GetModelPath()].push_back(instance);
+		else
+		{
+			std::vector<InstanceData> instancesVector;
+			instancesVector.push_back(instance);
+			instances.insert(std::pair<std::string, std::vector<InstanceData>>(mapElements[i]->GetModelPath(), instancesVector));
+		}
+	}
+
 	std::vector<MapElementModel> terrainsModels = Settings::getInstance()->GetTerrains();
 	std::vector<MapElementModel> buildingsModels = Settings::getInstance()->GetBuildings();
 	std::vector<MapElementModel> decorationsModels = Settings::getInstance()->GetDecorations();
@@ -336,21 +398,35 @@ void OpenGLHost3D::initializeVisualization()
 	std::vector<MapElementModel> vehiclesModels = Settings::getInstance()->GetVehicles();
 
 	for (int i = 0; i < terrainsModels.size(); i++)
-		loadModel(terrainsModels[i].model);
+	{
+		if (instances.count(terrainsModels[i].model) > 0)
+			loadModel(terrainsModels[i].model, instances[terrainsModels[i].model]);
+	}
 	for (int i = 0; i < buildingsModels.size(); i++)
-		loadModel(buildingsModels[i].model);
+	{
+		if (instances.count(buildingsModels[i].model) > 0)
+			loadModel(buildingsModels[i].model, instances[buildingsModels[i].model]);
+	}
 	for (int i = 0; i < decorationsModels.size(); i++)
-		loadModel(decorationsModels[i].model);
+	{
+		if (instances.count(decorationsModels[i].model) > 0)
+			loadModel(decorationsModels[i].model, instances[decorationsModels[i].model]);
+	}
 	for (int i = 0; i < parkingPlacesModels.size(); i++)
-		loadModel(parkingPlacesModels[i].model);
+	{
+		if (instances.count(parkingPlacesModels[i].model) > 0)
+			loadModel(parkingPlacesModels[i].model, instances[parkingPlacesModels[i].model]);
+	}
 	for (int i = 0; i < vehiclesModels.size(); i++)
-		loadModel(vehiclesModels[i].model);
+	{
+		if (instances.count(vehiclesModels[i].model) > 0)
+			loadModel(vehiclesModels[i].model, instances[vehiclesModels[i].model]);
+	}
 
-	Map *map = visualization->GetCurrentSimulation()->GetMap();
-	mapModel = new Model("Resources/models/map/map.obj");
-	mapModel->Translate(glm::vec3(map->GetWidth() / 2.0, 1.0, map->GetHeight() / 2.0));
-	mapModel->Rotate(glm::vec3());
-	mapModel->Scale(glm::vec3(map->GetWidth() / 100.0, 1.0, map->GetHeight() / 100.0));
+	//mapModel = new Model("Resources/models/map/map.obj");
+	//mapModel->Translate(glm::vec3(map->GetWidth() / 2.0, 1.0, map->GetHeight() / 2.0));
+	//mapModel->Rotate(glm::vec3());
+	//mapModel->Scale(glm::vec3(map->GetWidth() / 100.0, 1.0, map->GetHeight() / 100.0));
 
 	/*box = new Model("Resources/models/vehicles/vehicle4/russianCar.obj");
 	auto measure = box->MeasureModel();
@@ -358,11 +434,11 @@ void OpenGLHost3D::initializeVisualization()
 	box->Rotate(glm::vec3());
 	box->Scale(glm::vec3(1, 1, 1));*/
 
-	Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
-	vehicleModel = new Model("Resources/models/vehicle/vehicle.obj");
-	vehicleModel->Translate(glm::vec3());
-	vehicleModel->Rotate(glm::vec3());
-	vehicleModel->Scale(glm::vec3(vehicle->GetWheelbase(), 50, vehicle->GetTrack()));
+	//Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
+	//vehicleModel = new Model("Resources/models/vehicle/vehicle.obj");
+	//vehicleModel->Translate(glm::vec3());
+	//vehicleModel->Rotate(glm::vec3());
+	//vehicleModel->Scale(glm::vec3(vehicle->GetWheelbase(), 50, vehicle->GetTrack()));
 
 	/*mapElementsModels.clear();
 	std::vector<MapElement*> mapElements = visualization->GetCurrentSimulation()->GetMap()->GetMapElements();
@@ -380,11 +456,17 @@ void OpenGLHost3D::initializeVisualization()
 			mapElementsModels[i]->Scale(glm::vec3(scaleRatio, scaleRatio, scaleRatio));
 		}
 	}*/
+
+	int lala = 0;
 }
 
-void OpenGLHost3D::loadModel(std::string modelPath)
+void OpenGLHost3D::loadModel(std::string modelPath, std::vector<InstanceData> instances)
 {
-	Model *model = new Model(modelPath);
+	Model *model = new Model(modelPath, instances);
+	model->Translate(glm::vec3(0, 0, 0));
+	model->Rotate(glm::vec3(0, 0, 0));
+	model->Scale(glm::vec3(1, 1, 1));
 	model->MeasureModel();
+
 	loadedModels.insert(std::pair<std::string, Model*>(modelPath, model));
 }

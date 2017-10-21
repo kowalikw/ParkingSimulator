@@ -45,9 +45,15 @@ public slots:
 	void render3DTimerCall();
 	void updateTimerCall();
 
+	// start
 	void loadSettings();
 	void saveSettings();
+	void goToMapEditor();
+	void goToPathPlanner();
+	void goToVisualisation();
+	void goToSettings();
 
+	// map editor
 	void createMap();
 	void saveMap();
 	void loadMap();

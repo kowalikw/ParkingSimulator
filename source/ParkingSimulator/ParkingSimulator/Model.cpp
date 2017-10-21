@@ -3,12 +3,17 @@
 
 Model::Model(GLchar *path)
 {
-	this->loadModel(path);
+	this->loadModel(path, std::vector<InstanceData>());
 }
 
 Model::Model(std::string path)
 {
-	this->loadModel(path);
+	this->loadModel(path, std::vector<InstanceData>());
+}
+
+Model::Model(std::string path, std::vector<InstanceData> instances)
+{
+	this->loadModel(path, instances);
 }
 
 Model::Model(GLchar *path, glm::vec3 translation) : Model(path)
@@ -72,11 +77,11 @@ glm::mat4x4 Model::GetModelMatrix()
 	return modelMatrix;
 }
 
-void Model::loadModel(string path)
+void Model::loadModel(string path, std::vector<InstanceData> instances)
 {
 	// Read file via ASSIMP
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph | aiProcess_JoinIdenticalVertices);
 	// Check for errors
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
@@ -87,10 +92,10 @@ void Model::loadModel(string path)
 	this->directory = path.substr(0, path.find_last_of('/'));
 
 	// Process ASSIMP's root node recursively
-	this->processNode(scene->mRootNode, scene);
+	this->processNode(scene->mRootNode, scene, instances);
 }
 
-void Model::processNode(aiNode* node, const aiScene* scene)
+void Model::processNode(aiNode* node, const aiScene* scene, std::vector<InstanceData> instances)
 {
 	// Process each mesh located at the current node
 	for (GLuint i = 0; i < node->mNumMeshes; i++)
@@ -98,16 +103,16 @@ void Model::processNode(aiNode* node, const aiScene* scene)
 		// The node object only contains indices to index the actual objects in the scene. 
 		// The scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		this->meshes.push_back(this->processMesh(mesh, scene));
+		this->meshes.push_back(this->processMesh(mesh, scene, instances));
 	}
 	// After we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (GLuint i = 0; i < node->mNumChildren; i++)
 	{
-		this->processNode(node->mChildren[i], scene);
+		this->processNode(node->mChildren[i], scene, instances);
 	}
 }
 
-Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
+Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene, std::vector<InstanceData> instances)
 {
 	// Data to fill
 	vector<Vertex> vertices;
@@ -174,7 +179,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	}
 
 	// Return a mesh object created from the extracted mesh data
-	return Mesh(vertices, indices, textures);
+	return Mesh(vertices, indices, textures, instances);
 }
 
 // Checks all material textures of a given type and loads the textures if they're not loaded yet.

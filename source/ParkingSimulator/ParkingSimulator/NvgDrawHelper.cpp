@@ -21,6 +21,8 @@ void NvgDrawHelper::DrawMap(Map * map)
 	glm::vec2 widgetSize = *this->widgetSize;
 	float magnificationRatio = *this->magnificationRatio;
 
+	
+
 	drawAreaSize->x = map->GetWidth() * magnificationRatio;
 	drawAreaSize->y = map->GetHeight() * magnificationRatio;
 

@@ -28,8 +28,10 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	updateTimer->setInterval(20);
 	updateTimer->start();
 
-	connect(ui.btnLoadSettings, SIGNAL(released()), this, SLOT(loadSettings()));
-	connect(ui.btnSaveSettings, SIGNAL(released()), this, SLOT(saveSettings()));
+	connect(ui.btnGoToMapEditor, SIGNAL(released()), this, SLOT(goToMapEditor()));
+	connect(ui.btnGoToPathPlanner, SIGNAL(released()), this, SLOT(goToPathPlanner()));
+	connect(ui.btnGoToVisualisation, SIGNAL(released()), this, SLOT(goToVisualisation()));
+	connect(ui.btnGoToSettings, SIGNAL(released()), this, SLOT(goToSettings()));
 
 	connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderTimerCall()));
 	connect(render3DTimer, SIGNAL(timeout()), this, SLOT(render3DTimerCall()));
@@ -367,6 +369,26 @@ void ParkingSimulator::loadSettings()
 void ParkingSimulator::saveSettings()
 {
 	Settings::getInstance()->SaveSettings();
+}
+
+void ParkingSimulator::goToMapEditor()
+{
+	ui.tabWidget->setCurrentIndex(1);
+}
+
+void ParkingSimulator::goToPathPlanner()
+{
+	ui.tabWidget->setCurrentIndex(2);
+}
+
+void ParkingSimulator::goToVisualisation()
+{
+	ui.tabWidget->setCurrentIndex(3);
+}
+
+void ParkingSimulator::goToSettings()
+{
+	ui.tabWidget->setCurrentIndex(4);
 }
 
 void ParkingSimulator::createMap()

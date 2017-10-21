@@ -85,12 +85,12 @@ QTabBar::tab:selected {
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideLeft</enum>
       </property>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="tabStart">
        <property name="styleSheet">
         <string notr="true"/>
        </property>
@@ -98,23 +98,37 @@ QTabBar::tab:selected {
         <string>start</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="btnLoadSettings">
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnGoToPathPlanner">
           <property name="text">
-           <string>Load settings</string>
+           <string>Go to path planner</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="btnSaveSettings">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnGoToMapEditor">
           <property name="text">
-           <string>Save settings</string>
+           <string>Go to map editor</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="btnGoToVisualisation">
+          <property name="text">
+           <string>Go to visualisation</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="btnGoToSettings">
+          <property name="text">
+           <string>Go to settings</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="tabMapEditor">
        <property name="styleSheet">
         <string notr="true">QPushButton#btnNewMap, QPushButton#btnLoadMap, QPushButton#btnSaveMap, QToolButton#btnClearMap {
     background-color: #3b3e41;
@@ -989,7 +1003,7 @@ margin-bottom: 5px;</string>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_3">
+      <widget class="QWidget" name="tabPathPlanner">
        <property name="styleSheet">
         <string notr="true">QPushButton#btnNewSimulation, QPushButton#btnOpenSimulation, QPushButton#btnSaveSimulation, QPushButton#btnSetMap, QPushButton#btnSetVehicle, QPushButton#btnSetStart, QPushButton#btnSetEnd, QPushButton#btnFindPath {
     background-color: #3b3e41;
@@ -2272,7 +2286,7 @@ QDoubleSpinBox::down-arrow:hover {
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_4">
+      <widget class="QWidget" name="tabVisualisation">
        <property name="styleSheet">
         <string notr="true">QPushButton#btnAddSimulation, QPushButton#btnRemoveSimulation, QPushButton#btnInfoSimulation, QToolButton#btnPlayPauseSimulation, QToolButton#btnStopSimulation, QToolButton#btnVisualisation2D, QToolButton#btnVisualisation3D {
     background-color: #3b3e41;
@@ -2513,9 +2527,9 @@ margin-left: 30px;</string>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_5">
+      <widget class="QWidget" name="tabSettings">
        <attribute name="title">
-        <string>TEST</string>
+        <string>settings</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_10"/>
       </widget>

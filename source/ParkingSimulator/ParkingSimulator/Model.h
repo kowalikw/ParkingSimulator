@@ -27,6 +27,7 @@ public:
 	// Constructor, expects a filepath to a 3D model.
 	Model(GLchar* path);
 	Model(std::string path);
+	Model(std::string path, std::vector<InstanceData> instances);
 	Model(GLchar* path, glm::vec3 translation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale);
@@ -60,12 +61,12 @@ private:
 
 	/*  Functions   */
 	// Loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-	void loadModel(string path);
+	void loadModel(string path, std::vector<InstanceData> instances);
 
 	// Processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
-	void processNode(aiNode* node, const aiScene* scene);
+	void processNode(aiNode* node, const aiScene* scene, std::vector<InstanceData> instances);
 
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+	Mesh processMesh(aiMesh* mesh, const aiScene* scene, std::vector<InstanceData> instances);
 
 	// Checks all material textures of a given type and loads the textures if they're not loaded yet.
 	// The required info is returned as a Texture struct.

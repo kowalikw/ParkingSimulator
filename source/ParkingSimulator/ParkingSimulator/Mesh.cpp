@@ -10,6 +10,16 @@ Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> text
 	this->setupMesh();
 }
 
+Mesh::Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures, vector<InstanceData> instances)
+{
+	this->vertices = vertices;
+	this->indices = indices;
+	this->textures = textures;
+	this->instances = instances;
+
+	this->setupMesh();
+}
+
 void Mesh::Draw(Shader shader)
 {
 	GLuint diffuseNr = 1;
@@ -40,11 +50,8 @@ void Mesh::Draw(Shader shader)
 	// Draw mesh
 	glBindVertexArray(this->VAO);
 
-
-
-
 	//glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
-	glDrawElementsInstanced(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0, 8);
+	glDrawElementsInstanced(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0, this->instances.size());
 	glBindVertexArray(0);
 }
 
@@ -53,10 +60,10 @@ void Mesh::setupMesh()
 	glGenVertexArrays(1, &this->VAO);
 	glGenBuffers(1, &this->VBO);
 	glGenBuffers(1, &this->EBO);
+	glGenBuffers(1, &this->IBO);
 
 	glBindVertexArray(this->VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-
 	glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(Vertex),
 		&this->vertices[0], GL_STATIC_DRAW);
 
@@ -66,41 +73,63 @@ void Mesh::setupMesh()
 
 	// Vertex Positions
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),	(GLvoid*)0);
 	// Vertex Normals
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(GLvoid*)offsetof(Vertex, Normal));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Normal));
 	// Vertex Texture Coords
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),
-		(GLvoid*)offsetof(Vertex, TexCoords));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, TexCoords));
 
-	// generate and bind the vertex buffer object containing the
-	// instance offsets
-	glGenBuffers(1, &tbo);
-	glBindBuffer(GL_ARRAY_BUFFER, this->tbo);
+	if (instances.size() > 0)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, this->IBO);
+		glBufferData(GL_ARRAY_BUFFER, this->instances.size() * sizeof(InstanceData),
+			&this->instances[0], GL_DYNAMIC_DRAW);
 
-	// the offsets
-	GLfloat translationData[] = {
-		20.0f,0.0f, 0.0f,  // cube 0
-		40.0f,0.0f,0.0f,  // cube 1
-		60.0f,0.0f,0.0f,  // cube 2
-		80.0f,0.0f,0.0f,  // cube 3
-		100.0f, 0.0f,0.0f,  // cube 4
-		120.0f,0.0f,0.0f,  // cube 5
-		130.0f,0.0f,0.0f,  // cube 6
-		140.0f,0.0f,0.0f,  // cube 7
-	}; // 8 offsets with 3 components each
+		// Instances Positions
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(InstanceData), (GLvoid*)(0));
+		glVertexAttribDivisor(3, 1);
+		// Instances Positions
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(InstanceData), (GLvoid*)offsetof(InstanceData, Rotation));
+		glVertexAttribDivisor(4, 1);
+		// Instances Positions
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 3, GL_FLOAT, GL_FALSE, sizeof(InstanceData), (GLvoid*)offsetof(InstanceData, Scale));
+		glVertexAttribDivisor(5, 1);
+	}
 
-	   // fill with data
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * 8, translationData, GL_DYNAMIC_DRAW);
 
-	// set up generic attrib pointers
-	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(0));
-	glVertexAttribDivisor(3, 1);
+	// ------------------
+
+	//// the offsets
+	//GLfloat translationData[] = {
+	//	20.0f, 0.0f, 0.0f,  // cube 0
+	//	40.0f, 0.0f, 0.0f,  // cube 1
+	//	60.0f, 0.0f, 0.0f,  // cube 2
+	//	80.0f, 0.0f, 0.0f,  // cube 3
+	//	100.0f, 0.0f, 0.0f,  // cube 4
+	//	120.0f, 0.0f, 0.0f,  // cube 5
+	//	130.0f, 0.0f, 0.0f,  // cube 6
+	//	140.0f, 0.0f, 0.0f,  // cube 7
+	//}; // 8 offsets with 3 components each
+
+	//// --------------------
+
+	//// generate and bind the vertex buffer object containing the
+	//// instance offsets
+	//glGenBuffers(1, &tbo);
+	//glBindBuffer(GL_ARRAY_BUFFER, this->tbo);
+
+	//   // fill with data
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * 8, translationData, GL_DYNAMIC_DRAW);
+
+	//// set up generic attrib pointers
+	//glEnableVertexAttribArray(3);
+	//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(0));
+	//glVertexAttribDivisor(3, 1);
 
 	glBindVertexArray(0);
 }

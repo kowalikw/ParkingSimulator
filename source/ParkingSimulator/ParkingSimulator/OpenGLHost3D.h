@@ -74,11 +74,12 @@ private:
 	//std::vector<Model*> mapElementsModels;
 
 	std::map<std::string, Model*> loadedModels;
+	
 
 	void MoveCamera();
 
 	void initializeVisualization();
-	void loadModel(std::string modelPath);
+	void loadModel(std::string modelPath, std::vector<InstanceData> instances);
 };
 
 #endif

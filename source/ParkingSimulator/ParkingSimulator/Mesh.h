@@ -30,6 +30,13 @@ struct Texture
 	aiString path;
 };
 
+struct InstanceData
+{
+	glm::vec3 Position;
+	glm::vec3 Rotation;
+	glm::vec3 Scale;
+};
+
 class Mesh 
 {
 public:
@@ -37,16 +44,18 @@ public:
 	vector<Vertex> vertices;
 	vector<GLuint> indices;
 	vector<Texture> textures;
+	vector<InstanceData> instances;
 
 	/*  Functions  */
 	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures);
+	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures, vector<InstanceData> instances);
 	void Draw(Shader shader);
 	glm::vec3 GetMeshMinCoordinates();
 	glm::vec3 GetMeshMaxCoordinates();
 
 private:
 	/*  Render data  */
-	GLuint VAO, VBO, EBO, tbo;
+	GLuint VAO, VBO, EBO, IBO, tbo;
 
 	/*  Functions    */
 	void setupMesh();
