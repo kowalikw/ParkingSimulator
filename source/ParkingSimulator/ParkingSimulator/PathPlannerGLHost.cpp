@@ -18,7 +18,7 @@ void PathPlannerGLHost::mousePressEvent(QMouseEvent * event)
 {
 	OpenGLHost::mousePressEvent(event);
 
-	if (pathPlanner->GetSetStartPosition())
+	if (pathPlanner->GetSetStartPosition() && startFlagAdmissible)
 	{
 		if (pathPlanner->GetHoverElement(positionOnMap) != NULL)
 		{
@@ -51,7 +51,7 @@ void PathPlannerGLHost::mousePressEvent(QMouseEvent * event)
 		}
 	}
 
-	if (pathPlanner->GetSetEndPosition())
+	if (pathPlanner->GetSetEndPosition() && endFlagAdmissible)
 	{
 		if (pathPlanner->GetHoverElement(positionOnMap) != NULL)
 		{
@@ -96,6 +96,24 @@ void PathPlannerGLHost::mouseMoveEvent(QMouseEvent * event)
 
 	positionOnMap = (glm::vec2(mouseLastX, mouseLastY) - drawAreaPosition - widgetOffset) / magnificationRatio;
 
+	if (pathPlanner->GetSetStartPosition() && !pathPlanner->GetSetStartDirection())
+		pathPlanner->GetVehicleStart()->UpdateState(positionOnMap);
+
+	if (pathPlanner->GetSetStartDirection())
+	{
+		glm::vec2 direction = GeometryHelper::GetLineDirection(*pathPlanner->GetStartPoint(), positionOnMap);
+		pathPlanner->GetVehicleStart()->UpdateState(-atan2(direction.y, direction.x));
+	}
+
+	if (pathPlanner->GetSetEndPosition() && !pathPlanner->GetSetEndDirection())
+		pathPlanner->GetVehicleEnd()->UpdateState(positionOnMap);
+
+	if (pathPlanner->GetSetEndDirection())
+	{
+		glm::vec2 direction = GeometryHelper::GetLineDirection(*pathPlanner->GetEndPoint(), positionOnMap);
+		pathPlanner->GetVehicleEnd()->UpdateState(-atan2(direction.y, direction.x));
+	}
+
 	if (pathPlanner->GetSetStartPosition())
 	{
 		if (pathPlanner->GetHoverElement(positionOnMap) != NULL)
@@ -103,15 +121,22 @@ void PathPlannerGLHost::mouseMoveEvent(QMouseEvent * event)
 			if (dynamic_cast<ParkingSpace*>(pathPlanner->GetHoverElement(positionOnMap)) != NULL)
 			{
 				drawStartFlag = true;
+				startFlagAdmissible = true;
 			}
 			else
 			{
-				drawStartFlag = false;
+				drawStartFlag = true;
+				startFlagAdmissible = false;
 			}
+		}
+		else if (!pathPlanner->GetMap()->IsVehicleAdmissible(pathPlanner->GetVehicleStart()))
+		{
+			startFlagAdmissible = false;
 		}
 		else
 		{
 			drawStartFlag = true;
+			startFlagAdmissible = true;
 		}
 	}
 
@@ -122,15 +147,22 @@ void PathPlannerGLHost::mouseMoveEvent(QMouseEvent * event)
 			if (dynamic_cast<ParkingSpace*>(pathPlanner->GetHoverElement(positionOnMap)) != NULL)
 			{
 				drawEndFlag = true;
+				endFlagAdmissible = true;
 			}
 			else
 			{
 				drawEndFlag = false;
+				endFlagAdmissible = false;
 			}
+		}
+		else if (!pathPlanner->GetMap()->IsVehicleAdmissible(pathPlanner->GetVehicleEnd()))
+		{
+			endFlagAdmissible = false;
 		}
 		else
 		{
 			drawEndFlag = true;
+			endFlagAdmissible = true;
 		}
 	}
 }
@@ -162,31 +194,6 @@ PathPlanner * PathPlannerGLHost::GetPathPlanner()
 void PathPlannerGLHost::initializeGL()
 {
 	OpenGLHost::initializeGL();
-
-	// normal path
-	pathPlanner->AddUserPoint(glm::vec2(100, 100));
-	pathPlanner->AddUserPoint(glm::vec2(100, 100));
-	pathPlanner->AddUserPoint(glm::vec2(100, 100));
-	pathPlanner->AddUserPoint(glm::vec2(300, 100));
-	pathPlanner->AddUserPoint(glm::vec2(350, 400));
-	pathPlanner->AddUserPoint(glm::vec2(500, 400));
-	pathPlanner->AddUserPoint(glm::vec2(500, 400));
-	pathPlanner->AddUserPoint(glm::vec2(500, 400));
-
-	/*pathPlanner->AddUserPoint(glm::vec2(700, 300));
-	pathPlanner->AddUserPoint(glm::vec2(300, 100));
-
-	pathPlanner->AddUserPoint(glm::vec2(100, 100));
-
-	pathPlanner->AddUserPoint(glm::vec2(100, 300));
-	pathPlanner->AddUserPoint(glm::vec2(310, 300));
-
-	pathPlanner->AddUserPoint(glm::vec2(305, 171));
-
-	pathPlanner->AddUserPoint(glm::vec2(678, 186));
-	pathPlanner->AddUserPoint(glm::vec2(697, 488));
-	pathPlanner->AddUserPoint(glm::vec2(988, 517));
-	pathPlanner->AddUserPoint(glm::vec2(1000, 100));*/
 }
 
 void PathPlannerGLHost::resizeGL(int w, int h)
@@ -229,25 +236,26 @@ void PathPlannerGLHost::nvgRenderFrame()
 			if (pathPlanner->GetSetStartDirection())
 			{
 				glm::vec2 direction = GeometryHelper::GetLineDirection(*pathPlanner->GetStartPoint(), positionOnMap);
-				nvgHelper->DrawStartFlag(*pathPlanner->GetStartPoint());
-				nvgHelper->DrawArrow(*pathPlanner->GetStartPoint(), direction);
+				pathPlanner->GetVehicleStart()->UpdateState(*pathPlanner->GetStartPoint());
+				nvgHelper->DrawStartFlag(pathPlanner->GetVehicleStart(), startFlagAdmissible);
 			}
 			else if (mouseInsideGLHost)
 			{
-				nvgHelper->DrawStartFlag(positionOnMap);
+				nvgHelper->DrawStartFlag(pathPlanner->GetVehicleStart(), startFlagAdmissible);
 			}
 		}
 		else
 		{
 			if (pathPlanner->GetStartPoint() != NULL)
 			{
-				nvgHelper->DrawStartFlag(*pathPlanner->GetStartPoint());
-				nvgHelper->DrawArrow(*pathPlanner->GetStartPoint(), *pathPlanner->GetStartDirection());
+				pathPlanner->GetVehicleStart()->UpdateState(*pathPlanner->GetStartPoint());
+				nvgHelper->DrawStartFlag(pathPlanner->GetVehicleStart(), startFlagAdmissible);
 			}
 			else if (pathPlanner->GetStartParkingSpace() != NULL)
 			{
 				glm::vec2 position = pathPlanner->GetStartParkingSpace()->GetPosition();
-				nvgHelper->DrawStartFlag(position);
+				pathPlanner->GetVehicleStart()->UpdateState(position);
+				nvgHelper->DrawStartFlag(pathPlanner->GetVehicleStart(), startFlagAdmissible);
 			}
 		}
 	}
@@ -259,25 +267,26 @@ void PathPlannerGLHost::nvgRenderFrame()
 			if (pathPlanner->GetSetEndDirection())
 			{
 				glm::vec2 direction = GeometryHelper::GetLineDirection(*pathPlanner->GetEndPoint(), positionOnMap);
-				nvgHelper->DrawEndFlag(*pathPlanner->GetEndPoint());
-				nvgHelper->DrawArrow(*pathPlanner->GetEndPoint(), direction);
+				pathPlanner->GetVehicleEnd()->UpdateState(*pathPlanner->GetEndPoint());
+				nvgHelper->DrawEndFlag(pathPlanner->GetVehicleEnd(), endFlagAdmissible);
 			}
 			else if (mouseInsideGLHost)
 			{
-				nvgHelper->DrawEndFlag(positionOnMap);
+				nvgHelper->DrawEndFlag(pathPlanner->GetVehicleEnd(), endFlagAdmissible);
 			}
 		}
 		else
 		{
 			if (pathPlanner->GetEndPoint() != NULL)
 			{
-				nvgHelper->DrawEndFlag(*pathPlanner->GetEndPoint());
-				nvgHelper->DrawArrow(*pathPlanner->GetEndPoint(), *pathPlanner->GetEndDirection());
+				pathPlanner->GetVehicleEnd()->UpdateState(*pathPlanner->GetEndPoint());
+				nvgHelper->DrawEndFlag(pathPlanner->GetVehicleEnd(), endFlagAdmissible);
 			}
 			else if (pathPlanner->GetEndParkingSpace() != NULL)
 			{
 				glm::vec2 position = pathPlanner->GetEndParkingSpace()->GetPosition();
-				nvgHelper->DrawEndFlag(position);
+				pathPlanner->GetVehicleEnd()->UpdateState(position);
+				nvgHelper->DrawEndFlag(pathPlanner->GetVehicleEnd(), endFlagAdmissible);
 			}
 		}
 	}

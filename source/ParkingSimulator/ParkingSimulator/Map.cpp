@@ -194,3 +194,91 @@ Map * Map::GetExpandedMap(float expandSize)
 
 	return expandedMap;
 }
+
+bool Map::IsVehicleAdmissible(Vehicle * vehicle)
+{
+	return MapContainsVehicle(vehicle) && !VehicleIntersectsMapElement(vehicle);
+}
+
+bool Map::MapContainsVehicle(Vehicle * vehicle)
+{
+	std::vector<glm::vec2> mapPolygon = GetPoints();
+	std::vector<glm::vec2> vehiclePolygon = vehicle->GetPoints();
+
+	return GeometryHelper::CheckPolygonContainsPolygon(mapPolygon, vehiclePolygon);
+}
+
+bool Map::VehicleIntersectsMapElement(Vehicle * vehicle)
+{
+	std::vector<MapElement*> mapElements = GetMapElements();
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		if (mapElements[i] == vehicle) continue;
+
+		/*std::ostringstream ss;
+		ss << "P0 - X: " << mapElements[i]->GetPoints()[0].x << ", Y: " << mapElements[i]->GetPoints()[0].y << endl;
+		ss << "P1 - X: " << mapElements[i]->GetPoints()[1].x << ", Y: " << mapElements[i]->GetPoints()[1].y << endl;
+		ss << "P2 - X: " << mapElements[i]->GetPoints()[2].x << ", Y: " << mapElements[i]->GetPoints()[2].y << endl;
+		ss << "P3 - X: " << mapElements[i]->GetPoints()[3].x << ", Y: " << mapElements[i]->GetPoints()[3].y << endl;
+
+		ss << "V0 - X: " << mapElement->GetPoints()[0].x << ", Y: " << mapElement->GetPoints()[0].y << endl;
+		ss << "V1 - X: " << mapElement->GetPoints()[1].x << ", Y: " << mapElement->GetPoints()[1].y << endl;
+		ss << "V2 - X: " << mapElement->GetPoints()[2].x << ", Y: " << mapElement->GetPoints()[2].y << endl;
+		ss << "V3 - X: " << mapElement->GetPoints()[3].x << ", Y: " << mapElement->GetPoints()[3].y << endl;
+
+
+		ss << endl;
+		std::string s(ss.str());
+
+		OutputDebugStringA(s.c_str());*/
+
+		if (GeometryHelper::CheckPolygonIntersection(vehicle->GetPoints2(), mapElements[i]->GetPoints()))
+			return true;
+	}
+
+	return false;
+}
+
+bool Map::IsMapElementAdmissible(MapElement * mapElement)
+{
+	return MapContainsMapElement(mapElement) && !MapElementIntersectsMapElement(mapElement);
+}
+
+bool Map::MapContainsMapElement(MapElement * mapElement)
+{
+	std::vector<glm::vec2> mapPolygon = GetPoints();
+	std::vector<glm::vec2> mapElementPolygon = mapElement->GetPoints();
+
+	return GeometryHelper::CheckPolygonContainsPolygon(mapPolygon, mapElementPolygon);
+}
+
+bool Map::MapElementIntersectsMapElement(MapElement * mapElement)
+{
+	std::vector<MapElement*> mapElements = GetMapElements();
+	for (int i = 0; i < mapElements.size(); i++)
+	{
+		if (mapElements[i] == mapElement) continue;
+
+		std::ostringstream ss;
+		ss << "P0 - X: " << mapElements[i]->GetPoints()[0].x << ", Y: " << mapElements[i]->GetPoints()[0].y << endl;
+		ss << "P1 - X: " << mapElements[i]->GetPoints()[1].x << ", Y: " << mapElements[i]->GetPoints()[1].y << endl;
+		ss << "P2 - X: " << mapElements[i]->GetPoints()[2].x << ", Y: " << mapElements[i]->GetPoints()[2].y << endl;
+		ss << "P3 - X: " << mapElements[i]->GetPoints()[3].x << ", Y: " << mapElements[i]->GetPoints()[3].y << endl;
+
+		ss << "V0 - X: " << mapElement->GetPoints()[0].x << ", Y: " << mapElement->GetPoints()[0].y << endl;
+		ss << "V1 - X: " << mapElement->GetPoints()[1].x << ", Y: " << mapElement->GetPoints()[1].y << endl;
+		ss << "V2 - X: " << mapElement->GetPoints()[2].x << ", Y: " << mapElement->GetPoints()[2].y << endl;
+		ss << "V3 - X: " << mapElement->GetPoints()[3].x << ", Y: " << mapElement->GetPoints()[3].y << endl;
+
+
+		ss << endl;
+		std::string s(ss.str());
+
+		OutputDebugStringA(s.c_str());
+
+		if (GeometryHelper::CheckPolygonIntersection(mapElement->GetPoints(), mapElements[i]->GetPoints()))
+			return true;
+	}
+
+	return false;
+}

@@ -658,6 +658,16 @@ Vehicle * PathPlanner::GetVehicle()
 	return this->vehicle;
 }
 
+Vehicle * PathPlanner::GetVehicleStart()
+{
+	return this->vehicleStart;
+}
+
+Vehicle * PathPlanner::GetVehicleEnd()
+{
+	return this->vehicleEnd;
+}
+
 Path * PathPlanner::GetPolylinePath()
 {
 	return this->polylinePath;
@@ -775,6 +785,16 @@ void PathPlanner::SetMap(Map * map)
 void PathPlanner::SetVehicle(Vehicle * vehicle)
 {
 	this->vehicle = vehicle;
+}
+
+void PathPlanner::SetVehicleStart(Vehicle * vehicleStart)
+{
+	this->vehicleStart = vehicleStart;
+}
+
+void PathPlanner::SetVehicleEnd(Vehicle * vehicleEnd)
+{
+	this->vehicleEnd = vehicleEnd;
 }
 
 Path * PathPlanner::createDirectPolylinePath(Line *startLine, Line *endLine)

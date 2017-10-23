@@ -167,27 +167,6 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 				mapEditor->SetMapElementsPropertiesChanged(true);
 			}
 		}
-
-		std::ostringstream ss;
-		ss << "X: " << positionOnMap.x << endl;
-		ss << "Y: " << positionOnMap.y << endl;
-
-		ss << "LastMouseX: " << mouseLastX << endl;
-		ss << "LastMouseY: " << mouseLastY << endl;
-
-		ss << "DrawAreaPositionX: " << drawAreaPosition.x << endl;
-		ss << "DrawAreaPositionY: " << drawAreaPosition.y << endl;
-
-		ss << "widgetOffsetZ: " << widgetOffset.x << endl;
-		ss << "widgetOffsetY: " << widgetOffset.y << endl;
-
-		ss << "selectedElement: " << selectedElement << endl;
-		ss << "corner: " << selectedElement->GetResizeHoverCorner();
-
-		ss << endl;
-		std::string s(ss.str());
-
-		OutputDebugStringA(s.c_str());
 	}
 
 	if (mapEditor->GetHoverElement(positionOnMap) != NULL && mapEditor->GetHoverElement(positionOnMap) != selectedElement)

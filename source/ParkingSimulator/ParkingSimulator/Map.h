@@ -39,6 +39,13 @@ public:
 	std::vector<glm::vec2> GetPoints();
 	Map *GetExpandedMap(float expandSize);
 
+	bool IsVehicleAdmissible(Vehicle *vehicle);
+	bool MapContainsVehicle(Vehicle *vehicle);
+	bool VehicleIntersectsMapElement(Vehicle *vehicle);
+	bool IsMapElementAdmissible(MapElement *mapElement);
+	bool MapContainsMapElement(MapElement *mapElement);
+	bool MapElementIntersectsMapElement(MapElement *mapElement);
+
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
 	{

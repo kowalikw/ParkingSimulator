@@ -782,6 +782,8 @@ void ParkingSimulator::setVehicle()
 	if (selectVehicleWindow.exec())
 	{
 		pathPlanner.SetVehicle(selectVehicleWindow.GetVehicle());
+		pathPlanner.SetVehicleStart(new Vehicle(*selectVehicleWindow.GetVehicle()));
+		pathPlanner.SetVehicleEnd(new Vehicle(*selectVehicleWindow.GetVehicle()));
 		setVehicleProperties();
 	}
 }

@@ -11,6 +11,10 @@ NvgDrawHelper::NvgDrawHelper(NVGcontext * vg, glm::vec2 * widgetSize, glm::vec2 
 	this->drawAreaSize = drawAreaSize;
 	this->drawAreaPosition = drawAreaPosition;
 	this->magnificationRatio = magnificationRatio;
+	this->vehicleImage = nvgCreateImage(vg, "Resources/carIcon.png", 0);
+	this->vehicleStartImage = nvgCreateImage(vg, "Resources/vehicleIconStart.png", 0);
+	this->vehicleEndImage = nvgCreateImage(vg, "Resources/vehicleIconEnd.png", 0);
+	this->VehicleErrorImage = nvgCreateImage(vg, "Resources/vehicleErrorIcon.png", 0);
 }
 
 void NvgDrawHelper::DrawMap(Map * map)
@@ -20,8 +24,6 @@ void NvgDrawHelper::DrawMap(Map * map)
 	glm::vec2 offset = *this->offset;
 	glm::vec2 widgetSize = *this->widgetSize;
 	float magnificationRatio = *this->magnificationRatio;
-
-	
 
 	drawAreaSize->x = map->GetWidth() * magnificationRatio;
 	drawAreaSize->y = map->GetHeight() * magnificationRatio;
@@ -55,7 +57,7 @@ void NvgDrawHelper::DrawMap(Map * map)
 	drawMapElements(map->GetMapElements());
 }
 
-void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
+void NvgDrawHelper::DrawVehicle(Vehicle * vehicle, VehicleType type)
 {
 	glm::vec2 offset = *this->offset;
 	glm::vec2 widgetSize = *this->widgetSize;
@@ -64,6 +66,7 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	if (drawAreaSize->x == 0 || drawAreaSize->y == 0) return;
 
 	auto position = vehicle->GetPosition();
+	auto size = vehicle->GetSize() * magnificationRatio;
 	auto wheelbase = vehicle->GetWheelbase() * magnificationRatio;
 	auto track = vehicle->GetTrack() * magnificationRatio;
 	auto dirWheelbase = vehicle->GetDirWheelbase();
@@ -78,14 +81,6 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
 	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
 
-	//auto p0 = glm::vec2(drawAreaPosition->x + offset.x + position.x * magnificationRatio, drawAreaPosition->y + offset.y + position.y * magnificationRatio);
-	//auto p1 = p0 + (float)wheelbase * dirWheelbase;
-	//auto p2 = p1 + (float)(track / 2.0) * dirTrack;
-	//auto p3 = p1 - (float)(track / 2.0) * dirTrack;
-	//auto p4 = p0;
-	//auto p5 = p4 + (float)(track / 2.0) * dirTrack;
-	//auto p6 = p4 - (float)(track / 2.0) * dirTrack;
-
 	auto p2a = p2 - (tireRadius * dirWheelbase);
 	auto p2b = p2 + (tireRadius * dirWheelbase);
 	auto p3a = p3 - (tireRadius * dirWheelbase);
@@ -95,48 +90,34 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle)
 	auto p6a = p6 - (tireRadius * dirWheelbase);
 	auto p6b = p6 + (tireRadius * dirWheelbase);
 
+	int imgHandler;
+	switch (type)
+	{
+	case VehicleType::VehicleStart:
+		imgHandler = vehicleStartImage;
+		break;
+	case VehicleType::VehicleEnd:
+		imgHandler = vehicleEndImage;
+		break;
+	case VehicleType::VehicleError:
+		imgHandler = VehicleErrorImage;
+		break;
+	default:
+		imgHandler = vehicleImage;
+		break;
+	}
+
 	nvgBeginPath(vg);
-
-	/*nvgMoveTo(vg, p1.x, p1.y);
-	nvgLineTo(vg, p4.x, p4.y);
-
-	nvgMoveTo(vg, p2.x, p2.y);
-	nvgLineTo(vg, p3.x, p3.y);
-
-	nvgMoveTo(vg, p5.x, p5.y);
-	nvgLineTo(vg, p6.x, p6.y);
-
-	nvgStrokeColor(vg, MAP_BORDER_COLOR);
-	nvgStroke(vg);
-
-	//draw tires
-
-	nvgBeginPath(vg);
-
-	nvgMoveTo(vg, p2a.x, p2a.y);
-	nvgLineTo(vg, p2b.x, p2b.y);
-	
-	nvgMoveTo(vg, p3a.x, p3a.y);
-	nvgLineTo(vg, p3b.x, p3b.y);
-	
-	nvgMoveTo(vg, p5a.x, p5a.y);
-	nvgLineTo(vg, p5b.x, p5b.y);
-	
-	nvgMoveTo(vg, p6a.x, p6a.y);
-	nvgLineTo(vg, p6b.x, p6b.y);*/
-
 	nvgMoveTo(vg, p2.x, p2.y);
 	nvgLineTo(vg, p3.x, p3.y);
 	nvgLineTo(vg, p6.x, p6.y);
 	nvgLineTo(vg, p5.x, p5.y);
 	nvgLineTo(vg, p2.x, p2.y);
-
-	nvgFillColor(vg, VEHICLE_COLOR);
+	if(type == VehicleStart)
+		nvgFillPaint(vg, nvgImagePattern(vg, p6.x, p6.y, size.x, size.y, -(float)vehicle->GetAngle(), imgHandler, 1));
+	else
+		nvgFillColor(vg, nvgRGBA(255, 0, 0, 255));
 	nvgFill(vg);
-	
-	/*nvgStrokeWidth(vg, 5);
-	nvgStrokeColor(vg, MAP_BORDER_COLOR);
-	nvgStroke(vg);*/
 }
 
 void NvgDrawHelper::DrawPath(Path * path)
@@ -302,32 +283,20 @@ void NvgDrawHelper::DrawSelectedElement(MapElement * mapElement)
 	drawTransformShapes(mapElement);
 }
 
-void NvgDrawHelper::DrawStartFlag(glm::vec2 position)
+void NvgDrawHelper::DrawStartFlag(Vehicle *vehicle, bool isAdmissible)
 {
-	glm::vec2 offset = *this->offset;
-	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
-	float magnificationRatio = (*this->magnificationRatio);
-
-	position = drawAreaPosition + position * magnificationRatio + offset;
-
-	nvgBeginPath(vg);
-	nvgEllipse(vg, position.x, position.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
-	nvgFillColor(vg, START_FLAG_COLOR);
-	nvgFill(vg);
+	if (isAdmissible)
+		DrawVehicle(vehicle, VehicleType::VehicleStart);
+	else
+		DrawVehicle(vehicle, VehicleType::VehicleError);
 }
 
-void NvgDrawHelper::DrawEndFlag(glm::vec2 position)
+void NvgDrawHelper::DrawEndFlag(Vehicle *vehicle, bool isAdmissible)
 {
-	glm::vec2 offset = *this->offset;
-	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
-	float magnificationRatio = (*this->magnificationRatio);
-
-	position = drawAreaPosition + position * magnificationRatio + offset;
-
-	nvgBeginPath(vg);
-	nvgEllipse(vg, position.x, position.y, SELECTED_MARKER_SIZE, SELECTED_MARKER_SIZE);
-	nvgFillColor(vg, END_FLAG_COLOR);
-	nvgFill(vg);
+	if (isAdmissible)
+		DrawVehicle(vehicle, VehicleType::VehicleEnd);
+	else
+		DrawVehicle(vehicle, VehicleType::VehicleError);
 }
 
 void NvgDrawHelper::DrawArrow(glm::vec2 point, glm::vec2 direction)

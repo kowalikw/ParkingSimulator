@@ -121,9 +121,27 @@ glm::vec2 Vehicle::GetTurnCentre(double insideAngle, CircleType circleType)
 	if (circleType == CircleType::Left)
 		sgn *= -1;
 
-	auto lala =  this->position + sgn * (float)(GetRMin(insideAngle) + this->track / 2.0) * dirTrack;
+	return this->position + sgn * (float)(GetRMin(insideAngle) + this->track / 2.0) * dirTrack;
+}
 
-	return lala;
+std::vector<glm::vec2> Vehicle::GetPoints2()
+{
+	std::vector<glm::vec2> points;
+
+	auto p0 = position;
+	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
+	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
+	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
+	auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
+	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
+	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
+
+	points.push_back(p3);
+	points.push_back(p2);
+	points.push_back(p5);
+	points.push_back(p6);
+
+	return points;
 }
 
 double Vehicle::GetAngle()

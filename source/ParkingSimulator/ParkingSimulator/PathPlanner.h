@@ -51,6 +51,8 @@ public:
 	Map * GetMap();
 	Map * GetExpandedMap();
 	Vehicle * GetVehicle();
+	Vehicle * GetVehicleStart();
+	Vehicle * GetVehicleEnd();
 	Path * GetPolylinePath();
 	Path * GetFinalPath();
 	Path * GetParkingPathStart();
@@ -93,6 +95,8 @@ public:
 
 	void SetMap(Map *map);
 	void SetVehicle(Vehicle *vehicle);
+	void SetVehicleStart(Vehicle *vehicleStart);
+	void SetVehicleEnd(Vehicle *vehicleEnd);
 
 	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType = ParkManeuverType::Entry);
 
@@ -135,6 +139,8 @@ private:
 	Map *map = NULL;
 	Map *expandedMap = NULL;
 	Vehicle *vehicle = NULL;
+	Vehicle *vehicleStart = NULL;
+	Vehicle *vehicleEnd = NULL;
 	Path *polylinePath = NULL;
 	Path *parkingPathStart = NULL;
 	Path *parkingPathEnd = NULL;

@@ -26,13 +26,21 @@
 #define NANOVG_GL3_IMPLEMENTATION
 #include "nanovg_gl.h"
 
+enum VehicleType
+{
+	VehicleStandard,
+	VehicleStart,
+	VehicleEnd,
+	VehicleError
+};
+
 class NvgDrawHelper
 {
 public:
 	NvgDrawHelper(NVGcontext *vg, glm::vec2 *widgetSize, glm::vec2 *offset, glm::vec2 *maxOffset, glm::vec2 *drawAreaSize, glm::vec2 *drawAreaPosition, float *magnificationRatio);
 
 	void DrawMap(Map *map);
-	void DrawVehicle(Vehicle *vehicle);
+	void DrawVehicle(Vehicle *vehicle, VehicleType type = VehicleType::VehicleStandard);
 	void DrawPath(Path *path);
 	void DrawGraph(Graph * g);
 	void DrawSimulationFrame(Simulation *simulation);
@@ -40,8 +48,8 @@ public:
 	void DrawActiveElement(MapElement *mapElement, bool admissible);
 	void DrawHoverElement(MapElement *mapElement);
 	void DrawSelectedElement(MapElement *mapElement);
-	void DrawStartFlag(glm::vec2 position);
-	void DrawEndFlag(glm::vec2 position);
+	void DrawStartFlag(Vehicle *vehicle, bool isAdmissible = false);
+	void DrawEndFlag(Vehicle *vehicle, bool isAdmissible = false);
 	void DrawArrow(glm::vec2 point, glm::vec2 direction);
 	void DrawPathElement(PathElement *pathElement, bool isSelected = false);
 	void DrawMeshOnMap(Map *map, int width = 3);
@@ -134,6 +142,10 @@ private:
 	glm::vec2 *drawAreaSize; // draw area is a map
 	glm::vec2 *drawAreaPosition;
 	float *magnificationRatio;
+	int vehicleImage;
+	int vehicleStartImage;
+	int vehicleEndImage;
+	int VehicleErrorImage;
 
 	void updateDrawAreaProperties();
 	void drawMapElements(std::vector<MapElement*> mapElements);

@@ -31,13 +31,13 @@ private:
 
 	bool drawStartFlag = false;
 	bool drawEndFlag = false;
+	bool startFlagAdmissible = false;
+	bool endFlagAdmissible = false;
 
 	Path pathPolyline;
 	Path *pathAdmissible;
-	//BSpline bspline;
 
 	void nvgRenderFrame();
-	void renderPathAdmissible();
 };
 
 #endif
