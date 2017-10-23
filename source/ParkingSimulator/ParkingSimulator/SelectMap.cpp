@@ -9,6 +9,10 @@ SelectMap::SelectMap(MapEditor *mapEditor, QWidget *parent)
 	connect(ui.btnLoadFromFile, SIGNAL(released()), this, SLOT(loadMapFromFile()));
 	connect(ui.btnCancel, SIGNAL(released()), this, SLOT(reject()));
 
+	ui.btnLoadFromMapEditor->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_SetMap_FromMapEditor"]));
+	ui.btnLoadFromFile->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_SetMap_FromFile"]));
+	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Cancel"]));
+	
 	this->mapEditor = mapEditor;
 }
 
@@ -29,7 +33,7 @@ void SelectMap::loadMapFromMapEditor()
 		accept();
 	else
 	{
-		WarningErrorMsg warningWindow("No map in Map Editor!", "There is not a map in map editor or its size is 0!", MessageType::Warning);
+		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_NoMapInMapEditor_Title"], Language::getInstance()->GetDictionary()["WarningError_NoMapInMapEditor_Content"], MessageType::Warning);
 		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 		warningWindow.exec();
 	}

@@ -1,4 +1,5 @@
 #include "AddSimulation.h"
+#include "Language.h"
 
 AddSimulation::AddSimulation(PathPlanner *pathPlanner, QDialog *parent)
 	: QDialog(parent)
@@ -8,6 +9,10 @@ AddSimulation::AddSimulation(PathPlanner *pathPlanner, QDialog *parent)
 	connect(ui.btnLoadFromPathPlanner, SIGNAL(released()), this, SLOT(loadSimulationFromPathPlanner()));
 	connect(ui.btnLoadFromFile, SIGNAL(released()), this, SLOT(loadSimulationFromFile()));
 	connect(ui.btnCancel, SIGNAL(released()), this, SLOT(reject()));
+
+	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Visualisation_AddSimulation_FromPathPlanner"]));
+	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Visualisation_AddSimulation_FromFile"]));
+	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Cancel"]));
 
 	this->pathPlanner = pathPlanner;
 }
@@ -31,7 +36,7 @@ void AddSimulation::loadSimulationFromPathPlanner()
 		accept();
 	else
 	{
-		WarningErrorMsg warningWindow("No simulation in path planner!", "There is not complete simulation in path planer!", MessageType::Warning);
+		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_NoSimulation_Title"], Language::getInstance()->GetDictionary()["WarningError_NoSimulation_Content"], MessageType::Warning);
 		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 		warningWindow.exec();
 	}

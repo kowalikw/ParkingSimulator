@@ -39,6 +39,9 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * en
 	Path *pStart = createParkingPath(*vehicle, *start, Entry);
 	Path *pEnd = createParkingPath(*vehicle, *end, Exit);
 
+	if (pStart == nullptr || pEnd == nullptr) 
+		return nullptr;
+
 	Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
 	Line* endLine = dynamic_cast<Line*>(pEnd->GetFirstElement());
 
@@ -60,6 +63,9 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 {
 	Path *pStart = createParkingPath(*vehicle, *start, Entry);
 
+	if (pStart == nullptr)
+		return nullptr;
+
 	Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
 	glm::vec2 endDirection = *GetEndDirection();
 	Line* endLine = new Line(end, end + (float)vehicle->GetWheelbase() / 2.0f * endDirection);
@@ -73,12 +79,15 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 
 	finalPath = new Path(pathParts);
 
-	return nullptr;
+	return finalPath;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 {
 	Path *pEnd = createParkingPath(*vehicle, *end, Exit);
+
+	if (pEnd == nullptr)
+		return nullptr;
 
 	glm::vec2 startDirection = *GetStartDirection();
 	Line* startLine = new Line(start, start + (float)vehicle->GetWheelbase() / 2.0f * startDirection);
@@ -92,7 +101,7 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 
 	finalPath = new Path(pathParts);
 
-	return nullptr;
+	return finalPath;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
@@ -192,6 +201,9 @@ Path * PathPlanner::CreateAdmissiblePath(Path * path)
 		points.push_back(dynamic_cast<Line*>(pathElements[i])->GetTo());
 	}
 
+	if (points.size() == 0)
+		return nullptr;
+
 	return CreateAdmissiblePath(points);
 }
 
@@ -202,9 +214,7 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 
 	// path contains less than 3 points
 	if (points.size() < 3)
-	{
-		return path;
-	}
+		return nullptr;
 
 	if (pathPlanningAlgorithm == PathPlanningAlgorithm::Spline)
 	{
@@ -336,6 +346,9 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 				path->AddElement(new Line(newPathTmp->GetAt(newPathTmp->GetElements().size() - 1)->GetLastPoint(), points[points.size() - 1]));
 			}
 		}
+
+		if (path->GetElements().size() == 0)
+			return nullptr;
 
 		return path;
 	}
@@ -817,14 +830,14 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 	PathElement *lastElement;
 	Path *path = new Path();
 
+	if (parkingSpace.GetSize().x < vehicle.GetWheelbase() || parkingSpace.GetSize().y < vehicle.GetTrack())
+		return nullptr;
+
 	if (parkingSpace.GetType() == ParkingSpaceType::Paralell)
 	{
-		//if (parkingSpace.GetSize().x < vehicle.GetWheelbase())
-		//	return path;
-
 		// zak³adamy, ¿e pojazd jest w tej samej orientacji co miejsce parkingowe
 
-		vehicle.UpdateState(0.0);
+		vehicle.UpdateState(parkingSpace.GetRotation());
 		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetWheelbase() / 2.0) * vehicle.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
 
 		auto p1 = vehicle.GetPosition();
@@ -871,6 +884,16 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 	else if (parkingSpace.GetType() == ParkingSpaceType::Perpendicular)
 	{
 		// TODO:
+		vehicle.UpdateState(parkingSpace.GetRotation());
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetWheelbase() / 2.0) * vehicle.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
+
+		auto p1 = vehicle.GetPosition();
+
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(parkingSpace.GetSize().x / 2.0) * vehicle.GetDirWheelbase()); // przesuniêcie auta do koñca miejsca
+
+		auto p2 = vehicle.GetPosition();
+
+		path->AddElement(new Line(p1, p2));
 	}
 
 	path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetWheelbase() * vehicle.GetDirWheelbase()));

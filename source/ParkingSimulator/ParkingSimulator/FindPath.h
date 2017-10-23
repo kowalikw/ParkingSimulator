@@ -3,6 +3,7 @@
 #include <QDialog>
 #include "ui_FindPath.h"
 #include "PathPlanner.h";
+#include "Language.h"
 
 using namespace Ui;
 

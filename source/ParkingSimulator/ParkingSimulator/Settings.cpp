@@ -6,6 +6,8 @@ void Settings::LoadSettings()
 {
 	QSettings settings(settingsFile, QSettings::IniFormat);
 
+	language = settings.value("Language").toString().toStdString();
+
 	int buildingsCount = settings.value("BuildingsCount").toInt();
 	for (int i = 0; i < buildingsCount; i++)
 	{
@@ -72,8 +74,8 @@ void Settings::SaveSettings()
 {
 	QSettings settings(settingsFile, QSettings::IniFormat);
 
-	settings.setValue("BuildingsCount", buildings.size());
-	for (int i = 0; i < 6; i++)
+	settings.setValue("Language", QString::fromStdString(language));
+	/*for (int i = 0; i < 6; i++)
 	{
 		settings.setValue(QString("Building_%1_Name").arg(i), QString::fromStdString(buildings[i].name));
 		settings.setValue(QString("Building_%1_Thumbnail").arg(i), QString::fromStdString(buildings[i].thumbnail));
@@ -110,7 +112,12 @@ void Settings::SaveSettings()
 		settings.setValue(QString("Vehicle_%1_Model").arg(i), QString::fromStdString(parkingPlaces[i].model));
 		settings.setValue(QString("Vehicle_%1_DefaultWidth").arg(i), vehicles[i].defaultWidth);
 		settings.setValue(QString("Vehicle_%1_DefaultHeight").arg(i), vehicles[i].defaultHeight);
-	}
+	}*/
+}
+
+std::string Settings::GetLanguage()
+{
+	return this->language;
 }
 
 std::vector<MapElementModel> Settings::GetBuildings()
@@ -136,4 +143,9 @@ std::vector<MapElementModel> Settings::GetVehicles()
 std::vector<MapElementModel> Settings::GetTerrains()
 {
 	return this->terrains;
+}
+
+void Settings::SetLanguage(std::string language)
+{
+	this->language = language;
 }

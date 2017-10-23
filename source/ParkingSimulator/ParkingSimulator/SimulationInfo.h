@@ -3,6 +3,7 @@
 #include <QDialog>
 #include "ui_SimulationInfo.h"
 #include "Simulation.h"
+#include "Language.h"
 
 using namespace Ui;
 

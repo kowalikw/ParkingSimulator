@@ -19,6 +19,7 @@ WarningErrorMsg::WarningErrorMsg(std::string title, std::string content, Message
 
 	ui.messageTitle->setText(QString::fromStdString(title));
 	ui.messageContent->setText(QString::fromStdString(content));
+	ui.btnAccept->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_CloseWindow"]));
 }
 
 WarningErrorMsg::~WarningErrorMsg()

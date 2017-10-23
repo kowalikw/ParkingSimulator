@@ -3,6 +3,7 @@
 #include <QDialog>
 #include <string>
 #include "ui_WarningErrorMsg.h"
+#include "Language.h"
 
 using namespace Ui;
 

@@ -3,6 +3,7 @@
 #include <QDialog>
 #include "ui_SelectVehicle.h"
 #include "Vehicle.h"
+#include "Language.h"
 
 using namespace Ui;
 

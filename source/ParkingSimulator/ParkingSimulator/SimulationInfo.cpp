@@ -28,6 +28,16 @@ SimulationInfo::SimulationInfo(Simulation *simulation, QWidget *parent)
 	else if (simulation->GetPathPlanningAlgorithm() == PathPlanningAlgorithm::Arcs)
 		pathPlanningAlgorithm = QString("Arcs");
 
+	ui.simulationNameLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Name"]));
+	ui.vehicleNameLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_VehicleName"]));
+	ui.pathElementsLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_PathElements"]));
+	ui.pathLengthLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_PathLength"]));
+	ui.expandObstaclesSizePercentLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_ObstaclesExpandSizePercent"]));
+	ui.pathPlanningAlgorithmLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_PathPlanningAlgorithm"]));
+	ui.useAdmissibleArcsOnlyLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_UseAdmissibleArcsOnly"]));
+	ui.collisionDetectionQualityLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_CollisionDetectionQuality"]));
+	ui.btnClose->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Close"]));
+
 	ui.simulationName->setText(QString::fromStdString(simulation->GetName()));
 	ui.simulationVehicleName->setText(QString::fromStdString(simulation->GetVehicle()->GetName()));
 	ui.simulationPathElements->setText(QString("%1").arg(simulation->GetFinalPath()->GetElements().size()));

@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include "ui_CreateMap.h"
+#include "Language.h"
 
 using namespace Ui;
 

@@ -36,11 +36,14 @@ public:
 	void LoadSettings();
 	void SaveSettings();
 
+	std::string GetLanguage();
 	std::vector<MapElementModel> GetBuildings();
 	std::vector<MapElementModel> GetDecorations();
 	std::vector<MapElementModel> GetParkingPlaces();
 	std::vector<MapElementModel> GetVehicles();
 	std::vector<MapElementModel> GetTerrains();
+
+	void SetLanguage(std::string language);
 private:
 	static Settings *s_instance;
 	Settings()
@@ -50,6 +53,7 @@ private:
 
 	QString settingsFile = "C:\\Users\\Wojtek\\Source\\Repos\\ParkingSimulator-NEW\\source\\ParkingSimulator\\x64\\Debug\\settings.ini";
 
+	std::string language;
 	std::vector<MapElementModel> buildings;
 	std::vector<MapElementModel> decorations;
 	std::vector<MapElementModel> parkingPlaces;

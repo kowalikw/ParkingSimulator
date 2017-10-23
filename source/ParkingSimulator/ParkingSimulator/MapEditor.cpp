@@ -1,4 +1,5 @@
 #include "MapEditor.h"
+#include "Language.h"
 
 MapEditor::MapEditor()
 {
@@ -374,27 +375,29 @@ QList<QTreeWidgetItem*> * MapEditor::GetMapElementsTreeItems()
 
 void MapEditor::updateMapElementsTreeItem()
 {
+	std::map<std::string, std::string> dictionary = Language::getInstance()->GetDictionary();
+
 	mapElementsTreeItemsExpanded.clear();
 
 	if(mapElementsTree != NULL)
 		mapElementsTreeItemsExpanded.append(mapElementsTree->isExpanded());
-	mapElementsTree = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString("Map Elements")));
+	mapElementsTree = new QTreeWidgetItem((QTreeWidget*)0, QStringList(QString::fromStdString(dictionary["MapEditor_MapElements"])));
 
 	if (buildingsTree != NULL)
 		mapElementsTreeItemsExpanded.append(buildingsTree->isExpanded());
-	buildingsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Buildings")), 7);
+	buildingsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString::fromStdString(dictionary["MapEditor_Buildings"])));
 
 	if (decorationsTree != NULL)
 		mapElementsTreeItemsExpanded.append(decorationsTree->isExpanded());
-	decorationsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Decorations")));
+	decorationsTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString::fromStdString(dictionary["MapEditor_Decorations"])));
 
 	if (vehiclesTree != NULL)
 		mapElementsTreeItemsExpanded.append(vehiclesTree->isExpanded());
-	vehiclesTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Vehicles")));
+	vehiclesTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString::fromStdString(dictionary["MapEditor_Vehicles"])));
 
 	if (parkingPlacesTree != NULL)
 		mapElementsTreeItemsExpanded.append(parkingPlacesTree->isExpanded());
-	parkingPlacesTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString("Park places")));
+	parkingPlacesTree = new QTreeWidgetItem(mapElementsTree, QStringList(QString::fromStdString(dictionary["MapEditor_ParkingPlaces"])));
 
 	mapElementsTreeItems->clear();
 	mapElementsTreeItems->append(mapElementsTree);

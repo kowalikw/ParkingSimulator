@@ -187,7 +187,7 @@ QPushButton:pressed {
        </property>
        <layout class="QFormLayout" name="formLayout">
         <item row="0" column="0">
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="newElementNameLabel">
           <property name="font">
            <font>
             <pointsize>11</pointsize>

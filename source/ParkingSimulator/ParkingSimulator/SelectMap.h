@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "MapEditor.h"
 #include "WarningErrorMsg.h"
+#include "Language.h"
 
 using namespace Ui;
 

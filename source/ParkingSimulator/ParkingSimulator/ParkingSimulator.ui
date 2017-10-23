@@ -263,6 +263,9 @@ QPushButton#btnAddBuilding:pressed, QPushButton#btnAddDecoration:pressed, QPushB
                  <property name="cursor">
                   <cursorShape>PointingHandCursor</cursorShape>
                  </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
@@ -721,7 +724,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                     <number>5</number>
                    </property>
                    <item>
-                    <widget class="QLabel" name="label_6">
+                    <widget class="QLabel" name="mapElementPropertiesTitleLabel">
                      <property name="font">
                       <font>
                        <pointsize>11</pointsize>
@@ -754,7 +757,7 @@ margin-bottom: 5px;</string>
                       <number>4</number>
                      </property>
                      <item row="3" column="0">
-                      <widget class="QLabel" name="label_2">
+                      <widget class="QLabel" name="mapElementPropertiesPositionLabel">
                        <property name="font">
                         <font>
                          <weight>75</weight>
@@ -770,7 +773,7 @@ margin-bottom: 5px;</string>
                       </widget>
                      </item>
                      <item row="4" column="0">
-                      <widget class="QLabel" name="label_7">
+                      <widget class="QLabel" name="mapElementPropertiesRotationLabel">
                        <property name="font">
                         <font>
                          <weight>75</weight>
@@ -786,7 +789,7 @@ margin-bottom: 5px;</string>
                       </widget>
                      </item>
                      <item row="0" column="0">
-                      <widget class="QLabel" name="label">
+                      <widget class="QLabel" name="mapElementPropertiesNameLabel">
                        <property name="font">
                         <font>
                          <weight>75</weight>
@@ -824,7 +827,7 @@ margin-bottom: 5px;</string>
                       </widget>
                      </item>
                      <item row="2" column="0">
-                      <widget class="QLabel" name="label_5">
+                      <widget class="QLabel" name="mapElementPropertiesHeightLabel">
                        <property name="font">
                         <font>
                          <weight>75</weight>
@@ -840,7 +843,7 @@ margin-bottom: 5px;</string>
                       </widget>
                      </item>
                      <item row="1" column="0">
-                      <widget class="QLabel" name="label_4">
+                      <widget class="QLabel" name="mapElementPropertiesWidthLabel">
                        <property name="font">
                         <font>
                          <weight>75</weight>
@@ -1261,7 +1264,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QLabel" name="label_3">
+                  <widget class="QLabel" name="mapLabel">
                    <property name="font">
                     <font>
                      <pointsize>11</pointsize>
@@ -1311,7 +1314,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                      <number>10</number>
                     </property>
                     <item row="0" column="0">
-                     <widget class="QLabel" name="label_8">
+                     <widget class="QLabel" name="mapWidthLabel_2">
                       <property name="font">
                        <font>
                         <weight>75</weight>
@@ -1324,7 +1327,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                      </widget>
                     </item>
                     <item row="1" column="0">
-                     <widget class="QLabel" name="label_10">
+                     <widget class="QLabel" name="mapHeightLabel_2">
                       <property name="font">
                        <font>
                         <weight>75</weight>
@@ -1337,7 +1340,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                      </widget>
                     </item>
                     <item row="2" column="0">
-                     <widget class="QLabel" name="label_11">
+                     <widget class="QLabel" name="mapElementsCountLabel_2">
                       <property name="font">
                        <font>
                         <weight>75</weight>
@@ -1478,7 +1481,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_15">
+                <widget class="QLabel" name="vehicleLabel">
                  <property name="font">
                   <font>
                    <pointsize>11</pointsize>
@@ -1528,7 +1531,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                    <number>10</number>
                   </property>
                   <item row="0" column="0">
-                   <widget class="QLabel" name="label_16">
+                   <widget class="QLabel" name="vehicleNameLabel_2">
                     <property name="font">
                      <font>
                       <weight>75</weight>
@@ -1541,7 +1544,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                    </widget>
                   </item>
                   <item row="1" column="0">
-                   <widget class="QLabel" name="label_18">
+                   <widget class="QLabel" name="vehicleWheelbaseLabel_2">
                     <property name="font">
                      <font>
                       <weight>75</weight>
@@ -1554,7 +1557,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                    </widget>
                   </item>
                   <item row="2" column="0">
-                   <widget class="QLabel" name="label_19">
+                   <widget class="QLabel" name="vehicleTrackLabel_2">
                     <property name="font">
                      <font>
                       <weight>75</weight>
@@ -1588,7 +1591,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                    </widget>
                   </item>
                   <item row="3" column="0">
-                   <widget class="QLabel" name="label_23">
+                   <widget class="QLabel" name="vehicleMaxAngleLabel_2">
                     <property name="font">
                      <font>
                       <weight>75</weight>
@@ -1713,7 +1716,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                 <number>0</number>
                </property>
                <item>
-                <widget class="QLabel" name="label_17">
+                <widget class="QLabel" name="pathLabel">
                  <property name="font">
                   <font>
                    <pointsize>11</pointsize>
@@ -1755,7 +1758,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                   <number>10</number>
                  </property>
                  <item row="0" column="0">
-                  <widget class="QLabel" name="label_12">
+                  <widget class="QLabel" name="pathStartPositionLabel_2">
                    <property name="font">
                     <font>
                      <weight>75</weight>
@@ -1784,7 +1787,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                   </widget>
                  </item>
                  <item row="1" column="0">
-                  <widget class="QLabel" name="label_14">
+                  <widget class="QLabel" name="pathEndPositionLabel_2">
                    <property name="font">
                     <font>
                      <weight>75</weight>
@@ -2091,7 +2094,7 @@ QDoubleSpinBox::down-arrow:hover {
                   <number>5</number>
                  </property>
                  <item>
-                  <widget class="QLabel" name="label_13">
+                  <widget class="QLabel" name="PathElementPropertiesTitleLabel">
                    <property name="font">
                     <font>
                      <pointsize>11</pointsize>
@@ -2114,7 +2117,7 @@ QDoubleSpinBox::down-arrow:hover {
                     <number>5</number>
                    </property>
                    <item row="0" column="0">
-                    <widget class="QLabel" name="label_20">
+                    <widget class="QLabel" name="pathElementPropertiesTypeLabel">
                      <property name="font">
                       <font>
                        <weight>75</weight>
@@ -2134,7 +2137,7 @@ QDoubleSpinBox::down-arrow:hover {
                     </widget>
                    </item>
                    <item row="1" column="0">
-                    <widget class="QLabel" name="label_22">
+                    <widget class="QLabel" name="pathElementPropertiesFromLabel">
                      <property name="font">
                       <font>
                        <weight>75</weight>
@@ -2147,7 +2150,7 @@ QDoubleSpinBox::down-arrow:hover {
                     </widget>
                    </item>
                    <item row="2" column="0">
-                    <widget class="QLabel" name="label_24">
+                    <widget class="QLabel" name="pathElementPropertiesToLabel">
                      <property name="font">
                       <font>
                        <weight>75</weight>
@@ -2160,7 +2163,7 @@ QDoubleSpinBox::down-arrow:hover {
                     </widget>
                    </item>
                    <item row="3" column="0">
-                    <widget class="QLabel" name="label_25">
+                    <widget class="QLabel" name="pathElementPropertiesLengthLabel">
                      <property name="font">
                       <font>
                        <weight>75</weight>
@@ -2387,7 +2390,7 @@ QToolButton#btnVisualisation2D:pressed, QToolButton#btnVisualisation3D:pressed {
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
-               <widget class="QLabel" name="label_9">
+               <widget class="QLabel" name="simulationDurationLabel">
                 <property name="font">
                  <font>
                   <pointsize>11</pointsize>
@@ -2531,7 +2534,18 @@ margin-left: 30px;</string>
        <attribute name="title">
         <string>settings</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_10"/>
+       <layout class="QGridLayout" name="gridLayout_10">
+        <item row="0" column="0">
+         <widget class="QComboBox" name="languagesList"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="btnSaveSettings">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

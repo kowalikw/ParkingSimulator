@@ -6,10 +6,16 @@
 
 #include <QFileDialog>
 
+#include <boost/filesystem.hpp>
+
+using namespace boost::filesystem;
+
 ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
 	this->setStyleSheet("background-color: #2a2a2a;");
+
+	Language::getInstance()->LoadLanguage(Settings::getInstance()->GetLanguage());
 
 	((MapEditorGLHost*)ui.glMapEditor)->SetMapEditor(&mapEditor);
 	((PathPlannerGLHost*)ui.glPathPlanner)->SetPathPlanner(&pathPlanner);
@@ -78,6 +84,9 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.simulationPrograssBar, SIGNAL(sliderReleased()), this, SLOT(simulationProgressBarReleased()));
 	connect(ui.listSimulations, SIGNAL(itemSelectionChanged()), this, SLOT(simulationSelectionChange()));
 
+	//settings
+	connect(ui.btnSaveSettings, SIGNAL(released()), this, SLOT(saveSettings()));
+
 	connect(ui.treeMapElements, SIGNAL(itemSelectionChanged()), this, SLOT(treeMapElementsSelectionChanged()));
 
 	ui.mapElementProperties->hide();
@@ -97,6 +106,8 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	// Path planner end
 
 	ui.glVisualisation3D->hide();
+
+	initializeLanguages();
 }
 
 void ParkingSimulator::renderTimerCall()
@@ -215,6 +226,83 @@ void ParkingSimulator::setPathProperties()
 		ui.isPathSet->show();
 		ui.pathElementsList->hide();
 	}
+}
+
+void ParkingSimulator::setLanguage()
+{
+	Language *language = Language::getInstance();
+	std::map<std::string, std::string> dictionary = language->GetDictionary();
+
+	ui.tabWidget->setTabText(0, QString::fromStdString(dictionary["Tab_Start"]));
+	ui.tabWidget->setTabText(1, QString::fromStdString(dictionary["Tab_MapEditor"]));
+	ui.tabWidget->setTabText(2, QString::fromStdString(dictionary["Tab_PathPlanner"]));
+	ui.tabWidget->setTabText(3, QString::fromStdString(dictionary["Tab_Visualisation"]));
+	ui.tabWidget->setTabText(4, QString::fromStdString(dictionary["Tab_Settings"]));
+	ui.btnNewMap->setToolTip(QString::fromStdString(dictionary["MapEditor_NewMap"]));
+	ui.btnLoadMap->setToolTip(QString::fromStdString(dictionary["MapEditor_OpenMap"]));
+	ui.btnSaveMap->setToolTip(QString::fromStdString(dictionary["MapEditor_SaveMap"]));
+	ui.btnAddBuilding->setToolTip(QString::fromStdString(dictionary["MapEditor_AddBuilding"]));
+	ui.btnAddDecoration->setToolTip(QString::fromStdString(dictionary["MapEditor_AddDecoration"]));
+	ui.btnAddParkPlace->setToolTip(QString::fromStdString(dictionary["MapEditor_AddParkingPlace"]));
+	ui.btnAddCar->setToolTip(QString::fromStdString(dictionary["MapEditor_AddVehicle"]));
+	ui.btnAddTerrain->setToolTip(QString::fromStdString(dictionary["MapEditor_AddTerrain"]));
+	ui.btnClearMap->setText(QString::fromStdString(dictionary["MapEditor_ClearMap"]));
+
+	ui.mapElementPropertiesTitleLabel->setText(QString::fromStdString(dictionary["MapEditor_MapElementProperties"]));
+	ui.mapElementPropertiesNameLabel->setText(QString::fromStdString(dictionary["Common_Name"]));
+	ui.mapElementPropertiesWidthLabel->setText(QString::fromStdString(dictionary["Common_Width"]));
+	ui.mapElementPropertiesHeightLabel->setText(QString::fromStdString(dictionary["Common_Height"]));
+	ui.mapElementPropertiesPositionLabel->setText(QString::fromStdString(dictionary["Common_Position"]));
+	ui.mapElementPropertiesRotationLabel->setText(QString::fromStdString(dictionary["Common_Rotation"]));
+	ui.btnMapElementSaveProperties->setText(QString::fromStdString(dictionary["Common_Save"]));
+	ui.btnMapElementRemove->setText(QString::fromStdString(dictionary["Common_Remove"]));
+
+	ui.btnNewSimulation->setToolTip(QString::fromStdString(dictionary["PathPlanner_NewSimulation"]));
+	ui.btnOpenSimulation->setToolTip(QString::fromStdString(dictionary["PathPlanner_OpenSimulation"]));
+	ui.btnSaveSimulation->setToolTip(QString::fromStdString(dictionary["PathPlanner_SaveSimulation"]));
+	ui.btnSetMap->setToolTip(QString::fromStdString(dictionary["PathPlanner_SetMap"]));
+	ui.btnSetVehicle->setToolTip(QString::fromStdString(dictionary["PathPlanner_SetVehicle"]));
+	ui.btnSetStart->setToolTip(QString::fromStdString(dictionary["PathPlanner_SetStart"]));
+	ui.btnSetEnd->setToolTip(QString::fromStdString(dictionary["PathPlanner_SetEnd"]));
+	ui.btnFindPath->setToolTip(QString::fromStdString(dictionary["PathPlanner_FindPath"]));
+	ui.btnShowExpandedObstacles->setToolTip(QString::fromStdString(dictionary["PathPlanner_ShowExpandedObstacles"]));
+	ui.btnShowFinalPath->setToolTip(QString::fromStdString(dictionary["PathPlanner_ShowFinalPath"]));
+	ui.btnShowFullVoronoiVisibilityGraph->setToolTip(QString::fromStdString(dictionary["PathPlanner_ShowFullVoronoiVisibilityGraph"]));
+	ui.btnShowParkingPath->setToolTip(QString::fromStdString(dictionary["PathPlanner_ShowParkingPath"]));
+	ui.btnShowPolylinePath->setToolTip(QString::fromStdString(dictionary["PathPlanner_ShowPolylinePath"]));
+	ui.btnShowVoronoiGraph->setToolTip(QString::fromStdString(dictionary["PathPlanner_ShowVoronoiGraph"]));
+	ui.mapLabel->setText(QString::fromStdString(dictionary["PathPlanner_Map"]));
+	ui.isMapSet->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
+	ui.vehicleLabel->setText(QString::fromStdString(dictionary["PathPlanner_Vehicle"]));
+	ui.isVehicleSet->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
+	ui.pathLabel->setText(QString::fromStdString(dictionary["PathPlanner_Path"]));
+	ui.isPathSet->setText(QString::fromStdString(dictionary["PathPlanner_NotCreated"]));
+
+	ui.mapWidthLabel_2->setText(QString::fromStdString(dictionary["Common_Width"]));
+	ui.mapHeightLabel_2->setText(QString::fromStdString(dictionary["Common_Height"]));
+	ui.mapElementsCountLabel_2->setText(QString::fromStdString(dictionary["PathPlanner_Map"]));
+	ui.vehicleNameLabel_2->setText(QString::fromStdString(dictionary["PathPlanner_MapElementsCount"]));
+	ui.vehicleWheelbaseLabel_2->setText(QString::fromStdString(dictionary["PathPlanner_VehicleWheelbase"]));
+	ui.vehicleTrackLabel_2->setText(QString::fromStdString(dictionary["PathPlanner_VehicleTrack"]));
+	ui.vehicleMaxAngleLabel_2->setText(QString::fromStdString(dictionary["PathPlanner_VehicleMaxAngle"]));
+	ui.pathStartPositionLabel_2->setText(QString::fromStdString(dictionary["PathPlanner_StartPosition"]));
+	ui.pathEndPositionLabel_2->setText(QString::fromStdString(dictionary["PathPlanner_EndPosition"]));
+	ui.PathElementPropertiesTitleLabel->setText(QString::fromStdString(dictionary["PathPlanner_PathElementProperties"]));
+	ui.pathElementPropertiesTypeLabel->setText(QString::fromStdString(dictionary["Common_Type"]));
+	ui.pathElementPropertiesFromLabel->setText(QString::fromStdString(dictionary["Common_From"]));
+	ui.pathElementPropertiesToLabel->setText(QString::fromStdString(dictionary["Common_To"]));
+	ui.pathElementPropertiesLengthLabel->setText(QString::fromStdString(dictionary["Common_Length"]));
+
+	ui.btnAddSimulation->setToolTip(QString::fromStdString(dictionary["Visualisation_AddSimulation"]));
+	ui.btnRemoveSimulation->setToolTip(QString::fromStdString(dictionary["Visualization_RemoveSimulation"]));
+	ui.btnInfoSimulation->setToolTip(QString::fromStdString(dictionary["Visualisation_InfoSimulation"]));
+	ui.btnPlayPauseSimulation->setToolTip(QString::fromStdString(dictionary["Visualisation_PlayPause"]));
+	ui.btnStopSimulation->setToolTip(QString::fromStdString(dictionary["Visualisation_Stop"]));
+
+	ui.simulationDurationLabel->setText(QString::fromStdString(dictionary["Visualisation_SimulationTime"]));
+	ui.showPathElements->setText(QString::fromStdString(dictionary["Visualisation_ShowPathElements"]));
+
+	updateMapElementsTree();
 }
 
 void ParkingSimulator::updateTimerCall()
@@ -368,7 +456,12 @@ void ParkingSimulator::loadSettings()
 
 void ParkingSimulator::saveSettings()
 {
+	Settings::getInstance()->SetLanguage(ui.languagesList->currentText().toStdString());
 	Settings::getInstance()->SaveSettings();
+
+	Language::getInstance()->LoadLanguage(Settings::getInstance()->GetLanguage());
+
+	setLanguage();
 }
 
 void ParkingSimulator::goToMapEditor()
@@ -591,7 +684,7 @@ void ParkingSimulator::mapElementSaveProperties()
 		selectedElement->SetPosition(oldPosition);
 		selectedElement->SetRotation(oldRotation);
 
-		WarningErrorMsg warningWindow("An error occured!", "Map element after transformation is not admissible!", MessageType::Error);
+		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_MapElementNotAdmissible_Title"], Language::getInstance()->GetDictionary()["WarningError_MapElementNotAdmissible_Content"], MessageType::Error);
 		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 		warningWindow.exec();
 	}
@@ -915,9 +1008,10 @@ void ParkingSimulator::findPath()
 		|| (pathPlanner.GetStartPoint() != NULL && pathPlanner.GetStartDirection() != NULL && pathPlanner.GetStartParkingSpace() != NULL)
 		|| (pathPlanner.GetEndPoint() != NULL && pathPlanner.GetEndDirection() != NULL && pathPlanner.GetEndParkingSpace() != NULL))
 	{
-		WarningErrorMsg warningWindow("An error occured!", "It was impossible to find a path, because not all required parameters were set.", MessageType::Error);
+		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_FindPathNoParameters_Title"], Language::getInstance()->GetDictionary()["WarningError_FindPathNoParameters_Content"], MessageType::Error);
 		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 		warningWindow.exec();
+		return;
 	}
 
 	if (findPathWindow.exec())
@@ -933,7 +1027,7 @@ void ParkingSimulator::findPath()
 
 		if (pathPlanner.GetFinalPath() == NULL)
 		{
-			WarningErrorMsg warningWindow("Path not found!", "A path between start and end position was not found!\nTry again with another parameters.", MessageType::Warning);
+			WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_PathNotFound_Title"], Language::getInstance()->GetDictionary()["WarningError_PathNotFound_Content"], MessageType::Error);
 			warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 			warningWindow.exec();
 		}
@@ -1104,6 +1198,27 @@ void ParkingSimulator::simulationSelectionChange()
 		visualisation.SetCurrentSimulation(visualisation.GetSimulations()[selectedIndex]);
 	else
 		visualisation.SetCurrentSimulation(nullptr);
+}
+
+void ParkingSimulator::initializeLanguages()
+{
+	path p(".");
+	std::vector<directory_entry> v;
+
+	if (is_directory(p))
+	{
+		copy(directory_iterator(p), directory_iterator(), back_inserter(v));
+		for (std::vector<directory_entry>::const_iterator it = v.begin(); it != v.end(); ++it)
+		{
+			std::string path = (*it).path().string();
+			if (path.find("lang") != std::string::npos)
+			{
+				int start = path.find("lang.") + 5;
+				int end = path.find(".ini");
+				ui.languagesList->addItem(QString::fromStdString(path.substr(start, end-start)));
+			}
+		}
+	}
 }
 
 #pragma endregion

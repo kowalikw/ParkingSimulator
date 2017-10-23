@@ -5,6 +5,7 @@
 #include "PathPlanner.h"
 #include <QFileDialog>
 #include "WarningErrorMsg.h"
+#include "Language.h"
 
 using namespace Ui;
 

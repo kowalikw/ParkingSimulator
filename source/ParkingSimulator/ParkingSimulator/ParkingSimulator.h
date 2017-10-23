@@ -16,6 +16,8 @@
 #include "FindPath.h"
 #include "AddSimulation.h"
 #include "SimulationInfo.h"
+#include "Language.h"
+#include <map>
 
 using namespace Ui;
 
@@ -40,6 +42,8 @@ private:
 	void setMapProperties();
 	void setVehicleProperties();
 	void setPathProperties();
+
+	void setLanguage();
 public slots:
 	void renderTimerCall();
 	void render3DTimerCall();
@@ -103,4 +107,7 @@ public slots:
 	void simulationProgressBarPressed();
 	void simulationProgressBarReleased();
 	void simulationSelectionChange();
+
+	// settings
+	void initializeLanguages();
 };

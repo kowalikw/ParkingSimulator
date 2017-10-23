@@ -8,6 +8,7 @@
 #include "Obstacle.h"
 #include "ParkingSpace.h"
 #include "Terrain.h"
+#include "Language.h"
 
 using namespace Ui;
 

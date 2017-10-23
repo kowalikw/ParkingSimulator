@@ -12,27 +12,27 @@ AddMapElement::AddMapElement(AddMapElementType type, QWidget *parent)
 	{
 	case B:
 		initBuildings();
-		ui.addMapElementDescription->setText(QString("Select building type:"));
+		ui.addMapElementDescription->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["AddMapElement_SelectBuilding"]));
 		ui.newElementName->setText(QString("Building - box"));
 		break;
 	case D:
 		initDecorations();
-		ui.addMapElementDescription->setText(QString("Select decoration type:"));
+		ui.addMapElementDescription->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["AddMapElement_SelectDecoration"]));
 		ui.newElementName->setText(QString("Decoration - box"));
 		break;
 	case P:
 		initParkingSpaces();
-		ui.addMapElementDescription->setText(QString("Select parking place type:"));
+		ui.addMapElementDescription->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["AddMapElement_SelectParkingPlace"]));
 		ui.newElementName->setText(QString("Parking place - plane"));
 		break;
 	case C:
 		initVehicles();
-		ui.addMapElementDescription->setText(QString("Select vehicle model:"));
+		ui.addMapElementDescription->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["AddMapElement_SelectVehicle"]));
 		ui.newElementName->setText(QString("Kia Rio"));
 		break;
 	case T:
 		initTerrains();
-		ui.addMapElementDescription->setText(QString("Select type of terrain:"));
+		ui.addMapElementDescription->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["AddMapElement_SelectTerrain"]));
 		ui.newElementName->setText(QString("Grass"));
 		ui.newElementName->setEnabled(false);
 		ui.newElementWidth->hide();
@@ -43,6 +43,14 @@ AddMapElement::AddMapElement(AddMapElementType type, QWidget *parent)
 		ui.newElementRotationLabel->hide();
 		break;
 	}
+
+	ui.windowTitle->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["AddMapElement_SelectTerrain"]));
+	ui.newElementNameLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Name"]));
+	ui.newElementWidthLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Width"]));
+	ui.newElementHeightLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Height"]));
+	ui.newElementRotationLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Rotation"]));
+	ui.btnAccept->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Add"]));
+	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Cancel"]));
 
 	this->type = type;
 }
