@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <qsettings.h>
+#include "nanovg.h"
+#include <qcolor.h>
 
 struct MapElementModel
 {
@@ -33,6 +35,15 @@ public:
 		return Settings::s_instance;
 	}
 
+	int GetInt(std::string name);
+	NVGcolor GetColor(std::string name);
+	QColor GetQColor(std::string name);
+	std::string GetString(std::string name);
+	void SetInt(std::string name, int value);
+	void SetColor(std::string name, NVGcolor value);
+	void SetColor(std::string name, QColor value);
+	void SetString(std::string name, std::string value);
+
 	void LoadSettings();
 	void SaveSettings();
 
@@ -51,6 +62,7 @@ private:
 		LoadSettings();
 	}
 
+	QSettings *settings;
 	QString settingsFile = "C:\\Users\\Wojtek\\Source\\Repos\\ParkingSimulator-NEW\\source\\ParkingSimulator\\x64\\Debug\\settings.ini";
 
 	std::string language;

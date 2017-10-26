@@ -86,6 +86,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 
 	//settings
 	connect(ui.btnSaveSettings, SIGNAL(released()), this, SLOT(saveSettings()));
+	connect(ui.buildingBorderColor, SIGNAL(clicked(ColorContainer &)), this, SLOT(changeColor(ColorContainer &)));
 
 	connect(ui.treeMapElements, SIGNAL(itemSelectionChanged()), this, SLOT(treeMapElementsSelectionChanged()));
 
@@ -108,6 +109,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	ui.glVisualisation3D->hide();
 
 	initializeLanguages();
+	loadSettings();
 }
 
 void ParkingSimulator::renderTimerCall()
@@ -298,9 +300,70 @@ void ParkingSimulator::setLanguage()
 	ui.btnInfoSimulation->setToolTip(QString::fromStdString(dictionary["Visualisation_InfoSimulation"]));
 	ui.btnPlayPauseSimulation->setToolTip(QString::fromStdString(dictionary["Visualisation_PlayPause"]));
 	ui.btnStopSimulation->setToolTip(QString::fromStdString(dictionary["Visualisation_Stop"]));
-
 	ui.simulationDurationLabel->setText(QString::fromStdString(dictionary["Visualisation_SimulationTime"]));
 	ui.showPathElements->setText(QString::fromStdString(dictionary["Visualisation_ShowPathElements"]));
+
+	ui.settingsLanguageLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsChooseLanguageLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsGraphLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsGraphVertexLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsGraphVertexRadiusLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsGraphVertexColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsGraphEdge->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsGraphEdgeWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsGraphEdgeColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsLineLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsLineWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsLineColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsCircleLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsCircleWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsCircleColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsBSplineLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsBSplineWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsBSplineColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsSelectedLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsSelectedWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsPathElementsSelectedColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsBuildingLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsBuildingBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsBuildingBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsBuildingColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsDecorationLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsDecorationBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsDecorationBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsDecorationColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsParkingPlaceLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsParkingPlaceBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsParkingPlaceBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsParkingPlaceColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsVehicleLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsVehicleBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsVehicleBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsVehicleColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsHoverLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsHoverBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsHoverBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsHoverColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsSelected->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsSelectedBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsSelectedBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsSelectedColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsTransformedLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsAdmissibleLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsAdmissibleBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsAdmissibleBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsAdmissibleColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsNotAdmissibleLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsNotAdmissibleBorderWidthLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsNotAdmissibleBorderColorLabel->setText(QString::fromStdString(dictionary[""]));
+	ui.settingsMapElementsNotAdmissibleColorLabel->setText(QString::fromStdString(dictionary[""]));
+
 
 	updateMapElementsTree();
 }
@@ -452,10 +515,92 @@ void ParkingSimulator::updateTimerCall()
 void ParkingSimulator::loadSettings()
 {
 	Settings::getInstance()->LoadSettings();
+
+	/*ui.buildingBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.decorationBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.parkingPlaceBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.vehicleBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.hoverMapElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.selectedMapElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.mapBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.lineWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.circleWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.splineWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.selectedPathElementWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.vertexRadiusSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.edgeWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.admissibleElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));
+	ui.notAdmissibleElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt(""));*/
+
+	ui.buildingBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.buildingColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.decorationBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.decorationColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.parkingPlaceBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.parkingPlaceColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.vehicleBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.vehicleColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.hoverMapElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.hoverMapElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.selectedMapElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.selectedMapElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.mapBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.mapColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.lineColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.arcColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.splineColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.selectedPathElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.graphVertexColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.graphEdgeColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.admissibleElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.admissibleElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.notAdmissibleElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.notAdmissibleElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
 }
 
 void ParkingSimulator::saveSettings()
 {
+	/*Settings::getInstance()->SetInt("", ui.buildingBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.decorationBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.parkingPlaceBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.vehicleBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.hoverMapElementBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.selectedMapElementBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.mapBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.lineWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.circleWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.splineWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.selectedPathElementWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.vertexRadiusSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.edgeWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.admissibleElementBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("", ui.notAdmissibleElementBorderWidthSpinBox->value());*/
+
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.buildingBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.buildingColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.decorationBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.decorationColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.parkingPlaceBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.parkingPlaceColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.vehicleBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.vehicleColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.hoverMapElementBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.hoverMapElementColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.selectedMapElementBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.selectedMapElementColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.mapBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.mapColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.lineColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.arcColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.splineColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.selectedPathElementColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.graphVertexColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.graphEdgeColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.admissibleElementBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.admissibleElementColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.notAdmissibleElementBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.notAdmissibleElementColor->palette().button().color());
+
 	Settings::getInstance()->SetLanguage(ui.languagesList->currentText().toStdString());
 	Settings::getInstance()->SaveSettings();
 
@@ -1219,6 +1364,15 @@ void ParkingSimulator::initializeLanguages()
 			}
 		}
 	}
+}
+
+void ParkingSimulator::changeColor(ColorContainer & pos)
+{
+	QColorDialog colorDialog;
+	
+	auto name = colorDialog.getColor().name();
+	
+	pos.setStyleSheet(QString("background-color: %1;").arg(name));
 }
 
 #pragma endregion

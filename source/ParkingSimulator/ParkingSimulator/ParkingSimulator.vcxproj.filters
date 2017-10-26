@@ -283,6 +283,15 @@
     <ClCompile Include="Language.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ColorContainer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ColorContainer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ColorContainer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -356,6 +365,9 @@
     </CustomBuild>
     <CustomBuild Include="OpenGLHost3D.h">
       <Filter>Header Files\OpenGLHosts</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ColorContainer.h">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

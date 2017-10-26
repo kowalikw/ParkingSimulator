@@ -12,6 +12,7 @@
 #include "BezierCurve.h"
 #include "BSpline.h"
 #include <glm.hpp>
+#include "Settings.h"
 
 #define GLEW_STATIC
 #include "glew.h"
@@ -60,78 +61,78 @@ public:
 	const NVGcolor START_FLAG_COLOR = nvgRGBA(0, 255, 0, 255);
 	const NVGcolor END_FLAG_COLOR = nvgRGBA(255, 0, 0, 255);
 
-	const int ACTIVE_BORDER_WIDTH = 3;
-	const NVGcolor ACTIVE_GOOD_COLOR = nvgRGBA(135, 255, 145, 255);
-	const NVGcolor ACTIVE_GOOD_BORDER_COLOR = nvgRGBA(0, 145, 0, 255);
-	const NVGcolor ACTIVE_BAD_COLOR = nvgRGBA(255, 125, 125, 255);
-	const NVGcolor ACTIVE_BAD_BORDER_COLOR = nvgRGBA(175, 0, 0, 255);
+	int ACTIVE_BORDER_WIDTH = Settings::getInstance()->GetInt("ACTIVE_BORDER_WIDTH");
+	NVGcolor ACTIVE_GOOD_COLOR = Settings::getInstance()->GetColor("ACTIVE_GOOD_COLOR");
+	NVGcolor ACTIVE_GOOD_BORDER_COLOR = Settings::getInstance()->GetColor("ACTIVE_GOOD_BORDER_COLOR");
+	NVGcolor ACTIVE_BAD_COLOR = Settings::getInstance()->GetColor("ACTIVE_BAD_COLOR");
+	NVGcolor ACTIVE_BAD_BORDER_COLOR = Settings::getInstance()->GetColor("ACTIVE_BAD_BORDER_COLOR");
 
-	const int EXTRA_OFFSET = 30;
-	const float MIN_MAGNIFICATION_RATIO = 0.2;
-	const float MAX_MAGNIFICATION_RATIO = 5.0;
+	int EXTRA_OFFSET = 30;
+	float MIN_MAGNIFICATION_RATIO = 0.2;
+	float MAX_MAGNIFICATION_RATIO = 5.0;
 
-	const int MAP_BORDER_WIDTH = 3;
-	const NVGcolor MAP_COLOR = nvgRGBA(58, 124, 37, 255);
-	const NVGcolor MAP_BORDER_COLOR = nvgRGBA(5, 90, 20, 255);
+	int MAP_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_BORDER_WIDTH");
+	NVGcolor MAP_COLOR = Settings::getInstance()->GetColor("MAP_COLOR");
+	NVGcolor MAP_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_BORDER_COLOR");
 
-	const int MAP_ELEMENT_HOVER_BORDER_WIDTH = 3;
-	const NVGcolor MAP_ELEMENT_HOVER_COLOR = nvgRGBA(140, 140, 140, 255);
-	const NVGcolor MAP_ELEMENT_HOVER_BORDER_COLOR = nvgRGBA(255, 255, 0, 255);
+	 int MAP_ELEMENT_HOVER_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH");
+	 NVGcolor MAP_ELEMENT_HOVER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_COLOR");
+	 NVGcolor MAP_ELEMENT_HOVER_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_BORDER_COLOR");
 
-	const int MAP_ELEMENT_SELECTED_BORDER_WIDTH = 3;
-	const NVGcolor MAP_ELEMENT_SELECTED_COLOR = nvgRGBA(140, 140, 140, 255);
-	const NVGcolor MAP_ELEMENT_SELECTED_BORDER_COLOR = nvgRGBA(255, 255, 0, 255);
+	 int MAP_ELEMENT_SELECTED_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH");
+	 NVGcolor MAP_ELEMENT_SELECTED_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_COLOR");
+	 NVGcolor MAP_ELEMENT_SELECTED_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_BORDER_COLOR");
 
-	const int BUILDING_BORDER_WIDTH = 3;
-	const NVGcolor BUILDING_COLOR = nvgRGBA(140, 140, 140, 255);
-	const NVGcolor BUILDING_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
+	 int BUILDING_BORDER_WIDTH = Settings::getInstance()->GetInt("BUILDING_BORDER_WIDTH");
+	 NVGcolor BUILDING_COLOR = Settings::getInstance()->GetColor("BUILDING_COLOR");
+	 NVGcolor BUILDING_BORDER_COLOR = Settings::getInstance()->GetColor("BUILDING_BORDER_COLOR");
 
-	const int DECORATION_BORDER_WIDTH = 3;
-	const NVGcolor DECORATION_COLOR = nvgRGBA(51, 153, 255, 255);
-	const NVGcolor DECORATION_BORDER_COLOR = nvgRGBA(153, 153, 255, 255);
+	 int DECORATION_BORDER_WIDTH = Settings::getInstance()->GetInt("DECORATION_BORDER_WIDTH");
+	 NVGcolor DECORATION_COLOR = Settings::getInstance()->GetColor("DECORATION_COLOR");
+	 NVGcolor DECORATION_BORDER_COLOR = Settings::getInstance()->GetColor("DECORATION_BORDER_COLOR");
 
-	const int PARKING_SPACE_BORDER_WIDTH = 3;
-	const NVGcolor PARKING_SPACE_COLOR = nvgRGBA(153, 51, 102, 255);
-	const NVGcolor PARKING_SPACE_BORDER_COLOR = nvgRGBA(160, 160, 160, 255);
+	 int PARKING_SPACE_BORDER_WIDTH = Settings::getInstance()->GetInt("PARKING_SPACE_BORDER_WIDTH");
+	 NVGcolor PARKING_SPACE_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_COLOR");
+	 NVGcolor PARKING_SPACE_BORDER_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_BORDER_COLOR");
 
-	const int VEHICLE_BORDER_WIDTH = 3;
-	const NVGcolor VEHICLE_COLOR = nvgRGBA(8, 73, 171, 255);
-	const NVGcolor VEHICLE_BORDER_COLOR = nvgRGBA(255, 0, 0, 255);
+	 int VEHICLE_BORDER_WIDTH = Settings::getInstance()->GetInt("VEHICLE_BORDER_WIDTH");
+	 NVGcolor VEHICLE_COLOR = Settings::getInstance()->GetColor("VEHICLE_COLOR");
+	 NVGcolor VEHICLE_BORDER_COLOR = Settings::getInstance()->GetColor("VEHICLE_BORDER_COLOR");
 
-	const int GRAPH_EDGE_WIDTH = 2;
-	const NVGcolor GRAPH_EDGE_COLOR = nvgRGBA(255, 255, 140, 255);
+	 int GRAPH_EDGE_WIDTH = Settings::getInstance()->GetInt("GRAPH_EDGE_WIDTH");
+	 NVGcolor GRAPH_EDGE_COLOR = Settings::getInstance()->GetColor("GRAPH_EDGE_COLOR");
 
-	const int GRAPH_VERTEX_RADIUS = 3;
-	const NVGcolor GRAPH_VERTEX_COLOR = nvgRGBA(140, 140, 140, 255);
+	int GRAPH_VERTEX_RADIUS = Settings::getInstance()->GetInt("GRAPH_VERTEX_RADIUS");
+	NVGcolor GRAPH_VERTEX_COLOR = Settings::getInstance()->GetColor("GRAPH_VERTEX_COLOR");
 
-	const int PATH_LINE_WIDTH = 2;
-	const NVGcolor PATH_LINE_COLOR = nvgRGBA(0, 0, 255, 255);
+	int PATH_LINE_WIDTH = Settings::getInstance()->GetInt("PATH_LINE_WIDTH");
+	NVGcolor PATH_LINE_COLOR = Settings::getInstance()->GetColor("PATH_LINE_COLOR");
 
-	const int PATH_CIRCLE_WIDTH = 2;
-	const NVGcolor PATH_CIRCLE_COLOR = nvgRGBA(255, 0, 255, 255);
+	int PATH_CIRCLE_WIDTH = Settings::getInstance()->GetInt("PATH_CIRCLE_WIDTH");
+	NVGcolor PATH_CIRCLE_COLOR = Settings::getInstance()->GetColor("PATH_CIRCLE_COLOR");
 
-	const int PATH_BSPLINE_WIDTH = 2;
-	const NVGcolor PATH_BSPLINE_COLOR = nvgRGBA(255, 255, 0, 255);
+	int PATH_BSPLINE_WIDTH = Settings::getInstance()->GetInt("PATH_BSPLINE_WIDTH");
+	NVGcolor PATH_BSPLINE_COLOR = Settings::getInstance()->GetColor("PATH_BSPLINE_COLOR");
 
-	const int PATH_ELEMENT_SELECTED_WIDTH = 2;
-	const NVGcolor PATH_ELEMENT_SELECTED_COLOR = nvgRGBA(255, 255, 255, 255);
+	int PATH_ELEMENT_SELECTED_WIDTH = Settings::getInstance()->GetInt("PATH_ELEMENT_SELECTED_WIDTH");
+	NVGcolor PATH_ELEMENT_SELECTED_COLOR = Settings::getInstance()->GetColor("PATH_ELEMENT_SELECTED_COLOR");
 
-	const int POLYGON_BORDER_WIDTH = 3;
-	const NVGcolor POLYGON_COLOR = nvgRGBA(255, 255, 0, 255);
-	const NVGcolor POLYGON_BORDER_COLOR = nvgRGBA(255, 255, 0, 255);
+	int POLYGON_BORDER_WIDTH = Settings::getInstance()->GetInt("POLYGON_BORDER_WIDTH");
+	NVGcolor POLYGON_COLOR = Settings::getInstance()->GetColor("POLYGON_COLOR");
+	NVGcolor POLYGON_BORDER_COLOR = Settings::getInstance()->GetColor("POLYGON_BORDER_COLOR");
 
-	const int TRANSFORM_SHAPE_MOVE_RADIUS = 4;
-	const int TRANSFORM_SHAPE_ROTATE_RADIUS = 20;
-	const int TRANSFORM_SHAPE_ROTATE_WIDTH = 3;
-	const int TRANSFORM_SHAPE_RESIZE_RADIUS = 4;
-	const NVGcolor TRANSFORM_SHAPE_MOVE_COLOR = nvgRGBA(255, 0, 0, 255);
-	const NVGcolor TRANSFORM_SHAPE_ROTATE_COLOR = nvgRGBA(255, 0, 0, 255);
-	const NVGcolor TRANSFORM_SHAPE_RESIZE_COLOR = nvgRGBA(255, 0, 0, 255);
-	const NVGcolor TRANSFORM_SHAPE_HOVER_COLOR = nvgRGBA(255, 255, 0, 255);
+	int TRANSFORM_SHAPE_MOVE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_MOVE_RADIUS");
+	int TRANSFORM_SHAPE_ROTATE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_ROTATE_RADIUS");
+	int TRANSFORM_SHAPE_ROTATE_WIDTH = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_ROTATE_WIDTH");
+	int TRANSFORM_SHAPE_RESIZE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_RESIZE_RADIUS");
+	NVGcolor TRANSFORM_SHAPE_MOVE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_MOVE_COLOR");
+	NVGcolor TRANSFORM_SHAPE_ROTATE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_ROTATE_COLOR");
+	NVGcolor TRANSFORM_SHAPE_RESIZE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_RESIZE_COLOR");
+	NVGcolor TRANSFORM_SHAPE_HOVER_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_HOVER_COLOR");
 
-	const NVGcolor TERRAIN_HOVER_COLOR = nvgRGBA(255, 255, 140, 255);
+	NVGcolor TERRAIN_HOVER_COLOR = Settings::getInstance()->GetColor("TERRAIN_HOVER_COLOR");
 
-	const int meshOnMapSize = 25;
+	int meshOnMapSize = Settings::getInstance()->GetInt("TERRAIN_SLICE_SIZE");
 
 private:
 	NVGcontext *vg;

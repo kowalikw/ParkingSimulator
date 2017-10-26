@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
+#include <QColorDialog>
 #include <QTimer>
 #include "glew.h"
 #include "ui_ParkingSimulator.h"
@@ -110,4 +111,5 @@ public slots:
 
 	// settings
 	void initializeLanguages();
+	void changeColor(ColorContainer & pos);
 };

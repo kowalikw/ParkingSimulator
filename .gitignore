@@ -73,3 +73,7 @@ CMakeLists.txt.user*
 *.lot
 *.psd
 *.csv
+/docs/LaTeX.rar
+*.bak2
+*.bak3
+*.bak4
