@@ -27,8 +27,8 @@ int CreateMap::GetMapHeight()
 
 void CreateMap::createMap()
 {
-	this->mapWidth = ui.mapWidth->value();
-	this->mapHeight = ui.mapHeight->value();
+	this->mapWidth = CommonHelper::ConverMetersToPixeks(ui.mapWidth->value());
+	this->mapHeight = CommonHelper::ConverMetersToPixeks(ui.mapHeight->value());
 
 	accept();
 }

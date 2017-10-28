@@ -44,7 +44,7 @@ AddMapElement::AddMapElement(AddMapElementType type, QWidget *parent)
 		break;
 	}
 
-	ui.windowTitle->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["AddMapElement_SelectTerrain"]));
+	ui.windowTitle->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["AddMapElement_Title"]));
 	ui.newElementNameLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Name"]));
 	ui.newElementWidthLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Width"]));
 	ui.newElementHeightLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Height"]));
@@ -53,6 +53,12 @@ AddMapElement::AddMapElement(AddMapElementType type, QWidget *parent)
 	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Cancel"]));
 
 	this->type = type;
+
+	createElement(0);
+
+	ui.newElementName->setText(QString::fromStdString(model->name));
+	ui.newElementWidth->setValue(model->defaultWidth);
+	ui.newElementHeight->setValue(model->defaultHeight);
 }
 
 AddMapElement::~AddMapElement()

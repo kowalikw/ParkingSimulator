@@ -64,7 +64,7 @@ QPushButton#btnClose:pressed {
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">margin-bottom: 8px;</string>
+        <string notr="true">margin-bottom: 12px;</string>
        </property>
        <property name="text">
         <string>Simulation info</string>
@@ -80,7 +80,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationNameLabel">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -97,7 +97,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="pathElementsLabel">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -114,7 +114,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="pathLengthLabel">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -131,7 +131,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationName">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -143,7 +143,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationPathElements">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -155,7 +155,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationPathLength">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -167,7 +167,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="vehicleNameLabel">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -184,7 +184,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationVehicleName">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -196,7 +196,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="expandObstaclesSizePercentLabel">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -213,7 +213,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="pathPlanningAlgorithmLabel">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -230,7 +230,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="useAdmissibleArcsOnlyLabel">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -247,7 +247,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="collisionDetectionQualityLabel">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
@@ -264,7 +264,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationExpandSizePercent">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -276,7 +276,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationPathPlanningAlgorithm">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -288,7 +288,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationUseAdmissibleArcsOnly">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -300,7 +300,7 @@ QPushButton#btnClose:pressed {
         <widget class="QLabel" name="simulationCollisionDetectionQuality">
          <property name="font">
           <font>
-           <pointsize>11</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -316,6 +316,9 @@ QPushButton#btnClose:pressed {
     <widget class="QPushButton" name="btnClose">
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">margin-top: 10px;</string>
      </property>
      <property name="text">
       <string>Close</string>

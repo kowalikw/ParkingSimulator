@@ -19,6 +19,7 @@
 #include "SimulationInfo.h"
 #include "Language.h"
 #include <map>
+#include "CommonHelper.h"
 
 using namespace Ui;
 

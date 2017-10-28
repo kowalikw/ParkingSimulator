@@ -169,6 +169,8 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("Settings_Radius", language.value("Settings_Radius").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Settings_Color", language.value("Settings_Color").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Settings_SaveSettings", language.value("Settings_SaveSettings").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Common_ElementsCount", language.value("Common_ElementsCount").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Common_PathElement", language.value("Common_PathElement").toString().toStdString()));
 }
 
 std::map<std::string, std::string> Language::GetDictionary()

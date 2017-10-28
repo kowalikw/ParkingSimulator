@@ -58,7 +58,7 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 		}
 	}
 
-	if (mapEditor->GetHoverElement(positionOnMap) != NULL)
+	if (mapEditor->GetHoverElement(positionOnMap) != NULL && !mapEditor->GetAddTerrain())
 	{
 		MapElement *selectedElement = mapEditor->GetSelectedElement();
 		if (selectedElement == NULL ||
@@ -84,10 +84,6 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 	if (mapEditor->GetAddBuilding() || mapEditor->GetAddDecoration() || mapEditor->GetAddParkPlace() || mapEditor->GetAddCar())
 	{
 		mapEditor->AddObstacleConfirm();
-	}
-	else if (mapEditor->GetAddTerrain())
-	{
-
 	}
 }
 
@@ -169,7 +165,7 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 		}
 	}
 
-	if (mapEditor->GetHoverElement(positionOnMap) != NULL && mapEditor->GetHoverElement(positionOnMap) != selectedElement)
+	if (!mapEditor->GetAddTerrain() && mapEditor->GetHoverElement(positionOnMap) != NULL && mapEditor->GetHoverElement(positionOnMap) != selectedElement)
 	{
 		if (selectedElement == NULL ||
 			(!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
@@ -186,7 +182,7 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 			this->setCursor(DEFAULT_CURSOR);
 	}
 
-	if (mapEditor->GetNewTerrain() != nullptr && mouseLeftPressed)
+	if (mapEditor->GetAddTerrain() && mapEditor->GetNewTerrain() != nullptr && mouseLeftPressed)
 	{
 		Terrain *terrain = mapEditor->GetNewTerrain();
 		terrain->SetPosition(positionOnMap);
@@ -296,8 +292,8 @@ void MapEditorGLHost::nvgRenderFrame()
 		nvgHelper->DrawTerrain(mapEditor->GetHoverTerrain(positionOnMap), true);
 	}
 
-	if(mapEditor->GetSelectedElement() == NULL || 
-		(!mapEditor->GetSelectedElement()->IsMoveHover() && !mapEditor->GetSelectedElement()->IsRotationHover() && !mapEditor->GetSelectedElement()->IsResizeHover()))
+	if((!mapEditor->GetAddTerrain() && mapEditor->GetSelectedElement() == NULL) || 
+		(!mapEditor->GetAddTerrain() && !mapEditor->GetSelectedElement()->IsMoveHover() && !mapEditor->GetSelectedElement()->IsRotationHover() && !mapEditor->GetSelectedElement()->IsResizeHover()))
 			nvgHelper->DrawHoverElement(mapEditor->GetHoverElement(positionOnMap));
 
 	nvgHelper->DrawSelectedElement(mapEditor->GetSelectedElement());

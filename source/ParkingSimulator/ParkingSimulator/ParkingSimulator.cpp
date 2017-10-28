@@ -168,8 +168,8 @@ void ParkingSimulator::setMapProperties()
 
 		ui.isMapSet->hide();
 		ui.mapPropertiesForm->show();
-		ui.mapWidthLabel->setText(QString("%1 m").arg(map->GetWidth()));
-		ui.mapHeightLabel->setText(QString("%1 m").arg(map->GetHeight()));
+		ui.mapWidthLabel->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(map->GetWidth())));
+		ui.mapHeightLabel->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(map->GetHeight())));
 		ui.mapElementsCountLabel->setText(QString("%1").arg(map->GetMapElements().size()));
 	}
 	else
@@ -188,8 +188,8 @@ void ParkingSimulator::setVehicleProperties()
 		ui.isVehicleSet->hide();
 		ui.vehiclePropertiesForm->show();
 		ui.vehicleNameLabel->setText(QString::fromStdString(vehicle->GetName()));
-		ui.vehicleWheelbaseLabel->setText(QString("%1 m").arg(vehicle->GetWheelbase()));
-		ui.vehicleTrackLabel->setText(QString("%1 m").arg(vehicle->GetTrack()));
+		ui.vehicleWheelbaseLabel->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(vehicle->GetWheelbase())));
+		ui.vehicleTrackLabel->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(vehicle->GetTrack())));
 		ui.vehicleMaxAngleLabel->setText(QString("%1 deg").arg(glm::degrees(vehicle->GetMaxInsideAngle())));
 	}
 	else
@@ -223,24 +223,24 @@ void ParkingSimulator::setPathProperties()
 	{
 		ParkingSpace *startParkingSpace = pathPlanner.GetStartParkingSpace();
 
-		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(startParkingSpace->GetPosition().x).arg(startParkingSpace->GetPosition().y).arg(startParkingSpace->GetRotation()));
+		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().x)).arg(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().y)).arg(startParkingSpace->GetRotation()));
 	}
 
 	if (pathPlanner.GetEndParkingSpace() != NULL)
 	{
 		ParkingSpace *endParkingSpace = pathPlanner.GetEndParkingSpace();
 
-		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(endParkingSpace->GetPosition().x).arg(endParkingSpace->GetPosition().y).arg(endParkingSpace->GetRotation()));
+		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().x)).arg(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().y)).arg(endParkingSpace->GetRotation()));
 	}
 
 	if (pathPlanner.GetStartPoint() == NULL && pathPlanner.GetStartParkingSpace() == NULL)
 	{
-		ui.pathStartPositionLabel->setText(QString("NOT SET"));
+		ui.pathStartPositionLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_NotSet"]));
 	}
 
 	if (pathPlanner.GetEndPoint() == NULL && pathPlanner.GetEndParkingSpace() == NULL)
 	{
-		ui.pathEndPositionLabel->setText(QString("NOT SET"));
+		ui.pathEndPositionLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_NotSet"]));
 	}
 
 	if (pathPlanner.GetFinalPath() != NULL && pathPlanner.GetFinalPath()->GetElements().size() > 0)
@@ -250,7 +250,7 @@ void ParkingSimulator::setPathProperties()
 		ui.isPathSet->hide();
 		ui.pathElementsList->clear();
 		for (int i = 0; i < pathElementsCount; i++)
-			ui.pathElementsList->addItem(new QListWidgetItem(QString("Path Element %1").arg(i + 1)));
+			ui.pathElementsList->addItem(new QListWidgetItem(QString("%1 %2").arg(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_PathElement"])).arg(i + 1)));
 		ui.pathElementsList->show();
 	}
 	else
@@ -751,6 +751,7 @@ void ParkingSimulator::addBuilding()
 	{
 		ui.btnAddBuilding->setStyleSheet("");
 		mapEditor.SetAddBuilding(false);
+		mapEditor.SetNewElement(nullptr);
 	}
 }
 
@@ -777,6 +778,7 @@ void ParkingSimulator::addDecoration()
 	{
 		ui.btnAddDecoration->setStyleSheet("");
 		mapEditor.SetAddDecoration(false);
+		mapEditor.SetNewElement(nullptr);
 	}
 }
 
@@ -803,6 +805,7 @@ void ParkingSimulator::addCar()
 	{
 		ui.btnAddCar->setStyleSheet("");
 		mapEditor.SetAddCar(false);
+		mapEditor.SetNewElement(nullptr);
 	}
 }
 
@@ -829,6 +832,7 @@ void ParkingSimulator::addParkPlace()
 	{
 		ui.btnAddParkPlace->setStyleSheet("");
 		mapEditor.SetAddParkPlace(false);
+		mapEditor.SetNewElement(nullptr);
 	}
 }
 
@@ -849,12 +853,14 @@ void ParkingSimulator::addTerrain()
 			ui.btnAddTerrain->setStyleSheet("background-color: #d86a39;");
 			mapEditor.SetAddTerrain(true);
 			mapEditor.SetNewTerrain(addMapElementWindow.GetNewTerrain());
+			mapEditor.SetSelectedElement(nullptr);
 		}
 	}
 	else
 	{
 		ui.btnAddTerrain->setStyleSheet("");
 		mapEditor.SetAddTerrain(false);
+		mapEditor.SetNewTerrain(nullptr);
 	}
 }
 
@@ -1088,7 +1094,10 @@ void ParkingSimulator::setVehicle()
 void ParkingSimulator::setStart()
 {
 	if (pathPlanner.GetSetEndPosition())
+	{
+		pathPlanner.SetEndPoint(nullptr);
 		clearPathPlannerButtons();
+	}
 
 	if (pathPlanner.GetSetStartPosition())
 	{
@@ -1105,7 +1114,10 @@ void ParkingSimulator::setStart()
 void ParkingSimulator::setEnd()
 {
 	if (pathPlanner.GetSetStartPosition())
+	{
+		pathPlanner.SetStartPoint(nullptr);
 		clearPathPlannerButtons();
+	}
 
 	if (pathPlanner.GetSetEndPosition())
 	{
@@ -1243,7 +1255,9 @@ void ParkingSimulator::findPath()
 void ParkingSimulator::clearPathPlannerButtons()
 {
 	pathPlanner.SetSetStartPosition(false);
+	pathPlanner.SetSetStartDirection(false);
 	pathPlanner.SetSetEndPosition(false);
+	pathPlanner.SetSetEndDirection(false);
 
 	clearPathPlannerButtonsStyle();
 }
@@ -1259,7 +1273,7 @@ void ParkingSimulator::clearPathPlannerButtonsStyle()
 void ParkingSimulator::pathElementSelectionChange()
 {
 	int selectedIndex = ui.pathElementsList->currentRow();
-	if (selectedIndex > 0 && selectedIndex < pathPlanner.GetFinalPath()->GetElements().size())
+	if (selectedIndex >= 0 && selectedIndex < pathPlanner.GetFinalPath()->GetElements().size())
 		pathPlanner.SetSelectedPathElement(pathPlanner.GetFinalPath()->GetElements()[selectedIndex]);
 }
 

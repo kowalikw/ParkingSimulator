@@ -4,6 +4,7 @@
 #include "ui_SimulationInfo.h"
 #include "Simulation.h"
 #include "Language.h"
+#include "CommonHelper.h"
 
 using namespace Ui;
 

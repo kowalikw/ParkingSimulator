@@ -292,6 +292,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_ColorContainer.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="CommonHelper.cpp">
+      <Filter>Source Files\Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -472,6 +475,9 @@
     </ClInclude>
     <ClInclude Include="Language.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonHelper.h">
+      <Filter>Header Files\Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
