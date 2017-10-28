@@ -57,6 +57,17 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnMapElementRemove, SIGNAL(released()), this, SLOT(mapElementRemove()));
 	connect(ui.btnMapElementSaveProperties, SIGNAL(released()), this, SLOT(mapElementSaveProperties()));
 
+	// vehicle editor
+	connect(ui.btnNewVehicle, SIGNAL(released()), this, SLOT(newVehicle()));
+	connect(ui.btnOpenVehicle, SIGNAL(released()), this, SLOT(openVehicle()));
+	connect(ui.btnSaveVehicle, SIGNAL(released()), this, SLOT(saveVehicle()));
+	connect(ui.btnApplyVehicleProperties, SIGNAL(released()), this, SLOT(applyVehicleProperties()));
+	connect(ui.btnLoadVehicleModel, SIGNAL(released()), this, SLOT(loadVehicleModel()));
+	connect(ui.btnLoadVehicleLeftFrontWheelModel, SIGNAL(released()), this, SLOT(loadVehicleLeftFrontWheelModel()));
+	connect(ui.btnLoadVehicleRightFrontWheelModel, SIGNAL(released()), this, SLOT(loadVehicleRightFrontWheelModel()));
+	connect(ui.btnLoadVehicleLeftRearWheelModel, SIGNAL(released()), this, SLOT(loadVehicleLeftRearWheelModel()));
+	connect(ui.btnLoadRightRearWheelModel, SIGNAL(released()), this, SLOT(loadVehicleRightRearWheelModel()));
+
 	connect(ui.btnNewSimulation, SIGNAL(released()), this, SLOT(newSimulation()));
 	connect(ui.btnOpenSimulation, SIGNAL(released()), this, SLOT(openSimulation()));
 	connect(ui.btnSaveSimulation, SIGNAL(released()), this, SLOT(saveSimulation()));
@@ -1033,6 +1044,42 @@ void ParkingSimulator::clearMapEditorButtonsStyle()
 #pragma endregion
 
 #pragma region Path planner.
+
+void ParkingSimulator::newVehicle()
+{
+}
+
+void ParkingSimulator::openVehicle()
+{
+}
+
+void ParkingSimulator::saveVehicle()
+{
+}
+
+void ParkingSimulator::applyVehicleProperties()
+{
+}
+
+void ParkingSimulator::loadVehicleModel()
+{
+}
+
+void ParkingSimulator::loadVehicleLeftFrontWheelModel()
+{
+}
+
+void ParkingSimulator::loadVehicleRightFrontWheelModel()
+{
+}
+
+void ParkingSimulator::loadVehicleLeftRearWheelModel()
+{
+}
+
+void ParkingSimulator::loadVehicleRightRearWheelModel()
+{
+}
 
 void ParkingSimulator::newSimulation()
 {

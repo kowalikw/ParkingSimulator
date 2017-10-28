@@ -78,6 +78,17 @@ public slots:
 	void clearMapEditorButtons();
 	void clearMapEditorButtonsStyle();
 
+	//vehicle editor
+	void newVehicle();
+	void openVehicle();
+	void saveVehicle();
+	void applyVehicleProperties();
+	void loadVehicleModel();
+	void loadVehicleLeftFrontWheelModel();
+	void loadVehicleRightFrontWheelModel();
+	void loadVehicleLeftRearWheelModel();
+	void loadVehicleRightRearWheelModel();
+
 	//path planner
 	void newSimulation();
 	void openSimulation();
