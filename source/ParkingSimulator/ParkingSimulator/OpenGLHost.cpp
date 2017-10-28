@@ -138,3 +138,9 @@ void OpenGLHost::adjustMaxOffset()
 }
 
 #pragma endregion
+
+void OpenGLHost::UpdateSettings()
+{
+	if(nvgHelper != NULL)
+		nvgHelper->UpdateSettings();
+}

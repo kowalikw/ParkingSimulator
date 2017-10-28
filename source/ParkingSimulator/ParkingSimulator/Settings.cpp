@@ -8,6 +8,12 @@ void Settings::LoadSettings()
 
 	language = settings->value("Language").toString().toStdString();
 
+	buildings.clear();
+	decorations.clear();
+	parkingPlaces.clear();
+	vehicles.clear();
+	terrains.clear();
+
 	int buildingsCount = settings->value("BuildingsCount").toInt();
 	for (int i = 0; i < buildingsCount; i++)
 	{

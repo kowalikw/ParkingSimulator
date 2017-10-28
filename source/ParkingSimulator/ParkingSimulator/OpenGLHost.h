@@ -30,6 +30,8 @@ public:
 	virtual void wheelEvent(QWheelEvent * event);
 	virtual void keyPressEvent(QKeyEvent *event);
 	virtual void keyReleaseEvent(QKeyEvent * event);
+
+	void UpdateSettings();
 protected:
 	virtual void initializeGL();
 	virtual void resizeGL(int w, int h);
@@ -64,8 +66,8 @@ protected:
 	glm::vec2 drawAreaSize;
 	glm::vec2 drawAreaPosition;
 
-	NVGcontext *vg;
-	NvgDrawHelper *nvgHelper;
+	NVGcontext *vg = NULL;
+	NvgDrawHelper *nvgHelper = NULL;
 
 	const int EXTRA_OFFSET = 30;
 	const float MIN_MAGNIFICATION_RATIO = 0.2;

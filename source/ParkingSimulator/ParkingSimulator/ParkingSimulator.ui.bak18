@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1152</width>
+    <width>1024</width>
     <height>812</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1152</width>
+    <width>1024</width>
     <height>620</height>
    </size>
   </property>
@@ -1613,9 +1613,6 @@ QPushButton#btnShowVoronoiGraph:pressed, QPushButton#btnShowFullVoronoiVisibilit
              </size>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout">
-             <property name="spacing">
-              <number>5</number>
-             </property>
              <property name="leftMargin">
               <number>0</number>
              </property>
@@ -2950,159 +2947,63 @@ QDoubleSpinBox::down-arrow:hover {
                <property name="topMargin">
                 <number>0</number>
                </property>
-               <item row="1" column="3">
-                <widget class="QPushButton" name="btnShowFinalPath">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showFinalPath.png</normaloff>Resources/PathPlannerIcons/showFinalPath.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QPushButton" name="btnShowPolylinePath">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showPolylinePath.png</normaloff>Resources/PathPlannerIcons/showPolylinePath.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="QPushButton" name="btnShowParkingPath">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showParkingPathIcon.png</normaloff>Resources/PathPlannerIcons/showParkingPathIcon.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>46</width>
-                   <height>46</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="QPushButton" name="btnShowFullVoronoiVisibilityGraph">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showVoronoiVisibilityFullGraph.png</normaloff>Resources/PathPlannerIcons/showVoronoiVisibilityFullGraph.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
+               <item row="0" column="0">
                 <widget class="QPushButton" name="btnShowVoronoiGraph">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
                  <property name="cursor">
                   <cursorShape>PointingHandCursor</cursorShape>
                  </property>
                  <property name="text">
                   <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showVoronoiGraph.png</normaloff>Resources/PathPlannerIcons/showVoronoiGraph.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="btnShowExpandedObstacles">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
+                <widget class="QPushButton" name="btnShowFullVoronoiVisibilityGraph">
                  <property name="cursor">
                   <cursorShape>PointingHandCursor</cursorShape>
                  </property>
                  <property name="text">
                   <string/>
                  </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showExpandedObstacles.png</normaloff>Resources/PathPlannerIcons/showExpandedObstacles.png</iconset>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="btnShowExpandedObstacles">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
                  </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QPushButton" name="btnShowFinalPath">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QPushButton" name="btnShowPolylinePath">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QPushButton" name="btnShowParkingPath">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -3118,8 +3019,8 @@ QDoubleSpinBox::down-arrow:hover {
       <widget class="QWidget" name="tabVisualisation">
        <property name="styleSheet">
         <string notr="true">QFrame {
-	background-color: #3b3e41;
-	border: 1px solid #757575;
+	background-color: #2a2a2a;
+	border: 2px solid gray;
 	border-radius: 3px;
 }
 
@@ -3144,20 +3045,12 @@ QPushButton#btnAddSimulation:pressed, QPushButton#btnRemoveSimulation:pressed, Q
     background-color: #d86a39;
 }
 
-QToolButton#btnVisualisation2D, QToolButton#btnVisualisation3D {
-	font-size: 18px;
-	border: 2px solid #757575;
-	color: white;
-}
-
 QToolButton#btnVisualisation2D:hover, QToolButton#btnVisualisation3D:hover {
-	border: 2px solid #85b448;
-	color: #85b448;
+	border: 3px solid #85b448;
 }
 
 QToolButton#btnVisualisation2D:pressed, QToolButton#btnVisualisation3D:pressed {
-	border: 2px solid #d86a39;
-	color: #d86a39;
+	border: 3px solid #d86a39;
 }
 
 QSlider::groove:horizontal {
@@ -3257,179 +3150,70 @@ QSpinBox::down-arrow:hover {
            <number>0</number>
           </property>
           <item>
-           <widget class="QWidget" name="" native="true">
-            <property name="minimumSize">
-             <size>
-              <width>220</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>220</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <property name="spacing">
-              <number>5</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QWidget" name="" native="true">
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <property name="spacing">
-                 <number>5</number>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QPushButton" name="btnAddSimulation">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
-                <property name="leftMargin">
-                 <number>0</number>
+                <property name="text">
+                 <string/>
                 </property>
-                <property name="topMargin">
-                 <number>0</number>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/plus.png</normaloff>Resources/VisualisationIcons/plus.png</iconset>
                 </property>
-                <property name="rightMargin">
-                 <number>0</number>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnRemoveSimulation">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
                 </property>
-                <property name="bottomMargin">
-                 <number>0</number>
+                <property name="text">
+                 <string/>
                 </property>
-                <item>
-                 <widget class="QPushButton" name="btnAddSimulation">
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="sizeIncrement">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="cursor">
-                   <cursorShape>PointingHandCursor</cursorShape>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>Resources/VisualisationIcons/plus.png</normaloff>Resources/VisualisationIcons/plus.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>30</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="btnRemoveSimulation">
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="cursor">
-                   <cursorShape>PointingHandCursor</cursorShape>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>Resources/VisualisationIcons/minus.png</normaloff>Resources/VisualisationIcons/minus.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>32</width>
-                    <height>32</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="btnInfoSimulation">
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="cursor">
-                   <cursorShape>PointingHandCursor</cursorShape>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>Resources/VisualisationIcons/info.png</normaloff>Resources/VisualisationIcons/info.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>32</width>
-                    <height>32</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QListWidget" name="listSimulations">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="layoutMode">
-                <enum>QListView::SinglePass</enum>
-               </property>
-               <property name="viewMode">
-                <enum>QListView::ListMode</enum>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/minus.png</normaloff>Resources/VisualisationIcons/minus.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnInfoSimulation">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/info.png</normaloff>Resources/VisualisationIcons/info.png</iconset>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QListWidget" name="listSimulations">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="layoutMode">
+               <enum>QListView::SinglePass</enum>
+              </property>
+              <property name="viewMode">
+               <enum>QListView::ListMode</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -3437,158 +3221,104 @@ QSpinBox::down-arrow:hover {
              <number>0</number>
             </property>
             <item>
-             <widget class="QWidget" name="" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>42</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>42</height>
-               </size>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
-               <property name="spacing">
-                <number>5</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QFrame" name="horizontalFrame">
-                 <layout class="QHBoxLayout" name="horizontalLayout_16">
-                  <property name="leftMargin">
-                   <number>1</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>15</number>
-                  </property>
-                  <item>
-                   <widget class="QLabel" name="simulationDurationLabel">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">color: white;
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QFrame" name="horizontalFrame">
+                <layout class="QHBoxLayout" name="horizontalLayout_16">
+                 <property name="leftMargin">
+                  <number>1</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="simulationDurationLabel">
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: white;
 margin-left: 8px;</string>
-                    </property>
-                    <property name="text">
-                     <string>Simulation length (sec):</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QSpinBox" name="simulationLength">
-                    <property name="font">
-                     <font>
-                      <pointsize>12</pointsize>
-                     </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">color: white;</string>
-                    </property>
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="value">
-                     <number>10</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QCheckBox" name="showPathElements">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">color: white;
+                   </property>
+                   <property name="text">
+                    <string>Simulation length (sec):</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QSpinBox" name="simulationLength">
+                   <property name="font">
+                    <font>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: white;</string>
+                   </property>
+                   <property name="minimum">
+                    <number>1</number>
+                   </property>
+                   <property name="value">
+                    <number>10</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="showPathElements">
+                   <property name="font">
+                    <font>
+                     <pointsize>11</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: white;
 margin-left: 30px;
-margin-rigth: 20px;
-background-color: #3b3e41;</string>
-                    </property>
-                    <property name="text">
-                     <string>Show path elements</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_2">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QToolButton" name="btnVisualisation2D">
-                 <property name="minimumSize">
-                  <size>
-                   <width>56</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>56</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string>2D</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QToolButton" name="btnVisualisation3D">
-                 <property name="minimumSize">
-                  <size>
-                   <width>56</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>56</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string>3D</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
+margin-rigth: 20px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Show path elements</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btnVisualisation2D">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>2D</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btnVisualisation3D">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string>3D</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
              <widget class="VisualisationGLHost" name="glVisualisation">

@@ -54,6 +54,7 @@ public slots:
 	void loadSettings();
 	void saveSettings();
 	void goToMapEditor();
+	void goToVehicleEditor();
 	void goToPathPlanner();
 	void goToVisualisation();
 	void goToSettings();

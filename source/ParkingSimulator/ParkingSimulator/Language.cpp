@@ -13,13 +13,24 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("Title", language.value("Title").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Tab_Start", language.value("Tab_Start").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Tab_MapEditor", language.value("Tab_MapEditor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Tab_VehicleEditor", language.value("Tab_VehicleEditor").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Tab_PathPlanner", language.value("Tab_PathPlanner").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Tab_Visualisation", language.value("Tab_Visualisation").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Tab_Settings", language.value("Tab_Settings").toString().toStdString()));
+
+	dictionary.insert(std::pair<std::string, std::string>("Start_UniversityName", language.value("Start_UniversityName").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Start_FacultyName", language.value("Start_FacultyName").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Start_MastersThesis", language.value("Start_MastersThesis").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Start_ThesisTitle", language.value("Start_ThesisTitle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Start_ThesisAuthor", language.value("Start_ThesisAuthor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Start_ThesisSupervisor", language.value("Start_ThesisSupervisor").toString().toStdString()));
+
 	dictionary.insert(std::pair<std::string, std::string>("Start_GoToMapEditor", language.value("Start_GoToMapEditor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Start_GoToVehicleEditor", language.value("Start_GoToMapEditor").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_GoToPathPlanner", language.value("Start_GoToPathPlanner").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_GoToVisualisation", language.value("Start_GoToVisualisation").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_GoToSettings", language.value("Start_GoToSettings").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Start_GoToExit", language.value("Start_GoToExit").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("MapEditor_NewMap", language.value("MapEditor_NewMap").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("MapEditor_OpenMap", language.value("MapEditor_OpenMap").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("MapEditor_SaveMap", language.value("MapEditor_SaveMap").toString().toStdString()));
@@ -122,6 +133,42 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("AddMapElement_SelectVehicle", language.value("AddMapElement_SelectVehicle").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("AddMapElement_SelectTerrain", language.value("AddMapElement_SelectTerrain").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_Add", language.value("Common_Add").toString().toStdString()));
+
+	dictionary.insert(std::pair<std::string, std::string>("Settings_Language", language.value("Settings_Language").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_ChooseLanguage", language.value("Settings_ChooseLanguage").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElements", language.value("Settings_MapElements").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsBuilding", language.value("Settings_MapElementsBuilding").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsDecoration", language.value("Settings_MapElementsDecoration").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsPrakingPlace", language.value("Settings_MapElementsPrakingPlace").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsVehicle", language.value("Settings_MapElementsVehicle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsHoverElement", language.value("Settings_MapElementsHoverElement").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsSelectedElement", language.value("Settings_MapElementsSelectedElement").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsTransformed", language.value("Settings_MapElementsTransformed").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsTransformedAdmissible", language.value("Settings_MapElementsTransformedAdmissible").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElementsTransformedNotAdmissible", language.value("Settings_MapElementsTransformedNotAdmissible").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_Graph", language.value("Settings_Graph").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_GraphEdge", language.value("Settings_GraphEdge").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_GraphEdgeWidth", language.value("Settings_GraphEdgeWidth").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_GraphEdgeColor", language.value("Settings_GraphEdgeColor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_GraphVertex", language.value("Settings_GraphVertex").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_GraphVertexRadius", language.value("Settings_GraphVertexRadius").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_GraphVertexColor", language.value("Settings_GraphVertexColor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_PathElements", language.value("Settings_PathElements").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_PathElementsLine", language.value("Settings_PathElementsLine").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_PathElementsCircle", language.value("Settings_PathElementsCircle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_PathElementsBSpline", language.value("Settings_PathElementsBSpline").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_PathElementsSelected", language.value("Settings_PathElementsSelected").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_Map", language.value("Settings_Map").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapBorderWidth", language.value("Settings_MapBorderWidth").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_MapBorderColor", language.value("Settings_MapBorderColor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("SettingsMapColor", language.value("SettingsMapColor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_BorderWidth", language.value("Settings_BorderWidth").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_BorderColor", language.value("Settings_BorderColor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_FillColor", language.value("Settings_FillColor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_Width", language.value("Settings_Width").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_Radius", language.value("Settings_Radius").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_Color", language.value("Settings_Color").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Settings_SaveSettings", language.value("Settings_SaveSettings").toString().toStdString()));
 }
 
 std::map<std::string, std::string> Language::GetDictionary()

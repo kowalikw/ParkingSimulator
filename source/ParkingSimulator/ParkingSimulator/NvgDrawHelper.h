@@ -55,21 +55,14 @@ public:
 	void DrawMeshOnMap(Map *map, int width = 3);
 	void DrawTerrain(Terrain *terrain, bool isHover = false);
 
-	const int SELECTED_MARKER_SIZE = 5;
-	const NVGcolor SELECTED_MARKER_COLOR = nvgRGBA(255, 0, 0, 255);
-
-	const NVGcolor START_FLAG_COLOR = nvgRGBA(0, 255, 0, 255);
-	const NVGcolor END_FLAG_COLOR = nvgRGBA(255, 0, 0, 255);
+	int SELECTED_MARKER_SIZE = Settings::getInstance()->GetInt("SELECTED_MARKER_SIZE");
+	NVGcolor SELECTED_MARKER_COLOR = Settings::getInstance()->GetColor("SELECTED_MARKER_COLOR");
 
 	int ACTIVE_BORDER_WIDTH = Settings::getInstance()->GetInt("ACTIVE_BORDER_WIDTH");
 	NVGcolor ACTIVE_GOOD_COLOR = Settings::getInstance()->GetColor("ACTIVE_GOOD_COLOR");
 	NVGcolor ACTIVE_GOOD_BORDER_COLOR = Settings::getInstance()->GetColor("ACTIVE_GOOD_BORDER_COLOR");
 	NVGcolor ACTIVE_BAD_COLOR = Settings::getInstance()->GetColor("ACTIVE_BAD_COLOR");
 	NVGcolor ACTIVE_BAD_BORDER_COLOR = Settings::getInstance()->GetColor("ACTIVE_BAD_BORDER_COLOR");
-
-	int EXTRA_OFFSET = 30;
-	float MIN_MAGNIFICATION_RATIO = 0.2;
-	float MAX_MAGNIFICATION_RATIO = 5.0;
 
 	int MAP_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_BORDER_WIDTH");
 	NVGcolor MAP_COLOR = Settings::getInstance()->GetColor("MAP_COLOR");
@@ -133,6 +126,8 @@ public:
 	NVGcolor TERRAIN_HOVER_COLOR = Settings::getInstance()->GetColor("TERRAIN_HOVER_COLOR");
 
 	int meshOnMapSize = Settings::getInstance()->GetInt("TERRAIN_SLICE_SIZE");
+
+	void UpdateSettings();
 
 private:
 	NVGcontext *vg;

@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1152</width>
+    <width>1024</width>
     <height>812</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1152</width>
+    <width>1024</width>
     <height>620</height>
    </size>
   </property>
@@ -2950,159 +2950,63 @@ QDoubleSpinBox::down-arrow:hover {
                <property name="topMargin">
                 <number>0</number>
                </property>
-               <item row="1" column="3">
-                <widget class="QPushButton" name="btnShowFinalPath">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showFinalPath.png</normaloff>Resources/PathPlannerIcons/showFinalPath.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QPushButton" name="btnShowPolylinePath">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showPolylinePath.png</normaloff>Resources/PathPlannerIcons/showPolylinePath.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="QPushButton" name="btnShowParkingPath">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showParkingPathIcon.png</normaloff>Resources/PathPlannerIcons/showParkingPathIcon.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>46</width>
-                   <height>46</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="QPushButton" name="btnShowFullVoronoiVisibilityGraph">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showVoronoiVisibilityFullGraph.png</normaloff>Resources/PathPlannerIcons/showVoronoiVisibilityFullGraph.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
+               <item row="0" column="0">
                 <widget class="QPushButton" name="btnShowVoronoiGraph">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
                  <property name="cursor">
                   <cursorShape>PointingHandCursor</cursorShape>
                  </property>
                  <property name="text">
                   <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showVoronoiGraph.png</normaloff>Resources/PathPlannerIcons/showVoronoiGraph.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="btnShowExpandedObstacles">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>56</height>
-                  </size>
-                 </property>
+                <widget class="QPushButton" name="btnShowFullVoronoiVisibilityGraph">
                  <property name="cursor">
                   <cursorShape>PointingHandCursor</cursorShape>
                  </property>
                  <property name="text">
                   <string/>
                  </property>
-                 <property name="icon">
-                  <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showExpandedObstacles.png</normaloff>Resources/PathPlannerIcons/showExpandedObstacles.png</iconset>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QPushButton" name="btnShowExpandedObstacles">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
                  </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>42</width>
-                   <height>42</height>
-                  </size>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QPushButton" name="btnShowFinalPath">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QPushButton" name="btnShowPolylinePath">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QPushButton" name="btnShowParkingPath">
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -3145,19 +3049,15 @@ QPushButton#btnAddSimulation:pressed, QPushButton#btnRemoveSimulation:pressed, Q
 }
 
 QToolButton#btnVisualisation2D, QToolButton#btnVisualisation3D {
-	font-size: 18px;
 	border: 2px solid #757575;
-	color: white;
 }
 
 QToolButton#btnVisualisation2D:hover, QToolButton#btnVisualisation3D:hover {
 	border: 2px solid #85b448;
-	color: #85b448;
 }
 
 QToolButton#btnVisualisation2D:pressed, QToolButton#btnVisualisation3D:pressed {
 	border: 2px solid #d86a39;
-	color: #d86a39;
 }
 
 QSlider::groove:horizontal {
@@ -3441,13 +3341,13 @@ QSpinBox::down-arrow:hover {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>42</height>
+                <height>60</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>16777215</width>
-                <height>42</height>
+                <height>60</height>
                </size>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -3547,14 +3447,14 @@ background-color: #3b3e41;</string>
                 <widget class="QToolButton" name="btnVisualisation2D">
                  <property name="minimumSize">
                   <size>
-                   <width>56</width>
-                   <height>42</height>
+                   <width>70</width>
+                   <height>60</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>56</width>
-                   <height>42</height>
+                   <width>70</width>
+                   <height>60</height>
                   </size>
                  </property>
                  <property name="cursor">
@@ -3569,14 +3469,14 @@ background-color: #3b3e41;</string>
                 <widget class="QToolButton" name="btnVisualisation3D">
                  <property name="minimumSize">
                   <size>
-                   <width>56</width>
-                   <height>42</height>
+                   <width>70</width>
+                   <height>60</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>56</width>
-                   <height>42</height>
+                   <width>70</width>
+                   <height>60</height>
                   </size>
                  </property>
                  <property name="cursor">
