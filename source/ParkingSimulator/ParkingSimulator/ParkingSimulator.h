@@ -36,6 +36,7 @@ private:
 	QTimer *render3DTimer;
 	QTimer *updateTimer;
 	MapEditor mapEditor;
+	VehicleEditor vehicleEditor;
 	PathPlanner pathPlanner;
 	Visualisation visualisation;
 
@@ -82,12 +83,27 @@ public slots:
 	void newVehicle();
 	void openVehicle();
 	void saveVehicle();
-	void applyVehicleProperties();
 	void loadVehicleModel();
 	void loadVehicleLeftFrontWheelModel();
 	void loadVehicleRightFrontWheelModel();
 	void loadVehicleLeftRearWheelModel();
 	void loadVehicleRightRearWheelModel();
+
+	void enableVehicleFrontLeftWheelProperties();
+	void enableVehicleFrontRightWheelProperties();
+	void enableVehicleRearLeftWheelProperties();
+	void enableVehicleRearRightWheelProperties();
+
+	void updateVehicleFrontLeftWheelProperties();
+	void updateVehicleFrontRightWheelProperties();
+	void updateVehicleRearLeftWheelProperties();
+	void updateVehicleRearRightWheelProperties();
+
+	void applyVehicleProperties();
+	void vehicleFrontLeftWheelPropertiesChanged();
+	void vehicleFrontRightWheelPropertiesChanged();
+	void vehicleRearLeftWheelPropertiesChanged();
+	void vehicleRearRightWheelPropertiesChanged();
 
 	//path planner
 	void newSimulation();

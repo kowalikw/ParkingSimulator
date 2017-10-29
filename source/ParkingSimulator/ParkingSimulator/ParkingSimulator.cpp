@@ -18,6 +18,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	Language::getInstance()->LoadLanguage(Settings::getInstance()->GetLanguage());
 
 	((MapEditorGLHost*)ui.glMapEditor)->SetMapEditor(&mapEditor);
+	((VehicleEditorGLHost*)ui.glVehicleEditor)->SetVehicleEditor(&vehicleEditor);
 	((PathPlannerGLHost*)ui.glPathPlanner)->SetPathPlanner(&pathPlanner);
 	((VisualisationGLHost*)ui.glVisualisation)->SetVisualisation(&visualisation);
 	((OpenGLHost3D*)ui.glVisualisation3D)->SetVisualisation(&visualisation);
@@ -67,6 +68,46 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnLoadVehicleRightFrontWheelModel, SIGNAL(released()), this, SLOT(loadVehicleRightFrontWheelModel()));
 	connect(ui.btnLoadVehicleLeftRearWheelModel, SIGNAL(released()), this, SLOT(loadVehicleLeftRearWheelModel()));
 	connect(ui.btnLoadRightRearWheelModel, SIGNAL(released()), this, SLOT(loadVehicleRightRearWheelModel()));
+
+	connect(ui.vehicleFrontLeftWheelPositionX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+	connect(ui.vehicleFrontLeftWheelPositionY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+	connect(ui.vehicleFrontLeftWheelPositionZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+	connect(ui.vehicleFrontLeftWheelRotationX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+	connect(ui.vehicleFrontLeftWheelRotationY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+	connect(ui.vehicleFrontLeftWheelRotationZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+	connect(ui.vehicleFrontLeftWheelScaleX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+	connect(ui.vehicleFrontLeftWheelScaleY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+	connect(ui.vehicleFrontLeftWheelScaleZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
+
+	connect(ui.vehicleFrontRightWheelPositionX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+	connect(ui.vehicleFrontRightWheelPositionY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+	connect(ui.vehicleFrontRightWheelPositionZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+	connect(ui.vehicleFrontRightWheelRotationX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+	connect(ui.vehicleFrontRightWheelRotationY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+	connect(ui.vehicleFrontRightWheelRotationZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+	connect(ui.vehicleFrontRightWheelScaleX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+	connect(ui.vehicleFrontRightWheelScaleY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+	connect(ui.vehicleFrontRightWheelScaleZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
+
+	connect(ui.vehicleRearLeftWheelPositionX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+	connect(ui.vehicleRearLeftWheelPositionY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+	connect(ui.vehicleRearLeftWheelPositionZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+	connect(ui.vehicleRearLeftWheelRotationX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+	connect(ui.vehicleRearLeftWheelRotationY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+	connect(ui.vehicleRearLeftWheelRotationZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+	connect(ui.vehicleRearLeftWheelScaleX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+	connect(ui.vehicleRearLeftWheelScaleY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+	connect(ui.vehicleRearLeftWheelScaleZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
+
+	connect(ui.vehicleRearRightWheelPositionX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
+	connect(ui.vehicleRearRightWheelPositionY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
+	connect(ui.vehicleRearRightWheelPositionZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
+	connect(ui.vehicleRearRightWheelRotationX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
+	connect(ui.vehicleRearRightWheelRotationY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
+	connect(ui.vehicleRearRightWheelRotationZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
+	connect(ui.vehicleRearRightWheelScaleX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
+	connect(ui.vehicleRearRightWheelScaleY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
+	connect(ui.vehicleRearRightWheelScaleZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
 
 	connect(ui.btnNewSimulation, SIGNAL(released()), this, SLOT(newSimulation()));
 	connect(ui.btnOpenSimulation, SIGNAL(released()), this, SLOT(openSimulation()));
@@ -168,6 +209,7 @@ void ParkingSimulator::renderTimerCall()
 
 void ParkingSimulator::render3DTimerCall()
 {
+	ui.glVehicleEditor->repaint();
 	ui.glVisualisation3D->repaint();
 }
 
@@ -1047,38 +1089,272 @@ void ParkingSimulator::clearMapEditorButtonsStyle()
 
 void ParkingSimulator::newVehicle()
 {
+	vehicleEditor.CreateNewVehicle();
+
+	applyVehicleProperties();
 }
 
 void ParkingSimulator::openVehicle()
 {
+	QString filter = tr("Vehicle files (*.vehicle)");
+	QString filePath = QFileDialog::getOpenFileName(this, "Open vehicle", QString(), tr("All files (*.*);;Vehicle files (*.vehicle)"), &filter);
+
+	if (filePath != "")
+	{
+		vehicleEditor.OpenVehicle(filePath.toStdString());
+
+		if (vehicleEditor.GetVehicle()->GetFrontLeftWheelModel() != NULL)
+		{
+			enableVehicleFrontLeftWheelProperties();
+			updateVehicleFrontLeftWheelProperties();
+		}
+		if (vehicleEditor.GetVehicle()->GetFrontRightWheelModel() != NULL)
+		{
+			enableVehicleFrontRightWheelProperties();
+			updateVehicleFrontRightWheelProperties();
+		}
+		if (vehicleEditor.GetVehicle()->GetRearLeftWheelModel() != NULL)
+		{
+			enableVehicleRearLeftWheelProperties();
+			updateVehicleRearLeftWheelProperties();
+		}
+		if (vehicleEditor.GetVehicle()->GetRearRightWheelModel() != NULL)
+		{
+			enableVehicleRearRightWheelProperties();
+			updateVehicleRearRightWheelProperties();
+		}
+	}
 }
 
 void ParkingSimulator::saveVehicle()
 {
+	QString filter = tr("Vehicle files (*.vehicle)");
+	QString filePath = QFileDialog::getSaveFileName(this, "Save vehicle", QString(), tr("All files (*.*);;Vehicle files (*.vehicle)"), &filter);
+
+	if (filePath != "")
+		vehicleEditor.SaveVehicle(filePath.toStdString());
 }
 
 void ParkingSimulator::applyVehicleProperties()
 {
+	if (vehicleEditor.GetVehicle() != NULL)
+	{
+		vehicleEditor.GetVehicle()->SetName(ui.vehicleName->text().toStdString());
+		vehicleEditor.GetVehicle()->SetSize(glm::vec2(ui.vehicleLength->value(), ui.vehicleWidth->value()));
+		vehicleEditor.GetVehicle()->wheelbase = ui.vehicleWheelbase->value();
+		vehicleEditor.GetVehicle()->track = ui.vehicleTrack->value();
+	}
 }
 
 void ParkingSimulator::loadVehicleModel()
 {
+	QString filter = tr("OBJ model files (*.obj)");
+	QString filePath = QFileDialog::getOpenFileName(this, "OBJ model files", QString(), tr("All files (*.*);;OBJ model files (*.obj)"), &filter);
+
+	if (filePath != "")
+	{
+		vehicleEditor.LoadVehicleModel(filePath.toStdString());
+	}
 }
 
 void ParkingSimulator::loadVehicleLeftFrontWheelModel()
 {
+	QString filter = tr("OBJ model files (*.obj)");
+	QString filePath = QFileDialog::getOpenFileName(this, "OBJ model files", QString(), tr("All files (*.*);;OBJ model files (*.obj)"), &filter);
+
+	if (filePath != "")
+	{
+		vehicleEditor.LoadFrontLeftWheelModel(filePath.toStdString());
+		enableVehicleFrontLeftWheelProperties();
+		updateVehicleFrontLeftWheelProperties();
+	}
 }
 
 void ParkingSimulator::loadVehicleRightFrontWheelModel()
 {
+	QString filter = tr("OBJ model files (*.obj)");
+	QString filePath = QFileDialog::getOpenFileName(this, "OBJ model files", QString(), tr("All files (*.*);;OBJ model files (*.obj)"), &filter);
+
+	if (filePath != "")
+	{
+		vehicleEditor.LoadFrontRightWheelModel(filePath.toStdString());
+		enableVehicleFrontRightWheelProperties();
+		updateVehicleFrontRightWheelProperties();
+	}
 }
 
 void ParkingSimulator::loadVehicleLeftRearWheelModel()
 {
+	QString filter = tr("OBJ model files (*.obj)");
+	QString filePath = QFileDialog::getOpenFileName(this, "OBJ model files", QString(), tr("All files (*.*);;OBJ model files (*.obj)"), &filter);
+
+	if (filePath != "")
+	{
+		vehicleEditor.LoadRearLeftWheelModel(filePath.toStdString());
+		enableVehicleRearLeftWheelProperties();
+		updateVehicleRearLeftWheelProperties();
+	}
 }
 
 void ParkingSimulator::loadVehicleRightRearWheelModel()
 {
+	QString filter = tr("OBJ model files (*.obj)");
+	QString filePath = QFileDialog::getOpenFileName(this, "OBJ model files", QString(), tr("All files (*.*);;OBJ model files (*.obj)"), &filter);
+
+	if (filePath != "")
+	{
+		vehicleEditor.LoadRearRightWheelModel(filePath.toStdString());
+		enableVehicleRearRightWheelProperties();
+		updateVehicleRearRightWheelProperties();
+	}
+}
+
+void ParkingSimulator::enableVehicleFrontLeftWheelProperties()
+{
+	ui.vehicleFrontLeftWheelIsSet->setText(QString("OK"));
+	ui.vehicleFrontLeftWheelIsSet->setStyleSheet(QString("color: green;"));
+	ui.vehicleFrontLeftWheelPositionX->setEnabled(true);
+	ui.vehicleFrontLeftWheelPositionY->setEnabled(true);
+	ui.vehicleFrontLeftWheelPositionZ->setEnabled(true);
+	ui.vehicleFrontLeftWheelRotationX->setEnabled(true);
+	ui.vehicleFrontLeftWheelRotationY->setEnabled(true);
+	ui.vehicleFrontLeftWheelRotationZ->setEnabled(true);
+	ui.vehicleFrontLeftWheelScaleX->setEnabled(true);
+	ui.vehicleFrontLeftWheelScaleY->setEnabled(true);
+	ui.vehicleFrontLeftWheelScaleZ->setEnabled(true);
+}
+
+void ParkingSimulator::enableVehicleFrontRightWheelProperties()
+{
+	ui.vehicleFrontRightWheelIsSet->setText(QString("OK"));
+	ui.vehicleFrontRightWheelIsSet->setStyleSheet(QString("color: green;"));
+	ui.vehicleFrontRightWheelPositionX->setEnabled(true);
+	ui.vehicleFrontRightWheelPositionY->setEnabled(true);
+	ui.vehicleFrontRightWheelPositionZ->setEnabled(true);
+	ui.vehicleFrontRightWheelRotationX->setEnabled(true);
+	ui.vehicleFrontRightWheelRotationY->setEnabled(true);
+	ui.vehicleFrontRightWheelRotationZ->setEnabled(true);
+	ui.vehicleFrontRightWheelScaleX->setEnabled(true);
+	ui.vehicleFrontRightWheelScaleY->setEnabled(true);
+	ui.vehicleFrontRightWheelScaleZ->setEnabled(true);
+}
+
+void ParkingSimulator::enableVehicleRearLeftWheelProperties()
+{
+	ui.vehicleRearLeftWheelIsSet->setText(QString("OK"));
+	ui.vehicleRearLeftWheelIsSet->setStyleSheet(QString("color: green;"));
+	ui.vehicleRearLeftWheelPositionX->setEnabled(true);
+	ui.vehicleRearLeftWheelPositionY->setEnabled(true);
+	ui.vehicleRearLeftWheelPositionZ->setEnabled(true);
+	ui.vehicleRearLeftWheelRotationX->setEnabled(true);
+	ui.vehicleRearLeftWheelRotationY->setEnabled(true);
+	ui.vehicleRearLeftWheelRotationZ->setEnabled(true);
+	ui.vehicleRearLeftWheelScaleX->setEnabled(true);
+	ui.vehicleRearLeftWheelScaleY->setEnabled(true);
+	ui.vehicleRearLeftWheelScaleZ->setEnabled(true);
+}
+
+void ParkingSimulator::enableVehicleRearRightWheelProperties()
+{
+	ui.vehicleRearRightWheelIsSet->setText(QString("OK"));
+	ui.vehicleRearRightWheelIsSet->setStyleSheet(QString("color: green;"));
+	ui.vehicleRearRightWheelPositionX->setEnabled(true);
+	ui.vehicleRearRightWheelPositionY->setEnabled(true);
+	ui.vehicleRearRightWheelPositionZ->setEnabled(true);
+	ui.vehicleRearRightWheelRotationX->setEnabled(true);
+	ui.vehicleRearRightWheelRotationY->setEnabled(true);
+	ui.vehicleRearRightWheelRotationZ->setEnabled(true);
+	ui.vehicleRearRightWheelScaleX->setEnabled(true);
+	ui.vehicleRearRightWheelScaleY->setEnabled(true);
+	ui.vehicleRearRightWheelScaleZ->setEnabled(true);
+}
+
+void ParkingSimulator::updateVehicleFrontLeftWheelProperties()
+{
+	ui.vehicleFrontLeftWheelPositionX->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetTranslation().x);
+	ui.vehicleFrontLeftWheelPositionY->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetTranslation().y);
+	ui.vehicleFrontLeftWheelPositionZ->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetTranslation().z);
+	ui.vehicleFrontLeftWheelRotationX->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetRotation().x);
+	ui.vehicleFrontLeftWheelRotationY->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetRotation().y);
+	ui.vehicleFrontLeftWheelRotationZ->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetRotation().z);
+	ui.vehicleFrontLeftWheelScaleX->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetScale().x);
+	ui.vehicleFrontLeftWheelScaleY->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetScale().y);
+	ui.vehicleFrontLeftWheelScaleZ->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetScale().z);
+}
+
+void ParkingSimulator::updateVehicleFrontRightWheelProperties()
+{
+	ui.vehicleFrontRightWheelPositionX->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetTranslation().x);
+	ui.vehicleFrontRightWheelPositionY->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetTranslation().y);
+	ui.vehicleFrontRightWheelPositionZ->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetTranslation().z);
+	ui.vehicleFrontRightWheelRotationX->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetRotation().x);
+	ui.vehicleFrontRightWheelRotationY->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetRotation().y);
+	ui.vehicleFrontRightWheelRotationZ->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetRotation().z);
+	ui.vehicleFrontRightWheelScaleX->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetScale().x);
+	ui.vehicleFrontRightWheelScaleY->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetScale().y);
+	ui.vehicleFrontRightWheelScaleZ->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetScale().z);
+}
+
+void ParkingSimulator::updateVehicleRearLeftWheelProperties()
+{
+	ui.vehicleRearLeftWheelPositionX->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetTranslation().x);
+	ui.vehicleRearLeftWheelPositionY->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetTranslation().y);
+	ui.vehicleRearLeftWheelPositionZ->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetTranslation().z);
+	ui.vehicleRearLeftWheelRotationX->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetRotation().x);
+	ui.vehicleRearLeftWheelRotationY->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetRotation().y);
+	ui.vehicleRearLeftWheelRotationZ->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetRotation().z);
+	ui.vehicleRearLeftWheelScaleX->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetScale().x);
+	ui.vehicleRearLeftWheelScaleY->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetScale().y);
+	ui.vehicleRearLeftWheelScaleZ->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetScale().z);
+}
+
+void ParkingSimulator::updateVehicleRearRightWheelProperties()
+{
+	ui.vehicleRearRightWheelPositionX->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetTranslation().x);
+	ui.vehicleRearRightWheelPositionY->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetTranslation().y);
+	ui.vehicleRearRightWheelPositionZ->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetTranslation().z);
+	ui.vehicleRearRightWheelRotationX->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetRotation().x);
+	ui.vehicleRearRightWheelRotationY->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetRotation().y);
+	ui.vehicleRearRightWheelRotationZ->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetRotation().z);
+	ui.vehicleRearRightWheelScaleX->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetScale().x);
+	ui.vehicleRearRightWheelScaleY->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetScale().y);
+	ui.vehicleRearRightWheelScaleZ->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetScale().z);
+}
+
+void ParkingSimulator::vehicleFrontLeftWheelPropertiesChanged()
+{
+	glm::vec3 translation = glm::vec3(ui.vehicleFrontLeftWheelPositionX->value(), ui.vehicleFrontLeftWheelPositionY->value(), ui.vehicleFrontLeftWheelPositionZ->value());
+	glm::vec3 rotation = glm::vec3(ui.vehicleFrontLeftWheelRotationX->value(), ui.vehicleFrontLeftWheelRotationY->value(), ui.vehicleFrontLeftWheelRotationZ->value());
+	glm::vec3 scale = glm::vec3(ui.vehicleFrontLeftWheelScaleX->value(), ui.vehicleFrontLeftWheelScaleY->value(), ui.vehicleFrontLeftWheelScaleZ->value());
+
+	vehicleEditor.UpdateFrontLeftWheelProperties(translation, rotation, scale);
+}
+
+void ParkingSimulator::vehicleFrontRightWheelPropertiesChanged()
+{
+	glm::vec3 translation = glm::vec3(ui.vehicleFrontRightWheelPositionX->value(), ui.vehicleFrontRightWheelPositionY->value(), ui.vehicleFrontRightWheelPositionZ->value());
+	glm::vec3 rotation = glm::vec3(ui.vehicleFrontRightWheelRotationX->value(), ui.vehicleFrontRightWheelRotationY->value(), ui.vehicleFrontRightWheelRotationZ->value());
+	glm::vec3 scale = glm::vec3(ui.vehicleFrontRightWheelScaleX->value(), ui.vehicleFrontRightWheelScaleY->value(), ui.vehicleFrontRightWheelScaleZ->value());
+
+	vehicleEditor.UpdateFrontRightWheelProperties(translation, rotation, scale);
+}
+
+void ParkingSimulator::vehicleRearLeftWheelPropertiesChanged()
+{
+	glm::vec3 translation = glm::vec3(ui.vehicleRearLeftWheelPositionX->value(), ui.vehicleRearLeftWheelPositionY->value(), ui.vehicleRearLeftWheelPositionZ->value());
+	glm::vec3 rotation = glm::vec3(ui.vehicleRearLeftWheelRotationX->value(), ui.vehicleRearLeftWheelRotationY->value(), ui.vehicleRearLeftWheelRotationZ->value());
+	glm::vec3 scale = glm::vec3(ui.vehicleRearLeftWheelScaleX->value(), ui.vehicleRearLeftWheelScaleY->value(), ui.vehicleRearLeftWheelScaleZ->value());
+
+	vehicleEditor.UpdateRearLeftWheelProperties(translation, rotation, scale);
+}
+
+void ParkingSimulator::vehicleRearRightWheelPropertiesChanged()
+{
+	glm::vec3 translation = glm::vec3(ui.vehicleRearRightWheelPositionX->value(), ui.vehicleRearRightWheelPositionY->value(), ui.vehicleRearRightWheelPositionZ->value());
+	glm::vec3 rotation = glm::vec3(ui.vehicleRearRightWheelRotationX->value(), ui.vehicleRearRightWheelRotationY->value(), ui.vehicleRearRightWheelRotationZ->value());
+	glm::vec3 scale = glm::vec3(ui.vehicleRearRightWheelScaleX->value(), ui.vehicleRearRightWheelScaleY->value(), ui.vehicleRearRightWheelScaleZ->value());
+
+	vehicleEditor.UpdateRearRightWheelProperties(translation, rotation, scale);
 }
 
 void ParkingSimulator::newSimulation()

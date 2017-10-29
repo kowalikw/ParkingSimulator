@@ -195,3 +195,53 @@ Circle *Vehicle::GetTurnCircle(double insideAngle, CircleType circleType, double
 
 	return new Circle(centre, radius, angleFrom, angleTo, basePoints, circleType, maneuverType);
 }
+
+Model* Vehicle::GetVehicleModel()
+{
+	return this->vehicleModel;
+}
+
+Model* Vehicle::GetFrontLeftWheelModel()
+{
+	return this->frontLeftWheelModel;
+}
+
+Model* Vehicle::GetFrontRightWheelModel()
+{
+	return this->frontRightWheelModel;
+}
+
+Model* Vehicle::GetRearLeftWheelModel()
+{
+	return this->rearLeftWheelModel;
+}
+
+Model* Vehicle::GetRearRightWheelModel()
+{
+	return this->rearRightWheelModel;
+}
+
+void Vehicle::SetVehicleModel(Model* vehicleModel)
+{
+	this->vehicleModel = vehicleModel;
+}
+
+void Vehicle::SetFrontLeftWheelModel(Model* frontLeftWheelModel)
+{
+	this->frontLeftWheelModel = frontLeftWheelModel;
+}
+
+void Vehicle::SetFrontRightWheelModel(Model* frontRightWheelModel)
+{
+	this->frontRightWheelModel = frontRightWheelModel;
+}
+
+void Vehicle::SetRearLeftWheelModel(Model* rearLeftWheelModel)
+{
+	this->rearLeftWheelModel = rearLeftWheelModel;
+}
+
+void Vehicle::SetRearRightWheelModel(Model* rearRightWheelModel)
+{
+	this->rearRightWheelModel = rearRightWheelModel;
+}

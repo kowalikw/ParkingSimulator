@@ -1,5 +1,4 @@
 #include "OpenGLHost3D.h"
-
 #include "Settings.h"
 
 OpenGLHost3D::OpenGLHost3D(QWidget *parent) : QOpenGLWidget(parent)

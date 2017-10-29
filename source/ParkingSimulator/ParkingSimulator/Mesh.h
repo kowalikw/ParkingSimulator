@@ -49,7 +49,7 @@ public:
 	/*  Functions  */
 	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures);
 	Mesh(vector<Vertex> vertices, vector<GLuint> indices, vector<Texture> textures, vector<InstanceData> instances);
-	void Draw(Shader shader);
+	void Draw(Shader shader, bool instanced = true);
 	glm::vec3 GetMeshMinCoordinates();
 	glm::vec3 GetMeshMaxCoordinates();
 

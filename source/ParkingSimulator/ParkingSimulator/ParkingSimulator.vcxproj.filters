@@ -295,6 +295,18 @@
     <ClCompile Include="CommonHelper.cpp">
       <Filter>Source Files\Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="VehicleEditor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleEditorGLHost.cpp">
+      <Filter>Source Files\OpenGLHosts</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VehicleEditorGLHost.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VehicleEditorGLHost.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -371,6 +383,9 @@
     </CustomBuild>
     <CustomBuild Include="ColorContainer.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="VehicleEditorGLHost.h">
+      <Filter>Header Files\OpenGLHosts</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -478,6 +493,9 @@
     </ClInclude>
     <ClInclude Include="CommonHelper.h">
       <Filter>Header Files\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleEditor.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,34 +12,34 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
-BOOST_SERIALIZATION_SPLIT_FREE(glm::vec3)
-BOOST_SERIALIZATION_SPLIT_FREE(glm::vec2)
-
-namespace boost
-{
-	namespace serialization
-	{
-		template<class Archive> void save(Archive& ar, const glm::vec2& v, unsigned int version)
-		{
-			ar & v.x & v.y;
-		}
-
-		template<class Archive> void load(Archive& ar, glm::vec2& v, unsigned int version)
-		{
-			ar & v.x & v.y;
-		}
-
-		template<class Archive> void save(Archive& ar, const glm::vec3& v, unsigned int version)
-		{
-			ar & v.x & v.y & v.z;
-		}
-
-		template<class Archive> void load(Archive& ar, glm::vec3& v, unsigned int version)
-		{
-			ar & v.x & v.y & v.z;
-		}
-	}
-}
+//BOOST_SERIALIZATION_SPLIT_FREE(glm::vec3)
+//BOOST_SERIALIZATION_SPLIT_FREE(glm::vec2)
+//
+//namespace boost
+//{
+//	namespace serialization
+//	{
+//		template<class Archive> void save(Archive& ar, const glm::vec2& v, unsigned int version)
+//		{
+//			ar & v.x & v.y;
+//		}
+//
+//		template<class Archive> void load(Archive& ar, glm::vec2& v, unsigned int version)
+//		{
+//			ar & v.x & v.y;
+//		}
+//
+//		template<class Archive> void save(Archive& ar, const glm::vec3& v, unsigned int version)
+//		{
+//			ar & v.x & v.y & v.z;
+//		}
+//
+//		template<class Archive> void load(Archive& ar, glm::vec3& v, unsigned int version)
+//		{
+//			ar & v.x & v.y & v.z;
+//		}
+//	}
+//}
 
 class Terrain
 {

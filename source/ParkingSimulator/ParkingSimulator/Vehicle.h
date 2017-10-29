@@ -7,10 +7,40 @@
 #include "MapElement.h"
 #include "Line.h"
 #include "Arc.h"
+#include "Model.h"
 
 #define M_PI 3.14159265358979323846
 
 using namespace std;
+
+BOOST_SERIALIZATION_SPLIT_FREE(glm::vec3)
+BOOST_SERIALIZATION_SPLIT_FREE(glm::vec2)
+
+namespace boost
+{
+	namespace serialization
+	{
+		template<class Archive> void save(Archive& ar, const glm::vec2& v, unsigned int version)
+		{
+			ar & v.x & v.y;
+		}
+
+		template<class Archive> void load(Archive& ar, glm::vec2& v, unsigned int version)
+		{
+			ar & v.x & v.y;
+		}
+
+		template<class Archive> void save(Archive& ar, const glm::vec3& v, unsigned int version)
+		{
+			ar & v.x & v.y & v.z;
+		}
+
+		template<class Archive> void load(Archive& ar, glm::vec3& v, unsigned int version)
+		{
+			ar & v.x & v.y & v.z;
+		}
+	}
+}
 
 class Vehicle : public MapElement
 {
@@ -39,6 +69,18 @@ public:
 
 	Circle *GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom = 0, double angleTo = 2 * M_PI, ManeuverType maneuverType = ManeuverType::Front);
 
+	Model* GetVehicleModel();
+	Model* GetFrontLeftWheelModel();
+	Model* GetFrontRightWheelModel();
+	Model* GetRearLeftWheelModel();
+	Model* GetRearRightWheelModel();
+
+	void SetVehicleModel(Model* vehicleModel);
+	void SetFrontLeftWheelModel(Model* frontLeftWheelModel);
+	void SetFrontRightWheelModel(Model* frontRightWheelModel);
+	void SetRearLeftWheelModel(Model* rearLeftWheelModel);
+	void SetRearRightWheelModel(Model* rearRightWheelModel);
+
 	double wheelbase; // rozstaw osi
 	double track; // rozstaw kó³
 	double maxInsideAngle = M_PI / 4;
@@ -55,19 +97,80 @@ public:
 		ar & wheelbase;
 		ar & track;
 		ar & maxInsideAngle;
+
+		ar & vehicleModel != NULL;
+		ar & frontLeftWheelModel != NULL;
+		ar & frontRightWheelModel != NULL;
+		ar & rearLeftWheelModel != NULL;
+		ar & rearRightWheelModel != NULL;
+
+		if (vehicleModel != NULL) ar & *vehicleModel;
+		if (frontLeftWheelModel != NULL) ar & *frontLeftWheelModel;
+		if (frontRightWheelModel != NULL) ar & *frontRightWheelModel;
+		if (rearLeftWheelModel != NULL) ar & *rearLeftWheelModel;
+		if (rearRightWheelModel != NULL) ar & *rearRightWheelModel;
 	}
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
+		bool isVehicleModel = false;
+		bool isVehicleFrontLeftWheelModel = false;
+		bool isVehicleFrontRightWheelModel = false;
+		bool isVehicleRearLeftWheelModel = false;
+		bool isVehicleRearRightModel = false;
+
 		ar & boost::serialization::base_object<MapElement>(*this);
 		ar & wheelbase;
 		ar & track;
 		ar & maxInsideAngle;
 
+		ar & isVehicleModel;
+		ar & isVehicleFrontLeftWheelModel;
+		ar & isVehicleFrontRightWheelModel;
+		ar & isVehicleRearLeftWheelModel;
+		ar & isVehicleRearRightModel;
+
+		if (isVehicleModel)
+		{
+			vehicleModel = new Model();
+			ar & *vehicleModel;
+		}
+
+		if (isVehicleFrontLeftWheelModel)
+		{
+			frontLeftWheelModel = new Model();
+			ar & *frontLeftWheelModel;
+		}
+
+		if (isVehicleFrontRightWheelModel)
+		{
+			frontRightWheelModel = new Model();
+			ar & *frontRightWheelModel;
+		}
+
+		if (isVehicleRearLeftWheelModel)
+		{
+			rearLeftWheelModel = new Model();
+			ar & *rearLeftWheelModel;
+		}
+
+		if (isVehicleRearRightModel)
+		{
+			rearRightWheelModel = new Model();
+			ar & *rearRightWheelModel;
+		}
+
 		dirWheelbase = glm::vec2(1.0f, 0.0f);
 		dirTrack = glm::vec2(0.0f, 1.0f);
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+private:
+	Model* vehicleModel = NULL;
+	Model* frontLeftWheelModel = NULL;
+	Model* frontRightWheelModel = NULL;
+	Model* rearLeftWheelModel = NULL;
+	Model* rearRightWheelModel = NULL;
 };
 
 #endif

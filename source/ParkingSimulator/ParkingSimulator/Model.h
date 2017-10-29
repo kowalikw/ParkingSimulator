@@ -16,6 +16,10 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
+
 #include "Mesh.h"
 
 using namespace std;
@@ -25,15 +29,16 @@ class Model
 public:
 	/*  Functions   */
 	// Constructor, expects a filepath to a 3D model.
+	Model();
 	Model(GLchar* path);
-	Model(std::string path);
+	Model(std::string path, bool createModel = true);
 	Model(std::string path, std::vector<InstanceData> instances);
 	Model(GLchar* path, glm::vec3 translation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale);
 
 	// Draws the model, and thus all its meshes
-	void Draw(Shader shader);
+	void Draw(Shader shader, bool instanced = true);
 
 	void Translate(glm::vec3 translation);
 	void Rotate(glm::vec3 rotation);
@@ -46,7 +51,33 @@ public:
 	glm::vec3 MeasureModel();
 	glm::vec3 GetMeasure();
 
+	glm::vec3 GetTranslation();
+	glm::vec3 GetRotation();
+	glm::vec3 GetScale();
+
 	bool instanced = false;
+
+	std::string path;
+
+	friend class boost::serialization::access;
+
+	template<class Archive>
+	void save(Archive & ar, const unsigned int version) const
+	{
+		ar & path;
+		ar & translation;
+		ar & rotation;
+		ar & scale;
+	}
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{
+		ar & path;
+		ar & translation;
+		ar & rotation;
+		ar & scale;
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
 private:
 	/* Model matrix data */
@@ -76,6 +107,9 @@ private:
 	GLint textureFromColor(aiColor4D color);
 
 	glm::vec3 measure;
+
+
+
 };
 
 #endif

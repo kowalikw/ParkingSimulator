@@ -1699,6 +1699,9 @@ QDoubleSpinBox::down-arrow:hover {
                    <height>60</height>
                   </size>
                  </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
@@ -1721,6 +1724,9 @@ QDoubleSpinBox::down-arrow:hover {
                    <width>70</width>
                    <height>60</height>
                   </size>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
                  </property>
                  <property name="text">
                   <string/>
@@ -1750,6 +1756,9 @@ QDoubleSpinBox::down-arrow:hover {
                    <width>70</width>
                    <height>60</height>
                   </size>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
                  </property>
                  <property name="text">
                   <string/>
@@ -1848,7 +1857,17 @@ QDoubleSpinBox::down-arrow:hover {
                    </widget>
                   </item>
                   <item row="1" column="1">
-                   <widget class="QDoubleSpinBox" name="vehicleWidth"/>
+                   <widget class="QDoubleSpinBox" name="vehicleWidth">
+                    <property name="minimum">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>2.200000000000000</double>
+                    </property>
+                   </widget>
                   </item>
                   <item row="2" column="0">
                    <widget class="QLabel" name="vehiclePropertiesLength">
@@ -1864,7 +1883,17 @@ QDoubleSpinBox::down-arrow:hover {
                    </widget>
                   </item>
                   <item row="2" column="1">
-                   <widget class="QDoubleSpinBox" name="vehicleLength"/>
+                   <widget class="QDoubleSpinBox" name="vehicleLength">
+                    <property name="minimum">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>4.500000000000000</double>
+                    </property>
+                   </widget>
                   </item>
                   <item row="3" column="0">
                    <widget class="QLabel" name="vehiclePropertiesTrack">
@@ -1880,7 +1909,14 @@ QDoubleSpinBox::down-arrow:hover {
                    </widget>
                   </item>
                   <item row="3" column="1">
-                   <widget class="QDoubleSpinBox" name="vehicleTrack"/>
+                   <widget class="QDoubleSpinBox" name="vehicleTrack">
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>2.000000000000000</double>
+                    </property>
+                   </widget>
                   </item>
                   <item row="4" column="0">
                    <widget class="QLabel" name="vehiclePropertiesWheelbase">
@@ -1896,7 +1932,17 @@ QDoubleSpinBox::down-arrow:hover {
                    </widget>
                   </item>
                   <item row="4" column="1">
-                   <widget class="QDoubleSpinBox" name="vehicleWheelbase"/>
+                   <widget class="QDoubleSpinBox" name="vehicleWheelbase">
+                    <property name="minimum">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="singleStep">
+                     <double>0.100000000000000</double>
+                    </property>
+                    <property name="value">
+                     <double>4.000000000000000</double>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </item>
@@ -1955,7 +2001,7 @@ QDoubleSpinBox::down-arrow:hover {
            </widget>
           </item>
           <item>
-           <widget class="QOpenGLWidget" name="glVehicleEditor">
+           <widget class="VehicleEditorGLHost" name="glVehicleEditor">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -2305,13 +2351,52 @@ QPushButton:pressed {
                     <item row="1" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_25">
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelPositionX"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelPositionX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelPositionY"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelPositionY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelPositionZ"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelPositionZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
@@ -2331,13 +2416,46 @@ QPushButton:pressed {
                     <item row="2" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_26">
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelRotationX"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelRotationX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>1.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelRotationY"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelRotationY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelRotationZ"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelRotationZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
@@ -2358,6 +2476,18 @@ QPushButton:pressed {
                      <layout class="QHBoxLayout" name="horizontalLayout_27">
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelScaleX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2365,6 +2495,18 @@ QPushButton:pressed {
                       </item>
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelScaleY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2372,6 +2514,18 @@ QPushButton:pressed {
                       </item>
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleFrontLeftWheelScaleZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2499,13 +2653,52 @@ QPushButton:pressed {
                     <item row="1" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_28">
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelPositionX"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelPositionX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelPositionY"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelPositionY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelPositionZ"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelPositionZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
@@ -2525,13 +2718,43 @@ QPushButton:pressed {
                     <item row="2" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_29">
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelRotationX"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelRotationX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelRotationY"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelRotationY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelRotationZ"/>
+                       <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelRotationZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
@@ -2552,6 +2775,18 @@ QPushButton:pressed {
                      <layout class="QHBoxLayout" name="horizontalLayout_32">
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelScaleX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2559,6 +2794,18 @@ QPushButton:pressed {
                       </item>
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelScaleY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2566,6 +2813,18 @@ QPushButton:pressed {
                       </item>
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleFrontRightWheelScaleZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2719,26 +2978,98 @@ QPushButton:pressed {
                     <item row="1" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_33">
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelPositionX"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelPositionX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelPositionY"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelPositionY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelPositionZ"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelPositionZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
                     <item row="2" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_34">
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelRotationX"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelRotationX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>1.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelRotationY"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelRotationY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelRotationZ"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelRotationZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
@@ -2746,6 +3077,18 @@ QPushButton:pressed {
                      <layout class="QHBoxLayout" name="horizontalLayout_35">
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelScaleX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2753,6 +3096,18 @@ QPushButton:pressed {
                       </item>
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelScaleY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2760,6 +3115,18 @@ QPushButton:pressed {
                       </item>
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleRearLeftWheelScaleZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2913,26 +3280,95 @@ QPushButton:pressed {
                     <item row="1" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_36">
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelPositionX"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelPositionX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelPositionY"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelPositionY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelPositionZ"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelPositionZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
                     <item row="2" column="1">
                      <layout class="QHBoxLayout" name="horizontalLayout_37">
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelRotationX"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelRotationX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelRotationY"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelRotationY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelRotationZ"/>
+                       <widget class="QDoubleSpinBox" name="vehicleRearRightWheelRotationZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>-999.000000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </item>
@@ -2940,6 +3376,18 @@ QPushButton:pressed {
                      <layout class="QHBoxLayout" name="horizontalLayout_38">
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleRearRightWheelScaleX">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2947,6 +3395,18 @@ QPushButton:pressed {
                       </item>
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleRearRightWheelScaleY">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2954,6 +3414,18 @@ QPushButton:pressed {
                       </item>
                       <item>
                        <widget class="QDoubleSpinBox" name="vehicleRearRightWheelScaleZ">
+                        <property name="enabled">
+                         <bool>false</bool>
+                        </property>
+                        <property name="minimum">
+                         <double>0.010000000000000</double>
+                        </property>
+                        <property name="maximum">
+                         <double>999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="value">
                          <double>1.000000000000000</double>
                         </property>
@@ -2983,586 +3455,6 @@ QPushButton:pressed {
              </item>
             </layout>
            </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="tabVisualisation">
-       <property name="styleSheet">
-        <string notr="true">QFrame {
-	background-color: #3b3e41;
-	border: 1px solid #757575;
-	border-radius: 3px;
-}
-
-QLabel {
-	border: 0px;
-}
-
-QListWidget {
-    show-decoration-selected: 0; /* make the selection span the entire width of the view */
-	color: white;
-	alternate-background-color: none;
-}
-
-QListWidget::item {
-	padding: 5px 3px;
-	background: #35383b;
-	border-bottom: 1px solid #757575;
-	border-radius: 0px;
-}
-
-QListWidget::item:alternate {
-    background: none;
-	border: 0px;
-}
-
-QListWidget::item:selected {
-    border: 0px;
-}
-
-QListWidget::item:selected:!active {
-   background: #d86a39;
-}
-
-QListWidget::item:selected:active {
-   background: #d86a39;
-}
-
-QListWidget::item:hover {
-   background: #85b448;
-}
-
-QPushButton#btnAddSimulation, QPushButton#btnRemoveSimulation, QPushButton#btnInfoSimulation, QToolButton#btnPlayPauseSimulation, QToolButton#btnStopSimulation, QToolButton#btnVisualisation2D, QToolButton#btnVisualisation3D {
-    background-color: #3b3e41;
-    border-radius: 3px;
-    border: 1px solid #757575;
-    font: bold 18px;
-	color: white;
-    padding: 6px;
-}
-
-QPushButton#btnAddSimulation:hover, QPushButton#btnRemoveSimulation:hover, QPushButton#btnInfoSimulation:hover, QToolButton#btnPlayPauseSimulation:hover, QToolButton#btnStopSimulation:hover {
-    background-color: #85b448;
-}
-
-QPushButton#btnAddSimulation:pressed, QPushButton#btnRemoveSimulation:pressed, QPushButton#btnInfoSimulation:pressed, QToolButton#btnPlayPauseSimulation:pressed, QToolButton#btnStopSimulation:pressed {
-    background-color: #d86a39;
-}
-
-QToolButton#btnVisualisation2D, QToolButton#btnVisualisation3D {
-	font-size: 18px;
-	border: 2px solid #757575;
-	color: white;
-}
-
-QToolButton#btnVisualisation2D:hover, QToolButton#btnVisualisation3D:hover {
-	border: 2px solid #85b448;
-	color: #85b448;
-}
-
-QToolButton#btnVisualisation2D:pressed, QToolButton#btnVisualisation3D:pressed {
-	border: 2px solid #d86a39;
-	color: #d86a39;
-}
-
-QSlider::groove:horizontal {
-border: 1px solid #bbb;
-background: white;
-height: 10px;
-border-radius: 2px;
-}
-
-QSlider::sub-page:horizontal {
-background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
-    stop: 0 #de8259, stop: 1 #d8561d);
-border: 1px solid #888;
-height: 10px;
-border-radius: 2px;
-}
-
-QSlider::add-page:horizontal {
-background: #fff;
-border: 1px solid #888;
-height: 10px;
-border-radius: 2px;
-}
-
-QSlider::handle:horizontal {
-background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-    stop:0 #fff, stop:1 #ddd);
-border: 1px solid #888;
-width: 13px;
-margin-top: -2px;
-margin-bottom: -2px;
-border-radius: 2px;
-}
-
-QSlider::handle:horizontal:hover {
-background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
-    stop:0 #a3d562, stop:1 #7bb333);
-border: 1px solid #444;
-border-radius: 2px;
-}
-
-QSpinBox {
-    padding-right: 15px; /* make room for the arrows */
-	background-color: #3b3e41;
-    border: 1px solid #757575;
-	border-radius: 0px;
-	padding: 1px 3px;
-	color: #FFFFFF;
-}
-
-QSpinBox::up-button {
-    subcontrol-origin: border;
-    subcontrol-position: top right; /* position at the top right corner */
-    width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
-    border: 0px;
-}
-
-QSpinBox::up-arrow {
-    image: url(Resources/arrow_up.png);
-    width: 12px;
-    height: 12px;
-	padding-top: 3px;
-	padding-right: 3px;
-}
-
-QSpinBox::up-arrow:hover {
-	image: url(Resources/arrow_up_hover.png);
-}
-
-QSpinBox::down-button {
-    subcontrol-origin: border;
-    subcontrol-position: bottom right; /* position at bottom right corner */
-    width: 16px;
-    border: 0px;
-    border-top-width: 0;
-}
-
-QSpinBox::down-arrow {
-    image: url(Resources/arrow_down.png);
-    width: 12px;
-    height: 12px;
-	padding-bottom: 3px;
-	padding-right: 3px;
-}
-
-QSpinBox::down-arrow:hover {
-	image: url(Resources/arrow_down_hover.png);
-}</string>
-       </property>
-       <attribute name="title">
-        <string>visualisation</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_7">
-        <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QWidget" name="widget" native="true">
-            <property name="minimumSize">
-             <size>
-              <width>220</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>220</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-             <property name="spacing">
-              <number>5</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QWidget" name="widget" native="true">
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <property name="spacing">
-                 <number>5</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QPushButton" name="btnAddSimulation">
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="sizeIncrement">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="cursor">
-                   <cursorShape>PointingHandCursor</cursorShape>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>Resources/VisualisationIcons/plus.png</normaloff>Resources/VisualisationIcons/plus.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>30</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="btnRemoveSimulation">
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="cursor">
-                   <cursorShape>PointingHandCursor</cursorShape>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>Resources/VisualisationIcons/minus.png</normaloff>Resources/VisualisationIcons/minus.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>32</width>
-                    <height>32</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="btnInfoSimulation">
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="cursor">
-                   <cursorShape>PointingHandCursor</cursorShape>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset>
-                    <normaloff>Resources/VisualisationIcons/info.png</normaloff>Resources/VisualisationIcons/info.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>32</width>
-                    <height>32</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QListWidget" name="listSimulations">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="showDropIndicator" stdset="0">
-                <bool>false</bool>
-               </property>
-               <property name="layoutMode">
-                <enum>QListView::SinglePass</enum>
-               </property>
-               <property name="viewMode">
-                <enum>QListView::ListMode</enum>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QWidget" name="widget" native="true">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>42</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>42</height>
-               </size>
-              </property>
-              <layout class="QHBoxLayout" name="horizontalLayout_5">
-               <property name="spacing">
-                <number>5</number>
-               </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <property name="topMargin">
-                <number>0</number>
-               </property>
-               <property name="rightMargin">
-                <number>0</number>
-               </property>
-               <property name="bottomMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QFrame" name="horizontalFrame">
-                 <layout class="QHBoxLayout" name="horizontalLayout_16">
-                  <property name="leftMargin">
-                   <number>1</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>15</number>
-                  </property>
-                  <item>
-                   <widget class="QLabel" name="simulationDurationLabel">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">color: white;
-margin-left: 8px;</string>
-                    </property>
-                    <property name="text">
-                     <string>Simulation length (sec):</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QSpinBox" name="simulationLength">
-                    <property name="font">
-                     <font>
-                      <pointsize>12</pointsize>
-                     </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">color: white;</string>
-                    </property>
-                    <property name="minimum">
-                     <number>1</number>
-                    </property>
-                    <property name="value">
-                     <number>10</number>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QCheckBox" name="showPathElements">
-                    <property name="font">
-                     <font>
-                      <pointsize>11</pointsize>
-                     </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">color: white;
-margin-left: 30px;
-margin-rigth: 20px;
-background-color: #3b3e41;</string>
-                    </property>
-                    <property name="text">
-                     <string>Show path elements</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
-               </item>
-               <item>
-                <spacer name="horizontalSpacer_2">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item>
-                <widget class="QToolButton" name="btnVisualisation2D">
-                 <property name="minimumSize">
-                  <size>
-                   <width>56</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>56</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string>2D</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QToolButton" name="btnVisualisation3D">
-                 <property name="minimumSize">
-                  <size>
-                   <width>56</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>56</width>
-                   <height>42</height>
-                  </size>
-                 </property>
-                 <property name="cursor">
-                  <cursorShape>PointingHandCursor</cursorShape>
-                 </property>
-                 <property name="text">
-                  <string>3D</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="VisualisationGLHost" name="glVisualisation">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="OpenGLHost3D" name="glVisualisation3D">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_6">
-              <item>
-               <widget class="QToolButton" name="btnPlayPauseSimulation">
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset>
-                  <normaloff>Resources/VisualisationIcons/play.png</normaloff>Resources/VisualisationIcons/play.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QToolButton" name="btnStopSimulation">
-                <property name="cursor">
-                 <cursorShape>PointingHandCursor</cursorShape>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset>
-                  <normaloff>Resources/VisualisationIcons/stop.png</normaloff>Resources/VisualisationIcons/stop.png</iconset>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSlider" name="simulationPrograssBar">
-                <property name="maximum">
-                 <number>1000</number>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
           </item>
          </layout>
         </item>
@@ -5181,6 +5073,586 @@ QDoubleSpinBox::down-arrow:hover {
              </item>
             </layout>
            </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabVisualisation">
+       <property name="styleSheet">
+        <string notr="true">QFrame {
+	background-color: #3b3e41;
+	border: 1px solid #757575;
+	border-radius: 3px;
+}
+
+QLabel {
+	border: 0px;
+}
+
+QListWidget {
+    show-decoration-selected: 0; /* make the selection span the entire width of the view */
+	color: white;
+	alternate-background-color: none;
+}
+
+QListWidget::item {
+	padding: 5px 3px;
+	background: #35383b;
+	border-bottom: 1px solid #757575;
+	border-radius: 0px;
+}
+
+QListWidget::item:alternate {
+    background: none;
+	border: 0px;
+}
+
+QListWidget::item:selected {
+    border: 0px;
+}
+
+QListWidget::item:selected:!active {
+   background: #d86a39;
+}
+
+QListWidget::item:selected:active {
+   background: #d86a39;
+}
+
+QListWidget::item:hover {
+   background: #85b448;
+}
+
+QPushButton#btnAddSimulation, QPushButton#btnRemoveSimulation, QPushButton#btnInfoSimulation, QToolButton#btnPlayPauseSimulation, QToolButton#btnStopSimulation, QToolButton#btnVisualisation2D, QToolButton#btnVisualisation3D {
+    background-color: #3b3e41;
+    border-radius: 3px;
+    border: 1px solid #757575;
+    font: bold 18px;
+	color: white;
+    padding: 6px;
+}
+
+QPushButton#btnAddSimulation:hover, QPushButton#btnRemoveSimulation:hover, QPushButton#btnInfoSimulation:hover, QToolButton#btnPlayPauseSimulation:hover, QToolButton#btnStopSimulation:hover {
+    background-color: #85b448;
+}
+
+QPushButton#btnAddSimulation:pressed, QPushButton#btnRemoveSimulation:pressed, QPushButton#btnInfoSimulation:pressed, QToolButton#btnPlayPauseSimulation:pressed, QToolButton#btnStopSimulation:pressed {
+    background-color: #d86a39;
+}
+
+QToolButton#btnVisualisation2D, QToolButton#btnVisualisation3D {
+	font-size: 18px;
+	border: 2px solid #757575;
+	color: white;
+}
+
+QToolButton#btnVisualisation2D:hover, QToolButton#btnVisualisation3D:hover {
+	border: 2px solid #85b448;
+	color: #85b448;
+}
+
+QToolButton#btnVisualisation2D:pressed, QToolButton#btnVisualisation3D:pressed {
+	border: 2px solid #d86a39;
+	color: #d86a39;
+}
+
+QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 10px;
+border-radius: 2px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #de8259, stop: 1 #d8561d);
+border: 1px solid #888;
+height: 10px;
+border-radius: 2px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #888;
+height: 10px;
+border-radius: 2px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #fff, stop:1 #ddd);
+border: 1px solid #888;
+width: 13px;
+margin-top: -2px;
+margin-bottom: -2px;
+border-radius: 2px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #a3d562, stop:1 #7bb333);
+border: 1px solid #444;
+border-radius: 2px;
+}
+
+QSpinBox {
+    padding-right: 15px; /* make room for the arrows */
+	background-color: #3b3e41;
+    border: 1px solid #757575;
+	border-radius: 0px;
+	padding: 1px 3px;
+	color: #FFFFFF;
+}
+
+QSpinBox::up-button {
+    subcontrol-origin: border;
+    subcontrol-position: top right; /* position at the top right corner */
+    width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
+    border: 0px;
+}
+
+QSpinBox::up-arrow {
+    image: url(Resources/arrow_up.png);
+    width: 12px;
+    height: 12px;
+	padding-top: 3px;
+	padding-right: 3px;
+}
+
+QSpinBox::up-arrow:hover {
+	image: url(Resources/arrow_up_hover.png);
+}
+
+QSpinBox::down-button {
+    subcontrol-origin: border;
+    subcontrol-position: bottom right; /* position at bottom right corner */
+    width: 16px;
+    border: 0px;
+    border-top-width: 0;
+}
+
+QSpinBox::down-arrow {
+    image: url(Resources/arrow_down.png);
+    width: 12px;
+    height: 12px;
+	padding-bottom: 3px;
+	padding-right: 3px;
+}
+
+QSpinBox::down-arrow:hover {
+	image: url(Resources/arrow_down_hover.png);
+}</string>
+       </property>
+       <attribute name="title">
+        <string>visualisation</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QWidget" name="widget" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>220</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>220</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="spacing">
+              <number>5</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QWidget" name="widget" native="true">
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="btnAddSimulation">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>70</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="sizeIncrement">
+                   <size>
+                    <width>70</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>Resources/VisualisationIcons/plus.png</normaloff>Resources/VisualisationIcons/plus.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>30</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnRemoveSimulation">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>70</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>Resources/VisualisationIcons/minus.png</normaloff>Resources/VisualisationIcons/minus.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnInfoSimulation">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>70</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>Resources/VisualisationIcons/info.png</normaloff>Resources/VisualisationIcons/info.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>32</width>
+                    <height>32</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="listSimulations">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="showDropIndicator" stdset="0">
+                <bool>false</bool>
+               </property>
+               <property name="layoutMode">
+                <enum>QListView::SinglePass</enum>
+               </property>
+               <property name="viewMode">
+                <enum>QListView::ListMode</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QWidget" name="widget" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>42</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>42</height>
+               </size>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_5">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QFrame" name="horizontalFrame">
+                 <layout class="QHBoxLayout" name="horizontalLayout_16">
+                  <property name="leftMargin">
+                   <number>1</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>15</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="simulationDurationLabel">
+                    <property name="font">
+                     <font>
+                      <pointsize>11</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">color: white;
+margin-left: 8px;</string>
+                    </property>
+                    <property name="text">
+                     <string>Simulation length (sec):</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QSpinBox" name="simulationLength">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">color: white;</string>
+                    </property>
+                    <property name="minimum">
+                     <number>1</number>
+                    </property>
+                    <property name="value">
+                     <number>10</number>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="showPathElements">
+                    <property name="font">
+                     <font>
+                      <pointsize>11</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">color: white;
+margin-left: 30px;
+margin-rigth: 20px;
+background-color: #3b3e41;</string>
+                    </property>
+                    <property name="text">
+                     <string>Show path elements</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QToolButton" name="btnVisualisation2D">
+                 <property name="minimumSize">
+                  <size>
+                   <width>56</width>
+                   <height>42</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>56</width>
+                   <height>42</height>
+                  </size>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string>2D</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QToolButton" name="btnVisualisation3D">
+                 <property name="minimumSize">
+                  <size>
+                   <width>56</width>
+                   <height>42</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>56</width>
+                   <height>42</height>
+                  </size>
+                 </property>
+                 <property name="cursor">
+                  <cursorShape>PointingHandCursor</cursorShape>
+                 </property>
+                 <property name="text">
+                  <string>3D</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="VisualisationGLHost" name="glVisualisation">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="OpenGLHost3D" name="glVisualisation3D">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QToolButton" name="btnPlayPauseSimulation">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/play.png</normaloff>Resources/VisualisationIcons/play.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QToolButton" name="btnStopSimulation">
+                <property name="cursor">
+                 <cursorShape>PointingHandCursor</cursorShape>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset>
+                  <normaloff>Resources/VisualisationIcons/stop.png</normaloff>Resources/VisualisationIcons/stop.png</iconset>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSlider" name="simulationPrograssBar">
+                <property name="maximum">
+                 <number>1000</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -6889,6 +7361,11 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
    <class>ColorContainer</class>
    <extends>QLabel</extends>
    <header>ColorContainer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VehicleEditorGLHost</class>
+   <extends>QOpenGLWidget</extends>
+   <header>VehicleEditorGLHost.h</header>
   </customwidget>
  </customwidgets>
  <resources>

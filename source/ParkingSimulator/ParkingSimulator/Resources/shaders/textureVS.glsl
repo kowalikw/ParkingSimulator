@@ -20,13 +20,14 @@ mat3 rotMtx = mat3(
 
 void main()
 {
-	if(abs(instanceRotation.y) < 10e-6)
+	/*if(abs(instanceRotation.y) < 10e-6)
 	{
 		gl_Position = projection * view * model * (vec4(position.xyz * instanceScale.xyz + instancePosition, 1.0f));
 	}
 	else
 	{
 		gl_Position = projection * view * model * (vec4(rotMtx * position.xyz * instanceScale.xyz + instancePosition, 1.0f));
-	}
+	}*/
+	gl_Position = projection * view * model * vec4(position, 1.0f);
     TexCoords = texCoords;
 }

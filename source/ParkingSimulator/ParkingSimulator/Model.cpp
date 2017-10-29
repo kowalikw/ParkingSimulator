@@ -1,18 +1,30 @@
 #include "Model.h"
 #define INF 10e9;
 
+Model::Model()
+{
+}
+
 Model::Model(GLchar *path)
 {
+	this->path = path;
 	this->loadModel(path, std::vector<InstanceData>());
 }
 
-Model::Model(std::string path)
+Model::Model(std::string path, bool createModel)
 {
-	this->loadModel(path, std::vector<InstanceData>());
+	this->path = path;
+	this->translation = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->rotation = glm::vec3(0.0f, 0.0f, 0.0f);
+	this->scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	if(createModel)
+		this->loadModel(path, std::vector<InstanceData>());
 }
 
 Model::Model(std::string path, std::vector<InstanceData> instances)
 {
+	this->path = path;
 	this->loadModel(path, instances);
 }
 
@@ -32,10 +44,10 @@ Model::Model(GLchar *path, glm::vec3 translation, glm::vec3 rotation, glm::vec3 
 	this->scale = scale;
 }
 
-void Model::Draw(Shader shader)
+void Model::Draw(Shader shader, bool instanced)
 {
 	for (GLuint i = 0; i < this->meshes.size(); i++)
-		this->meshes[i].Draw(shader);
+		this->meshes[i].Draw(shader, instanced);
 }
 
 void Model::Translate(glm::vec3 translation)
@@ -72,7 +84,9 @@ glm::mat4x4 Model::GetModelMatrix()
 {
 	glm::mat4 modelMatrix;
 	modelMatrix = glm::translate(modelMatrix, this->translation);
+	modelMatrix = glm::rotate(modelMatrix, this->rotation.x, glm::vec3(1, 0, 0));
 	modelMatrix = glm::rotate(modelMatrix, this->rotation.y, glm::vec3(0, 1, 0));	
+	modelMatrix = glm::rotate(modelMatrix, this->rotation.z, glm::vec3(0, 0, 1));
 	modelMatrix = glm::scale(modelMatrix, this->scale);
 	return modelMatrix;
 }
@@ -300,4 +314,19 @@ glm::vec3 Model::MeasureModel()
 glm::vec3 Model::GetMeasure()
 {
 	return this->measure;
+}
+
+glm::vec3 Model::GetTranslation()
+{
+	return this->translation;
+}
+
+glm::vec3 Model::GetRotation()
+{
+	return this->rotation;
+}
+
+glm::vec3 Model::GetScale()
+{
+	return this->scale;
 }
