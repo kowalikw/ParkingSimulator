@@ -49,9 +49,9 @@ void Mesh::Draw(Shader shader, bool instanced)
 
 	// Draw mesh
 	glBindVertexArray(this->VAO);
-	/*if(instanced)
+	if(instanced)
 		glDrawElementsInstanced(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0, this->instances.size());
-	else*/
+	else
 		glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }

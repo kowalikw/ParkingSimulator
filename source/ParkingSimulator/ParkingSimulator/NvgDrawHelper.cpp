@@ -69,19 +69,17 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle, VehicleType type)
 
 	auto position = vehicle->GetPosition();
 	auto size = vehicle->GetSize() * magnificationRatio;
-	auto wheelbase = vehicle->GetWheelbase() * magnificationRatio;
-	auto track = vehicle->GetTrack() * magnificationRatio;
 	auto dirWheelbase = vehicle->GetDirWheelbase();
 	auto dirTrack = vehicle->GetDirTrack();
 	auto tireRadius = 25.0f * magnificationRatio;
 
 	auto p0 = glm::vec2(drawAreaPosition->x + offset.x + position.x * magnificationRatio, drawAreaPosition->y + offset.y + position.y * magnificationRatio);
-	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
-	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
-	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
-	auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
-	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
-	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
+	auto p1 = p0 + (float)(size.x / 2.0) * dirWheelbase;
+	auto p2 = p1 + (float)(size.y / 2.0) * dirTrack;
+	auto p3 = p1 - (float)(size.y / 2.0) * dirTrack;
+	auto p4 = p0 - (float)(size.x / 2.0) * dirWheelbase;
+	auto p5 = p4 + (float)(size.y / 2.0) * dirTrack;
+	auto p6 = p4 - (float)(size.y / 2.0) * dirTrack;
 
 	auto p2a = p2 - (tireRadius * dirWheelbase);
 	auto p2b = p2 + (tireRadius * dirWheelbase);
@@ -115,10 +113,7 @@ void NvgDrawHelper::DrawVehicle(Vehicle * vehicle, VehicleType type)
 	nvgLineTo(vg, p6.x, p6.y);
 	nvgLineTo(vg, p5.x, p5.y);
 	nvgLineTo(vg, p2.x, p2.y);
-	if(type == VehicleStart)
-		nvgFillPaint(vg, nvgImagePattern(vg, p6.x, p6.y, size.x, size.y, -(float)vehicle->GetAngle(), imgHandler, 1));
-	else
-		nvgFillColor(vg, nvgRGBA(255, 0, 0, 255));
+	nvgFillPaint(vg, nvgImagePattern(vg, p6.x, p6.y, size.x, size.y, -(float)vehicle->GetAngle(), imgHandler, 1));
 	nvgFill(vg);
 }
 

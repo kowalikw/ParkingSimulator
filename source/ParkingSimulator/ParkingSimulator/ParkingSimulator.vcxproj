@@ -543,6 +543,8 @@
     <None Include="Resources\shaders\phongFS.glsl" />
     <None Include="Resources\shaders\phongVS.glsl" />
     <None Include="Resources\shaders\textureFS.glsl" />
+    <None Include="Resources\shaders\textureInstancedFS.glsl" />
+    <None Include="Resources\shaders\textureInstancedVS.glsl" />
     <None Include="Resources\shaders\textureVS.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

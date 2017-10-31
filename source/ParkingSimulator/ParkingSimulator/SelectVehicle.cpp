@@ -1,12 +1,15 @@
 #include "SelectVehicle.h"
 
-SelectVehicle::SelectVehicle(QWidget *parent)
+SelectVehicle::SelectVehicle(VehicleEditor *vehicleEditor, QWidget *parent)
 	: QDialog(parent)
 {
 	ui.setupUi(this);
 
-	connect(ui.btnAccept, SIGNAL(released()), this, SLOT(selectVehicle()));
+	connect(ui.btnLoadFromVehicleEditor, SIGNAL(released()), this, SLOT(loadVehicleFromVehicleEditor()));
+	connect(ui.btnLoadFromFile, SIGNAL(released()), this, SLOT(loadVehicleFromFile()));
 	connect(ui.btnCancel, SIGNAL(released()), this, SLOT(reject()));
+
+	this->vehicleEditor = vehicleEditor;
 }
 
 SelectVehicle::~SelectVehicle()
@@ -18,10 +21,35 @@ Vehicle * SelectVehicle::GetVehicle()
 	return this->vehicle;
 }
 
-void SelectVehicle::selectVehicle()
+void SelectVehicle::loadVehicleFromVehicleEditor()
 {
-	this->vehicle = new Vehicle(100, 50);
-	this->vehicle->SetName("Renault Scenic");
+	this->vehicle = vehicleEditor->GetVehicle();
 
-	accept();
+	if (vehicle != NULL && vehicle->GetWheelbase() > 0 && vehicle->GetTrack() > 0 && vehicle->GetVehicleModel() != NULL)
+		accept();
+	else
+	{
+		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_NoVehicleInVehicleEditor_Title"], Language::getInstance()->GetDictionary()["WarningError_NoVehicleInVehicleEditor_Content"], MessageType::Warning);
+		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		warningWindow.exec();
+	}
+}
+
+void SelectVehicle::loadVehicleFromFile()
+{
+	QString filter = tr("Vehicle files (*.vehicle)");
+	QString filePath = QFileDialog::getOpenFileName(this, "Open vehicle", QString(), tr("All files (*.*);;Vehicle files (*.vehicle)"), &filter);
+
+	if (filePath != "")
+	{
+		this->vehicle = new Vehicle();
+
+		std::ifstream ifs(filePath.toStdString());
+
+		boost::archive::text_iarchive ia(ifs);
+
+		ia >> *vehicle;
+
+		accept();
+	}
 }

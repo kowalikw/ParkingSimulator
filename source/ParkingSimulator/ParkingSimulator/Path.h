@@ -19,6 +19,8 @@ public:
 	PathElement *GetAt(int i);
 	PathElement *GetFirstElement();
 	PathElement *GetLastElement();
+	PathElement *GetNextElement(PathElement *element);
+	PathElement *GetPrevElement(PathElement *element);
 	vector<PathElement*> GetElements();
 	void AddElement(PathElement *element);
 	void RemoveElement(PathElement *element);

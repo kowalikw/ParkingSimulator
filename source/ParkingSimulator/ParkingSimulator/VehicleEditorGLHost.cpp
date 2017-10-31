@@ -186,36 +186,42 @@ void VehicleEditorGLHost::paintGL()
 		if (vehicle->GetVehicleModel() != NULL)
 		{
 			Model *model = vehicleEditor->GetVehicle()->GetVehicleModel();
+
+			double scaleRatioX = vehicle->GetSize().y / model->GetMeasure().x;
+			double scaleRatioZ = vehicle->GetSize().x / model->GetMeasure().z;
+			double scaleRatioY = (scaleRatioX + scaleRatioZ) / 2.0f;
+
+			model->Scale(glm::vec3(scaleRatioX, scaleRatioY, scaleRatioZ));
 			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model->GetModelMatrix()));
-			model->Draw(*textureShader);
+			model->Draw(*textureShader, false);
 		}
 
 		if (vehicle->GetFrontLeftWheelModel() != NULL)
 		{
 			Model *model = vehicleEditor->GetVehicle()->GetFrontLeftWheelModel();
 			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model->GetModelMatrix()));
-			model->Draw(*textureShader);
+			model->Draw(*textureShader, false);
 		}
 
 		if (vehicle->GetFrontRightWheelModel() != NULL)
 		{
 			Model *model = vehicleEditor->GetVehicle()->GetFrontRightWheelModel();
 			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model->GetModelMatrix()));
-			model->Draw(*textureShader);
+			model->Draw(*textureShader, false);
 		}
 
 		if (vehicle->GetRearLeftWheelModel() != NULL)
 		{
 			Model *model = vehicleEditor->GetVehicle()->GetRearLeftWheelModel();
 			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model->GetModelMatrix()));
-			model->Draw(*textureShader);
+			model->Draw(*textureShader, false);
 		}
 
 		if (vehicle->GetRearRightWheelModel() != NULL)
 		{
 			Model *model = vehicleEditor->GetVehicle()->GetRearRightWheelModel();
 			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(model->GetModelMatrix()));
-			model->Draw(*textureShader);
+			model->Draw(*textureShader, false);
 		}
 	}
 }
@@ -238,6 +244,7 @@ void VehicleEditorGLHost::initializeVehicleModel()
 {
 	std::string path = vehicleEditor->GetVehicle()->GetVehicleModel()->path;
 	Model *model = new Model(path);
+	model->MeasureModel();
 	model->Translate(vehicleEditor->GetVehicle()->GetVehicleModel()->GetTranslation());
 	model->Rotate(vehicleEditor->GetVehicle()->GetVehicleModel()->GetRotation());
 	model->Scale(vehicleEditor->GetVehicle()->GetVehicleModel()->GetScale());

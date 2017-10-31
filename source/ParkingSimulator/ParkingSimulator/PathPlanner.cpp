@@ -39,7 +39,10 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * en
 	Path *pStart = createParkingPath(*vehicle, *start, Entry);
 	Path *pEnd = createParkingPath(*vehicle, *end, Exit);
 
-	if (pStart == nullptr || pEnd == nullptr) 
+	parkingPathStart = pStart;
+	parkingPathEnd = pEnd;
+
+	if (pStart == nullptr || pEnd == nullptr || ChackPathCollision(pStart, map, false, 0, 0, start) != nullptr || ChackPathCollision(pEnd, map, false, 0, 0, end) != nullptr)
 		return nullptr;
 
 	Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
@@ -54,21 +57,23 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * en
 	pathParts.push_back(path);
 	pathParts.push_back(pEnd);
 
-	path = new Path(pathParts);
+	finalPath = new Path(pathParts);
 
-	return path;
+	return finalPath;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 {
 	Path *pStart = createParkingPath(*vehicle, *start, Entry);
 
-	if (pStart == nullptr)
+	if (pStart == nullptr || ChackPathCollision(pStart, map, false, 0, 0, start) != nullptr)
 		return nullptr;
 
-	Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
+	parkingPathStart = pStart;
+
+	/*Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
 	glm::vec2 endDirection = *GetEndDirection();
-	Line* endLine = new Line(end, end + (float)vehicle->GetWheelbase() / 2.0f * endDirection);
+	Line* endLine = new Line(end - (float)vehicle->GetWheelbase() / 2.0f * endDirection, end);
 
 	pStart->RemoveElement(pStart->GetLastElement());
 	Path *path = CreateAdmissiblePath(startLine, endLine);
@@ -79,12 +84,16 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 
 	finalPath = new Path(pathParts);
 
-	return finalPath;
+	return finalPath;*/
+
+	return parkingPathStart;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 {
 	Path *pEnd = createParkingPath(*vehicle, *end, Exit);
+
+	parkingPathEnd = pEnd;
 
 	if (pEnd == nullptr)
 		return nullptr;
@@ -109,7 +118,7 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 	glm::vec2 startDirection = *GetStartDirection();
 	glm::vec2 endDirection = *GetEndDirection();
 	Line* startLine = new Line(start, start + (float)vehicle->GetWheelbase() / 2.0f * startDirection);
-	Line* endLine = new Line(end, end + (float)vehicle->GetWheelbase() / 2.0f * endDirection);
+	Line* endLine = new Line(end - (float)vehicle->GetWheelbase() / 2.0f * endDirection, end);
 
 	return CreateAdmissiblePath(startLine, endLine);
 }
@@ -140,11 +149,9 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 		collisionEdge = ChackPathCollision(finalPath, map, false);
 	}
 
-	if (collisionEdge != nullptr)
+	if (collisionEdge != nullptr || polylinePath == nullptr)
 	{
 		polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
-
-		//return nullptr;
 
 		int element1, element2;
 		while (!checkPolylinePathCorectness(polylinePath, &element1, &element2) && polylinePath->GetElements().size() > 1)
@@ -162,7 +169,12 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 		finalPath = CreateAdmissiblePath(polylinePath);
 
-		GraphEdge *collisionEdge = ChackPathCollision(finalPath, map);
+		GraphEdge *collisionEdge = ChackPathCollision(finalPath, map, true, indexStart, indexEnd);
+
+		//collisionEdge = nullptr;
+
+		//TODO: nie usuwaæ pocz¹tkowej ani koñcowaj jeœli nie jest to niezbêdne!!!
+
 		while (collisionEdge != NULL && finalPath->GetElements().size() > 0)
 		{
 			std::ostringstream ss;
@@ -179,10 +191,10 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 			finalPath = CreateAdmissiblePath(polylinePath);
 
-			if (finalPath->GetElements().size() == 0)
+			if (finalPath == nullptr || finalPath->GetElements().size() == 0)
 				return nullptr;
 
-			collisionEdge = ChackPathCollision(finalPath, map);
+			collisionEdge = ChackPathCollision(finalPath, map, true, indexStart, indexEnd);
 		}
 	}
 
@@ -474,7 +486,7 @@ void PathPlanner::SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly)
 	this->useAdmissibleArcsOnly = useAdmissibleArcsOnly;
 }
 
-GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGraph)
+GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGraph, int start, int end, MapElement * exceptionElement)
 {
 	double dt = 1.0 / collisionDetectionDensity;
 	auto mapElements = map->GetMapElements();
@@ -485,19 +497,43 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 
 		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), vehicle->GetPoints())) // check whether vehicle is all on the map
 		{
-			Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t));
-			if (useGraph)
+			if (useGraph && polylinePath != nullptr)
+			{
+				Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t));
+
+				if (line->GetV1() == start)
+					line = dynamic_cast<Line*>(polylinePath->GetNextElement(line));
+				if (line->GetV2() == end)
+					line = dynamic_cast<Line*>(polylinePath->GetPrevElement(line));
+
 				return voronoiGraph->GetEdge(line->GetV1(), line->GetV2()); //TODO: Sprawdzic czy to dzia³a
+			}
 			return new GraphEdge();
 		}
 
 		for (int i = 0; i < mapElements.size(); i++)
 		{
+			if (exceptionElement != nullptr)
+			{
+				if (mapElements[i]->GetPosition() == exceptionElement->GetPosition() &&
+					mapElements[i]->GetRotation() == exceptionElement->GetRotation() &&
+					mapElements[i]->GetSize() == exceptionElement->GetSize())
+					continue;
+			}
+
 			if (GeometryHelper::CheckPolygonIntersection(mapElements[i]->GetPoints(), vehicle->GetPoints()))
 			{
-				Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t)); //TODO: use graph ?
-				if (useGraph)
+				if (useGraph && polylinePath != nullptr)
+				{
+					Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t)); //TODO: use graph ?
+
+					if (line->GetV1() == start)
+						line = dynamic_cast<Line*>(polylinePath->GetNextElement(line));
+					if (line->GetV2() == end)
+						line = dynamic_cast<Line*>(polylinePath->GetPrevElement(line));
+
 					return voronoiGraph->GetEdge(line->GetV1(), line->GetV2());
+				}
 				return new GraphEdge();
 			}
 		}
@@ -819,6 +855,16 @@ Path * PathPlanner::createDirectPolylinePath(Line *startLine, Line *endLine)
 	if (isnan(intersectionPoint.x) || isnan(intersectionPoint.y) || isinf(intersectionPoint.x), isinf(intersectionPoint.y))
 		return nullptr;
 
+	glm::vec2 startDirection = GeometryHelper::GetLineDirection(startLine->GetFrom(), startLine->GetTo());
+	glm::vec2 startIntersectionDirection = GeometryHelper::GetLineDirection(startLine->GetTo(), intersectionPoint);
+	if (!epsilonEquals(startDirection.x, startIntersectionDirection.x) || !epsilonEquals(startDirection.y, startIntersectionDirection.y))
+		return nullptr;
+
+	glm::vec2 endDirection = GeometryHelper::GetLineDirection(endLine->GetFrom(), endLine->GetTo());
+	glm::vec2 endIntersectionDirection = GeometryHelper::GetLineDirection(intersectionPoint, endLine->GetFrom());
+	if (!epsilonEquals(endDirection.x, endIntersectionDirection.x) || !epsilonEquals(endDirection.y, endIntersectionDirection.y))
+		return nullptr;
+
 	path->AddElement(new Line(startLine->GetFrom(), intersectionPoint));
 	path->AddElement(new Line(intersectionPoint, endLine->GetTo()));
 
@@ -833,12 +879,17 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 	if (parkingSpace.GetSize().x < vehicle.GetWheelbase() || parkingSpace.GetSize().y < vehicle.GetTrack())
 		return nullptr;
 
+	glm::vec2 parkingPlaceDirection;
 	if (parkingSpace.GetType() == ParkingSpaceType::Paralell)
 	{
-		// zak³adamy, ¿e pojazd jest w tej samej orientacji co miejsce parkingowe
+		auto rot = parkingSpace.GetRotation();
+		int arcCount = 0;
+		double insideAngle = vehicle.GetMaxInsideAngle();
+		double angleFrom = 0;
+		double angleTo = 0;
 
-		vehicle.UpdateState(parkingSpace.GetRotation());
-		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetWheelbase() / 2.0) * vehicle.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
+		vehicle.UpdateState(0.0);
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetSize().x / 2.0) * vehicle.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
 
 		auto p1 = vehicle.GetPosition();
 
@@ -846,46 +897,60 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 
 		auto p2 = vehicle.GetPosition();
 
+		// zak³adamy, ¿e pojazd jest w tej samej orientacji co miejsce parkingowe
+		Circle* circle = vehicle.GetTurnCircle(insideAngle, Left);
+
+		parkingSpace.SetRotation(0);
+		auto pp = parkingSpace.GetPosition().x - vehicle.GetSize().x / 2.0;
+		while (circle->GetPointForAngle(angleTo).x < pp)
+			angleTo += 0.001;
+		parkingSpace.SetRotation(rot);
+
+		vehicle.UpdateState(-parkingSpace.GetRotation());
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetSize().x / 2.0) * vehicle.GetDirWheelbase(), -parkingSpace.GetRotation()); // ustawienie auta na œrodku miejsca
+
+		p1 = vehicle.GetPosition();
+
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(parkingSpace.GetSize().x / 2.0) * vehicle.GetDirWheelbase()); // przesuniêcie auta do koñca miejsca
+
+		p2 = vehicle.GetPosition();
+
 		path->AddElement(new Line(p1, p2));
 
-		int arcCount = 0;
-		double insideAngle = vehicle.GetMaxInsideAngle();
-		double angleFrom = 0;
-		double angleTo = 0;
+		parkingPlaceDirection = vehicle.GetDirWheelbase();
+
 		while (parkingSpace.ContainVehicle(vehicle) || arcCount % 2 == 1) // ³uki
 		{
-			Circle* circle = vehicle.GetTurnCircle(insideAngle, Left);
-
-			auto pp = parkingSpace.GetPosition().x - vehicle.GetWheelbase() / 2.0;
-			while (circle->GetPointForAngle(angleTo).x < pp)
-				angleTo += 0.001;
-
 			switch (arcCount % 4)
 			{
 			case 0:
-				circle = vehicle.GetTurnCircle(insideAngle, Left, angleFrom, angleTo);
+				circle = vehicle.GetTurnCircle(insideAngle, Left, angleFrom - rot, angleTo - rot);
+				vehicle.UpdateState(circle->GetPointForAngle(circle->angleTo), circle->angleTo);
 				break;
 			case 1:
-				circle = vehicle.GetTurnCircle(insideAngle, Right, 2 * M_PI - angleTo, 2 * M_PI + angleFrom);
+				circle = vehicle.GetTurnCircle(insideAngle, Right, 2 * M_PI - angleTo + rot, 2 * M_PI + angleFrom + rot);
+				vehicle.UpdateState(circle->GetPointForAngle(circle->angleTo), -circle->angleTo);
 				break;
 			case 2:
-				circle = vehicle.GetTurnCircle(insideAngle, Left, 2 * M_PI + angleFrom, 2 * M_PI - angleTo, ManeuverType::Back);
+				circle = vehicle.GetTurnCircle(insideAngle, Left, 2 * M_PI + angleFrom - rot, 2 * M_PI - angleTo - rot, ManeuverType::Back);
+				vehicle.UpdateState(circle->GetPointForAngle(circle->angleTo), circle->angleTo);
 				break;
 			case 3:
-				circle = vehicle.GetTurnCircle(insideAngle, Right, angleTo, angleFrom, ManeuverType::Back);
+				circle = vehicle.GetTurnCircle(insideAngle, Right, angleTo + rot, angleFrom + rot, ManeuverType::Back);
+				vehicle.UpdateState(circle->GetPointForAngle(circle->angleTo), -circle->angleTo);
 				break;
 			}
 
 			arcCount++;
 			path->AddElement(circle);
-			vehicle.UpdateState(circle->GetPointForAngle(circle->angleTo), circle->angleTo);
+			//vehicle.UpdateState(circle->GetPointForAngle(circle->angleTo), arcCount % 2 == 0 ? circle->angleTo : -circle->angleTo);
 		}
 	}
 	else if (parkingSpace.GetType() == ParkingSpaceType::Perpendicular)
 	{
 		// TODO:
 		vehicle.UpdateState(parkingSpace.GetRotation());
-		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetWheelbase() / 2.0) * vehicle.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetSize().x / 2.0) * vehicle.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
 
 		auto p1 = vehicle.GetPosition();
 
@@ -896,9 +961,10 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 		path->AddElement(new Line(p1, p2));
 	}
 
-	path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetWheelbase() * vehicle.GetDirWheelbase()));
+	path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetSize().x * vehicle.GetDirWheelbase()));
 
-	glm::vec2 pathTranslation = glm::vec2((float)vehicle.GetWheelbase() / 2.0f, 0.0f);
+	glm::vec2 pathTranslation;
+	pathTranslation = (float)vehicle.GetSize().x / 2.0f * parkingPlaceDirection;
 	auto pathElements = path->GetElements();
 	for (int i = 0; i < pathElements.size(); i++)
 	{

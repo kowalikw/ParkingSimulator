@@ -226,13 +226,16 @@ bool Map::VehicleIntersectsMapElement(Vehicle * vehicle)
 		ss << "V2 - X: " << vehicle->GetPoints()[2].x << ", Y: " << vehicle->GetPoints()[2].y << endl;
 		ss << "V3 - X: " << vehicle->GetPoints()[3].x << ", Y: " << vehicle->GetPoints()[3].y << endl;
 
+		ss << "Position: X=" << vehicle->GetPosition().x << ", Y=" << vehicle->GetPosition().y << endl;
+		ss << "Rotation: " << vehicle->GetRotation() << endl;
+		ss << "Size: X=" << vehicle->GetSize().x << ", Y=" << vehicle->GetSize().y << endl;
 
 		ss << endl;
 		std::string s(ss.str());
 
 		OutputDebugStringA(s.c_str());
 
-		if (GeometryHelper::CheckPolygonIntersection(vehicle->GetPoints2(), mapElements[i]->GetPoints()))
+		if (GeometryHelper::CheckPolygonIntersection(vehicle->GetPoints(), mapElements[i]->GetPoints()))
 			return true;
 	}
 

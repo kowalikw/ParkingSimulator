@@ -45,6 +45,42 @@ PathElement * Path::GetLastElement()
 	return elements[elements.size() - 1];
 }
 
+PathElement * Path::GetNextElement(PathElement * element)
+{
+	int index = 0;
+	for(int i = 0; i < elements.size(); i++)
+		if (element == elements[i])
+		{
+			index = i;
+			break;
+		}
+
+	if (index + 1 >= elements.size())
+	{
+		int lala = 0;
+	}
+
+	return elements[index + 1];
+}
+
+PathElement * Path::GetPrevElement(PathElement * element)
+{
+	int index = 0;
+	for (int i = 0; i < elements.size(); i++)
+		if (element == elements[i])
+		{
+			index = i;
+			break;
+		}
+
+	if (index - 1 < 0)
+	{
+		int lala = 0;
+	}
+
+	return elements[index - 1];
+}
+
 vector<PathElement*> Path::GetElements()
 {
 	return this->elements;
@@ -111,6 +147,12 @@ SimulationState Path::GetSimulationState(double t)
 	try
 	{
 		PathElement *pathElement = GetElement(t);
+
+		if (pathElement == NULL)
+		{
+			int error = 0;
+
+		}
 
 		double pathLength = GetLength();
 		double lengthToPathElementExclude = GetLengthToElement(pathElement);

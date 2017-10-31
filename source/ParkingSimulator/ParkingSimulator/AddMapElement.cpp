@@ -204,7 +204,7 @@ void AddMapElement::createElement(int index)
 		break;
 	case P:
 		model = &parkingPlaces[index];
-		newMapElement = new ParkingSpace(glm::vec2(), index == 0 ? ParkingSpaceType::Paralell : ParkingSpaceType::Perpendicular);
+		newMapElement = new ParkingSpace(glm::vec2(), index == 2 ? ParkingSpaceType::Perpendicular : ParkingSpaceType::Paralell);
 		break;
 	case C:
 		model = &vehicles[index];

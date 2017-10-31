@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>230</width>
-    <height>142</height>
+    <width>287</width>
+    <height>144</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
 	border-radius: 3px;
 }
 
-QPushButton#btnAccept, QPushButton#btnCancel {
+QPushButton#btnLoadFromVehicleEditor,QPushButton#btnLoadFromFile, QPushButton#btnCancel {
     background-color: #3b3e41;
     border-radius: 3px;
     border: 1px solid #757575;
@@ -30,35 +30,61 @@ QPushButton#btnAccept, QPushButton#btnCancel {
     padding: 6px;
 }
 
-QPushButton#btnAccept:hover, QPushButton#btnCancel:hover {
+QPushButton#btnLoadFromVehicleEditor:hover, QPushButton#btnLoadFromFile:hover, QPushButton#btnCancel:hover {
     background-color: #85b448;
 	cursor: pointer;
 }
 
-QPushButton#btnAccept:pressed, QPushButton#btnCancel:pressed {
+QPushButton#btnLoadFromVehicleEditor:pressed, QPushButton#btnLoadFromFile:pressed, QPushButton#btnCancel:pressed {
     background-color: #d86a39;
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QPushButton" name="btnAccept">
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="leftMargin">
+      <number>20</number>
      </property>
-     <property name="text">
-      <string>OK</string>
+     <property name="topMargin">
+      <number>10</number>
      </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="btnCancel">
-     <property name="cursor">
-      <cursorShape>PointingHandCursor</cursorShape>
+     <property name="rightMargin">
+      <number>20</number>
      </property>
-     <property name="text">
-      <string>Cancel</string>
+     <property name="bottomMargin">
+      <number>10</number>
      </property>
-    </widget>
+     <item>
+      <widget class="QPushButton" name="btnLoadFromVehicleEditor">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Load vehicle from Vehicle Editor</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnLoadFromFile">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Load vehicle from file</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancel">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

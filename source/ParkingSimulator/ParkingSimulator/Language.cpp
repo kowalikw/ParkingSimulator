@@ -171,6 +171,31 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("Settings_SaveSettings", language.value("Settings_SaveSettings").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_ElementsCount", language.value("Common_ElementsCount").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_PathElement", language.value("Common_PathElement").toString().toStdString()));
+
+	dictionary.insert(std::pair<std::string, std::string>("WarningError_NoVehicleInVehicleEditor_Title", language.value("WarningError_NoVehicleInVehicleEditor_Title").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("WarningError_NoVehicleInVehicleEditor_Content", language.value("WarningError_NoVehicleInVehicleEditor_Content").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_NewVehicle", language.value("VehicleEditor_NewVehicle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_OpenVehicle", language.value("VehicleEditor_OpenVehicle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_SaveVehicle", language.value("VehicleEditor_SaveVehicle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_VehicleProperties", language.value("VehicleEditor_VehicleProperties").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_VehiclePropertiesName", language.value("VehicleEditor_VehiclePropertiesName").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_VehiclePropertiesWidth", language.value("VehicleEditor_VehiclePropertiesWidth").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_VehiclePropertiesLength", language.value("VehicleEditor_VehiclePropertiesLength").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_VehiclePropertiesTrack", language.value("VehicleEditor_VehiclePropertiesTrack").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_VehiclePropertiesWheelbase", language.value("VehicleEditor_VehiclePropertiesWheelbase").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_MaxAngle", language.value("VehicleEditor_MaxAngle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_VehiclePropertiesApply", language.value("VehicleEditor_VehiclePropertiesApply").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_VehicleModels", language.value("VehicleEditor_VehicleModels").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_MainModel", language.value("VehicleEditor_MainModel").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_FrontLeftWheelModel", language.value("VehicleEditor_FrontLeftWheelModel").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_FrontRightWheelModel", language.value("VehicleEditor_FrontRightWheelModel").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_RearLeftWheelModel", language.value("VehicleEditor_RearLeftWheelModel").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_RearRightWheelModel", language.value("VehicleEditor_RearRightWheelModel").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_LoadModel", language.value("VehicleEditor_LoadModel").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Common_Model", language.value("Common_Model").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Common_Scale", language.value("Common_Scale").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Common_NotSet", language.value("Common_NotSet").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Common_OK", language.value("Common_OK").toString().toStdString()));
 }
 
 std::map<std::string, std::string> Language::GetDictionary()

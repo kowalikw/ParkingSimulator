@@ -469,6 +469,48 @@ void ParkingSimulator::setLanguage()
 	ui.settingsMapElementsNotAdmissibleColorLabel->setText(QString::fromStdString(dictionary["Settings_FillColor"]));
 	ui.btnSaveSettings->setText(QString::fromStdString(dictionary["Settings_SaveSettings"]));
 
+	ui.btnNewVehicle->setToolTip(QString::fromStdString(dictionary["VehicleEditor_NewVehicle"]));
+	ui.btnOpenVehicle->setToolTip(QString::fromStdString(dictionary["VehicleEditor_OpenVehicle"]));
+	ui.btnSaveVehicle->setToolTip(QString::fromStdString(dictionary["VehicleEditor_SaveVehicle"]));
+
+	ui.vehiclePropertiesTitleLabel->setText(QString::fromStdString(dictionary["VehicleEditor_VehicleProperties"]));
+	ui.vehiclePropertiesName->setText(QString::fromStdString(dictionary["VehicleEditor_VehiclePropertiesName"]));
+	ui.vehiclePropertiesWidth->setText(QString::fromStdString(dictionary["VehicleEditor_VehiclePropertiesWidth"]));
+	ui.vehiclePropertiesLength->setText(QString::fromStdString(dictionary["VehicleEditor_VehiclePropertiesLength"]));
+	ui.vehiclePropertiesTrack->setText(QString::fromStdString(dictionary["VehicleEditor_VehiclePropertiesTrack"]));
+	ui.vehiclePropertiesWheelbase->setText(QString::fromStdString(dictionary["VehicleEditor_VehiclePropertiesWheelbase"]));
+	ui.vehiclePropertiesMaxAngle->setText(QString::fromStdString(dictionary["VehicleEditor_MaxAngle"]));
+	ui.btnApplyVehicleProperties->setText(QString::fromStdString(dictionary["VehicleEditor_VehiclePropertiesApply"]));
+	ui.vehicleModelsTitleLabel->setText(QString::fromStdString(dictionary["VehicleEditor_VehicleModels"]));
+	ui.vehicleModelLabel->setText(QString::fromStdString(dictionary["VehicleEditor_MainModel"]));
+	ui.setVehicleSetMainModelLabel->setText(QString::fromStdString(dictionary["Common_Model"]));
+	ui.btnLoadVehicleModel->setText(QString::fromStdString(dictionary["VehicleEditor_LoadModel"]));
+	ui.vehicleFrontLeftWheelModelLabel->setText(QString::fromStdString(dictionary["VehicleEditor_FrontLeftWheelModel"]));
+	ui.setVehicleFrontLeftWheelModelLabel->setText(QString::fromStdString(dictionary["Common_Model"]));
+	ui.btnLoadVehicleLeftFrontWheelModel->setText(QString::fromStdString(dictionary["VehicleEditor_LoadModel"]));
+	ui.setVehicleFrontLeftWheelPositionLabel->setText(QString::fromStdString(dictionary["Common_Position"]));
+	ui.setVehicleFrontLeftWheelRotationLabel->setText(QString::fromStdString(dictionary["Common_Rotation"]));
+	ui.setVehicleFrontLeftWheelScaleLabel->setText(QString::fromStdString(dictionary["Common_Scale"]));
+	ui.vehicleFrontRightWheelModelLabel->setText(QString::fromStdString(dictionary["VehicleEditor_FrontRightWheelModel"]));
+	ui.setVehicleFrontRightWheelModelLabel->setText(QString::fromStdString(dictionary["Common_Model"]));
+	ui.btnLoadVehicleRightFrontWheelModel->setText(QString::fromStdString(dictionary["VehicleEditor_LoadModel"]));
+	ui.setVehicleFrontRightWheelPositionLabel->setText(QString::fromStdString(dictionary["Common_Position"]));
+	ui.setVehicleFrontRightWheelRotationLabel->setText(QString::fromStdString(dictionary["Common_Rotation"]));
+	ui.setVehicleFrontRightWheelScaleLabel->setText(QString::fromStdString(dictionary["Common_Scale"]));
+	ui.vehicleRearLeftWheelModelLabel->setText(QString::fromStdString(dictionary["VehicleEditor_RearLeftWheelModel"]));
+	ui.setVehicleRearLeftWheelModelLabel->setText(QString::fromStdString(dictionary["Common_Model"]));
+	ui.btnLoadVehicleLeftRearWheelModel->setText(QString::fromStdString(dictionary["VehicleEditor_LoadModel"]));
+	ui.setVehicleRearLeftWheelPositionLabel->setText(QString::fromStdString(dictionary["Common_Position"]));
+	ui.setVehicleRearLeftWheelRotationLabel->setText(QString::fromStdString(dictionary["Common_Rotation"]));
+	ui.setVehicleRearLeftWheelScaleLabel->setText(QString::fromStdString(dictionary["Common_Scale"]));
+	ui.vehicleRearRightWheelModelLabel->setText(QString::fromStdString(dictionary["VehicleEditor_RearRightWheelModel"]));
+	ui.setVehicleRearRightWheelModelLabel->setText(QString::fromStdString(dictionary["Common_Model"]));
+	ui.btnLoadRightRearWheelModel->setText(QString::fromStdString(dictionary["VehicleEditor_LoadModel"]));
+	ui.setVehicleRearRightWheelPositionLabel->setText(QString::fromStdString(dictionary["Common_Position"]));
+	ui.setVehicleRearRightWheelRotationLabel->setText(QString::fromStdString(dictionary["Common_Rotation"]));
+	ui.setVehicleRearRightWheelScaleLabel->setText(QString::fromStdString(dictionary["Common_Scale"]));
+
+
 	updateMapElementsTree();
 }
 
@@ -1103,6 +1145,8 @@ void ParkingSimulator::openVehicle()
 	{
 		vehicleEditor.OpenVehicle(filePath.toStdString());
 
+		updateVehicleProperties();
+
 		if (vehicleEditor.GetVehicle()->GetFrontLeftWheelModel() != NULL)
 		{
 			enableVehicleFrontLeftWheelProperties();
@@ -1140,9 +1184,10 @@ void ParkingSimulator::applyVehicleProperties()
 	if (vehicleEditor.GetVehicle() != NULL)
 	{
 		vehicleEditor.GetVehicle()->SetName(ui.vehicleName->text().toStdString());
-		vehicleEditor.GetVehicle()->SetSize(glm::vec2(ui.vehicleLength->value(), ui.vehicleWidth->value()));
-		vehicleEditor.GetVehicle()->wheelbase = ui.vehicleWheelbase->value();
-		vehicleEditor.GetVehicle()->track = ui.vehicleTrack->value();
+		vehicleEditor.GetVehicle()->SetSize(glm::vec2(CommonHelper::ConverMetersToPixeks(ui.vehicleLength->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleWidth->value())));
+		vehicleEditor.GetVehicle()->wheelbase = CommonHelper::ConverMetersToPixeks(ui.vehicleWheelbase->value());
+		vehicleEditor.GetVehicle()->track = CommonHelper::ConverMetersToPixeks(ui.vehicleTrack->value());
+		vehicleEditor.GetVehicle()->maxInsideAngle = CommonHelper::ConvertDegreesToRadians(ui.vehicleMaxAngle->value());
 	}
 }
 
@@ -1154,6 +1199,8 @@ void ParkingSimulator::loadVehicleModel()
 	if (filePath != "")
 	{
 		vehicleEditor.LoadVehicleModel(filePath.toStdString());
+		ui.vehicleModelIsSet->setText(QString("OK"));
+		ui.vehicleModelIsSet->setStyleSheet(QString("color: green;"));
 	}
 }
 
@@ -1267,6 +1314,27 @@ void ParkingSimulator::enableVehicleRearRightWheelProperties()
 	ui.vehicleRearRightWheelScaleX->setEnabled(true);
 	ui.vehicleRearRightWheelScaleY->setEnabled(true);
 	ui.vehicleRearRightWheelScaleZ->setEnabled(true);
+}
+
+void ParkingSimulator::updateVehicleProperties()
+{
+	ui.vehicleName->setText(QString::fromStdString(vehicleEditor.GetVehicle()->GetName()));
+	ui.vehicleLength->setValue(CommonHelper::ConvertPixelsToMeters(vehicleEditor.GetVehicle()->GetSize().x));
+	ui.vehicleWidth->setValue(CommonHelper::ConvertPixelsToMeters(vehicleEditor.GetVehicle()->GetSize().y));
+	ui.vehicleTrack->setValue(CommonHelper::ConvertPixelsToMeters(vehicleEditor.GetVehicle()->GetTrack()));
+	ui.vehicleWheelbase->setValue(CommonHelper::ConvertPixelsToMeters(vehicleEditor.GetVehicle()->GetWheelbase()));
+	ui.vehicleMaxAngle->setValue(CommonHelper::ConvertRadiansToDegrees(vehicleEditor.GetVehicle()->GetMaxInsideAngle()));
+
+	if (vehicleEditor.GetVehicle()->GetVehicleModel() != NULL)
+	{
+		ui.vehicleModelIsSet->setText(QString("OK"));
+		ui.vehicleModelIsSet->setStyleSheet(QString("color: green;"));
+	}
+	else
+	{
+		ui.vehicleModelIsSet->setText(QString("NOT SET"));
+		ui.vehicleModelIsSet->setStyleSheet(QString("color: red;"));
+	}
 }
 
 void ParkingSimulator::updateVehicleFrontLeftWheelProperties()
@@ -1403,7 +1471,7 @@ void ParkingSimulator::setMap()
 
 void ParkingSimulator::setVehicle()
 {
-	SelectVehicle selectVehicleWindow;
+	SelectVehicle selectVehicleWindow(&vehicleEditor);
 	selectVehicleWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	if (selectVehicleWindow.exec())
 	{

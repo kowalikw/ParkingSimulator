@@ -514,5 +514,11 @@
     <None Include="Resources\shaders\textureVS.glsl">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Resources\shaders\textureInstancedFS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Resources\shaders\textureInstancedVS.glsl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

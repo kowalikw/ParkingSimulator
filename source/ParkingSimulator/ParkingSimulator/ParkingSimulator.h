@@ -94,6 +94,7 @@ public slots:
 	void enableVehicleRearLeftWheelProperties();
 	void enableVehicleRearRightWheelProperties();
 
+	void updateVehicleProperties();
 	void updateVehicleFrontLeftWheelProperties();
 	void updateVehicleFrontRightWheelProperties();
 	void updateVehicleRearLeftWheelProperties();

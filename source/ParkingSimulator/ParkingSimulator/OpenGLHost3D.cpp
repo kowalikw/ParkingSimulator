@@ -80,7 +80,7 @@ void OpenGLHost3D::initializeGL()
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glEnable(GL_DEPTH_TEST);
 
-	textureShader = new Shader("Resources/shaders/textureVS.glsl", "Resources/shaders/textureFS.glsl");
+	textureShader = new Shader("Resources/shaders/textureInstancedVS.glsl", "Resources/shaders/textureInstancedFS.glsl");
 	phongShader = new Shader("Resources/shaders/phongVS.glsl", "Resources/shaders/phongFS.glsl");
 
 	camera = new Camera(glm::vec3(0.0f, 1000.0f, 0.0));
