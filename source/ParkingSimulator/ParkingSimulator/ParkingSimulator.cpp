@@ -1484,6 +1484,14 @@ void ParkingSimulator::setVehicle()
 
 void ParkingSimulator::setStart()
 {
+	if (pathPlanner.GetMap() == nullptr || pathPlanner.GetVehicle() == nullptr)
+	{
+		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_SetStartPosition_Title"], Language::getInstance()->GetDictionary()["WarningError_SetStartPosition_Content"], MessageType::Error);
+		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		warningWindow.exec();
+		return;
+	}
+
 	if (pathPlanner.GetSetEndPosition())
 	{
 		pathPlanner.SetEndPoint(nullptr);
@@ -1504,6 +1512,14 @@ void ParkingSimulator::setStart()
 
 void ParkingSimulator::setEnd()
 {
+	if (pathPlanner.GetMap() == nullptr || pathPlanner.GetVehicle() == nullptr)
+	{
+		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_SetEndPosition_Title"], Language::getInstance()->GetDictionary()["WarningError_SetEndPosition_Content"], MessageType::Error);
+		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		warningWindow.exec();
+		return;
+	}
+
 	if (pathPlanner.GetSetStartPosition())
 	{
 		pathPlanner.SetStartPoint(nullptr);
@@ -1615,6 +1631,7 @@ void ParkingSimulator::findPath()
 		|| (pathPlanner.GetStartPoint() != NULL && pathPlanner.GetStartDirection() != NULL && pathPlanner.GetStartParkingSpace() != NULL)
 		|| (pathPlanner.GetEndPoint() != NULL && pathPlanner.GetEndDirection() != NULL && pathPlanner.GetEndParkingSpace() != NULL))
 	{
+		auto lala = Language::getInstance()->GetDictionary()["WarningError_FindPathNoParameters_Content"];
 		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_FindPathNoParameters_Title"], Language::getInstance()->GetDictionary()["WarningError_FindPathNoParameters_Content"], MessageType::Error);
 		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 		warningWindow.exec();

@@ -87,13 +87,16 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 	finalPath = new Path(pathParts);
 
 	return finalPath;
-
-	return parkingPathStart;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 {
 	Path *pEnd = createParkingPath(*vehicle, *end, Exit);
+
+	pEnd->Reverse();
+	if (pEnd == nullptr || ChackPathCollision(pEnd, map, false, 0, 0, end) != nullptr)
+		return nullptr;
+	pEnd->Reverse();
 
 	parkingPathEnd = pEnd;
 
@@ -119,8 +122,8 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 {
 	glm::vec2 startDirection = *GetStartDirection();
 	glm::vec2 endDirection = *GetEndDirection();
-	Line* startLine = new Line(start, start + (float)vehicle->GetWheelbase() / 2.0f * startDirection);
-	Line* endLine = new Line(end - (float)vehicle->GetWheelbase() / 2.0f * endDirection, end);
+	Line* startLine = new Line(start, start + (float)vehicle->GetSize().x / 2.0f * startDirection);
+	Line* endLine = new Line(end - (float)vehicle->GetSize().x / 2.0f * endDirection, end);
 
 	return CreateAdmissiblePath(startLine, endLine);
 }
@@ -177,15 +180,17 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 		//TODO: nie usuwaæ pocz¹tkowej ani koñcowaj jeœli nie jest to niezbêdne!!!
 
+		int i = 0;
 		while (collisionEdge != NULL && finalPath->GetElements().size() > 0)
 		{
-			std::ostringstream ss;
+			i++;
+			/*std::ostringstream ss;
 			ss << "V1: " << collisionEdge->v1->x << endl;
 			ss << "V2: " << collisionEdge->v2->x << endl;
 			ss << endl;
 			std::string s(ss.str());
 
-			OutputDebugStringA(s.c_str());
+			OutputDebugStringA(s.c_str());*/
 
 			voronoiGraph->RemoveEdge(collisionEdge);
 
@@ -504,9 +509,9 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 			{
 				Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t));
 
-				if (line->GetV1() == start)
+				if (line->GetV1() == start || line->GetV2() == start)
 					line = dynamic_cast<Line*>(polylinePath->GetNextElement(line));
-				if (line->GetV2() == end)
+				if (line->GetV2() == end || line->GetV1() == end)
 					line = dynamic_cast<Line*>(polylinePath->GetPrevElement(line));
 
 				return voronoiGraph->GetEdge(line->GetV1(), line->GetV2()); //TODO: Sprawdzic czy to dzia³a
@@ -964,7 +969,7 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 		path->AddElement(new Line(p1, p2));
 	}
 
-	path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetSize().x * vehicle.GetDirWheelbase()));
+	path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetSize().x / 2.0f * vehicle.GetDirWheelbase()));
 
 	glm::vec2 pathTranslation;
 	pathTranslation = (float)vehicle.GetSize().x / 2.0f * parkingPlaceDirection;

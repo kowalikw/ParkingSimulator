@@ -215,7 +215,7 @@ bool Map::VehicleIntersectsMapElement(Vehicle * vehicle)
 	{
 		if (mapElements[i] == vehicle) continue;
 
-		std::ostringstream ss;
+		/*std::ostringstream ss;
 		ss << "P0 - X: " << mapElements[i]->GetPoints()[0].x << ", Y: " << mapElements[i]->GetPoints()[0].y << endl;
 		ss << "P1 - X: " << mapElements[i]->GetPoints()[1].x << ", Y: " << mapElements[i]->GetPoints()[1].y << endl;
 		ss << "P2 - X: " << mapElements[i]->GetPoints()[2].x << ", Y: " << mapElements[i]->GetPoints()[2].y << endl;
@@ -233,7 +233,7 @@ bool Map::VehicleIntersectsMapElement(Vehicle * vehicle)
 		ss << endl;
 		std::string s(ss.str());
 
-		OutputDebugStringA(s.c_str());
+		OutputDebugStringA(s.c_str());*/
 
 		if (GeometryHelper::CheckPolygonIntersection(vehicle->GetPoints2(), mapElements[i]->GetPoints()))
 			return true;
@@ -262,7 +262,7 @@ bool Map::MapElementIntersectsMapElement(MapElement * mapElement)
 	{
 		if (mapElements[i] == mapElement) continue;
 
-		std::ostringstream ss;
+		/*std::ostringstream ss;
 		ss << "P0 - X: " << mapElements[i]->GetPoints()[0].x << ", Y: " << mapElements[i]->GetPoints()[0].y << endl;
 		ss << "P1 - X: " << mapElements[i]->GetPoints()[1].x << ", Y: " << mapElements[i]->GetPoints()[1].y << endl;
 		ss << "P2 - X: " << mapElements[i]->GetPoints()[2].x << ", Y: " << mapElements[i]->GetPoints()[2].y << endl;
@@ -277,7 +277,7 @@ bool Map::MapElementIntersectsMapElement(MapElement * mapElement)
 		ss << endl;
 		std::string s(ss.str());
 
-		OutputDebugStringA(s.c_str());
+		OutputDebugStringA(s.c_str());*/
 
 		if (GeometryHelper::CheckPolygonIntersection(mapElement->GetPoints(), mapElements[i]->GetPoints()))
 			return true;

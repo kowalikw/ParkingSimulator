@@ -176,7 +176,7 @@ SimulationState Path::GetSimulationState(double t)
 		double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
 		SimulationState simulationState = pathElement->GetSimulationState(u);
 
-		std::ostringstream ss;
+		/*std::ostringstream ss;
 		ss << "PathLength: " << pathLength << endl;
 		ss << "lengthToPathElementExclude: " << lengthToPathElementExclude << endl;
 		ss << "lengthToPathElementInclude: " << lengthToPathElementInclude << endl;
@@ -186,7 +186,7 @@ SimulationState Path::GetSimulationState(double t)
 		ss << endl;
 		std::string s(ss.str());
 
-		OutputDebugStringA(s.c_str());
+		OutputDebugStringA(s.c_str());*/
 
 		return simulationState;
 	}

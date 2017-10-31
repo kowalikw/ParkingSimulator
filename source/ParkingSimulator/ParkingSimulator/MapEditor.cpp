@@ -350,14 +350,6 @@ Terrain * MapEditor::GetNewTerrain()
 
 Terrain * MapEditor::GetHoverTerrain(glm::vec2 mousePosition)
 {
-	std::ostringstream ss;
-	ss << "X: " << mousePosition.x << endl;
-	ss << "Y: " << mousePosition.y << endl;
-	ss << endl;
-	std::string s(ss.str());
-
-	OutputDebugStringA(s.c_str());
-
 	return map->GetTerrainSlice(mousePosition.x, mousePosition.y);
 }
 

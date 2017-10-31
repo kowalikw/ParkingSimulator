@@ -267,13 +267,13 @@ SimulationState BSpline::GetSimulationState(double t)
 {
 	double u = knots[n] + t * (knots[m - n] - knots[n]);
 
-	std::ostringstream ss;
+	/*std::ostringstream ss;
 	ss << "t: " << t << endl;
 	ss << "u: " << u << endl;
 	ss << endl;
 	std::string s(ss.str());
 
-	OutputDebugStringA(s.c_str());
+	OutputDebugStringA(s.c_str());*/
 
 	SimulationState simulationState;
 	simulationState.position = GetPoint(u);

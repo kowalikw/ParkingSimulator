@@ -215,9 +215,13 @@ void Graph::CreateVoronoiGraph(Map * map)
 		for (int j = 0; j < vertices.size(); j++)
 			edges[i][j] = nullptr;
 
-	for (voronoi_diagram<double>::const_cell_iterator it = vd.cells().begin(); it != vd.cells().end(); ++it) {
+	for (voronoi_diagram<double>::const_cell_iterator it = vd.cells().begin(); it != vd.cells().end(); ++it) 
+	{
 		const voronoi_diagram<double>::cell_type &cell = *it;
 		const voronoi_diagram<double>::edge_type *edge = cell.incident_edge();
+
+		if (edge == NULL)
+			continue;
 		
 		do
 		{
@@ -259,7 +263,7 @@ void Graph::CreateVoronoiGraph(Map * map)
 			}
 
 			edge = edge->next();
-		} while (edge != cell.incident_edge());
+		} while (edge != NULL && edge != cell.incident_edge());
 	}
 }
 
@@ -267,8 +271,11 @@ void Graph::CreateVoronoiGraphWithExtraVertices(Map *map)
 {
 	CreateVoronoiGraph(map);
 
-	int densityWidth = 10;
-	int densityHeight = 10;
+	int densityWidth = 5;
+	int densityHeight = 5;
+
+	if (densityWidth == 0 || densityHeight == 0)
+		return;
 
 	double w = map->GetWidth() / densityWidth;
 	double h = map->GetHeight() / densityHeight;

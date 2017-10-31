@@ -196,6 +196,11 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("Common_Scale", language.value("Common_Scale").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_NotSet", language.value("Common_NotSet").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_OK", language.value("Common_OK").toString().toStdString()));
+
+	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetStartPosition_Title", language.value("WarningError_SetStartPosition_Title").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetStartPosition_Content", language.value("WarningError_SetStartPosition_Content").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetEndPosition_Title", language.value("WarningError_SetEndPosition_Title").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetEndPosition_Content", language.value("WarningError_SetEndPosition_Content").toString().toStdString()));
 }
 
 std::map<std::string, std::string> Language::GetDictionary()
