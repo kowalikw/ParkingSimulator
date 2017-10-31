@@ -62,6 +62,7 @@ void PathPlannerGLHost::mousePressEvent(QMouseEvent * event)
 				pathPlanner->SetEndPoint(nullptr);
 				pathPlanner->SetSetEndPosition(false);
 				pathPlanner->SetEndPositionChanged(true);
+				pathPlanner->GetVehicleEnd()->SetRotation(-pathPlanner->GetHoverElement(positionOnMap)->GetRotation());
 			}
 		}
 		else

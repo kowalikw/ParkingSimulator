@@ -142,6 +142,21 @@ PathElement * Path::GetElement(double t)
 	return nullptr;
 }
 
+void Path::Reverse()
+{
+	std::vector<PathElement*> reversedPathElements;
+	std::vector<PathElement*> pathElements = GetElements();
+
+	for (int i = pathElements.size() - 1; i >= 0; i--)
+	{
+		ManeuverType maneuverType = pathElements[i]->GetManeuverType();
+		pathElements[i]->SetManeuverType(maneuverType == Front ? Back : Front);
+		reversedPathElements.push_back(pathElements[i]);
+	}
+
+	SetElements(reversedPathElements);
+}
+
 SimulationState Path::GetSimulationState(double t)
 {
 	try
@@ -156,7 +171,7 @@ SimulationState Path::GetSimulationState(double t)
 
 		double pathLength = GetLength();
 		double lengthToPathElementExclude = GetLengthToElement(pathElement);
-		double lengthToPathElementInclude = GetLength() + lengthToPathElementExclude;
+		double lengthToPathElementInclude = pathElement->GetLength() + lengthToPathElementExclude;
 
 		double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
 		SimulationState simulationState = pathElement->GetSimulationState(u);

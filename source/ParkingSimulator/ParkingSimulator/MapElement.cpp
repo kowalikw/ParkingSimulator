@@ -271,7 +271,7 @@ void MapElement::SetMapThumbnailPath(std::string mapThumbnailPath)
 void MapElement::rotate()
 {
 	glm::mat4 mtx;
-	mtx = glm::rotate(mtx, -(float)rotation, glm::vec3(0.0f, 0.0f, 1.0f));
+	mtx = glm::rotate(mtx, (float)rotation, glm::vec3(0.0f, 0.0f, 1.0f));
 
 	for (int i = 0; i < points.size(); i++)
 	{

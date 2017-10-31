@@ -42,8 +42,10 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * en
 	parkingPathStart = pStart;
 	parkingPathEnd = pEnd;
 
-	if (pStart == nullptr || pEnd == nullptr || ChackPathCollision(pStart, map, false, 0, 0, start) != nullptr || ChackPathCollision(pEnd, map, false, 0, 0, end) != nullptr)
+	pEnd->Reverse();
+	if (pStart == nullptr || pEnd == nullptr || ChackPathCollision(pStart, map, false, 0, 0, start) != nullptr || ChackPathCollision(pEnd, map, false, 0, 0, end, true) != nullptr)
 		return nullptr;
+	pEnd->Reverse();
 
 	Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
 	Line* endLine = dynamic_cast<Line*>(pEnd->GetFirstElement());
@@ -71,7 +73,7 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 
 	parkingPathStart = pStart;
 
-	/*Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
+	Line* startLine = dynamic_cast<Line*>(pStart->GetLastElement());
 	glm::vec2 endDirection = *GetEndDirection();
 	Line* endLine = new Line(end - (float)vehicle->GetWheelbase() / 2.0f * endDirection, end);
 
@@ -84,7 +86,7 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 
 	finalPath = new Path(pathParts);
 
-	return finalPath;*/
+	return finalPath;
 
 	return parkingPathStart;
 }
@@ -486,7 +488,7 @@ void PathPlanner::SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly)
 	this->useAdmissibleArcsOnly = useAdmissibleArcsOnly;
 }
 
-GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGraph, int start, int end, MapElement * exceptionElement)
+GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGraph, int start, int end, MapElement * exceptionElement, bool invertPath)
 {
 	double dt = 1.0 / collisionDetectionDensity;
 	auto mapElements = map->GetMapElements();
@@ -495,7 +497,8 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 		SimulationState simulationState = path->GetSimulationState(t);
 		vehicle->UpdateState(simulationState);
 
-		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), vehicle->GetPoints())) // check whether vehicle is all on the map
+		auto vehiclePoints = vehicle->GetPoints2();
+		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), vehicle->GetPoints2())) // check whether vehicle is all on the map
 		{
 			if (useGraph && polylinePath != nullptr)
 			{
@@ -521,7 +524,7 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 					continue;
 			}
 
-			if (GeometryHelper::CheckPolygonIntersection(mapElements[i]->GetPoints(), vehicle->GetPoints()))
+			if (GeometryHelper::CheckPolygonIntersection(mapElements[i]->GetPoints(), vehicle->GetPoints2()))
 			{
 				if (useGraph && polylinePath != nullptr)
 				{

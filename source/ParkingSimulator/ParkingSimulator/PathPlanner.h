@@ -91,7 +91,7 @@ public:
 	bool GetUseAdmissibleArcsOnly();
 	void SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly);
 
-	GraphEdge * ChackPathCollision(Path *path, Map *Map, bool useGraph = true, int start = -1, int end = -1, MapElement * exceptionElement = nullptr);
+	GraphEdge * ChackPathCollision(Path *path, Map *Map, bool useGraph = true, int start = -1, int end = -1, MapElement * exceptionElement = nullptr, bool invertPath = false);
 
 	void SetMap(Map *map);
 	void SetVehicle(Vehicle *vehicle);

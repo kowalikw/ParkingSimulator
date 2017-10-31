@@ -129,12 +129,12 @@ std::vector<glm::vec2> Vehicle::GetPoints2()
 	std::vector<glm::vec2> points2;
 
 	auto p0 = position;
-	auto p1 = p0 + (float)(wheelbase / 2.0) * dirWheelbase;
-	auto p2 = p1 + (float)(track / 2.0) * dirTrack;
-	auto p3 = p1 - (float)(track / 2.0) * dirTrack;
-	auto p4 = p0 - (float)(wheelbase / 2.0) * dirWheelbase;
-	auto p5 = p4 + (float)(track / 2.0) * dirTrack;
-	auto p6 = p4 - (float)(track / 2.0) * dirTrack;
+	auto p1 = p0 + (float)(size.x / 2.0) * GetDirWheelbase();
+	auto p2 = p1 + (float)(size.y / 2.0) * GetDirTrack();
+	auto p3 = p1 - (float)(size.y / 2.0) * GetDirTrack();
+	auto p4 = p0 - (float)(size.x / 2.0) * GetDirWheelbase();
+	auto p5 = p4 + (float)(size.y / 2.0) * GetDirTrack();
+	auto p6 = p4 - (float)(size.y / 2.0) * GetDirTrack();
 
 	points2.push_back(p3);
 	points2.push_back(p2);

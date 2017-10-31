@@ -203,7 +203,7 @@ bool Map::IsVehicleAdmissible(Vehicle * vehicle)
 bool Map::MapContainsVehicle(Vehicle * vehicle)
 {
 	std::vector<glm::vec2> mapPolygon = GetPoints();
-	std::vector<glm::vec2> vehiclePolygon = vehicle->GetPoints();
+	std::vector<glm::vec2> vehiclePolygon = vehicle->GetPoints2();
 
 	return GeometryHelper::CheckPolygonContainsPolygon(mapPolygon, vehiclePolygon);
 }
@@ -221,10 +221,10 @@ bool Map::VehicleIntersectsMapElement(Vehicle * vehicle)
 		ss << "P2 - X: " << mapElements[i]->GetPoints()[2].x << ", Y: " << mapElements[i]->GetPoints()[2].y << endl;
 		ss << "P3 - X: " << mapElements[i]->GetPoints()[3].x << ", Y: " << mapElements[i]->GetPoints()[3].y << endl;
 
-		ss << "V0 - X: " << vehicle->GetPoints()[0].x << ", Y: " << vehicle->GetPoints()[0].y << endl;
-		ss << "V1 - X: " << vehicle->GetPoints()[1].x << ", Y: " << vehicle->GetPoints()[1].y << endl;
-		ss << "V2 - X: " << vehicle->GetPoints()[2].x << ", Y: " << vehicle->GetPoints()[2].y << endl;
-		ss << "V3 - X: " << vehicle->GetPoints()[3].x << ", Y: " << vehicle->GetPoints()[3].y << endl;
+		ss << "V0 - X: " << vehicle->GetPoints2()[0].x << ", Y: " << vehicle->GetPoints2()[0].y << endl;
+		ss << "V1 - X: " << vehicle->GetPoints2()[1].x << ", Y: " << vehicle->GetPoints2()[1].y << endl;
+		ss << "V2 - X: " << vehicle->GetPoints2()[2].x << ", Y: " << vehicle->GetPoints2()[2].y << endl;
+		ss << "V3 - X: " << vehicle->GetPoints2()[3].x << ", Y: " << vehicle->GetPoints2()[3].y << endl;
 
 		ss << "Position: X=" << vehicle->GetPosition().x << ", Y=" << vehicle->GetPosition().y << endl;
 		ss << "Rotation: " << vehicle->GetRotation() << endl;
@@ -235,7 +235,7 @@ bool Map::VehicleIntersectsMapElement(Vehicle * vehicle)
 
 		OutputDebugStringA(s.c_str());
 
-		if (GeometryHelper::CheckPolygonIntersection(vehicle->GetPoints(), mapElements[i]->GetPoints()))
+		if (GeometryHelper::CheckPolygonIntersection(vehicle->GetPoints2(), mapElements[i]->GetPoints()))
 			return true;
 	}
 

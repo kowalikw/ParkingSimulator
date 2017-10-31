@@ -29,6 +29,8 @@ public:
 	double GetLength();
 	double GetLengthToElement(PathElement *pathElement);
 	PathElement *GetElement(double t);
+	
+	void Reverse();
 
 	SimulationState GetSimulationState(double t);
 	std::vector<SimulationState> GetAllSimulationStates(double step);
