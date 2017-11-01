@@ -1631,7 +1631,6 @@ void ParkingSimulator::findPath()
 		|| (pathPlanner.GetStartPoint() != NULL && pathPlanner.GetStartDirection() != NULL && pathPlanner.GetStartParkingSpace() != NULL)
 		|| (pathPlanner.GetEndPoint() != NULL && pathPlanner.GetEndDirection() != NULL && pathPlanner.GetEndParkingSpace() != NULL))
 	{
-		auto lala = Language::getInstance()->GetDictionary()["WarningError_FindPathNoParameters_Content"];
 		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_FindPathNoParameters_Title"], Language::getInstance()->GetDictionary()["WarningError_FindPathNoParameters_Content"], MessageType::Error);
 		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 		warningWindow.exec();
@@ -1642,9 +1641,11 @@ void ParkingSimulator::findPath()
 	{
 		pathPlanner.SetSelectedPathElement(nullptr);
 		pathPlanner.SetExpandSizePercent(findPathWindow.GetExpandSizePercent());
-		pathPlanner.SetCollisionDetectionDensity(findPathWindow.GetCollisionDetectionDensity());
-		pathPlanner.SetAlgorithm(findPathWindow.GetAlgorithm());
+		pathPlanner.SetCollisionDetectionDensity(findPathWindow.GetCollisionDetectionQuality());
+		pathPlanner.SetAlgorithm(findPathWindow.GetPathPlanningAlgorithm());
 		pathPlanner.SetUseAdmissibleArcsOnly(findPathWindow.UseOnlyAdmissibleArcs());
+		pathPlanner.SetGraphExtraVerticesAlong(findPathWindow.GetGraphExtraVerticesAlong());
+		pathPlanner.SetGraphExtraVerticesAcross(findPathWindow.GetGraphExtraVerticesAcross());
 
 		int error;
 		pathPlanner.FindPath(&error);

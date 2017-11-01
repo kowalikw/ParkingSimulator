@@ -101,9 +101,9 @@ public:
 	std::vector<GraphEdge*> EdgesTo(int v);
 
 	void CreateVoronoiGraph(Map *map);
-	void CreateVoronoiGraphWithExtraVertices(Map *map);
-	void CreateVoronoiFullGraph(Map *map, bool addExtraVertices = false);
-	void CreateVoronoiVisibilityFullGraph(Map *map, Line *from, Line *to, int *indexFrom, int *indexTo, bool addExtraVertices = false);
+	void CreateVoronoiGraphWithExtraVertices(Map *map, int extraVerticesAlong, int extraVerticesAcross);
+	void CreateVoronoiFullGraph(Map *map, bool addExtraVertices = false, int extraVerticesAlong = 0, int extraVerticesAcross = 0);
+	void CreateVoronoiVisibilityFullGraph(Map *map, Line *from, Line *to, int *indexFrom, int *indexTo, bool addExtraVertices = false, int extraVerticesAlong = 0, int extraVerticesAcross = 0);
 	Path *FindPath(int s, int t);
 private:
 	bool directed;

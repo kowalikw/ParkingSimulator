@@ -267,33 +267,30 @@ void Graph::CreateVoronoiGraph(Map * map)
 	}
 }
 
-void Graph::CreateVoronoiGraphWithExtraVertices(Map *map)
+void Graph::CreateVoronoiGraphWithExtraVertices(Map *map, int extraVerticesAlong, int extraVerticesAcross)
 {
 	CreateVoronoiGraph(map);
 
-	int densityWidth = 5;
-	int densityHeight = 5;
-
-	if (densityWidth == 0 || densityHeight == 0)
+	if (extraVerticesAlong == 0 || extraVerticesAcross == 0)
 		return;
 
-	double w = map->GetWidth() / densityWidth;
-	double h = map->GetHeight() / densityHeight;
+	double w = map->GetWidth() / extraVerticesAlong;
+	double h = map->GetHeight() / extraVerticesAcross;
 
 
-	for (double i = w; i < map->GetWidth(); i += w)
+	for (double i = w / 2.0; i < map->GetWidth(); i += w)
 	{
-		for (double j = h; j < map->GetHeight(); j += h)
+		for (double j = h / 2.0; j < map->GetHeight(); j += h)
 		{
 			AddVertex(i, j);
 		}
 	}
 }
 
-void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices)
+void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices, int extraVerticesAlong, int extraVerticesAcross)
 {
 	if (addExtraVertices)
-		CreateVoronoiGraphWithExtraVertices(map);
+		CreateVoronoiGraphWithExtraVertices(map, extraVerticesAlong, extraVerticesAlong);
 	else
 		CreateVoronoiGraph(map);
 
@@ -318,9 +315,9 @@ void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices)
 	}
 }
 
-void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end, int *indexFrom, int *indexTo, bool addExtraVertices)
+void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end, int *indexFrom, int *indexTo, bool addExtraVertices, int extraVerticesAlong, int extraVerticesAcross)
 {
-	CreateVoronoiFullGraph(map, addExtraVertices);
+	CreateVoronoiFullGraph(map, addExtraVertices, extraVerticesAlong, extraVerticesAcross);
 
 	for (int i = 0; i < VerticesCount(); i++)
 	{

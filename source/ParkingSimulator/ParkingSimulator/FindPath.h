@@ -16,18 +16,23 @@ public:
 	~FindPath();
 
 	double GetExpandSizePercent();
-	double GetCollisionDetectionDensity();
-	PathPlanningAlgorithm GetAlgorithm();
+	double GetCollisionDetectionQuality();
+	PathPlanningAlgorithm GetPathPlanningAlgorithm();
 	bool UseOnlyAdmissibleArcs();
+	int GetGraphExtraVerticesAlong();
+	int GetGraphExtraVerticesAcross();
 
 private:
 	FindPathClass ui;
 
 	double expandSizePercent;
-	double collisionDetectionDensity;
-	PathPlanningAlgorithm algorithm;
+	double collisionDetectionQuality;
+	PathPlanningAlgorithm pathPlanningAlgorithm;
 	bool useAdmissibleArcsOnly;
+	int graphExtraVerticesAlong;
+	int graphExtraVerticesAcross;
 public slots:
 	void findPath();
 	void algorithmChanged();
+	void collisionDetectionQualityChanged();
 };

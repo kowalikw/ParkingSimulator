@@ -139,7 +139,7 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 	int indexStart, indexEnd;
 
 	voronoiGraph = new Graph(true);
-	voronoiGraph->CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd, true);
+	voronoiGraph->CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd, true, graphExtraVerticesAlong, graphExtraVerticesAcross);
 
 	//œcie¿ka bezpoœrednia
 
@@ -194,8 +194,11 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 			voronoiGraph->RemoveEdge(collisionEdge);
 
-			polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+			delete polylinePath;
+			delete finalPath;
+			delete collisionEdge;
 
+			polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
 			finalPath = CreateAdmissiblePath(polylinePath);
 
 			if (finalPath == nullptr || finalPath->GetElements().size() == 0)
@@ -491,6 +494,26 @@ bool PathPlanner::GetUseAdmissibleArcsOnly()
 void PathPlanner::SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly)
 {
 	this->useAdmissibleArcsOnly = useAdmissibleArcsOnly;
+}
+
+int PathPlanner::GetGraphExtraVerticesAlong()
+{
+	return this->graphExtraVerticesAlong;
+}
+
+void PathPlanner::SetGraphExtraVerticesAlong(int graphExtraVerticesAlong)
+{
+	this->graphExtraVerticesAlong = graphExtraVerticesAlong;
+}
+
+int PathPlanner::GetGraphExtraVerticesAcross()
+{
+	return this->graphExtraVerticesAcross;
+}
+
+void PathPlanner::SetGraphExtraVerticesAcross(int graphExtraVerticesAcross)
+{
+	this->graphExtraVerticesAcross = graphExtraVerticesAcross;
 }
 
 GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGraph, int start, int end, MapElement * exceptionElement, bool invertPath)

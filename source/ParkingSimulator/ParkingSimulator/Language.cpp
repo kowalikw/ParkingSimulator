@@ -201,6 +201,18 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetStartPosition_Content", language.value("WarningError_SetStartPosition_Content").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetEndPosition_Title", language.value("WarningError_SetEndPosition_Title").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetEndPosition_Content", language.value("WarningError_SetEndPosition_Content").toString().toStdString()));
+
+	dictionary.insert(std::pair<std::string, std::string>("Quality_Disabled", language.value("Quality_Disabled").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Quality_VeryLow", language.value("Quality_VeryLow").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Quality_Low", language.value("Quality_Low").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Quality_Medium", language.value("Quality_Medium").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Quality_Good", language.value("Quality_Good").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Quality_VeryGood", language.value("Quality_VeryGood").toString().toStdString()));
+
+	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_GraphExtraVerticesAlong", language.value("PathPlanner_GraphExtraVerticesAlong").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_GraphExtraVerticesAcross", language.value("PathPlanner_GraphExtraVerticesAcross").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_FindPathTitle", language.value("PathPlanner_FindPathTitle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_ExpandObstaclesPercent", language.value("PathPlanner_ExpandObstaclesPercent").toString().toStdString()));
 }
 
 std::map<std::string, std::string> Language::GetDictionary()

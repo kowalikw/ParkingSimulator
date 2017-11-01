@@ -47,7 +47,7 @@ private:
 
 	GLuint WIDTH = 800, HEIGHT = 600;
 	GLuint VBO, VAO, EBO;
-	Shader *textureShader, *phongShader;
+	Shader *textureInstancedShader, *textureShader, *phongShader;
 	Camera *camera;
 	Model *myModel, *box, *car;
 	vector<Model> models;

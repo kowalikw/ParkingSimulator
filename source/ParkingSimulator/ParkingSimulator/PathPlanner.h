@@ -91,6 +91,12 @@ public:
 	bool GetUseAdmissibleArcsOnly();
 	void SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly);
 
+	int GetGraphExtraVerticesAlong();
+	void SetGraphExtraVerticesAlong(int graphExtraVerticesAlong);
+
+	int GetGraphExtraVerticesAcross();
+	void SetGraphExtraVerticesAcross(int graphExtraVerticesAcross);
+
 	GraphEdge * ChackPathCollision(Path *path, Map *Map, bool useGraph = true, int start = -1, int end = -1, MapElement * exceptionElement = nullptr, bool invertPath = false);
 
 	void SetMap(Map *map);
@@ -159,10 +165,12 @@ private:
 
 	PathElement *selectedPathElement = NULL;
 
-	double expandSizePercent;
-	double collisionDetectionDensity;
+	double expandSizePercent = 0;
+	double collisionDetectionDensity = 0;
 	PathPlanningAlgorithm pathPlanningAlgorithm = PathPlanningAlgorithm::Arcs;
 	bool useAdmissibleArcsOnly = false;
+	int graphExtraVerticesAlong = 0;
+	int graphExtraVerticesAcross = 0;
 
 	vector<glm::vec2> userPoints;
 

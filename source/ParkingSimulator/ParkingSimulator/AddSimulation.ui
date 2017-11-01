@@ -56,6 +56,9 @@ QPushButton#btnLoadFromPathPlanner:pressed, QPushButton#btnLoadFromFile:pressed,
      </property>
      <item>
       <widget class="QPushButton" name="btnLoadFromPathPlanner">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Load simulation from path planner</string>
        </property>
@@ -63,6 +66,9 @@ QPushButton#btnLoadFromPathPlanner:pressed, QPushButton#btnLoadFromFile:pressed,
      </item>
      <item>
       <widget class="QPushButton" name="btnLoadFromFile">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Load simulation from file</string>
        </property>
@@ -70,6 +76,9 @@ QPushButton#btnLoadFromPathPlanner:pressed, QPushButton#btnLoadFromFile:pressed,
      </item>
      <item>
       <widget class="QPushButton" name="btnCancel">
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="text">
         <string>Cancel</string>
        </property>
