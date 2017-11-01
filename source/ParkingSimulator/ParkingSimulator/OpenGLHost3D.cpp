@@ -81,7 +81,7 @@ void OpenGLHost3D::initializeGL()
 	glEnable(GL_DEPTH_TEST);
 
 	textureInstancedShader = new Shader("Resources/shaders/textureInstancedVS.glsl", "Resources/shaders/textureInstancedFS.glsl");
-	textureShader = new Shader("Resources/shaders/textureInstancedVS.glsl", "Resources/shaders/textureInstancedFS.glsl");
+	textureShader = new Shader("Resources/shaders/textureVS.glsl", "Resources/shaders/textureFS.glsl");
 	phongShader = new Shader("Resources/shaders/phongVS.glsl", "Resources/shaders/phongFS.glsl");
 
 	camera = new Camera(glm::vec3(0.0f, 1000.0f, 0.0));
@@ -116,27 +116,27 @@ void OpenGLHost3D::paintGL()
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	textureShader->Use();
+	textureInstancedShader->Use();
 
 	// Use cooresponding shader when setting uniforms/drawing objects
-	GLint lightPosLoc = glGetUniformLocation(textureShader->Program, "light.position");
-	GLint viewPosLoc = glGetUniformLocation(textureShader->Program, "viewPos");
+	GLint lightPosLoc = glGetUniformLocation(textureInstancedShader->Program, "light.position");
+	GLint viewPosLoc = glGetUniformLocation(textureInstancedShader->Program, "viewPos");
 	glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
 	glUniform3f(viewPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
 
-	GLint matAmbientLoc = glGetUniformLocation(textureShader->Program, "material.ambient");
-	GLint matDiffuseLoc = glGetUniformLocation(textureShader->Program, "material.diffuse");
-	GLint matSpecularLoc = glGetUniformLocation(textureShader->Program, "material.specular");
-	GLint matShineLoc = glGetUniformLocation(textureShader->Program, "material.shininess");
+	GLint matAmbientLoc = glGetUniformLocation(textureInstancedShader->Program, "material.ambient");
+	GLint matDiffuseLoc = glGetUniformLocation(textureInstancedShader->Program, "material.diffuse");
+	GLint matSpecularLoc = glGetUniformLocation(textureInstancedShader->Program, "material.specular");
+	GLint matShineLoc = glGetUniformLocation(textureInstancedShader->Program, "material.shininess");
 
 	glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
 	glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
 	glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
 	glUniform1f(matShineLoc, 32.0f);
 
-	GLint lightAmbientLoc = glGetUniformLocation(textureShader->Program, "light.ambient");
-	GLint lightDiffuseLoc = glGetUniformLocation(textureShader->Program, "light.diffuse");
-	GLint lightSpecularLoc = glGetUniformLocation(textureShader->Program, "light.specular");
+	GLint lightAmbientLoc = glGetUniformLocation(textureInstancedShader->Program, "light.ambient");
+	GLint lightDiffuseLoc = glGetUniformLocation(textureInstancedShader->Program, "light.diffuse");
+	GLint lightSpecularLoc = glGetUniformLocation(textureInstancedShader->Program, "light.specular");
 
 	glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
 	glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f); // Let's darken the light a bit to fit the scene
@@ -145,16 +145,55 @@ void OpenGLHost3D::paintGL()
 	glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 10000.0f);
 	glm::mat4 view = camera->GetViewMatrix();
 	//glm::mat4 view;
-	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(glGetUniformLocation(textureInstancedShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+	glUniformMatrix4fv(glGetUniformLocation(textureInstancedShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
 	if (visualization->GetCurrentSimulation() != NULL)
 	{
+		Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
+
 		for (std::map<std::string, Model*>::iterator iterator = loadedModels.begin(); iterator != loadedModels.end(); iterator++) 
 		{
-			glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(iterator->second->GetModelMatrix()));
-			iterator->second->Draw(*textureShader);
+			glUniformMatrix4fv(glGetUniformLocation(textureInstancedShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(iterator->second->GetModelMatrix()));
+			iterator->second->Draw(*textureInstancedShader);
 		}
+
+		textureShader->Use();
+
+		// Use cooresponding shader when setting uniforms/drawing objects
+		GLint lightPosLoc = glGetUniformLocation(textureShader->Program, "light.position");
+		GLint viewPosLoc = glGetUniformLocation(textureShader->Program, "viewPos");
+		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(viewPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
+
+		GLint matAmbientLoc = glGetUniformLocation(textureShader->Program, "material.ambient");
+		GLint matDiffuseLoc = glGetUniformLocation(textureShader->Program, "material.diffuse");
+		GLint matSpecularLoc = glGetUniformLocation(textureShader->Program, "material.specular");
+		GLint matShineLoc = glGetUniformLocation(textureShader->Program, "material.shininess");
+
+		glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
+		glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
+		glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+		glUniform1f(matShineLoc, 32.0f);
+
+		GLint lightAmbientLoc = glGetUniformLocation(textureShader->Program, "light.ambient");
+		GLint lightDiffuseLoc = glGetUniformLocation(textureShader->Program, "light.diffuse");
+		GLint lightSpecularLoc = glGetUniformLocation(textureShader->Program, "light.specular");
+
+		glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
+		glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f); // Let's darken the light a bit to fit the scene
+		glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+
+		glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 10000.0f);
+		glm::mat4 view = camera->GetViewMatrix();
+		//glm::mat4 view;
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
+		vehicleModel->Translate(glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y));
+		vehicleModel->Rotate(glm::vec3(0, vehicle->GetRotation() - M_PI / 2.0f, 0));
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
+		vehicleModel->Draw(*textureShader, false);
 	}
 }
 
@@ -263,6 +302,14 @@ void OpenGLHost3D::initializeVisualization()
 		if (instances.count(vehiclesModels[i].model) > 0)
 			loadModel(vehiclesModels[i].model, instances[vehiclesModels[i].model]);
 	}
+
+	Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
+	Model *vehicleNewModel = new Model(vehicle->GetVehicleModel()->path);
+	vehicleNewModel->Translate(vehicle->GetVehicleModel()->GetTranslation());
+	vehicleNewModel->Rotate(vehicle->GetVehicleModel()->GetRotation());
+	vehicleNewModel->Scale(vehicle->GetVehicleModel()->GetScale());
+
+	this->vehicleModel = vehicleNewModel;
 }
 
 void OpenGLHost3D::loadModel(std::string modelPath, std::vector<InstanceData> instances)
