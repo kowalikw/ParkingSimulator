@@ -3644,7 +3644,11 @@ QPushButton:pressed {
       </widget>
       <widget class="QWidget" name="tabPathPlanner">
        <property name="styleSheet">
-        <string notr="true">QPushButton#btnNewSimulation, QPushButton#btnOpenSimulation, QPushButton#btnSaveSimulation, QPushButton#btnSetMap, QPushButton#btnSetVehicle, QPushButton#btnSetStart, QPushButton#btnSetEnd, QPushButton#btnFindPath {
+        <string notr="true">QPushButton#btnNewSimulation:disabled, QPushButton#btnOpenSimulation:disabled, QPushButton#btnSaveSimulation:disabled, QPushButton#btnSetMap:disabled, QPushButton#btnSetVehicle:disabled, QPushButton#btnSetStart:disabled, QPushButton#btnSetEnd:disabled, QPushButton#btnFindPath:disabled, QPushButton#btnShowVoronoiGraph:disabled, QPushButton#btnShowFullVoronoiVisibilityGraph:disabled, QPushButton#btnShowPolylinePath:disabled, QPushButton#btnShowFinalPath:disabled, QPushButton#btnShowExpandedObstacles:disabled, QPushButton#btnShowParkingPath:disabled {
+	background-color: #838689;
+}
+
+QPushButton#btnNewSimulation, QPushButton#btnOpenSimulation, QPushButton#btnSaveSimulation, QPushButton#btnSetMap, QPushButton#btnSetVehicle, QPushButton#btnSetStart, QPushButton#btnSetEnd, QPushButton#btnFindPath, QPushButton#btnCancelPathCalculation {
     background-color: #3b3e41;
     border-radius: 3px;
     border: 1px solid #7b7b7b;
@@ -3654,11 +3658,11 @@ QPushButton:pressed {
     padding: 6px;
 }
 
-QPushButton#btnNewSimulation:hover, QPushButton#btnOpenSimulation:hover, QPushButton#btnSaveSimulation:hover, QPushButton#btnSetMap:hover, QPushButton#btnSetVehicle:hover, QPushButton#btnSetStart:hover, QPushButton#btnSetEnd:hover, QPushButton#btnFindPath:hover {
+QPushButton#btnNewSimulation:hover, QPushButton#btnOpenSimulation:hover, QPushButton#btnSaveSimulation:hover, QPushButton#btnSetMap:hover, QPushButton#btnSetVehicle:hover, QPushButton#btnSetStart:hover, QPushButton#btnSetEnd:hover, QPushButton#btnFindPath:hover, QPushButton#btnCancelPathCalculation:hover {
     background-color: #85b448;
 }
 
-QPushButton#btnNewSimulation:pressed, QPushButton#btnOpenSimulation:pressed, QPushButton#btnSaveSimulation:pressed, QPushButton#btnSetMap:pressed, QPushButton#btnSetVehicle:pressed, QPushButton#btnSetStart:pressed, QPushButton#btnSetEnd:pressed, QPushButton#btnFindPath:pressed {
+QPushButton#btnNewSimulation:pressed, QPushButton#btnOpenSimulation:pressed, QPushButton#btnSaveSimulation:pressed, QPushButton#btnSetMap:pressed, QPushButton#btnSetVehicle:pressed, QPushButton#btnSetStart:pressed, QPushButton#btnSetEnd:pressed, QPushButton#btnFindPath:pressed, QPushButton#btnCancelPathCalculation:pressed {
     background-color: #d86a39;
 }
 
@@ -4835,6 +4839,9 @@ background: #35383b;</string>
              </item>
              <item>
               <widget class="QPushButton" name="btnFindPath">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -4863,6 +4870,100 @@ background: #35383b;</string>
                  <height>64</height>
                 </size>
                </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QWidget" name="calculationInProgress" native="true">
+               <layout class="QVBoxLayout" name="verticalLayout_42">
+                <property name="topMargin">
+                 <number>1</number>
+                </property>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_31">
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QLabel" name="pathCalculationInPrograssMovie">
+                    <property name="maximumSize">
+                     <size>
+                      <width>99999</width>
+                      <height>99999</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">margin: 15px; margin-top: 20px; margin-bottom: 10px;</string>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QLabel" name="pathCalculationInPrograssLabel">
+                  <property name="font">
+                   <font>
+                    <pointsize>9</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">margin-top: 0px; color: white; margin-bottom: 12px;</string>
+                  </property>
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Trwa wyznaczanie ścieżki...&lt;/p&gt;&lt;p&gt;Proszę czekać!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_30">
+                  <property name="topMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QPushButton" name="btnCancelPathCalculation">
+                    <property name="minimumSize">
+                     <size>
+                      <width>58</width>
+                      <height>64</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>72</width>
+                      <height>64</height>
+                     </size>
+                    </property>
+                    <property name="cursor">
+                     <cursorShape>PointingHandCursor</cursorShape>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset>
+                      <normaloff>Resources/PathPlannerIcons/cancelIcon.png</normaloff>Resources/PathPlannerIcons/cancelIcon.png</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>42</width>
+                      <height>42</height>
+                     </size>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
               </widget>
              </item>
              <item>

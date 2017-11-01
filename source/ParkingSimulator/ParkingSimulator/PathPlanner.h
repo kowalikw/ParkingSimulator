@@ -28,6 +28,7 @@ class PathPlanner
 {
 public:
 	PathPlanner();
+	PathPlanner(PathPlanner& pathPlanner);
 	PathPlanner(Map map, Vehicle vehicle);
 
 	void AddUserPoint(glm::vec2 userPoint);
@@ -60,6 +61,8 @@ public:
 	Graph * GetVoronoiGraph();
 	Graph * GetFullVoronoiVisibilityGraph();
 	Simulation * GetSimulation();
+
+	bool GetIsCalculationCompleted();
 
 	glm::vec2 * GetStartPoint();
 	glm::vec2 * GetEndPoint();
@@ -103,6 +106,14 @@ public:
 	void SetVehicle(Vehicle *vehicle);
 	void SetVehicleStart(Vehicle *vehicleStart);
 	void SetVehicleEnd(Vehicle *vehicleEnd);
+
+	void SetExpandedMap(Map *expandedMap);
+	void SetPolylinePath(Path *polylinePath);
+	void SetParkingPathStart(Path *parkingPathStart);
+	void SetParkingPathEnd(Path *parkingPathEnd);
+	void SetFinalPath(Path *finalPath);
+	void SetVoronoiGraph(Graph *voronoiGraph);
+	void SetFullVoronoiVisibilityGraph(Graph *fullVoronoiVisibilityGraph);
 
 	Path *createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType = ParkManeuverType::Entry);
 
@@ -197,6 +208,8 @@ private:
 	bool checkPolylinePathCorectness(Path *path, int *element1, int *element2);
 
 	const double RADIUS_EPS = 3;
+
+	bool isCalculationCompleted = true;
 };
 
 #endif

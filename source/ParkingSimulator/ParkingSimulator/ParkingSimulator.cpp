@@ -8,7 +8,38 @@
 
 #include <boost/filesystem.hpp>
 
+#include <QThread>
+#include <qmovie.h>
+
 using namespace boost::filesystem;
+
+class FindPathThread : public QThread
+{
+	
+public:
+	FindPathThread() {}
+	void SetPathPlanner(PathPlanner *pathPlanner)
+	{
+		this->planner = pathPlanner;
+	}
+
+	PathPlanner * GetPathPlanner()
+	{
+		return this->planner;
+	}
+
+protected:
+	void run() 
+	{
+		int error;
+		planner->FindPath(&error);
+		quit();
+	}
+private:
+	PathPlanner *planner;
+};
+
+FindPathThread findPathThread;
 
 ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 {
@@ -34,6 +65,8 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	updateTimer = new QTimer();
 	updateTimer->setInterval(20);
 	updateTimer->start();
+
+	
 
 	connect(ui.btnGoToMapEditor, SIGNAL(released()), this, SLOT(goToMapEditor()));
 	connect(ui.btnGoToVehicleEditor, SIGNAL(released()), this, SLOT(goToVehicleEditor()));
@@ -123,6 +156,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnShowFinalPath, SIGNAL(released()), this, SLOT(showFinalPath()));
 	connect(ui.btnShowExpandedObstacles, SIGNAL(released()), this, SLOT(showExpandedObstacles()));
 	connect(ui.btnFindPath, SIGNAL(released()), this, SLOT(findPath()));
+	connect(ui.btnCancelPathCalculation, SIGNAL(released()), this, SLOT(cancelPathCalculation()));
 	connect(ui.pathElementsList, SIGNAL(itemSelectionChanged()), this, SLOT(pathElementSelectionChange()));
 
 	connect(ui.btnAddSimulation, SIGNAL(released()), this, SLOT(addSimulation()));
@@ -167,6 +201,8 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 
 	connect(ui.treeMapElements, SIGNAL(itemSelectionChanged()), this, SLOT(treeMapElementsSelectionChanged()));
 
+	connect(&findPathThread, SIGNAL(finished()), this, SLOT(pathCalculationFinished()));
+
 	ui.mapElementProperties->hide();
 	ui.pathElementProperties->hide();
 
@@ -184,6 +220,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	// Path planner end
 
 	ui.glVisualisation3D->hide();
+	ui.calculationInProgress->hide();
 
 	Language::getInstance()->LoadLanguage(Settings::getInstance()->GetLanguage());
 
@@ -1647,17 +1684,15 @@ void ParkingSimulator::findPath()
 		pathPlanner.SetGraphExtraVerticesAlong(findPathWindow.GetGraphExtraVerticesAlong());
 		pathPlanner.SetGraphExtraVerticesAcross(findPathWindow.GetGraphExtraVerticesAcross());
 
-		int error;
-		pathPlanner.FindPath(&error);
+		findPathThread.SetPathPlanner(new PathPlanner(pathPlanner));
+		findPathThread.start();
 
-		if (pathPlanner.GetFinalPath() == NULL)
-		{
-			WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_PathNotFound_Title"], Language::getInstance()->GetDictionary()["WarningError_PathNotFound_Content"], MessageType::Error);
-			warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-			warningWindow.exec();
-		}
+		QMovie *movie = new QMovie("Resources/loading.gif");
+		ui.pathCalculationInPrograssMovie->setMovie(movie);
+		movie->start();
 
-		setPathProperties();
+		ui.calculationInProgress->show();
+		disablePathPlannerButtons();
 	}
 }
 
@@ -1684,6 +1719,72 @@ void ParkingSimulator::pathElementSelectionChange()
 	int selectedIndex = ui.pathElementsList->currentRow();
 	if (selectedIndex >= 0 && selectedIndex < pathPlanner.GetFinalPath()->GetElements().size())
 		pathPlanner.SetSelectedPathElement(pathPlanner.GetFinalPath()->GetElements()[selectedIndex]);
+}
+
+void ParkingSimulator::enablePathPlannerButtons()
+{
+	ui.btnNewSimulation->setEnabled(true);
+	ui.btnOpenSimulation->setEnabled(true);
+	ui.btnSaveSimulation->setEnabled(true);
+	ui.btnSetMap->setEnabled(true);
+	ui.btnSetVehicle->setEnabled(true);
+	ui.btnSetStart->setEnabled(true);
+	ui.btnSetEnd->setEnabled(true);
+	ui.btnFindPath->setEnabled(true);
+	ui.btnShowExpandedObstacles->setEnabled(true);
+	ui.btnShowVoronoiGraph->setEnabled(true);
+	ui.btnShowFullVoronoiVisibilityGraph->setEnabled(true);
+	ui.btnShowPolylinePath->setEnabled(true);
+	ui.btnShowParkingPath->setEnabled(true);
+	ui.btnShowFinalPath->setEnabled(true);
+}
+
+void ParkingSimulator::disablePathPlannerButtons()
+{
+	ui.btnNewSimulation->setEnabled(false);
+	ui.btnOpenSimulation->setEnabled(false);
+	ui.btnSaveSimulation->setEnabled(false);
+	ui.btnSetMap->setEnabled(false);
+	ui.btnSetVehicle->setEnabled(false);
+	ui.btnSetStart->setEnabled(false);
+	ui.btnSetEnd->setEnabled(false);
+	ui.btnFindPath->setEnabled(false);
+	ui.btnShowExpandedObstacles->setEnabled(false);
+	ui.btnShowVoronoiGraph->setEnabled(false);
+	ui.btnShowFullVoronoiVisibilityGraph->setEnabled(false);
+	ui.btnShowPolylinePath->setEnabled(false);
+	ui.btnShowParkingPath->setEnabled(false);
+	ui.btnShowFinalPath->setEnabled(false);
+}
+
+void ParkingSimulator::cancelPathCalculation()
+{
+	findPathThread.terminate();
+}
+
+void ParkingSimulator::pathCalculationFinished()
+{
+	if (findPathThread.GetPathPlanner()->GetIsCalculationCompleted())
+	{
+		pathPlanner.SetExpandedMap(findPathThread.GetPathPlanner()->GetExpandedMap());
+		pathPlanner.SetVoronoiGraph(findPathThread.GetPathPlanner()->GetVoronoiGraph());
+		pathPlanner.SetFullVoronoiVisibilityGraph(findPathThread.GetPathPlanner()->GetFullVoronoiVisibilityGraph());
+		pathPlanner.SetPolylinePath(findPathThread.GetPathPlanner()->GetPolylinePath());
+		pathPlanner.SetParkingPathStart(findPathThread.GetPathPlanner()->GetParkingPathStart());
+		pathPlanner.SetParkingPathEnd(findPathThread.GetPathPlanner()->GetParkingPathEnd());
+		pathPlanner.SetFinalPath(findPathThread.GetPathPlanner()->GetFinalPath());
+	}
+	ui.calculationInProgress->hide();
+	enablePathPlannerButtons();
+
+	if (pathPlanner.GetFinalPath() == NULL)
+	{
+		WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_PathNotFound_Title"], Language::getInstance()->GetDictionary()["WarningError_PathNotFound_Content"], MessageType::Error);
+		warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+		warningWindow.exec();
+	}
+
+	setPathProperties();
 }
 
 #pragma endregion

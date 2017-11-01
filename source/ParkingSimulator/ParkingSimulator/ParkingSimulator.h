@@ -124,6 +124,10 @@ public slots:
 	void clearPathPlannerButtons();
 	void clearPathPlannerButtonsStyle();
 	void pathElementSelectionChange();
+	void enablePathPlannerButtons();
+	void disablePathPlannerButtons();
+	void cancelPathCalculation();
+	void pathCalculationFinished();
 
 	// visualisation
 	void addSimulation();

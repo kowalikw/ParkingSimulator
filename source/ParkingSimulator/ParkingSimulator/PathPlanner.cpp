@@ -11,6 +11,24 @@ PathPlanner::PathPlanner()
 	simulation = new Simulation();
 }
 
+PathPlanner::PathPlanner(PathPlanner & pathPlanner)
+{
+	this->map = pathPlanner.map;
+	this->vehicle = pathPlanner.vehicle;
+	this->startPoint = pathPlanner.startPoint;
+	this->startDirection = pathPlanner.startDirection;
+	this->startParkingSpace = pathPlanner.startParkingSpace;
+	this->endPoint = pathPlanner.endPoint;
+	this->endDirection = pathPlanner.endDirection;
+	this->endParkingSpace = pathPlanner.endParkingSpace;
+	this->pathPlanningAlgorithm = pathPlanner.pathPlanningAlgorithm;
+	this->graphExtraVerticesAlong = pathPlanner.graphExtraVerticesAlong;
+	this->graphExtraVerticesAcross = pathPlanner.graphExtraVerticesAcross;
+	this->expandSizePercent = pathPlanner.expandSizePercent;
+	this->useAdmissibleArcsOnly = pathPlanner.useAdmissibleArcsOnly;
+	this->collisionDetectionDensity = pathPlanner.collisionDetectionDensity;
+}
+
 PathPlanner::PathPlanner(Map map, Vehicle vehicle)
 {
 	this->map = &map;
@@ -785,6 +803,11 @@ Simulation * PathPlanner::GetSimulation()
 	return this->simulation;
 }
 
+bool PathPlanner::GetIsCalculationCompleted()
+{
+	return this->isCalculationCompleted;
+}
+
 glm::vec2 * PathPlanner::GetStartPoint()
 {
 	return this->startPoint;
@@ -875,6 +898,41 @@ void PathPlanner::SetVehicleStart(Vehicle * vehicleStart)
 void PathPlanner::SetVehicleEnd(Vehicle * vehicleEnd)
 {
 	this->vehicleEnd = vehicleEnd;
+}
+
+void PathPlanner::SetExpandedMap(Map * expandedMap)
+{
+	this->expandedMap = expandedMap;
+}
+
+void PathPlanner::SetPolylinePath(Path * polylinePath)
+{
+	this->polylinePath = polylinePath;
+}
+
+void PathPlanner::SetParkingPathStart(Path * parkingPathStart)
+{
+	this->parkingPathStart = parkingPathStart;
+}
+
+void PathPlanner::SetParkingPathEnd(Path * parkingPathEnd)
+{
+	this->parkingPathEnd = parkingPathEnd;
+}
+
+void PathPlanner::SetFinalPath(Path * finalPath)
+{
+	this->finalPath = finalPath;
+}
+
+void PathPlanner::SetVoronoiGraph(Graph * voronoiGraph)
+{
+	this->voronoiGraph = voronoiGraph;
+}
+
+void PathPlanner::SetFullVoronoiVisibilityGraph(Graph * fullVoronoiVisibilityGraph)
+{
+	this->fullVoronoiVisibilityGraph = fullVoronoiVisibilityGraph;
 }
 
 Path * PathPlanner::createDirectPolylinePath(Line *startLine, Line *endLine)
@@ -1179,6 +1237,8 @@ MapElement * PathPlanner::GetHoverElement(glm::vec2 mousePosition)
 
 void PathPlanner::FindPath(int *error)
 {
+	this->isCalculationCompleted = false;
+
 	*error = 0;
 	if (startPoint != nullptr && endPoint != nullptr)
 	{
@@ -1200,4 +1260,6 @@ void PathPlanner::FindPath(int *error)
 	{
 		*error = 1;
 	}
+
+	this->isCalculationCompleted = true;
 }
