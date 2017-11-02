@@ -61,7 +61,9 @@ double Line::GetLength()
 
 double Line::GetAngle(double t)
 {
-	return atan2(to.y - from.y, to.x - from.x);
+	
+
+	return atan2(to.y - from.y, to.x - from.x) + M_PI;
 }
 
 glm::vec2 Line::GetFirstPoint()
@@ -89,7 +91,6 @@ SimulationState Line::GetSimulationState(double t)
 {
 	SimulationState simulationState;
 	simulationState.position = GetPoint(t);
-	auto alal = GetAngle(t);
 	simulationState.angle = M_PI - GetAngle(t);
 
 	return simulationState;

@@ -32,7 +32,7 @@ public:
 	Model();
 	Model(GLchar* path);
 	Model(std::string path, bool createModel = true);
-	Model(std::string path, std::vector<InstanceData> instances);
+	Model(std::string path, std::vector<InstanceData> instances, std::vector<Mesh> *meshes = nullptr);
 	Model(GLchar* path, glm::vec3 translation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale);
@@ -51,11 +51,11 @@ public:
 	glm::vec3 MeasureModel();
 	glm::vec3 GetMeasure();
 
+	void SetMeasure(glm::vec3 measure);
+
 	glm::vec3 GetTranslation();
 	glm::vec3 GetRotation();
 	glm::vec3 GetScale();
-
-	bool instanced = false;
 
 	std::string path;
 
@@ -79,7 +79,7 @@ public:
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
-private:
+
 	/* Model matrix data */
 	glm::vec3 translation;
 	glm::vec3 rotation;
@@ -92,24 +92,21 @@ private:
 
 	/*  Functions   */
 	// Loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-	void loadModel(string path, std::vector<InstanceData> instances);
+	void loadModel(string path, std::vector<InstanceData> instances, std::vector<Mesh> *meshes = nullptr);
 
 	// Processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
-	void processNode(aiNode* node, const aiScene* scene, std::vector<InstanceData> instances);
+	void processNode(aiNode* node, const aiScene* scene, std::vector<InstanceData> instances, std::vector<Mesh> *meshes = nullptr);
 
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene, std::vector<InstanceData> instances);
+	Mesh processMesh(aiMesh* mesh, const aiScene* scene, std::vector<InstanceData> instances, Mesh *m_mesh = nullptr);
 
 	// Checks all material textures of a given type and loads the textures if they're not loaded yet.
 	// The required info is returned as a Texture struct.
 	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
-
 	GLint textureFromFile(const char* path, string directory);
+	
 	GLint textureFromColor(aiColor4D color);
 
 	glm::vec3 measure;
-
-
-
 };
 
 #endif

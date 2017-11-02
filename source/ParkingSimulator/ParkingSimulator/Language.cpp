@@ -213,6 +213,8 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_GraphExtraVerticesAcross", language.value("PathPlanner_GraphExtraVerticesAcross").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_FindPathTitle", language.value("PathPlanner_FindPathTitle").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_ExpandObstaclesPercent", language.value("PathPlanner_ExpandObstaclesPercent").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("PleaseWait_LoadingModels", language.value("PleaseWait_LoadingModels").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("PleaseWait_PathCalculation", language.value("PleaseWait_PathCalculation").toString().toStdString()));
 }
 
 std::map<std::string, std::string> Language::GetDictionary()

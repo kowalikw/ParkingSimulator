@@ -15,6 +15,7 @@
 #include "Model.h"
 #include "Simulation.h"
 #include "Visualisation.h"
+#include "PleaseWaitWindow.h"
 #include <map.h>
 
 #include <glm.hpp>
@@ -71,15 +72,19 @@ private:
 
 	Model *mapModel;
 	Model *vehicleModel;
-	//std::vector<Model*> mapElementsModels;
-
-	std::map<std::string, Model*> loadedModels;
 	
+	PleaseWaitWindow *pleaseWaitWindow;
+
+	std::map<std::string, Model*> *loadedModels;
+	bool loadModelsInProgress = false;
+	bool reloadModels = false;
 
 	void MoveCamera();
 
 	void initializeVisualization();
-	void loadModel(std::string modelPath, std::vector<InstanceData> instances);
+	void loadModel(std::string modelPath, std::vector<InstanceData> instances, Model *m);
+public slots:
+	void loadModelsFinished();
 };
 
 #endif

@@ -22,10 +22,10 @@ Model::Model(std::string path, bool createModel)
 		this->loadModel(path, std::vector<InstanceData>());
 }
 
-Model::Model(std::string path, std::vector<InstanceData> instances)
+Model::Model(std::string path, std::vector<InstanceData> instances, std::vector<Mesh> *meshes)
 {
 	this->path = path;
-	this->loadModel(path, instances);
+	this->loadModel(path, instances, meshes);
 }
 
 Model::Model(GLchar *path, glm::vec3 translation) : Model(path)
@@ -91,7 +91,7 @@ glm::mat4x4 Model::GetModelMatrix()
 	return modelMatrix;
 }
 
-void Model::loadModel(string path, std::vector<InstanceData> instances)
+void Model::loadModel(string path, std::vector<InstanceData> instances, std::vector<Mesh> *meshes)
 {
 	// Read file via ASSIMP
 	Assimp::Importer importer;
@@ -106,10 +106,10 @@ void Model::loadModel(string path, std::vector<InstanceData> instances)
 	this->directory = path.substr(0, path.find_last_of('/'));
 
 	// Process ASSIMP's root node recursively
-	this->processNode(scene->mRootNode, scene, instances);
+	this->processNode(scene->mRootNode, scene, instances, meshes);
 }
 
-void Model::processNode(aiNode* node, const aiScene* scene, std::vector<InstanceData> instances)
+void Model::processNode(aiNode* node, const aiScene* scene, std::vector<InstanceData> instances, std::vector<Mesh> *meshes)
 {
 	// Process each mesh located at the current node
 	for (GLuint i = 0; i < node->mNumMeshes; i++)
@@ -117,62 +117,72 @@ void Model::processNode(aiNode* node, const aiScene* scene, std::vector<Instance
 		// The node object only contains indices to index the actual objects in the scene. 
 		// The scene contains all the data, node is just to keep stuff organized (like relations between nodes).
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		this->meshes.push_back(this->processMesh(mesh, scene, instances));
+		this->meshes.push_back(this->processMesh(mesh, scene, instances, meshes != nullptr ? &meshes->at(i) : nullptr));
 	}
 	// After we've processed all of the meshes (if any) we then recursively process each of the children nodes
 	for (GLuint i = 0; i < node->mNumChildren; i++)
 	{
-		this->processNode(node->mChildren[i], scene, instances);
+		this->processNode(node->mChildren[i], scene, instances, meshes);
 	}
 }
 
-Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene, std::vector<InstanceData> instances)
+Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene, std::vector<InstanceData> instances, Mesh *m_mesh)
 {
 	// Data to fill
 	vector<Vertex> vertices;
 	vector<GLuint> indices;
 	vector<Texture> textures;
 
-	// Walk through each of the mesh's vertices
-	for (GLuint i = 0; i < mesh->mNumVertices; i++)
+	if (m_mesh == nullptr)
 	{
-		Vertex vertex;
-		glm::vec3 vector; // We declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
-						  // Positions
-		vector.x = mesh->mVertices[i].x;
-		vector.y = mesh->mVertices[i].y;
-		vector.z = mesh->mVertices[i].z;
-		vertex.Position = vector;
-		// Normals
-		/*if (mesh->mNormals[i] != nullptr)
+		// Walk through each of the mesh's vertices
+		for (GLuint i = 0; i < mesh->mNumVertices; i++)
 		{
-			vector.x = mesh->mNormals[i].x;
-			vector.y = mesh->mNormals[i].y;
-			vector.z = mesh->mNormals[i].z;
-			vertex.Normal = vector;
-		}*/
-		// Texture Coordinates
-		if (mesh->mTextureCoords[0]) // Does the mesh contain texture coordinates?
-		{
-			glm::vec2 vec;
-			// A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
-			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
-			vec.x = mesh->mTextureCoords[0][i].x;
-			vec.y = mesh->mTextureCoords[0][i].y;
-			vertex.TexCoords = vec;
+			Vertex vertex;
+			glm::vec3 vector; // We declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
+							  // Positions
+			vector.x = mesh->mVertices[i].x;
+			vector.y = mesh->mVertices[i].y;
+			vector.z = mesh->mVertices[i].z;
+			vertex.Position = vector;
+			// Normals
+			/*if (mesh->mNormals[i] != nullptr)
+			{
+				vector.x = mesh->mNormals[i].x;
+				vector.y = mesh->mNormals[i].y;
+				vector.z = mesh->mNormals[i].z;
+				vertex.Normal = vector;
+			}*/
+			// Texture Coordinates
+			if (mesh->mTextureCoords[0]) // Does the mesh contain texture coordinates?
+			{
+				glm::vec2 vec;
+				// A vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
+				// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
+				vec.x = mesh->mTextureCoords[0][i].x;
+				vec.y = mesh->mTextureCoords[0][i].y;
+				vertex.TexCoords = vec;
+			}
+			else
+				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+			vertices.push_back(vertex);
 		}
-		else
-			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
-		vertices.push_back(vertex);
+		// Now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
+		for (GLuint i = 0; i < mesh->mNumFaces; i++)
+		{
+			aiFace face = mesh->mFaces[i];
+			// Retrieve all indices of the face and store them in the indices vector
+			for (GLuint j = 0; j < face.mNumIndices; j++)
+				indices.push_back(face.mIndices[j]);
+		}
 	}
-	// Now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
-	for (GLuint i = 0; i < mesh->mNumFaces; i++)
+	else
 	{
-		aiFace face = mesh->mFaces[i];
-		// Retrieve all indices of the face and store them in the indices vector
-		for (GLuint j = 0; j < face.mNumIndices; j++)
-			indices.push_back(face.mIndices[j]);
+		vertices = m_mesh->vertices;
+		indices = m_mesh->indices;
+		instances = m_mesh->instances;
 	}
+
 	// Process materials
 	if (mesh->mMaterialIndex >= 0)
 	{
@@ -193,7 +203,7 @@ Mesh Model::processMesh(aiMesh* mesh, const aiScene* scene, std::vector<Instance
 	}
 
 	// Return a mesh object created from the extracted mesh data
-	return Mesh(vertices, indices, textures, instances);
+	return Mesh(vertices, indices, textures, m_mesh != nullptr ? m_mesh->instances : instances);
 }
 
 // Checks all material textures of a given type and loads the textures if they're not loaded yet.
@@ -314,6 +324,11 @@ glm::vec3 Model::MeasureModel()
 glm::vec3 Model::GetMeasure()
 {
 	return this->measure;
+}
+
+void Model::SetMeasure(glm::vec3 measure)
+{
+	this->measure = measure;
 }
 
 glm::vec3 Model::GetTranslation()

@@ -1004,7 +1004,7 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 
 		p2 = vehicle.GetPosition();
 
-		path->AddElement(new Line(p1, p2));
+		path->AddElement(new Line(p2, p1, Back));
 
 		parkingPlaceDirection = vehicle.GetDirWheelbase();
 

@@ -546,7 +546,7 @@ void ParkingSimulator::setLanguage()
 	ui.setVehicleRearRightWheelPositionLabel->setText(QString::fromStdString(dictionary["Common_Position"]));
 	ui.setVehicleRearRightWheelRotationLabel->setText(QString::fromStdString(dictionary["Common_Rotation"]));
 	ui.setVehicleRearRightWheelScaleLabel->setText(QString::fromStdString(dictionary["Common_Scale"]));
-
+	ui.pathCalculationInPrograssLabel->setText(QString::fromStdString(dictionary["PleaseWait_PathCalculation"]));
 
 	updateMapElementsTree();
 }

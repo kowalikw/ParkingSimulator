@@ -307,6 +307,15 @@
     <ClCompile Include="GeneratedFiles\Release\moc_VehicleEditorGLHost.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_PleaseWaitWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_PleaseWaitWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="PleaseWaitWindow.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ParkingSimulator.ui">
@@ -386,6 +395,12 @@
     </CustomBuild>
     <CustomBuild Include="VehicleEditorGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PleaseWaitWindow.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="PleaseWaitWindow.h">
+      <Filter>Header Files\Windows</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +511,9 @@
     </ClInclude>
     <ClInclude Include="VehicleEditor.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_PleaseWaitWindow.h">
+      <Filter>Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

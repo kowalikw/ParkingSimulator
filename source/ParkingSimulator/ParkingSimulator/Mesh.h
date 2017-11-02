@@ -53,7 +53,7 @@ public:
 	glm::vec3 GetMeshMinCoordinates();
 	glm::vec3 GetMeshMaxCoordinates();
 
-private:
+
 	/*  Render data  */
 	GLuint VAO, VBO, EBO, IBO, tbo;
 
