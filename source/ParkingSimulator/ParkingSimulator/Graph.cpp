@@ -313,11 +313,6 @@ void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices, int extraVe
 				AddEdge(i, j);
 		}
 	}
-}
-
-void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end, int *indexFrom, int *indexTo, bool addExtraVertices, int extraVerticesAlong, int extraVerticesAcross)
-{
-	CreateVoronoiFullGraph(map, addExtraVertices, extraVerticesAlong, extraVerticesAcross);
 
 	for (int i = 0; i < VerticesCount(); i++)
 	{
@@ -335,6 +330,11 @@ void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end
 			}
 		}
 	}
+}
+
+void Graph::CreateVoronoiVisibilityFullGraph(Map * map, Line * start, Line * end, int *indexFrom, int *indexTo, bool addExtraVertices, int extraVerticesAlong, int extraVerticesAcross)
+{
+	CreateVoronoiFullGraph(map, addExtraVertices, extraVerticesAlong, extraVerticesAcross);
 
 	int verticesCount = VerticesCount();
 	AddVertex(start->GetFrom().x, start->GetFrom().y); // verticesCount

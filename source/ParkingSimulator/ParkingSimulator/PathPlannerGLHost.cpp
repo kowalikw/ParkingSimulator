@@ -223,13 +223,13 @@ void PathPlannerGLHost::paintGL()
 
 void PathPlannerGLHost::nvgRenderFrame()
 {
+	nvgHelper->DrawMap(pathPlanner->GetMap());
+
 	if (pathPlanner->GetShowExpandedObstacles())
 		nvgHelper->DrawMap(pathPlanner->GetExpandedMap());
 
-	nvgHelper->DrawMap(pathPlanner->GetMap());
-
-	if (pathPlanner->GetFinalPath() != NULL)
-		nvgHelper->DrawPath(pathPlanner->GetFinalPath());
+	/*if (pathPlanner->GetFinalPath() != NULL)
+		nvgHelper->DrawPath(pathPlanner->GetFinalPath());*/
 
 	if (drawStartFlag)
 	{
