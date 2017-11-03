@@ -494,47 +494,80 @@ Użycie powyższych bibliotek w połączeniu z OpenGL jest w dzisiejszych czasac
 
 \chapter{Analiza ruchu pojazdu}
 
-Przy analizie ruchu pojazdu w opracowanym systemie uwzględniona została tzw. geometria Ackermana (lub mechanizm kompensacji Ackermana), aby w możliwie realistyczny sposób opisać ruch prawdziwego pojazdu. Ponadto przyjęto założenie, że w każdym momencie ruchu pojazd porusza się z prędkością, która nie powoduje poślizgu bocznego. W poniższej analizie jako pozycję pojazdu przyjęto środek jego tylnej osi, natomiast w aplikacji ze względów technicznych jako środek pojazdu przyjmowany jest geometryczny środek otaczającego go prostokąta. Nie zmienia to jednak w żaden sposób opisywanych metod i specyfiki problemu.
+Podczas analizy ruchu pojazdu w opracowanym systemie uwzględniona została tzw. geometria Ackermana (lub mechanizm kompensacji Ackermana), aby w możliwie realistyczny sposób opisać ruch prawdziwego pojazdu. Ponadto przyjęto założenie, że w każdym momencie ruchu pojazd porusza się z prędkością, która nie powoduje poślizgu bocznego. W poniższej analizie jako pozycję pojazdu przyjęto środek jego tylnej osi, natomiast w aplikacji ze względów technicznych jako środek pojazdu przyjmowany jest geometryczny środek otaczającego go prostokąta. Nie zmienia to jednak w żaden sposób opisywanych metod i specyfiki problemu.
 
 \section{Geometria Ackermana}
 
-Oczywistym jest fakt, iż podczas ruchu pojazdu w linii prostej oba przednie (skrętne) koła pozostają równoległe do siebie, a ich kąt skręcenia wynosi 0 stopni. Jednak w przypadku pokonywania nawet najmniejszego zakrętu, kąty skręcenia obu kół stają się różne. Za odpowiedni kąt skręcenia każdego z kół odpowiada mechanizm kompensacji Ackermana. Zastosowanie tego mechanizmu w pojazdach jest niezbędne, aby mogły one poruszać się po krzywiźnie bez poślizgu kół jezdnych, który mógłby spowodować utratę kontroli nad pojazdem, a w najlepszym wypadku przedwczesne zużycie się opon.
+Oczywistym jest fakt, iż podczas ruchu pojazdu w linii prostej oba przednie (skrętne) koła pozostają równoległe do siebie, a ich kąt skręcenia wynosi 0 stopni. Jednak w przypadku pokonywania nawet najmniejszego zakrętu, kąty skręcenia obu kół stają się różne. Za odpowiedni kąt skręcenia każdego z kół odpowiada mechanizm kompensacji Ackermana. Zastosowanie tego mechanizmu w pojazdach jest niezbędne, aby mogły one poruszać się po krzywiźnie bez poślizgu kół jezdnych, który mógłby spowodować utratę kontroli nad pojazdem, a w najlepszym wypadku przedwczesne zużycie się opon. Schemat działania mechanizmu kompensacji Ackermana został przedstawiony na rysunku 4.1.
 
-% todo
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.2]{ackermanGeometry}
+\caption[Geometria Ackermana]{Geometria Ackermana}
+\end{figure}
+
+~\\Matematyczną zależność pomiędzy wartościami każdego z kątów określa następujące równanie, zwane też równaniem Ackermana:
+$$
+\ctg{\beta} - \ctg{\alpha} = \frac{d}{l},
+$$
+gdzie:
+\begin{itemize}
+	\item $\alpha, \beta$ - kąty skrętu odpowiednio zewnętrznego i wewnętrznego koła skrętnego,
+	\item $l$ - rozstaw osi,
+	\item $d$ - rozstaw kół.
+\end{itemize}
+\newpage
 
 \section{Wyznaczanie minimalnego promienia skrętu}
 
 Minimalny promień skrętu każdego pojazdu zależny jest od maksymalnego kąta skręcenia jego przednich kół, a precyzyjniej od maksymalnego kąta skręcenia koła znajdującego się po wewnętrznej stronie skrętu (co wynika z geometrii Ackermana). Samo pojęcie minimalnego promienia skrętu również wymaga doprecyzowania, gdyż można rozważać wiele różnych promieni skrętu, w zależności od przyjętego punktu odniesienia na pojeździe. W poniższej analizie wyznaczone zostaną trzy promienie skrętu:
 \begin{itemize}
-	\item dla tylnego koła znajdującego się po wewnętrznej stronie skrętu (Rmin),
-	\item dla przedniego koła znajdującego się po zewnętrznej stronie skrętu (Rmax),
-	\item dla środka poruszającego się pojazdu (R).
+	\item dla tylnego koła znajdującego się po wewnętrznej stronie skrętu - $R_{min}$,
+	\item dla przedniego koła znajdującego się po zewnętrznej stronie skrętu - $R_{max}$,
+	\item dla środka poruszającego się pojazdu - $R$.
 \end{itemize}
 
-Na poniższym rysunku zaznaczone zostały poszukiwane promienie.
+Na poniższym rysunku zaznaczone zostały okręgi zakreślane przez skręcający pojazd oraz poszukiwane promienie.
 
-// rysunek
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{vehicleTurningRadius}
+\caption[Okręgi zakreślane przez skręcający pojazd i zaznaczone promienie]{Okręgi zakreślane przez skręcający pojazd i zaznaczone promienie}
+\end{figure}
 
-Do wykonania obliczeń zakładamy, że znamy rozstaw osi oraz rozstaw kół pojazdu, a także kąt skręcenia wewnętrznego koła przedniego, który przy wyznaczaniu minimalnego promienia skrętu musi być równy maksymalnemu kątowi skrętu kół dla danego pojazdu (na ogół wartość ta waha się w granicach 36-42 stopnie). Zaznaczone na rysunku promienia obliczamy w następujący sposób:
+Do wykonania obliczeń zakładamy, że znamy rozstaw osi ($l$) oraz rozstaw kół pojazdu ($d$), a także kąt skręcenia wewnętrznego koła przedniego ($\beta$), który przy wyznaczaniu minimalnego promienia skrętu musi być równy maksymalnemu kątowi skrętu kół dla danego pojazdu (na ogół wartość ta waha się w granicach 36-42 stopnie). Zaznaczone na rysunku promienia obliczamy w następujący sposób:
 
-// obliczenia
+\begin{itemize}
+	\item $R_{min} = \frac{l}{\tg{\beta}}$
+	\item $R_{max} = \frac{l}{\sin{(outsideAngle)}}, \quad outsideAngle = \arctan{\frac{l}{R_{min} + d}}$
+	\item $R = R_{min} + \frac{d}{2}$
+\end{itemize}
 
 \section{Wyznaczanie okręgów skrętu}
 
-Pojazd znajdujący się w określonym położeniu posiada zawsze dwa okręgi po których natychmiast może zacząć się poruszać przy zadanym kącie skrętu kół w jedną lub drugą stronę. W systemie przyjęto założenie, że koła są zawsze maksymalnie skręcone, tak aby pojazd jak najwięcej poruszał się po liniach prostych, a zakręty pokonywał jak najszybciej. 
+Pojazd znajdujący się w określonym położeniu posiada zawsze dwa okręgi po których natychmiast może zacząć się poruszać przy zadanym kącie skrętu kół w jedną lub drugą stronę. W systemie przyjęto założenie, że koła są zawsze maksymalnie skręcone, tak aby pojazd jak najwięcej poruszał się po liniach prostych, a zakręty pokonywał jak najszybciej. Pojazd z zaznaczonymi okręgami skrętu został przedstawiony na poniższym rysunku.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.55]{vehicleWithTurningCircles}
+\caption[Pojazd i jego okręgi skrętu]{Pojazd i jego okręgi skrętu}
+\end{figure}
 
 W poprzednim podrozdziale została opisana metoda wyznaczania różnych promieni skrętu. Do opisu pojedynczego okręgu skrętu oprócz jego promienia potrzebna jest informacja na temat położenia jego środka. Uzyskanie takiej informacji nie stanowi większego problemu i środki obu okręgów można obliczyć w następujący sposób:
-
-// obliczenia
-	
-Proces wyznaczania środka okręgu skrętu dla pojazdu został przedstawiony na poniższym rysunku.
-
-// rysunek
-
+$$
+center = vehiclePosition \pm \Big(R_{min} + \frac{d}{2}\Big) \cdot dirTrack,
+$$
+gdzie: 
+\begin{itemize}
+	\item $vehiclePosition$ - akutalna pozycja pojazdu,
+	\item $R_{min}$ - minimalny promień skrętu pojazdu,
+	\item $d$ - rozstaw kół,
+	\item $dirTrack$ - wektor określający kierunek tylnej osi pojazdu.
+\end{itemize}
 
 \chapter{Algorytmy planowania ruchu i parkowania}
 
-Podczas implementacji aplikacji opracowano algorytm planowania ruchu pojazdu pomiędzy zadanymi położeniami oparty na krzywych sklejanych oraz na wpisywaniu łuków w łamaną złożoną z krawędzi grafu oraz algorytm parkowania równoległego i prostopadłego. Opracowane algorytmy zostały opisane w dalszej części tego rozdziału.
+Podczas implementacji aplikacji opracowano algorytm planowania ruchu pojazdu pomiędzy zadanymi położeniami oparty na krzywych B-sklejanych oraz na wpisywaniu łuków w łamaną złożoną z krawędzi grafu. Zaimplementowany został również algorytm parkowania równoległego i prostopadłego. Opracowane algorytmy zostały opisane w dalszej części tego rozdziału.
 
 \section{Algorytm planowania ruchu}
 
@@ -549,7 +582,7 @@ Podstawowymi parametrami wejściowymi dla algorytmu planowania ruchu pojazdu są
 	\item mapa
 	\item pojazd - zawiera informację o maksymalnym skręcie kół, rozstawie osi oraz rozstawie kół,
 	\item pozycja początkowa,
-	\ pozycja końcowa.
+	\item pozycja końcowa.
 \end{itemize}
 
 Zdefiniowane powyżej parametry są niezbędne do rozpoczęcia planowania ruchu pojazdu. Sam proces wyznaczania trajektorii w najprostszej wersji można podzielić na następujące etapy:
@@ -566,11 +599,12 @@ Skuteczność opisanego powyżej algorytmu w praktyce była bardzo niewielka, dl
 	\item modyfikacja grafu Voronoi i ewentualne uzupełnienie go o dodatkowe wierzchołki i krawędzie,
 	\item iteracyjne sprawdzanie i eliminacja kolizji.
 \end{itemize}
-~\\W następnych podrozdziałach zostaną opisane wymienione powyżej modyfikacje, a także zostanie opisana metoda konstrukcji finalnej ścieżki oparta na krzywej sklejanej oraz wpisywaniu łuków pomiędzy odcinki łamanej.
+
+W następnych podrozdziałach zostaną opisane wymienione powyżej modyfikacje, a także zostanie opisana metoda konstrukcji finalnej ścieżki oparta na krzywej sklejanej oraz wpisywaniu łuków pomiędzy odcinki łamanej.
 
 \subsubsection{Powiększanie przeszkód}
 
-Celem powiększania przeszkód na mapie jeszcze przed wyznaczeniem grafu Voronoi jest minimalizacja ryzyka kolizji pojazdu z danym obiektem, poprzez oddalenie krawędzi grafu od brzegów obiektu. Algorytm powiększania obiektów mapy jest bardzo prosty i sprowadza się do przesunięcia każdego wierzchołka wzdłuż normalnej do danej krawędzi o odległość zdefiniowaną przez użytkownika (procentowa wartość szerokości pojazdu). Efektem zastosowania takiego algorytmu powiększania jest powstawanie przeszkód, które mają aż 8 wierzchołków ze standardowych przeszkód czworokątnych. Dzieje się tak, gdyż tak naprawdę każdy wierzchołek modyfikowanej przeszkody wejściowej jest przesuwany dwukrotnie, najpierw wzdłuż normalnej do jednej krawędzi, a następnie wzdłuż normalnej do krawędzi do niej prostopadłej. Przykład przeszkody przed powiększeniem i po powiększeniu zaprezentowano na obrazku poniżej.
+Celem powiększania przeszkód na mapie jeszcze przed wyznaczeniem grafu Voronoi jest minimalizacja ryzyka kolizji pojazdu z danym obiektem, poprzez oddalenie krawędzi grafu od brzegów obiektu. Algorytm powiększania obiektów mapy jest bardzo prosty i sprowadza się do przesunięcia każdego wierzchołka wzdłuż normalnej do danej krawędzi przeszkody o odległość zdefiniowaną przez użytkownika (procentowa wartość szerokości pojazdu). Efektem zastosowania takiego algorytmu powiększania jest powstawanie przeszkód, które mają aż 8 wierzchołków ze standardowych przeszkód czworokątnych. Dzieje się tak, gdyż tak naprawdę każdy wierzchołek modyfikowanej przeszkody wejściowej jest przesuwany dwukrotnie, najpierw wzdłuż normalnej do jednej krawędzi, a następnie wzdłuż normalnej do krawędzi do niej prostopadłej. Przykład przeszkody przed powiększeniem i po powiększeniu zaprezentowano na obrazku poniżej.
 
 \begin{figure}[h!]
 \centering
@@ -578,7 +612,7 @@ Celem powiększania przeszkód na mapie jeszcze przed wyznaczeniem grafu Voronoi
 \caption[Przykład powiększania przeszkody]{Przykład powiększania przeszkody}
 \end{figure}
 
-Dodatkowym efektem powiększenia przeszkód jest zupełnie inna postać wyznaczonego grafu Voronoi. Graf wyznaczony dla mapy ze standardowymi przeszkodami przed powiększeniem jest dużo prostszy i na pierwszy rzut oka "czytelniejszy", jednak bardziej wartościowy z punktu widzenia algorytmu planowania ruchu jest graf wyznaczony dla mapy z powiększonymi przeszkodami, ponieważ zawiera więcej wierzchołków i krawędzi, oraz minimalizuje ryzyko kolizji z przeszkodami poprzez zachowanie odpowiedniej odległości krawędzi od przeszkód. Porównanie obu grafów przedstawiają poniższe rysunki 5.2 oraz 5.3.
+Dodatkowym efektem powiększenia przeszkód jest zupełnie inna postać wyznaczonego grafu Voronoi. Graf wyznaczony dla mapy ze standardowymi przeszkodami przed powiększeniem jest dużo prostszy i na pierwszy rzut oka ''czytelniejszy'', jednak bardziej wartościowy z punktu widzenia algorytmu planowania ruchu jest graf wyznaczony dla mapy z powiększonymi przeszkodami, ponieważ zawiera więcej wierzchołków i krawędzi, oraz minimalizuje ryzyko kolizji z przeszkodami poprzez zachowanie odpowiedniej odległości krawędzi od przeszkód. Porównanie obu grafów przedstawiają poniższe rysunki 5.2 oraz 5.3.
 
 \begin{figure}[h!]
 \centering
@@ -594,7 +628,7 @@ Dodatkowym efektem powiększenia przeszkód jest zupełnie inna postać wyznaczo
 
 \subsubsection{Konstrukcja grafu i wyszukiwanie ścieżki}
 
-Jak nie trudno się domyślić konstrukcja grafu, w którym wyszukiwana będzie ścieżka pomiędzy wierzchołkiem startowym i końcowym rozpoczyna się od wyznaczenia grafu Voronoi dla zadanej mapy (z powiększonymi przeszkodami lub nie). Ponieważ doświadczenia empiryczne pokazały, że sam graf Voronoi bardzo często zawiera zbyt mało wierzchołków i krawędzi, aby możliwe było wyznaczenie sensownej trajektorii dla pojazdu należało w jakiś sposób wzbogacić ten graf o nowe wierzchołki i krawędzie. Podstawowy pomysł polega na dodaniu krawędzi pomiędzy wszystkimi wierzchołkami, które są dla siebie na wzajem "widoczne", tzn. krawędź pomiędzy tymi wierzchołkami nie przechodzi przez żaden obiekt mapy (lub powiększony obiekt mapy). Przykładowy graf z dodatkowymi krawędziami przedstawia poniższy rysunek. 
+Jak nie trudno się domyślić konstrukcja grafu, w którym wyszukiwana będzie ścieżka pomiędzy wierzchołkiem startowym i końcowym rozpoczyna się od wyznaczenia grafu Voronoi dla zadanej mapy (z powiększonymi przeszkodami lub nie). Ponieważ doświadczenia empiryczne pokazały, że sam graf Voronoi bardzo często zawiera zbyt mało wierzchołków i krawędzi, aby możliwe było wyznaczenie sensownej trajektorii dla pojazdu należało w jakiś sposób wzbogacić ten graf o nowe wierzchołki i krawędzie. Podstawowy pomysł polega na dodaniu krawędzi pomiędzy wszystkimi wierzchołkami, które są dla siebie na wzajem "widoczne", tzn. krawędź pomiędzy tymi wierzchołkami nie przechodzi przez żaden obiekt mapy (lub powiększony obiekt mapy). Przykładowy graf z dodatkowymi krawędziami przedstawia rysunek 5.4.
 
 \begin{figure}[h!]
 \centering
@@ -602,7 +636,7 @@ Jak nie trudno się domyślić konstrukcja grafu, w którym wyszukiwana będzie 
 \caption[Graf Voronoi z dodatkowymi krawędziami]{Graf Voronoi z dodatkowymi krawędziami}
 \end{figure}
 
-W znakomitej większości przypadków taka modyfikacja grafu jest wystarczająca i pozwala na wyznaczenie sensownej trajektorii. Zdarzają się jednak sytuacje, w których okazuje się, że w grafie wyznaczonym powyższą metodą wciąż jest zbyt mało wierzchołków i krawędzi, żeby np. pojazd mógł się przecisnąć pomiędzy gęsto i ciasno rozlokowanymi przeszkodami. W tej sytuacji rozwiązaniem może być dodanie nowych, sztucznych wierzchołków oraz krawędzi pomiędzy tymi wierzchołkami, a wszystkimi wierzchołkami, dla których krawędź nie będzie kolidować z powiększonymi przeszkodami mapy. Graf będący wynikiem takiej operacji (dodane po 10 wierzchołków w pionie i w poziomie) przedstawiono na poniższym rysunku. Czytelność takiego grafu jest już jednak praktycznie zerowa, co wynika z ogromnej liczby krawędzi, które są tak gęsto rozmieszczone, iż niemal w całości pokrywają całą dostępną przestrzeń na mapie.
+W znakomitej większości przypadków taka modyfikacja grafu jest wystarczająca i pozwala na wyznaczenie sensownej trajektorii. Zdarzają się jednak sytuacje, w których okazuje się, że w grafie wyznaczonym powyższą metodą wciąż jest zbyt mało wierzchołków i krawędzi, żeby np. pojazd mógł się przecisnąć pomiędzy gęsto i ciasno rozlokowanymi przeszkodami. W tej sytuacji rozwiązaniem może być dodanie nowych, sztucznych wierzchołków oraz krawędzi pomiędzy tymi wierzchołkami, a wszystkimi wierzchołkami, dla których krawędź nie będzie kolidować z powiększonymi przeszkodami mapy. Graf będący wynikiem takiej operacji (dodane po 10 wierzchołków w pionie i w poziomie) przedstawiono na rysunku 5.5. Czytelność takiego grafu jest już jednak praktycznie zerowa, co wynika z ogromnej liczby krawędzi, które są tak gęsto rozmieszczone, iż niemal w całości pokrywają całą dostępną przestrzeń na mapie.
 
 \begin{figure}[h!]
 \centering
@@ -610,7 +644,7 @@ W znakomitej większości przypadków taka modyfikacja grafu jest wystarczająca
 \caption[Graf Voronoi z dodatkowymi wierzchołkami i krawędziami]{Graf Voronoi z dodatkowymi wierzchołkami i krawędziami}
 \end{figure}
 
-Ostatnim krokiem w konstrukcji grafu jest dodanie do niego dwóch wierzchołków początkowych połączonych krawędzią (krawędź początkowa) oraz dwóch wierzchołków końcowych połączonych krawędzią (krawędź końcowa). Następnie należy połączyć końcowy wierzchołek krawędzi początkowej ze wszystkimi możliwymi wierzchołkami grafu. To samo należy zrobić z początkowym wierzchołkiem krawędzi końcowej. Przykładową ścieżkę znalezioną w grafie dla pozycji startowej znajdującej się w lewym dolnym rogu mapy i pozycji końcowej znajdującej się w prawym górnym rogu mapy przedstawiono na poniższym rysunku.
+Ostatnim krokiem w konstrukcji grafu jest dodanie do niego dwóch wierzchołków początkowych połączonych krawędzią (krawędź początkowa) oraz dwóch wierzchołków końcowych połączonych krawędzią (krawędź końcowa). Następnie należy połączyć końcowy wierzchołek krawędzi początkowej ze wszystkimi możliwymi wierzchołkami grafu. To samo należy zrobić z początkowym wierzchołkiem krawędzi końcowej. W tym momencie graf jest gotowy, aby przeprowadzić na nim wyszukiwanie ścieżki pomiędzy wierzchołkiem początkowym, a wierzchołkiem końcowym, np. przy pomocy algorytmu A*. Przykładową ścieżkę znalezioną w grafie dla pozycji startowej znajdującej się w lewym dolnym rogu mapy i pozycji końcowej znajdującej się w prawym górnym rogu mapy przedstawiono na rysunku 5.6.
 
 \begin{figure}[h!]
 \centering
@@ -618,15 +652,175 @@ Ostatnim krokiem w konstrukcji grafu jest dodanie do niego dwóch wierzchołków
 \caption[Ścieżka wyznaczona w grafie pomiędzy położeniem początkowym i końcowym]{Ścieżka wyznaczona w grafie pomiędzy położeniem początkowym i końcowym}
 \end{figure}
 
+Poniżej przedstawiono również kompletny pseudokod procedury służącej do konstrukcji zmodyfikowanego grafu Voronoi wykorzystywanego przy planowaniu ruchu pojazdu pomiędzy zadanymi położeniami.
+
+\begin{pseudokod}
+Konstrukcja zmodyfikowanego grafu Voronoi
+\begin{verbatim}
+    wyznacz graf Voronoi dla dostarczonej mapy (np. za pomocą biblioteki Boost)
+    jeśli liczba dodatkowych sztucznych wierzchołków jest niezerowa
+        dodaj siatkę sztucznych wierzchołków do grafu
+    dodaj do grafu dwa wierzchołki reprezentujące położenie początkowe i połącz je krawędzią
+    dodaj do grafu dwa wierzchołki reprezentujące położenie końcowe i połącz je krawędzią
+    dla każdej pary wierzchołków
+        jeśli wierzchołki można połączyć bezkolizyjną krawędzią
+            dodaj krawędź pomiędzy wierzchołkami do grafu
+    zwróć wynikowy graf
+\end{verbatim}
+\end{pseudokod}
+
 \subsubsection{Konstrukcja finalnej ścieżki za pomocą krzywej B-sklejanej}
 
-Krzywa B-sklejana jest jedną z najczęściej stosowanych reprezentacji parametrycznych krzywych sklejanych. Krzywą B-sklejaną charakteryzują dwa parametry: 
+Mając wyznaczoną łamaną, można przystąpić do jej ''poprawienia'' i konstrukcji na jej podstawie ścieżki, która będzie bardziej przyjazna dla pojazdu. Pierwszym proponowanym rozwiązaniem jest wykorzystanie krzywej B-sklejanej, która jest jedną z najczęściej stosowanych reprezentacji parametrycznych krzywych sklejanych. Krzywą B-sklejaną charakteryzują dwa parametry: 
 \begin{itemize}
- \item \textbf{n} - stopień sklejanych krzywych wielomianowych (w przypadku niniejszej pracy stopień krzywych równy 3),
- \item \textbf{m} - liczba podprzedziałów, na których definiowane są kolejne części krzywej.
+ \item \textbf{$n$} - stopień sklejanych krzywych wielomianowych (w przypadku niniejszej pracy stopień krzywych równy 3),
+ \item \textbf{$m$} - liczba podprzedziałów, na których definiowane są kolejne części krzywej.
 \end{itemize}
 
+Krzywe B-sklejane, podobnie jak inne krzywe parametryczne używane w grafice komputerowej, są wyznaczane przez ciąg punktów kontrolnych $p_0, p_1, ..., p_{m-n+1}$. Krzywa taka jest reprezentowana przez $m - 2n$ krzywych wielomianowych stopnia $n$ (mówi się wówczas, że krzywa B-sklejana jest $n$-tego stopnia), które łączone są z określoną ciągłością parametryczną, zazwyczaj $C^{2}$.
+
+Krzywa B-sklejana jest określona na przedziale $t \in [0, 1]$, natomiast ciąg $m + 1$ wartości $u_{i}$ dzieli ten przedział na podprzedziały, na których zdefiniowane są poszczególne krzywe wielomianowe. Wartości $u$ są nazywane węzłami krzywej (ang. \textit{knot}) i spełniają one zależność $u_{i} \leq u_{i+1}$, tzn. jest to niemalejący ciąg, a więc węzły mogą się powtarzać. Najczęściej zakłada się także, że $u_0 = 0$ oraz $u_{m} = 1$.
+
+~\\Dowolny punkt na krzywej B-sklejanej jest dany następującym równaniem:
+$$
+p(t) = \sum_{i = 0}^{m - n - 1} p_{i} N^{n}_{i}(t) \quad dla \quad t \in [u_{n}, u_{m - n}],
+$$
+gdzie:
+\begin{itemize}
+	\item $m + 1$ - liczba węzłów,
+	\item $n$ - stopień krzywej,
+	\item $p_{i}$ - punkty kontrolne,
+	\item $N^{n}_{i}(t)$ - unormowana funkcja B-sklejana stopnia $n$.
+\end{itemize}
+
+Na ogół unormowana funkcja B-sklejana jest przedstawiana za pomocą ilorazu różnicowego obciętych funkcji potęgowych, jednak forma ta jest dość skomplikowana i zamiast tego zapisujemy równoważny wzór rekurencyjny Mansfielda-de Boora-Coxa, będący podstawą algorytmu de Boora:
+\\
+$$
+N^{0}_{i}(t) = 
+\left\{ \begin{array}{ll}
+1 & \textrm{dla $t \in [u_{i}, u_{i+1})$}\\
+0 & \textrm{w przeciwnym wypadku}
+\end{array} \right.
+$$
+$$
+N^{n}_{i}(t) = \frac{t - u_{i}}{u_{i + n} - u{i}}N^{n - 1}_{i}(t) + \frac{u_{i + n + 1} - t}{u_{i + n + 1} - u{i + 1}}N^{n - 1}_{i + 1}(t) \quad dla \quad n > 0.
+$$
+\\
+Wszystkie krzywe składowe leżą w otoczce wypukłej swoich punktów kontrolnych, stąd cała krzywa B-sklejana leży w obszarze będącym sumą otoczek. Przykład przedstawiono na rysunku 5.7.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.3]{bsplineConvexHull}
+\caption[Przykładowa krzywa B-Sklejana]{Przykładowa krzywa B-sklejana}
+\end{figure}
+
+Mając zdefiniowaną krzywą B-sklejaną oraz opisany sposób obliczania jej kolejnych punktów można teraz wykorzystać ją do konstrukcji trajektorii, po której będzie poruszał się pojazd. W tym celu należy wziąć wszystkie wierzchołki wchodzące w skład wyznaczonej w poprzednich krokach łamanej i potraktować je jako punkty kontrolne krzywej B-sklejanej. Następnie należy wykonać obliczenia wszystkich punktów krzywej i w ten prosty sposób wyznaczona zostaje finalna trajektoria. Przykład krzywej wyznaczonej dla łamanej z poprzedniego podrozdziału przedstawia rysunek 5.8.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{finalPathBSpline}
+\caption[Trajektoria skonstruowana z wykorzystaniem krzywej B-sklejanej]{Trajektoria skonstruowana z wykorzystaniem krzywej B-sklejanej}
+\end{figure}
+
+Zastosowanie krzywej B-sklejanej do konstrukcji ścieżki dla pojazdu jest rozwiązaniem stosunkowo prostym. Jedyne trudności jakie pojawiły się przy implementacji tej metody to zaimplementowanie wszystkich procedur niezbędnych do obliczania punktów na krzywej, takich jak np. algorytm De Boora. Jednak mając już gotową obsługę krzywych B-sklejanych wystarczy przekazywać do algorytmu odpowiednie punkty kontrolne i natychmiast generowana jest wynikowa trajektoria. Rozwiązanie to nie jest jednak idealne, gdyż zdarzają się sytuacje, w których krzywa zbyt mocno oddala się od wyznaczonej łamanej, przez co zwiększa się ryzyko kolizji pojazdu z przeszkodami na mapie. Kolejnym problemem jest generowanie zbyt ostrych zakrętów, które w praktyce są nieosiągalne dla pojazdu o ograniczonej skrętności kół. Z uwagi na wymienione wady tej metody zaimplementowana została jeszcze jedna metoda generowanie trajektorii na podstawie łamanej, tym razem oparta na wpisywaniu łuków pomiędzy kolejne odcinki łamanej. Metoda ta została opisana w kolejnym punkcie tego rozdziału.
+
 \subsubsection{Konstrukcja finalnej ścieżki za pomocą wpisywania łuków pomiędzy odcinki łamanej}
+
+W tej części omówiony zostanie algorytm konstrukcji trajektorii na podstawie zadanej łamanej poprzez wpisywanie łuków pomiędzy kolejne odcinki łamanej. Powodem rozważania tej metody jest próba eliminacji zbyt ostrych łuków jakie są generowane podczas wyznaczania ścieżki za pomocą krzywej sklejanej.
+
+Na początek załóżmy, że jako dane wejściowe mamy trzy punkty, czyli dwa odcinki o wspólnym wierzchołku. Zadaniem algorytmu będzie wyznaczenie parametrów łuku niezbędnych do tego, aby gładko wstawić taki łuk pomiędzy te odcinki. 
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.35]{arcsAlgorithmStep1}
+\caption[Dane wejściowe dla algorytmu wpisywania łuku pomiędzy odcinki]{Dane wejściowe dla algorytmu wpisywania łuku pomiędzy odcinki}
+\end{figure}
+
+Aby móc wpisać łuk pomiędzy zadane odcinki należy wyznaczyć środek okręgu, do którego należy dany łuk, kąt początkowy oraz kąt końcowy, a także kierunek łuku - zgodny lub przeciwny do ruchu wskazówek zegara, w skrócie CW lub CCW. Wyznaczenie wymienionych parametrów łuku odbywa się w następujących krokach:
+\begin{itemize}
+	\item wyznaczenie wektorów kierunku i długości odcinków pomiędzy które chcemy wpisać okrąg - jest to operacja trywialna, oznaczmy jej wyniki jako: $dir(B,A), dir(C,B), len(B,A), len(C,B)$,
+	\item wyznaczenie wektorów normalnych do odcinków $BA$ oraz $CB$. Można to zrobić w następujący sposób:
+	$$normal(B,A) = [dir(B,A).y, -dir(B,A).x]$$
+	$$normal(C,B) = [dir(C,B).y, -dir(C,B).x]$$
+	\item pobranie minimalnego promienia skrętu, który jest dozwolony dla danego pojazdu - $r_{min}$,
+	\item umieszczenie dwóch punktów $P$ i $K$ na dwóch odcinkach w odległości od punktu $B$ równej długości dłuższej krawędzi ($length$). W zaprezentowany przykładzie złożyło się tak, iż pokrywają się one z punktami $A$ i $C$, ponieważ oba odcinki są równej długości,
+	\item wyznaczanie środka okręgu oraz iteracyjne ściąganie punktów $P$ i $K$ w kierunku punktu $B$ do momentu, aż promień okręgu nie osiągnie wartości minimalnego promienia dla danego pojazdu. Poniżej zaprezentowano obliczenia i rysunek przedstawiający opisaną sytuację:
+	$$P = B - length * dir(B,A)$$
+	$$K = B + length * dir(C,B)$$
+	$$P_{1} = P$$
+	$$P_{2} = P + normal(B,A)$$
+	$$P_{3} = K$$
+	$$P_{4} = K + normal(C,B)$$
+	$$CENTER = IntersectPoint(P_{1}, P_{2}, P_{3}, P_{4})$$
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.35]{arcsAlgorithmStep2}
+\caption[Dane wejściowe dla algorytmu wpisywania łuku pomiędzy odcinki]{Dane wejściowe dla algorytmu wpisywania łuku pomiędzy odcinki}
+\end{figure}
+
+	\item sprawdzenie czy łuk jest CW, czy CCW za pomocą dowolnego algorytmu geometrycznego, który określi kierunek odcinków $AB$ oraz $BS$,
+	\item wyznaczenie kąta początkowego i końcowego poprzez sprawdzenie kąta nachylenia odcinków $AB$ oraz $BC$.
+
+\end{itemize}
+
+Po wykonaniu wszystkich opisanych powyżej kroków wyznaczone zostaną wszystkie parametry opisujące łuk wpisany pomiędzy dwa odcinki. Poniżej przedstawiono pseudokod całej procedury.
+
+\begin{pseudokod}
+Wpisywanie łuku pomiędzy dwa odcinki
+\begin{verbatim}
+    AB, BC - dwa wejściowe odcinki o wspólnym wierzchołku
+    l1 = len(B,A)
+    l2 = len(C,B)
+    dir1 = dir(B,A)
+    dir2 = dir(C,B)
+    n1 = [dir1.y, -dir1.x]
+    n2 = [dir2.y, -dir2.x]
+    length = l1 > l2 ? l1 : l2
+    radiusMin = minimalny promień skrętu pojazdu
+    radius = +INF
+    dopóki radius > radiusMin
+        P = B + length * dir1
+        K = B + length * dir2
+        P1 = P
+        P2 = P + n1
+        P3 = K
+        P4 = K + n2
+        CENTER = znajdź punkt przecięcia odcinków P1P2 oraz P3P4
+        radius = length(P, CENTER)  
+        length -= 0.1
+    kierunekŁuku = kierunek wzajemny odcinków AB i BC
+    kątStartowy = kąt nachylenia odcinka AB
+    kątKońcowy = kąt nachylenia odcinka BC
+    zwróć łuk(CENTER, kątStartowy, kątKońcowy, kierunekŁuku)
+\end{verbatim}
+\end{pseudokod}
+
+Znając metodę wyznaczania parametrów łuku wpisanego pomiędzy dwa odcinki można przedstawić kompletny algorytm konstrukcji finalnej trajektorii na podstawie łamanej. Tutaj sprawa jest dość prosta, ponieważ tak naprawdę wystarczy wyznaczyć listę łuków wpisanych pomiędzy każdą parę odcinków, a następnie pomiędzy każdą parę łuków wstawić linię łącząca końcowy punkt pierwszego łuku w początkowym punktem drugiego łuku. Ponadto należy dodać linie łączące punkt startowy z punktem początkowym pierwszego łuku na liście oraz linię łączącą końcowy punkt ostatniego łuku z listy z punktem końcowym. Całość procedury przedstawia poniższy pseudokod.
+
+\begin{pseudokod}
+Wyznaczanie trajektorii opartej na wpisywanych łukach
+\begin{verbatim}
+    finalna ścieżka = pusta
+    dla każdej pary odcinków
+        wyznacz parametry łuku wpisanego pomiędzy te odcinki i dodaj go 
+        do finalnej ścieżki
+    dla każdej pary łuków znajdujących się w finalnej ścieżce
+        dodaj linię do finalnej ścieżki, która łączy koniec jednego łuku 
+        z początkiem drugiego
+    dodaj linię łączącą punkt początkowy z pierwszym punktem pierwszego łuku w finalnej ścieżce
+    dodaj linię łączącą punkt końcowy z ostatnim punktem ostatniego łuku w finalnej ścieżce
+    zwróć finalną ścieżkę
+\end{verbatim}
+\end{pseudokod}
+
+Przykładowa ścieżka wygenerowana z łamanej z poprzedniego rozdziału przy zastosowaniu algorytmu wpisywania łuków została przedstawiona na rysunku x.x.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{finalPathArcs}
+\caption[Trajektoria skonstruowana z wykorzystaniem metody wpisywania łuków]{Trajektoria skonstruowana z wykorzystaniem metody wpisywania łuków}
+\end{figure}
 
 \subsubsection{Wykrywanie i eliminacja kolizji}
 
@@ -634,34 +828,110 @@ W zaimplementowanej aplikacji mechanizm wykrywania i eliminacji kolizji może zo
 
 Sam proces wykrywania kolizji jest dość prosty. Idea jest taka, że symulujemy ruch pojazdu po wyznaczonej w poprzednich krokach trajektorii uaktualniając jego stan do stanu jaki miałby znajdując się w danym punkcie ścieżki. Następnie algorytm sprawdza, czy występuje kolizja pojazdu z którąś z przeszkód znajdujących się na mapie. Jeśli nie, to wszystko jest w porządku i sprawdzane jest kolejne położenie. Jeśli natomiast kolizja wystąpiła, to odnajdywana jest krawędź grafu, która z największym prawdopodobieństwem odpowiada za kształt danego fragmentu ścieżki i następuje usunięcie tej krawędzi z grafu. Następnie wyznaczana jest nowa trajektoria i cały proces zaczyna się od początku. Liczba punktów ścieżki dla których sprawdzana jest kolizja pojazdu z przeszkodami jest definiowana przez użytkownika i od liczby tych punktów zależy jakość i czas działania algorytmu wykrywania i eliminacji kolizji. Dla uporządkowania poniżej przedstawiono pseudokod opisanego algorytmu.
 
+\newpage
+
 \begin{pseudokod}
 Wykrywania i eliminacji kolizji
 \begin{verbatim}
-dla liczby położeń zdefiniowanych przez użytkownika
-    zaktualizuj stan pojazdu do określonego położenia
-    sprawdź kolizję pojazdu z przeszkodami znajdującymi się na mapie
-    jeśli nie występuje kolizja
-        kontynuuj
-    w przeciwnym wypadku
-        znajdź krawędź, która odpowiada za dany fragment wynikowej ścieżki
-        usuń znalezioną krawędź z grafu
-        wyznacz na nowo ścieżkę i rozpocznij proces wykrywania i eliminacji kolizji 
-        od początku
+    dla określonej liczby położeń pojazdu na ścieżce zdefiniowanych przez użytkownika
+        zaktualizuj stan pojazdu do określonego położenia na ścieżce
+        sprawdź kolizję pojazdu z przeszkodami znajdującymi się na mapie
+        jeśli nie występuje kolizja
+            kontynuuj
+        w przeciwnym wypadku
+            znajdź krawędź w grafie, która odpowiada za dany fragment 
+            wynikowej ścieżki
+            usuń znalezioną krawędź z grafu
+            wyznacz na nowo ścieżkę i rozpocznij proces wykrywania i eliminacji 
+            kolizji od początku
 \end{verbatim}
 \end{pseudokod}
 
 \subsection{Pseudokod algorytmu planowania ruchu}
 
-W tym podrozdziale przedstawiony zostanie pseudokod algorytmu planowania ruchu pojazdu.
+W tym podrozdziale przedstawiony zostanie kompletny pseudokod algorytmu planowania ruchu pojazdu pomiędzy punktem początkowym, a końcowym.
 
 \begin{pseudokod}
 Algorytm planowania ruchu
 \begin{verbatim}
-
+    jeśli pozycja początkowa znajduje się w miejscu parkingowym
+        wyznacz ścieżkę wyjazdową i jako punkt początkowy przyjmij 
+        jej ostatni punkt
+    jeśli pozycja końcowa znajduje się w miejscu parkingowym
+        wyznacz ścieżkę wjazdową i jako punkt końcowy przyjmij 
+        jej pierwszy punkt
+    powiększ przeszkody znajdujące się na mapie zgodnie z parametrami użytkownika
+    utwórz graf Voronoi lub zmodyfikowany graf Voronoi w zależności od 
+    parametrów dostarczonych przez użytkownika
+    wyznacz ścieżkę w utworzonym grafie pomiędzy punktem początkowy, 
+    a punktem końcowym wykorzystując jeden z algorytmów wyszukiwania 
+    ścieżki w grafie np. algorytm A*
+    dopóki włączona jest detekcja kolizji i występuje kolizja
+        jeżeli wybrano algorytm wykorzystujący krzywą B-sklejaną
+            wyznacz finalną trajektorię korzystając z algorytmu wykorzystującego 
+            krzywą B-sklejaną
+        w przeciwnym wypadku
+            wyznacz finalną trajektorię korzystając z algorytmu wpisywania łuków
+             pomiędzy odcinki łamanej
+        jeśli występuje kolizja na wyznaczonej ścieżce
+            usuń kolizję algorytmem wykrywania i eliminacji kolizji
+        w przeciwnym wypadku
+            przerwij pętlę
+    zwróć finalną ścieżkę
 \end{verbatim}
 \end{pseudokod}
 
 \subsection{Testy i dalszy rozwój algorytmu}
+
+Pierwszym, podstawowym testem algorytmu planowania ruchu jest sprawdzenie jaka trajektoria zostanie wyznaczona przy zwyczajnym poruszaniu się pojazdu do przodu. Test przebiegł oczywiście pomyślnie, a wygenerowana została trajektoria przedstawiona na poniższym obrazku.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.9]{simplePath0}
+\caption[Trajektoria ruchu w przód]{Trajektoria ruchu w przód}
+\end{figure}
+
+Kolejnym testem było sprawdzenie, jakie trajektorie wygenerują oba typy algorytmu dla przejazdu pojazdu na miejsce obok pierwotnego miejsca postoju zarówno ze zmianą jak i bez zmiany orientacji. Ścieżki otrzymane dla algorytmu wykorzystującego krzywe B-sklejane przedstawione zostały na obrazku x.x, zaś ścieżki wygenerowane metodą wpisywanych łuków na obrazku x.x.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.9]{simplePath1}
+\caption[Proste ścieżki wygenerowane przy użyciu krzywej sklejanej]{Proste ścieżki wygenerowane przy użyciu krzywej sklejanej}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.9]{simplePath2}
+\caption[Proste ścieżki wygenerowane przy użyciu metody wpisanych łuków]{Proste ścieżki wygenerowane przy użyciu metody wpisanych łuków}
+\end{figure}
+
+Na pierwszy rzut oka ścieżki wygenerowane przy pomocy krzywej B-sklejanej wyglądają bardziej elegancko, jednak po uważnym spojrzeniu na pierwszą trajektorię przemieszczenia pojazdu bez zmiany jego orientacji nietrudno zauważyć, że zakręty na początku i na końcu ścieżki są zbyt ostre i w praktyce nieosiągalne dla prawdziwego samochodu. Jeśli jednak zaniedbamy chwilowo osiągalność poszczególnych skrętów, to ścieżki te są jak najbardziej poprawne i w dodatku są one zgodne z oczekiwaniami.
+
+Ścieżki, które zostały przedstawione na drugim obrazku nie wyglądają z pozoru już tak dobrze, w szczególności pierwsza z nich, która swoim kształtem może wydawać się dość zaskakująca. Jak się jednak okazuje ścieżka ta jest w pełni poprawna, a pojazd o maksymalnym skręcie kół około 45 stopni jest w stanie ją pokonać w rzeczywistości. Ścieżka ta ukazuje jednak problem jaki będzie się pojawiał podczas korzystania z algorytmu wpisywanych łuków, a dotyczy on sytuacji, w których krawędzie pomiędzy które wpisany ma zostać łuk są zbyt krótkie. W takiej sytuacji krawędź taka jest sztucznie wydłużana, co powoduje, że pomiędzy kolejnymi łukami mogą pojawiać się odcinki, po których pojazd będzie zmuszony przejechać do tyłu, aby z końca jednego łuku dostać się na początek następnego. Opisana sytuacja została w pełni zobrazowana na rysunku x.x.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.6]{simplePath3}
+\caption[Proste ścieżki wygenerowane przy użyciu metody wpisanych łuków]{Proste ścieżki wygenerowane przy użyciu metody wpisanych łuków}
+\end{figure}
+
+W przykładzie tym mamy do czynienia z klasycznym problemem, jaki występuje w metodzie wpisanych łuków. Widać, że w zaznaczonym obszarze łuki powinny się były spotkać swoimi końcami, jednak było tam zbyt ciasno, przez co krawędzie musiały zostać przedłużone i doszło do sytuacji, że pojazd aby przedostać się z jednego łuku na drugi musi wykonać ruch do tyłu. Mimo iż ścieżka ta wydaje się bardzo nieelegancka i w praktyce pewnie nigdy pojazd nie powinien się tak zachowywać, to jednak wciąż jest to poprawna ścieżka, która pozwala na bezkolizyjny ruch pojazdu pomiędzy zadanymi położeniami, a na dodatek wszystkie zakręty, które pojazd wykonuje podczas ruchu są dla niego osiągalne w rzeczywistości, przy zadanym maksymalnym skręcie kół.
+
+Poza dość prostymi testami jak te zaprezentowane powyżej zostały przeprowadzone również testy na dużo bardziej skomplikowanych mapach. W większości przypadków zakończyły się one pomyślnie i została wygenerowana mniej lub bardziej sensowna z punktu widzenia zwykłego człowieka trajektoria dla pojazdu. Zdarzały się jednak przypadki, iż ścieżka nie była wyznaczana i konieczne było dodanie określonej liczby sztucznych wierzchołków w sytuacji, w której na pierwszy rzut oka taka ścieżka powinna zostać wyznaczona bez większych problemów. Takie zachowanie algorytmu wynika z faktu, iż cały proces wyznaczania ścieżki jest determinowany poprzez położenie wierzchołków grafu i przy niefortunnym ułożeniu przeszkód wierzchołki mogą zostać tak rozmieszczone, że niemożliwa jest konstrukcja ścieżki bezkolizyjnej opartej na dowolnej łamanej złożonej z krawędzi takiego grafu. Dodanie sztucznych wierzchołków na ogół eliminowało takie problemy, ale w zamian za to czas obliczeń znacząco wzrastał. Na ostatnim już obrazku w tym podrozdziale została przedstawiona ścieżka dla dość skomplikowanej mapy.
+
+\newpage
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.65]{simplePath4}
+\caption[Proste ścieżki wygenerowane przy użyciu metody wpisanych łuków]{Proste ścieżki wygenerowane przy użyciu metody wpisanych łuków}
+\end{figure}
+
+Jak pokazały przeprowadzone testy algorytm działa poprawnie i potrafi wyznaczyć ścieżkę nawet w dość skomplikowanym przypadku. Zdarzają się jednak sytuacje, w których ścieżka nie zostaje znaleziona, choć patrząc na mapę od razu widać, że istnieje. W takich przypadkach najczęściej wystarczy zmienić parametry wyszukiwania ścieżki i dodać dodatkowe wierzchołki do konstruowanego grafu. Kolejnym etapem rozwoju algorytmu mogłaby być automatyzacja tego procesu i automatyczny dobór parametrów przez algorytm w zależności od wczytanej przez użytkownika mapy.
+
+Kolejne problemy jakie ujawniły testy to dodawanie krawędzi wstecznych w metodzie wpisywania łuków oraz bardzo długi czas obliczeń dla bardziej skomplikowanych map. Dla przykładu wyznaczanie trajektorii w sytuacji przedstawionej na rysunku x.x trwało blisko 5 minut, co w mojej ocenie jest czasem zbyt długim. Pokrywa się to jednak z przewidywaniami, ponieważ aktywny był algorytm wykrywania i eliminacji kolizji, a jest on procesem bardzo kosztownym. Rozwiązanie wymienionych problemów i optymalizacja algorytmu byłaby celem kolejnego etapu prac nad planerem ruchu, gdyby do niego doszło.
+
+\newpage
 
 \section{Algorytm parkowania}
 
