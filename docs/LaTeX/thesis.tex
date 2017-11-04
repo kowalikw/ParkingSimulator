@@ -935,61 +935,157 @@ Kolejne problemy jakie ujawniły testy to dodawanie krawędzi wstecznych w metod
 
 \section{Algorytm parkowania}
 
+W tym podrozdziale opisany zostanie algorytm, który umożliwi zaparkowanie pojazdu zarówno w miejscu przeznaczonym do parkowania równoległego jak i prostopadłego. Zanim jednak opisany zostanie sam algorytm dokonana zostanie geometryczna analiza problemu parkowania równoległego.
+
 \subsection{Analiza problemu parkowania równoległego}
 
-Podczas próby zaparkowania równoległego pojazdu w wybranym miejscu parkingowym możliwe jest wystąpienie następujących sytuacji:
-- miejsce parkingowe jest za małe i zaparkowanie pojazdu w ogóle nie jest możliwe,
-- miejsce parkingowe jest dostatecznie duże i możliwe jest zaparkowanie w jednym manewrze,
-- miejsce parkingowe jest wystarczającej wielkości aby pojazd się w nim zmieścił, ale wymaga wykonania kilku ruchów w przód i w tył.
-Oczywiście przy definiowaniu powyższych przypadków nie są brane pod uwagę dodatkowe ograniczenia, które mogą wystąpić w otoczeniu miejsca parkingowego i np. uniemożliwić parkowanie prostopadłe w pojedynczym manewrze. Przy projektowaniu algorytmów parkowania przyjęto założenie, że obszar wokół miejsc parkingowych, po którym porusza się pojazd już podczas wykonywania manewru parkowania jest bezkolizyjny, a jeśli zdefiniowana przez użytkownika mapa nie zapewnia takowej bezkolizyjności zwracany jest komunikat, ze zaparkowanie w wybranym miejscu nie jest możliwe. 
-Wyprowadzone zostaną teraz matematyczne warunki, jakie muszą wystąpić w każdej z wyżej opisanych sytuacji:
-- miejsce parkingowe jest zbyt małe - sytuacja ma miejsce, gdy długość lub szerokość miejsca parkingowego jest mniejsza niż długość lub szerokość wybranego pojazdu
-- miejsce parkingowe jest dostatecznie duże, by możliwe było zaparkowanie w pojedynczym manewrze – aby wyprowadzić warunki matematyczne należy najpierw przeanalizować ruch pojazdu podczas wykonywania manewru parkowania. W tym celu przedstawiono poniższy rysunek.
-//rysunek
-Na powyższym rysunku zaznaczone zostały okręgi, minimalny i maksymalny, jakie zarysowuje pojazd podczas parkowania. Do obliczenia minimalnej długości miejsca parkingowego potrzebnej do wykonania parkowania w pojedynczym manewrze przyjmijmy następujące oznaczenia:
-- Rmin – promień minimalnego okręgu wyznaczanego przez tylne koło znajdujące się po wewnętrznej stronie skrętu
-- Rmax – promień maksymalnego okręgu wyznaczanego przez przednie koło znajdujące się po zewnętrznej stronie skrętu
-- L - minimalna długość miejsca parkingowego pozwalająca na parkowanie w pojedynczym manewrze
-Minimalną długość miejsca parkingowego można obliczyć w następujący sposób:
-// obliczenia
-- miejsce parkingowe jest wystarczające, aby pojazd mógł w nim zaparkować wykonując kolejno ruchy w przód i w tył – jak nie trudno się domyślić, taka sytuacja ma miejsce, gdy długość miejsca parkingowego jest większa od długości pojazdu, ale jednocześnie mniejsza niż minimalna długość potrzebna do zaparkowania w pojedynczym manewrze.
+Podczas próby zaparkowania równoległego pojazdu w wybranym miejscu parkingowym możliwe jest wystąpienie jednej z wymienionych poniżej sytuacji:
+\begin{itemize}
+	\item miejsce parkingowe jest za małe i zaparkowanie pojazdu w ogóle nie jest możliwe,
+	\item miejsce parkingowe jest wystarczającej wielkości aby pojazd się w nim zmieścił, ale wymaga wykonania kilku ruchów w przód i w tył.	
+	\item miejsce parkingowe jest dostatecznie duże i możliwe jest zaparkowanie w jednym manewrze,
+\end{itemize}
 
+Oczywiście przy definiowaniu powyższych przypadków nie są brane pod uwagę dodatkowe ograniczenia, które mogą wystąpić w otoczeniu miejsca parkingowego i np. uniemożliwić parkowanie prostopadłe w pojedynczym manewrze. Przy projektowaniu algorytmów parkowania przyjęto założenie, że obszar wokół miejsc parkingowych, po którym porusza się pojazd już podczas wykonywania manewru parkowania jest bezkolizyjny, a jeśli zdefiniowana przez użytkownika mapa nie zapewnia takowej bezkolizyjności zwracany jest komunikat, ze zaparkowanie w wybranym miejscu nie jest możliwe. 
+
+Wyprowadzone zostaną teraz matematyczne warunki, jakie muszą wystąpić w każdej z wyżej opisanych sytuacji:
+\begin{itemize}
+	\item miejsce parkingowe jest zbyt małe - sytuacja ma miejsce, gdy długość lub szerokość miejsca parkingowego jest mniejsza niż długość lub szerokość wybranego pojazdu,
+	\item miejsce parkingowe jest wystarczające, aby pojazd mógł w nim zaparkować wykonując kolejno ruchy w przód i w tył – jak nie trudno się domyślić, taka sytuacja ma miejsce, gdy długość miejsca parkingowego jest większa od długości pojazdu, ale jednocześnie mniejsza niż minimalna długość potrzebna do zaparkowania w pojedynczym manewrze,
+	\item miejsce parkingowe jest dostatecznie duże, by możliwe było zaparkowanie w pojedynczym manewrze. 
+	~\\Aby wyprowadzić warunki matematyczne należy najpierw przeanalizować ruch pojazdu podczas wykonywania manewru parkowania. W tym celu przedstawiono poniższy rysunek.
+	
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.4]{vehicleParallelParkingAnalysis}
+\caption[Analiza parkowania równoległego]{Analiza parkowania równoległego}
+\end{figure}
+	
+\end{itemize}
+
+Na powyższym rysunku zaznaczone zostały okręgi, minimalny i maksymalny, jakie zarysowuje pojazd podczas parkowania. Do obliczenia minimalnej długości miejsca parkingowego potrzebnej do wykonania parkowania w pojedynczym manewrze przyjmijmy następujące oznaczenia:
+- $R_{min}$ – promień minimalnego okręgu wyznaczanego przez tylne koło znajdujące się po wewnętrznej stronie skrętu
+- $R_{max}$ – promień maksymalnego okręgu wyznaczanego przez przednie koło znajdujące się po zewnętrznej stronie skrętu
+- $d$ - minimalna długość miejsca parkingowego pozwalająca na parkowanie w pojedynczym manewrze
+Minimalną długość miejsca parkingowego można obliczyć w następujący sposób:
+$$
+d = \sqrt{R^{2}_{max} - R^{2}_{min}}
+$$
 
 \subsection{Idea algorytmu}
 
 Parametrami wejściowymi dla algorytmu wyznaczania ścieżki parkowania są następujące dane:
-- mapa,
-- pojazd,
-- wybrane miejsce parkingowe (zawiera ono dozwolony typ parkowania, tzn. równoległe lub prostopadłe).
+\begin{itemize}
+	\item mapa,
+	\item pojazd,
+	\item wybrane miejsce parkingowe (zawiera ono dozwolony typ parkowania, tzn. równoległe lub prostopadłe).
+\end{itemize}
+
 Działanie samego algorytmu rozpoczyna się od sprawdzenia, która z opisanych w poprzednim podrozdziale sytuacji ma miejsce. Jeśli miejsce parkingowe jest zbyt małe to algorytm kończy działanie i zwraca informację, że zaparkowanie w danym miejscu nie było możliwe. Następnym krokiem jest sprawdzenie czy mamy do czynienia z parkowaniem równoległym, czy prostopadłym oraz czy naszym celem jest wyznaczenie ścieżki wjazdowej, czy wyjazdowej z miejsca parkingowego.
-Jednak zamiast rozważać osobno w jaki sposób wygenerować ścieżkę parkowania umożliwiającą wjazd, a w jaki sposób ścieżkę umożliwiającą wyjazd z miejsca parkingowego wystarczy rozważyć tylko sytuację wyjeżdżania z danego miejsca. Takie podejście jest wystarczające, ponieważ mając wyznaczoną ścieżkę, umożliwiającą wyjazd z miejsca parkingowego możliwe jest uzyskanie ścieżki wjazdowej poprzez odwrócenie kolejności elementów wchodzących w skład tej ścieżki.
+
+Zamiast jednak rozważać osobno w jaki sposób wygenerować ścieżkę parkowania umożliwiającą wjazd, a w jaki sposób ścieżkę umożliwiającą wyjazd z miejsca parkingowego wystarczy rozważyć tylko sytuację wyjazdu z danego miejsca. Takie podejście jest wystarczające, ponieważ mając wyznaczoną ścieżkę, umożliwiającą wyjazd z miejsca parkingowego możliwe jest uzyskanie ścieżki wjazdowej poprzez odwrócenie kolejności elementów wchodzących w skład tej ścieżki.
+
 W przypadku parkowania prostopadłego wyznaczenie ścieżki parkowania jest zadaniem trywialnym i sprowadza się do ustawienia pojazdu idealnie na środku miejsca parkingowego, a następnie wycofywania pojazdu, aż do momentu, gdy cały znajdzie się na zewnątrz. Jeśli zadaniem algorytmu było wyznaczenie ścieżki wyjazdowej to jego działanie zostanie w tym momencie zakończone. W przypadku, gdy poszukiwana była ścieżka wjazdowa wystarczy odwrócić parametry wyznaczonej linii, po której ma poruszać się pojazd.  W obu przypadkach wyznaczona ścieżka składa się z pojedynczej linii.
-Trudniejszym zadaniem jest wyznaczenie ścieżki parkowania równoległego. Na początek podobnie jak poprzednio należy ustawić pojazd na środku miejsca parkingowego. W następnym kroku pojazd jest wycofywany, aż do momentu, jego tylna krawędź pokryje się z tylną krawędzią miejsca parkingowego (tutaj można rozważać sytuację idealną gdy tylna krawędź pojazdu zrównuje się z tylną krawędzią miejsca lub dać jakąś tolerancję, aby do tej krawędzi nie dojeżdżał i zachowywał określony odstęp). Gdy pojazd znajduje się już w takim ustawieniu rozpoczyna się główna pętla algorytmu, w której pojazd porusza się po kolejnych fragmentach okręgów. 
 
+Trudniejszym zadaniem jest wyznaczenie ścieżki parkowania równoległego. Na początek podobnie jak poprzednio należy ustawić pojazd na środku miejsca parkingowego. W następnym kroku pojazd jest wycofywany, aż do momentu, gdy jego tylna krawędź pokryje się z tylną krawędzią miejsca parkingowego (tutaj można rozważać sytuację idealną gdy tylna krawędź pojazdu zrównuje się z tylną krawędzią miejsca lub dać jakąś tolerancję, aby do tej krawędzi nie dojeżdżał i zachowywał określony odstęp). Gdy pojazd znajduje się już w takim ustawieniu rozpoczyna się główna pętla algorytmu, w której pojazd porusza się po kolejnych fragmentach okręgów do momentu, aż całkowicie znajdzie się poza miejscem parkingowym. 
 
-\subsection{Pseudokod algorytmu}
+Zanim przedstawiony zostanie opis kolejnych manewrów wykonywanych przez pojazd warto najpierw  obliczyć jaka ilość miejsca na takie manewry jest dostępna. Aby to zrobić wystarczy od długości miejsca parkingowego odjąć długość pojazdu. Wartość jaką otrzymamy to całkowita ilość dostępnego miejsca na wykonywanie kolejnych manewrów. Pojedynczy manewr na tym etapie algorytmu składa się z dwóch łuków, gładko połączonych, po przejechaniu których pojazd znajduje się w takiej samej orientacji jak przed wykonaniem manewru, ale przemieszcza się na koniec dostępnego miejsca oraz coraz bliżej wyjazdu z miejsca parkingowego.
 
-W tym podrozdziale przedstawiony zostanie pseudokod opisanego powyżej algorytmu parkowania oraz innych procedur, które są wykorzystywane w tym algorytmie.
+Zakładając, że wyjazd z miejsca parkingowego znajduje się po lewej stronie pojazdu to pierwszy łuk będzie skierowany w lewo i będzie się kończył w połowie dostępnego miejsca. W tym punkcie koła pojazdu powinny zostać skręcone maksymalnie w drugą stronę, tak aby rozpoczął on ruch po drugim łuku i dojechał do końca dostępnego miejsca. W tym momencie pojazd powinien mieć taką samą orientację jak przed wykonaniem opisanych manewrów. Jeśli pojazd nie znajduje się jeszcze całkowicie poza miejscem parkingowym to ponownie wykonuje ruch po dwóch łukach, tym razem do tyłu. Operacje te są powtarzane do momentu całkowitego wyjazdu pojazdu z miejsca parkingowego.
 
-// pseudokod
+\subsection{Pseudokod algorytmu parkowania równoległego}
+
+W tym podrozdziale przedstawiony zostanie pseudokod opisanego powyżej algorytmu parkowania równoległego. Opis metody wyznaczania okręgów skrętu, które będą tu wykorzystane znajduje się w rozdziale ''Analiza ruchu pojazdu''.
+
+\begin{pseudokod}
+Algorytm parkowania
+\begin{verbatim}
+    jeżeli długość lub szerokość miejsca parkingowego jest mniejsza niż 
+    długość lub szerokość pojazdu
+        zwróć pustą ścieżkę parkingową
+    ustaw pojazd na środku miejsca parkingowego w tej samej orientacji co miejsce
+    cofnij pojazd do końca miejsca parkingowego
+
+    liczba okręgów = 0
+    kąt startowy = 0;
+    kąt końcowy = 0;
+	
+    dopóki jakakolwiek część pojazdu znajduje się w miejscu parkingowym lub 
+    liczba okręgów dodanych do ścieżki jest nieparzysta
+    {
+        wyznacz maksymalny kąt do którego pojazd może poruszać się po okręgu
+        jeżeli liczba okręgów % 4 == 0
+            okrąg = wyznacz lewy okrąg dla maksymalnego skrętu kół pojazdu 
+                    i ruchu w przód dla którego kąt znajduje się w przedziale 
+                    [kąt startowy, kąt końcowy]
+        jeżeli liczba okręgów % 4 == 0
+            okrąg = wyznacz prawy okrąg dla maksymalnego skrętu kół pojazdu 
+                    i ruchu w przód dla którego kąt znajduje się w przedziale 
+                    [2 * PI - kąt końcowy, 2 * PI + kąt startowy]
+        jeżeli liczba okręgów % 4 == 0
+            okrąg = wyznacz lewy okrąg dla maksymalnego skrętu kół pojazdu 
+                    i ruchu w tył dla którego kąt znajduje się w przedziale 
+                    [2 * PI + kąt startowy, 2 * PI - kąt końcowy]
+        jeżeli liczba okręgów % 4 == 0
+            okrąg = wyznacz prawy okrąg dla maksymalnego skrętu kół pojazdu 
+                    i ruchu w tył dla którego kąt znajduje się w przedziale 
+                    [kąt końcowy, kąt startowy]
+        liczba okręgów++;
+        dodaj okrąg do ścieżki parkowania
+    }
+    jeżeli ścieżka wyjazdowa
+        odwróć ścieżkę parkowania	
+    zwróć ścieżkę parkowania
+\end{verbatim}
+\end{pseudokod}
 
 \subsection{Testy i dalszy rozwój algorytmu}
 
-Testy algorytmu parkowania przebiegły pomyślnie i potwierdziły prawidłowe działanie algorytmu, zgodne z oczekiwaniami przy uprzednio przyjętych założeniach. Poniżej zaprezentowano przykładowe ścieżki parkowania, wygenerowane zarówno dla parkowania prostopadłego jak i równoległego: 
-1.	Parkowanie prostopadłe
-- wyznaczona ścieżka parkowania, gdy otoczenie miejsca parkingowego jest bezkolizyjne
-// rysunek
-- sytuacja, w której algorytm zwraca informację, że zaparkowanie nie jest możliwe, choć w rzeczywistości taki manewr dałoby się wykonać (przeszkoda znajduje się zbyt blisko wyznaczonej ścieżki parkowania i powoduje kolizję z poruszającym się po tej ścieżce pojazdem).
-//rysunek
-2.	Parkowanie równoległe:
-- szerokie miejsce parkingowe – parkowanie w pojedynczym manewrze
-// rysunek
-- wąskie miejsce parkingowe – parkowanie w kilku manewrach
-//rysunek
-- ekstremalnie wąskie miejsce parkingowe – parkowanie w bardzo dużej liczbie manewrów, ale wciąż możliwe
+Testy algorytmu parkowania przebiegły pomyślnie i potwierdziły prawidłowe działanie algorytmu, zgodne z oczekiwaniami przy uprzednio przyjętych założeniach. Poniżej zaprezentowano przykładowe ścieżki parkowania, wygenerowane zarówno dla parkowania prostopadłego jak i równoległego.
 
-Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuacje jakie mogą wystąpić podczas wykonywania manewru parkowania, gdy otoczenie wokół miejsca parkingowego jest bezkolizyjne. Jednak w przypadku, gdy jakiś obiekt znajduje się zbyt blisko ścieżki parkowania i powoduje kolizję z poruszającym się po ścieżce pojazdem, to algorytm zwraca informację, że zaparkowanie w tym miejscu nie jest możliwe, choć w rzeczywistości, często dałoby się taką przeszkodę ominąć i zakończyć manewr parkowania pomyślnie.  Dalszym krokiem w rozwoju algorytmu byłoby więc wykrywanie takich sytuacji i próba omijania przeszkód, aby możliwe było pomyślne dokończenie manewru.
+\subsubsection{Parkowanie prostopadłe}
 
+Przykładowe ścieżki parkowania:
+\begin{itemize}
+	\item wyznaczona ścieżka parkowania, gdy otoczenie miejsca parkingowego jest bezkolizyjne
+	\begin{figure}[h!]
+\centering
+\includegraphics[scale=1.0]{parkingPathPerpendicular1}
+\caption[Ścieżka parkowania prostopadłego]{Ścieżka parkowania prostopadłego}
+\end{figure}
+	\item sytuacja, w której algorytm zwraca informację, że zaparkowanie nie jest możliwe, choć w rzeczywistości taki manewr dałoby się wykonać (przeszkoda znajduje się zbyt blisko wyznaczonej ścieżki parkowania i powoduje kolizję z poruszającym się po tej ścieżce pojazdem).
+	\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.73]{parkingPathPerpendicular2}
+\caption[Brak ścieżki umożliwiającej zaparkowanie prostopadłe]{Brak ścieżki umożliwiającej zaparkowanie prostopadłe}
+\end{figure}
+\end{itemize}
+
+\subsubsection{Parkowanie równoległe}
+
+Przykładowe ścieżki parkowania:
+\begin{itemize}
+	\item szerokie miejsce parkingowe – parkowanie w pojedynczym manewrze
+	\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.79]{parkingPathParallel1}
+\caption[Parkowanie w szerokim miejscu parkingowym]{Parkowanie w szerokim miejscu parkingowym}
+\end{figure}
+	\item wąskie miejsce parkingowe – parkowanie w kilku manewrach
+	\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{parkingPathParallel2}
+\caption[Parkowanie w wąskim miejscu parkingowym]{Parkowanie w wąskim miejscu parkingowym}
+\end{figure}
+	\item ekstremalnie wąskie miejsce parkingowe – parkowanie w bardzo dużej liczbie manewrów, ale wciąż możliwe
+	\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.95]{parkingPathParallel3}
+\caption[Parkowanie w ekstremalnie wąskim miejscu parkingowym]{Parkowanie w ekstremalnie wąskim miejscu parkingowym}
+\end{figure}
+\end{itemize}
+
+Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuacje jakie mogą wystąpić podczas wykonywania manewru parkowania, gdy otoczenie wokół miejsca parkingowego jest bezkolizyjne. Jednak w przypadku, gdy jakiś obiekt znajduje się zbyt blisko ścieżki parkowania i powoduje kolizję z poruszającym się po ścieżce pojazdem, to algorytm zwraca informację, że zaparkowanie w tym miejscu nie jest możliwe, choć w rzeczywistości, często dałoby się taką przeszkodę ominąć i zakończyć manewr parkowania pomyślnie.  Dalszym krokiem w rozwoju algorytmu byłoby więc wykrywanie takich sytuacji i próba omijania przeszkód, aby możliwe było pomyślne dokończenie manewru, a nie natychmiastowe kończenie działania algorytmu. Nie ma natomiast żadnych zastrzeżeń co do czasu działania algorytmu. Wszystkie obliczenia wykonywane są błyskawicznie i odpowiedź algorytmu jest niemal natychmiastowa.
 
 \chapter{Instrukcja użytkownika}
 

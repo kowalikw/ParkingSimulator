@@ -46,7 +46,7 @@ void NvgDrawHelper::DrawMap(Map * map)
 	nvgFillColor(vg, MAP_COLOR);
 	nvgFill(vg);
 
-	/*for (int i = 0; i < map->GetTerrainWidthCount(); i++)
+	for (int i = 0; i < map->GetTerrainWidthCount(); i++)
 	{
 		for (int j = 0; j < map->GetTerrainHeightCount(); j++)
 		{
@@ -54,7 +54,7 @@ void NvgDrawHelper::DrawMap(Map * map)
 		}
 	}
 
-	DrawMeshOnMap(map, 1);*/
+	DrawMeshOnMap(map, 1);
 
 	drawMapElements(map->GetMapElements());
 }

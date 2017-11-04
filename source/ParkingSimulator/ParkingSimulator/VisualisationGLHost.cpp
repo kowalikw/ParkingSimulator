@@ -76,7 +76,7 @@ void VisualisationGLHost::paintGL()
 
 	if (visualisation == NULL) return;
 
-	glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	nvgBeginFrame(vg, widgetWidth, widgetHeight, pixelRatio);
@@ -96,20 +96,9 @@ void VisualisationGLHost::nvgRenderFrame()
 	{
 		nvgHelper->DrawSimulationFrame(visualisation->GetCurrentSimulation());
 
-		//nvgHelper->DrawGraph(&visualisation->voronoi);
-
-		bool showPath = visualisation->GetShowPath();
 		if (visualisation->GetShowPath())
 			nvgHelper->DrawPath(visualisation->GetCurrentSimulation()->GetFinalPath());
 	}
-	//auto mapElements = visualisation->mapa2->GetMapElements();
-	//auto vehicle = visualisation->GetCurrentSimulation()->GetVehicle();
-	//for (int i = 0; i < mapElements.size(); i++)
-	//{
-	//	auto polygon = GeometryHelper::ExpandPolygon(mapElements[i]->GetPoints(), 3.0f * vehicle->track / 4.0f);
-
-	//	nvgHelper->DrawPolygon(polygon);
-	//}
 }
 
 #pragma endregion

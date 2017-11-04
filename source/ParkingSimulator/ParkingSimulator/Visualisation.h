@@ -33,7 +33,7 @@ private:
 	bool visualisation2D = false;
 	bool visualisation3D = false;
 	bool visualisationChanged = false;
-	Simulation *currentSimulation;
+	Simulation *currentSimulation = NULL;
 	std::vector<Simulation*> simulations;
 };
 
