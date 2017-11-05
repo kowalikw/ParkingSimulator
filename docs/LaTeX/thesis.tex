@@ -224,11 +224,17 @@
 \tytul
 \end{center}
 
-Streszczam.
+Niniejsza praca dyplomowa opisuje proces powstawania aplikacji umożliwiającej planowanie ruchu pojazdu wyposażonego w moduł automatycznego parkowania. Aplikacja została wyposażona w kilka modułów, takich jak: edytor map, edytor pojazdów, planer ruchu oraz moduł wizualizacji. Ponadto możliwa jest zmiana wielu ustawień systemu takich jak wygląd rysowanych obiektów na mapie oraz jego język. Zgodnie z określonymi na wstępie wymaganiami aplikacja działa poprawnie na systemach operacyjnych z rodziny Windows począwszy od systemu Windows 7.
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\\
+W pierwszym rozdziale przedstawione zostały cele pracy oraz dostępne publikacje, które zostały wykorzystane w trakcie pisania pracy. Drugi rozdział zawiera szczegółowe informacje na temat wymagań funkcjonalnych każdego z modułów, w które została wyposażona aplikacja oraz wymagania niefunkcjonalne dotyczące całego systemu. Najważniejszą funkcjonalnością edytora map i pojazdów jest możliwość utworzenia nowej mapy lub pojazdu oraz zapisania ich do pliku. Planer ruchu umożliwia wyznaczenie trajektorii po której będzie poruszał się pojazd z uwzględnieniem różnych parametrów, zadanych przez użytkownika. Moduł wizualizacji pozwala na wczytanie gotowej symulacji a następnie wizualizuje przejazd pojazdu z położenia początkowego do położenia końcowego zarówno w trybie 2D jak i 3D. Ostatni z modułów pozwala na zmianę ustawień aplikacji.
 
-\noindent \textbf{Słowa kluczowe:} slowo1, slowo2, ...
+W kolejnym rozdziale zostały przedstawione technologie, które zostały wykorzystane przy implementacji. Cała aplikacja została napisana w języku C++, a jej graficzny interfejs użytkownika powstał przy użyciu zestawu bibliotek Qt. Ponadto wykorzystane zostały takie biblioteki jak Boost, NanoVG, czy OpenGL, między innymi do serializacji obiektów oraz przygotowania wizualizacji 3D.
+
+Rozdziały czwarty i piąty szczegółowo opisują zasadę działania zaprojektowanych algorytmów planowania ruchu oraz automatycznego parkowania. Całość została przedstawiona w taki sposób, aby osoba czytająca niniejszą pracę była w stanie odtworzyć zaimplementowane w systemie algorytmy. 
+
+Ostatni rozdział zawiera krótkie podsumowanie całej pracy.\\ 
+
+\noindent \textbf{Słowa kluczowe:} planer, ruchu, trajektorii, pojazdu, autopilot, asystent, moduł, automatycznego, parkowania, graf, Voronoi, widoczności
 \end{abstract}
 
 \null\thispagestyle{empty}\newpage
@@ -244,7 +250,7 @@ Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod t
 
 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\\
 
-\noindent \textbf{Keywords:} keyword1, keyword2, ...
+\noindent \textbf{Keywords:} vehicle, path, trajectory, planner, autopilot, assistant, module, automatic, parking, graph, Voronoi, visibility
 \end{abstract}}
 
 
@@ -1205,9 +1211,11 @@ Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuac
 
 \chapter{Instrukcja użytkownika}
 
-
+Interfejs aplikacji został podzielony na 6 zakładek, w których kolejno znajduje się ekran startowy, edytor map, edytor pojazdów, planer ruchu, moduł wizualizacji oraz zakładka umożliwiająca zmianę ustawień aplikacji. Funkcjonalności i obsługa każdej z zakładek została przedstawiona w poniższych podrozdziałach.
 
 \section{Ekran startowy}
+
+Zrzut ekranu startowego przedstawiono na poniższym obrazku.
 
 \begin{figure}[h!]
 \centering
@@ -1215,7 +1223,19 @@ Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuac
 \caption[Ekran startowy - zrzut ekranu]{Ekran startowy - zrzut ekranu}
 \end{figure}
 
+Ekran ten zawiera następujące przyciski, które umożliwiają szybkie przejście do poszczególnych modułów aplikacji:
+\begin{itemize}
+	\item \textbf{[1]} - umożliwia przejście do edytora map,
+	\item \textbf{[2]} - umożliwia przejście do edytora pojazdów,
+	\item \textbf{[3]} - umożliwia przejście do planera ruchu pojazdu,
+	\item \textbf{[4]} - umożliwia przejście do modułu wizualizacji,
+	\item \textbf{[5]} - umożliwia przejście do ustawień aplikacji,
+	\item \textbf{[6]} - umożliwia zamknięcie aplikacji.
+\end{itemize}
+
 \section{Edytor map}
+
+Zrzut ekranu przedstawiający widok edytora map przedstawiono na poniższym obrazku.
 
 \begin{figure}[h!]
 \centering
@@ -1223,11 +1243,30 @@ Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuac
 \caption[Edytor map - zrzut ekranu]{Edytor map - zrzut ekranu}
 \end{figure}
 
+Edytor map zawiera następujące okna i przycisku:
+\begin{itemize}
+	\item \textbf{[1]} - przycisk umożliwiający stworzenie nowej mapy,
+	\item \textbf{[2]} - przycisk umożliwiający otwarcie mapy zapisanej do pliku,
+	\item \textbf{[3]} - przycisk umożliwiający zapisanie mapy do pliku,
+	\item \textbf{[4]} - drzewo zawierające obiekty dodane do mapy,
+	\item \textbf{[5]} - przycisk umożliwiający natychmiastowe usunięcie wszystkich obiektów znajdujących się na mapie,
+	\item \textbf{[6]} - interaktywny edytor mapy,
+	\item \textbf{[7]} - przycisk umożliwiający dodanie obiektu będącego budynkiem do mapy,
+	\item \textbf{[8]} - przycisk umożliwiający dodanie dekoracyjnego obiektu do mapy,
+	\item \textbf{[9]} - przycisk umożliwiający dodanie pojazdu do mapy,
+	\item \textbf{[10]} - przycisk umożliwiający dodanie miejsca parkingowego do mapy,
+	\item \textbf{[11]} - przycisk umożliwiający zmianę rodzaju terenu na mapie.
+\end{itemize}
+
+Aby utworzyć nową mapę użytkownik powinien nacisnąć przycisk \textbf{[1]}, a następnie, w nowo otwartym oknie podać wymiary mapy i zatwierdzić operację. Po kliknięciu na przycisk \textit{''Utwórz''} nowa mapa zostanie stworzona i zastąpi mapę aktualnie znajdującą się w edytorze map.
+
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=1.0]{instructionCreateMap}
 \caption[Okno tworzenia nowej mapy]{Okno tworzenia nowej mapy}
 \end{figure}
+
+Po kliknięciu na jeden z przycisków umożliwiających dodanie nowego obiektu do mapy, zostanie wyświetlone okno dialogowe podobne do tego przedstawionego na poniższym zrzucie ekranu. Użytkownik ma możliwość wyboru konkretnego modelu danego obiektu jaki chce dodać do mapy, wpisania jego nazwy oraz podana wymiarów. Nie zaleca się jednak zmiany wymiarów obiektów posiadających skomplikowany model, gdyż jeśli podczas zmiany nie zostaną zachowane odpowiednie proporcje poszczególnych wymiarów, to obiekt może zostać znacząco zdeformowany.
 
 \begin{figure}[h!]
 \centering
@@ -1235,7 +1274,21 @@ Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuac
 \caption[Okno dodawania nowego elementu do mapy]{Okno dodawania nowego elementu do mapy}
 \end{figure}
 
+Po wybraniu odpowiedniego modelu i zatwierdzeniu całej operacji poprzez kliknięcie na przycisk ''Dodaj'' należy umieścić nowo dodany obiekt w odpowiednim miejscu na mapie. Podczas poruszania obiektem po mapie może on zmieniać kolor z zielonego na czerwony (lub inne kolory wybrane w ustawieniach aplikacji). Kolor obiektu symbolizuje to czy obiekt można umieścić w danym miejscu czy nie. Aby umieszczenie obiektu było możliwe musi on w całości znajdować się w obszarze mapy i nie może kolidować z innymi obiektami znajdującymi  się na mapie.
+
+Obiekty dodane do mapy można poddawać ponownej edycji. Aby to zrobić należy kliknąć w obiekt na mapie lub wybrać interesujący nas element z drzewa obiektów. Obiekt może być poddany operacji translacji, rotacji i skalowania. Po zaznaczeniu dowolnego obiektu, pod przyciskami służącymi dodawaniu nowych elementów do mapy wyświetlona zostanie sekcja wyświetlająca właściwości danego obiektu. Dowolny obiekt może zostać również usunięty z mapy.
+
 \section{Edytor pojazdów}
+
+Edytor pojazdów umożliwia stworzenie nowego pojazdu. Pozwala on na ustawienie przez użytkownika takich parametrów pojazdu jak:
+\begin{itemize}
+	\item nazwa,
+	\item długość i szerokość,
+	\item rozstaw osi oraz rozstaw kół,
+	\item maksymalny kąt skrętu.
+\end{itemize}
+
+Ekran edytora pojazdu został przedstawiony na poniższym zrzucie ekranu.
 
 \begin{figure}[h!]
 \centering
@@ -1243,7 +1296,22 @@ Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuac
 \caption[Edytor pojazdów - zrzut ekranu]{Edytor pojazdów - zrzut ekranu}
 \end{figure}
 
+Na ekranie edytora pojazdów znajdują się następujące przyciski i sekcje:
+\begin{itemize}
+	\item \textbf{[1]} - przycisk pozwalający na utworzenie nowego pojazdu
+	\item \textbf{[2]} - przycisk pozwalający na wczytanie pojazdu z pliku,
+	\item \textbf{[3]} - przycisk pozwalający na zapis pojazdu do pliku,
+	\item \textbf{[4]} - sekcja umożliwiająca konfigurację różnych parametrów pojazdu,
+	\item \textbf{[5]} - okno z podglądem pojazdu 3D,
+	\item \textbf{[6]} - sekcja umożliwiająca dodanie głównego modelu pojazdu,
+	\item \textbf{[7]}, \textbf{[8]}, \textbf{[9]}, \textbf{[10]} - sekcje umożliwiające dodanie kolejny modeli wszystkich kół pojazdu oraz ich odpowiednie transformacje w celu dopasowania i poprawnego ustawienia względem głównego modelu.
+\end{itemize}
+
+Aby utworzyć nowy pojazd należy kliknąć w przycisk ''Utwórz nowy pojazd'', a następnie wczytać główny model pojazdu oraz ustawić parametry pojazdu. Dodanie modeli poszczególnych kół jest opcjonalne, jednak model główny musi być dodany obowiązkowo.
+
 \section{Planer ruchu}
+
+Zrzut ekranu planera ruchu przedstawiono na poniższym obrazku.
 
 \begin{figure}[h!]
 \centering
@@ -1251,19 +1319,68 @@ Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuac
 \caption[Planer ruchu - zrzut ekranu]{Planer ruchu - zrzut ekranu}
 \end{figure}
 
+Na ekranie tym znajdują się następujące przyciski i sekcje:
+\begin{itemize}
+	\item \textbf{[1]} - przycisk umożliwiający utworzenie nowej symulacji,
+	\item \textbf{[2]} - przycisk umożliwiający wczytanie symulacji z pliku,
+	\item \textbf{[3]} - przycisk umożliwiający zapis symulacji do pliku,
+	\item \textbf{[4]} - sekcja prezentująca informacje o wczytanej mapie,
+	\item \textbf{[5]} - sekcja prezentująca informacje o wczytanym pojeździe,
+	\item \textbf{[6]} - sekcja prezentująca informacje na temat wygenerowanej ścieżki,
+	\item \textbf{[7]} - okno prezentujące mapę oraz inne elementy, których widok może zostać włączony/wyłączony,
+	\item \textbf{[8]} - przycisk umożliwiający dodanie mapy do symulacji,
+	\item \textbf{[9]} - przycisk umożliwiający wybranie pojazdu,
+	\item \textbf{[10]} - przycisk umożliwiający ustawienie położenia początkowego,
+	\item \textbf{[11]} - przycisk umożliwiający ustawienie położenia końcowego,
+	\item \textbf{[12]} - przycisk umożliwiający rozpoczęcie procesu wyznaczania trajektorii dla pojazdu,
+	\item \textbf{[13]} - przycisk umożliwiający włączenie/wyłączenie widoku powiększonych przeszkód na mapie,
+	\item \textbf{[14]} - przycisk umożliwiający włączenie/wyłączenie widoku grafu Voronoi,
+	\item \textbf{[15]} - przycisk umożliwiający włączenie/wyłączenie widoku zmodyfikowanego grafu Voronoi, na którym prowadzone są obliczenia,
+	\item \textbf{[16]} - przycisk umożliwiający włączenie/wyłączenie widoku ścieżki wyznaczonej w grafie (łamanej),
+	\item \textbf{[17]} - przycisk umożliwiający włączenie/wyłączenie widoku wyznaczonych ścieżek parkingowych,
+	\item \textbf{[18]} - przycisk umożliwiający włączenie/wyłączenie widoku finalnej ścieżki.
+\end{itemize}
+
+Aby rozpocząć planowanie ruchu pojazdu należy utworzyć nową symulację oraz dodać do niej mapę i pojazd. Następnie użytkownik musi ustawić położenie początkowe oraz końcowe pojazdu. Po ustawieniu każdego z wymienionych parametrów informacje o nim wyświetlane są w jednej z sekcji znajdujących się po lewej stronie okna. Następnie należy kliknąć na przycisk ''Wyznacz ścieżkę''. Otwarte zostanie następujące okno:
+
+\newpage
+
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=1.0]{instructionFindPath}
 \caption[Okno z parametrami do wyznaczania ścieżki]{Okno z parametrami do wyznaczania ścieżki}
 \end{figure}
 
+W nowo otwartym oknie użytkownik ma możliwość ustawienia procentowej wartości szerokości pojazdu o jaką zostaną powiększone wszystkie przeszkody znajdujące się na mapie. Następnie zachodzi konieczność wyboru algorytmu planowania ruchu oraz w przypadku wybrania algorytmu wpisywania łuków użytkownik musi określić, czy zgadza się tylko na skręty dopuszczalne dla danego pojazdu, czy na dowolne. Kolejnym parametrem jest jakość wykrywania kolizji. Zaleca się pozostawienie jej na poziomie średnim, gdyż zbyt niska wartość tego parametru może spowodować, że zaczną pojawiać się kolizje pojazdu z innymi obiektami na mapie podczas przejazdu wyznaczoną trajektorią, natomiast zbyt wysoka wartość spowoduje znaczące wydłużenie czasu obliczeń. Pozostałe dwa parametry służą do określenia przez użytkownika gęstości siatki sztucznych wierzchołków, które zostaną dodane do konstruowanego grafu.
+
+Po ustawieniu powyższych parametrów należy kliknąć w przycisk ''Znajdź ścieżkę'' i proces planowania ruchu pojazdu się rozpocznie. Podczas trwania obliczeń wszystkie przyciski planera ruchu zostaną zablokowane, jednak użytkownik będzie miał możliwoość przerwania obliczeń w dowolnym momencie. Po zakończeniu obliczeń zostanie wyświetlony komunikat informujący o powodzeniu bądź niepowodzeniu procesu planowania.
+
 \section{Wizualizacja}
+
+Zrzut ekranu przedstawiający moduł wizualizacji przedstawiono na poniższym obrazku.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{instructionVisualisation}
 \caption[Wizualizacja - zrzut ekranu]{Wizualizacja - zrzut ekranu}
 \end{figure}
+
+Ekran modułu wizualizacji zawiera następujące przyciski i sekcje:
+\begin{itemize}
+	\item \textbf{[1]} - przycisk umożliwiający dodanie nowej symulacji,
+	\item \textbf{[2]} - przycisk umożliwiający usunięcie wybranej symulacji,
+	\item \textbf{[3]} - przycisk umożliwiający wyświetlenie szczegółowych informacji na temat wybranej symulacji,
+	\item \textbf{[4]} - lista zawierająca dodane symulacje,
+	\item \textbf{[5]} - spin box umożliwiający ustawienie czasu trwania przejazdu,
+	\item \textbf{[6]} - checkbox umożliwiający włączenie/wyłączenie widoku wyznaczonej ścieżki,
+	\item \textbf{[7]} - przyciski umożliwiające zmianę widoku pomiędzy 2D, a 3D,
+	\item \textbf{[8]} - okno wizualizacji,
+	\item \textbf{[9]} - panel sterowania wizualizacją - umożliwia rozpoczęcie odtwarzania pauzowanie i przewijanie do dowolnego momentu.
+\end{itemize}
+
+W module wizualizacji użytkownik ma możliwość dodania nowej symulacji do wyświetlenia poprzez kliknięcie na przycisk ''Dodaj symulację''. Ma również możliwość usunięcia dodanej już symulacji, bądź wyświetlenia szczegółowych informacji na je temat. Po dodaniu symulacji aktywowana jest możliwość wizualizacji przejazdu pomiędzy położeniem początkowym i końcowym. Wizualizacja może odbywać się zarówno w trybie 2D jak i 3D. Ponadto użytkownik ma możliwość ustawienia czasu trwania przejazdu oraz włączenia/wyłączenia widoku wyznaczonej trajektorii.
+
+Po wybraniu jednej z dodanych symulacji i kliknięciu na przycisk ''Informacje o symulacji'' wyświetlone zostanie okno przedstawione na poniższym zrzucie ekranu. Zawiera ono wszystkie podstawowe informacje na temat wybranej przez użytkownika symulacji, takie jak np. ilość elementów wchodzących w skład ścieżki, czy długość wyznaczonej trajektorii.
 
 \begin{figure}[h!]
 \centering
@@ -1273,6 +1390,10 @@ Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuac
 
 \section{Ustawienia}
 
+Zakładka ''Ustawienia'' umożliwia zmianę podstawowych ustawień aplikacji. Możliwa jest zmiana języka, poprzez wybranie interesującego języka z rozwijanej listy. Możliwa jest również zmiana wyglądu wielu elementów wyświetlanych na mapie. Zmiany szerokości tych elementów użytkownik dokonuje za pomocą odpowiedniego spinboxa, odpowiadającego danemu elementowi. Aby dokonać zmiany koloru danego elementu należy kliknąć w kolor przy elemencie który chcemy zmienić. Zostanie wyświetlone okienko dialogowe, które umożliwi wybór nowego koloru. Po zatwierdzeniu wyboru kolor zostanie zmieniony. Aby jednak jakiekolwiek zmiany weszły w życie przed opuszczeniem zakładki ''Ustawienia'' użytkownik musi zapisać zmiany których dokonał, poprzez kliknięcie w przycisk ''Zapisz zmiany''. 
+
+Zrzut ekranu prezentujący widok zakładki 
+
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{instructionSettings}
@@ -1281,144 +1402,11 @@ Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuac
 
 \chapter{Zakończenie}
 
-%TODO
+Opracowanie planera ruchu pojazdu wraz z systemem automatycznego parkowania pozwoliło na praktyczne wykorzystanie wiadomości zdobytych na studiach drugiego stopnia, specjalność ''\textit{Projektowanie systemów CAD/CAM}''. Aplikacja została przygotowana w taki sposób, aby możliwie jak najbardziej odwzorowywać sytuacje, które występują w rzeczywistym świecie. 
 
-\chapter{Rozdział pokazowy}
+Tym co odróżnia jednak zaprojektowany system od rzeczywistych autopilotów i modułów parkowania parkowania jest fakt, iż w opracowanej aplikacji wszystkie dane są dostępne od początku jego działania, tzn. planer ma wiedzę na temat wszystkich miejsc parkingowych, a asystent parkowania zna wszelkie parametry miejsca, w którym pojazd chce zaparkować. W rzeczywistym świecie informacje te nie są dostępne od początku i pojazd gromadzi je na bieżąco podczas ruchu, za pomocą wielu różnych czujników umieszczonych z każdej strony pojazdu. Ponadto otoczenie pojazdu w zaimplementowanej aplikacji jest statyczne - żadne obiekty na mapie poza pojazdem nie mogą się poruszać. W rzeczywistości taka idealna sytuacje nie występuje nigdy i wszystkie systemy muszą na bieżąco adaptować się do zmieniającego się otoczenia.
 
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua.
-
-At vero eos et accusam et justo duo dolores et ea rebum.
-
-
-\section{Przykładowa sekcja/podrozdział}
-
-\begin{definition}[Definicja]
-\textit{Definicją} nazywamy wypowiedź o określonej budowie, w której informuje się o znaczeniu pewnego wyrażenia przez wskazanie innego wyrażenia należącego do danego języka i posiadającego to samo znaczenie.
-\end{definition}
-
-\subsection{Podsekcja}
-
-Poniżej podsekcji nie schodzimy.
-
-\begin{definition}[Definicja]
-\textit{Równaniem} nazywamy formę zdaniową postaci $t_1 = t_2$, gdzie $t_1, t_2$ są termami przynajmniej jeden z nich zawiera pewną zmienną.
-\end{definition}
-
-\begin{example}
-Przykładem równania jest
-\begin{equation}
-2+2=4.
-\end{equation}
-Jeśli nie chcemy numerka, piszemy
-\begin{equation*}
-2+2=4.
-\end{equation*}
-Równanie (\ref{rownanie}) jest fałszywe. Referencje (i kilka innych rzeczy) działają po dwukrotnym przekompilowaniu tex-a.
-\begin{equation}\label{rownanie}
-\int \limits_{0}^{1} x \; dx = \frac{3}{2}.
-\end{equation}
-
-\end{example}
-
-Twierdzenie \ref{Pitagoras} jest bardzo ciekawe.
-
-\begin{theorem}[Twierdzenie Pitagorasa]\label{Pitagoras}
-Niech będzie dany trójkąt prostokątny o przyprostokątnych długośći $a$ i $b$ oraz przeciwprostokątnej długości $c$. Wtedy
-$$
-a^2 + b^2 = c^2.
-$$
-\end{theorem}
-
-\begin{proof}
-Dowód został zaprezentowany w \cite{Ktos} oraz \cite{Innyktos}. Czyli w sumie mogę napisać, że w \cite{Ktos, Innyktos}. Albo że łatwo widać.
-\end{proof}
-
-\begin{corollary}
-Doszedłem do jakiegoś wniosku i daję temu wyraz.
-\end{corollary}
-
-
-
-
-\begin{remark}
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum.
-\end{remark}
-
-\begin{lemma}[Lemacik]
-Ten lemat jest nie na temat.
-\end{lemma}
-\begin{proof} Dowód przez indukcję.
-\end{proof}
-
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-
-
-\section{Tabele i rysunki}
-
- Opcjonalny argument środowisk table i figure\\
-h 	- 	bez przemieszczenia, dokładnie w miejscu użycia (uzyteczne w odniesieniu do niewielkich wstawek); \\
-t 	- 	na górze strony;\\
-b 	- 	na dole strony;\\
-p 	- 	na stronie zawierającej wyłącznie wstawki;\\
-! 	- 	ignorując większość parametrów kontrolujacych umieszczanie wstawek, przekroczenie wartosci, których może nie pozwolić na umieszczanie nastepnych wstawek na stronie.
-
-\begin{figure}[h!]
-\begin{center}
-\setlength{\unitlength}{1mm}
-\begin{picture}(40, 30)
-\put(20,1){\line(0,1){20}} % linia
-
-% dół
-\put(20,1){\circle*{2}}
-\put(25,1){0}
-
-% góra
-\put(20,21){\circle*{2}}
-\put(25,21){1}
-\end{picture}
-\end{center}
-\caption{Obrazek zrobiony w LaTeXu}
-\end{figure}
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{rl|c}
-bla & blabla & blablabla\\
-\hline
-bla & blabal & blablabla \\
-ble & bleble & blebleble
-\end{tabular}
-\caption[Opis skrócony]{Pełny opis znajdujący się pod tabelą}
-\end{table}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[scale=0.5]{politechnika}
-\caption[Logo MiNI]{Jakiś obrazek}
-\end{figure}
-
-
-
-\begin{definition}
-Niech $A\neq \emptyset$, $n \in \mathbb{N}$. Każde przekształcenie $f:A^n \rightarrow A$ nazywamy \textit{$n$-arną operacją} lub \textit{działaniem} określonym na $A$.
-0-arne operacje to wyróżnione stałe.
-\end{definition}
-
-
-\begin{definition}[Algebra]
-Parę uporządkowaną $(A,F)$, gdzie $A\neq \emptyset$ jest zbiorem, a $F$ jest rodziną operacji określonych na $A$, nazywamy \textit{algebrą} (lub \textit{$F$-algebrą}). Zbiór $A$ nazywa się \textit{zbiorem elementów}, \textit{nośnikiem} lub \textit{uniwersum} algebry $(A,F)$, a $F$ \textit{zbiorem operacji elementarnych}.
-\end{definition}
-
-\begin{proposition}
-Stwierdzam więc ostatnio, że doszedłszy do granicy, pozostaje mi tylko przy tej granicy biwakować albo zawrócić, możliwie też szukać przejścia czy wyjścia na nowe obszary.
-\end{proposition}
-
-
+Niemniej jednak opracowana aplikacja z powodzeniem wykorzystuje niektóre pomysły, które używane są również w komercyjnych rozwiązaniach, a jej działanie pozwala przynajmniej w przybliżony sposób zobaczyć w jak działają rzeczywiste systemy planowania ruchu i modułu automatycznego parkowania.
 
 % -------------------- 6. Bibliografia -----------------------
 % Bibliografia leksykograficznie wg nazwisk autorów
@@ -1452,25 +1440,26 @@ $\widetilde{}$ & tylda
 
 
 % ------------ 9. Spis tabel - jak wyżej ------------------
-\renewcommand{\listtablename}{Spis tabel}
-\listoftables
-\thispagestyle{empty}
+%\renewcommand{\listtablename}{Spis tabel}
+%\listoftables
+%\thispagestyle{empty}
 
 
 
 % 10. Spis załączników - jak nie ma załączników, to zakomentować lub usunąć
 
-\chapter*{Spis załączników}
-\begin{enumerate}[itemsep = 0pt]
-\item Załącznik 1
-\item Załącznik 2
-\end{enumerate}
-\thispagestyle{empty}
+%\chapter*{Spis załączników}
+%\begin{enumerate}[itemsep = 0pt]
+%\item Załącznik 1
+%\item Załącznik 2
+%\end{enumerate}
+%\thispagestyle{empty}
 
 % --------------------- 11. Załączniki ---------------------
 % to jest po to, żeby było wiadomo, że załączniki znajdują się na końcu pracy
 
-\newpage
-\pagestyle{empty} 
-Załącznik 1, załącznik 2
+%\newpage
+%\pagestyle{empty} 
+%Załącznik 1, załącznik 2
+
 \end{document}
