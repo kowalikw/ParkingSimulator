@@ -41,6 +41,8 @@ public:
 	double GetCollisionDetectionDensity();
 	PathPlanningAlgorithm GetPathPlanningAlgorithm();
 	bool GetUseAdmissibleArcsOnly();
+	int GetExtraVerticesAlong();
+	int GetExtraVerticesAcross();
 	float GetSimulationTime();
 	float GetCurrentSimulationTime();
 
@@ -64,6 +66,8 @@ public:
 	void SetCollisionDetectionDensity(double collisionDetectionDensity);
 	void SetPathPlanningAlgorithm(PathPlanningAlgorithm algorithm);
 	void SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly);
+	void SetExtraVerticesAlong(int extraVerticesAlong);
+	void SetExtraVerticesAcross(int extraVerticesAcross);
 	void SetSimulationTime(float simulationTime);
 	void SetCurrentSimulationTime(float currentSimulationPath);
 	
@@ -115,6 +119,8 @@ public:
 		ar & collisionDetectionDensity;
 		ar & pathPlanningAlgorithm;
 		ar & useAdmissibleArcsOnly;
+		ar & extraVerticesAlong;
+		ar & extraVerticesAcross;
 	}
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
@@ -216,6 +222,8 @@ public:
 		ar & collisionDetectionDensity;
 		ar & pathPlanningAlgorithm;
 		ar & useAdmissibleArcsOnly;
+		ar & extraVerticesAlong;
+		ar & extraVerticesAcross;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:
@@ -244,6 +252,8 @@ private:
 	double collisionDetectionDensity;
 	PathPlanningAlgorithm pathPlanningAlgorithm;
 	bool useAdmissibleArcsOnly;
+	int extraVerticesAlong;
+	int extraVerticesAcross;
 
 	float simulationTime;
 	float currentSimulationTime;

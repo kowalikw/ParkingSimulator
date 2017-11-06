@@ -230,7 +230,7 @@ W pierwszym rozdziale przedstawione zostały cele pracy oraz dostępne publikacj
 
 W kolejnym rozdziale zostały przedstawione technologie, które zostały wykorzystane przy implementacji. Cała aplikacja została napisana w języku C++, a jej graficzny interfejs użytkownika powstał przy użyciu zestawu bibliotek Qt. Ponadto wykorzystane zostały takie biblioteki jak Boost, NanoVG, czy OpenGL, między innymi do serializacji obiektów oraz przygotowania wizualizacji 3D.
 
-Rozdziały czwarty i piąty szczegółowo opisują zasadę działania zaprojektowanych algorytmów planowania ruchu oraz automatycznego parkowania. Całość została przedstawiona w taki sposób, aby osoba czytająca niniejszą pracę była w stanie odtworzyć zaimplementowane w systemie algorytmy. 
+Rozdziały czwarty i piąty szczegółowo opisują zasadę działania zaprojektowanych algorytmów planowania ruchu oraz automatycznego parkowania. Ponadto rozdziały te zawierają również testy zaprojektowanych algorytmów oraz przedstawiają w jakim kierunku powinny zmierzać dalsze prace nad algorytmami.
 
 Ostatni rozdział zawiera krótkie podsumowanie całej pracy.\\ 
 
@@ -246,9 +246,15 @@ Ostatni rozdział zawiera krótkie podsumowanie całej pracy.\\
 \title
 \end{center}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+This thesis describes the process of creating application that allows to path planning for vehicle equipped with automatic parking system.  The application has been divided into four  basics modules: map editor, vehicle editor, path planner, visualization. In addition, it is possible to change many system settings such as the appearance of the elements drawing on map or the language of the application. The program works properly on Windows operating systems family, starting from Windows 7.
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumyeirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diamvoluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.\\
+The first chapter presents the objectives of this thesis and the available publications which were used during the writing of this diploma thesis. The second chapter describes in detail all functional requirements for each module and nonfunctional requirements for the whole system. The main functionality of the map and vehicle editor is to enable the user to create new map or vehicle and save them to the result file. Path planner allows to find the path for the vehicle taking into account various parameters set by user. Visualisation module allows to load simulation from the file and then play vehicle motion between start and end position. The last module contains application settings.
+
+The next chapter presents technologies used for creating the application. The program was written in C++ programming language, but to create graphic user interface Qt library was used. Moreover the applications uses such libraries like Boost, NanoVG or Open GL for example to serialize objects or to render 3D visualization.
+
+The fourth and fifth chapters describes in detail path planning and parking algorithms. These chapters contains also tests of the designed algorithms and their advantages and disadvantages.
+
+The last chapter contains short resume of the whole diploma thesis.\\
 
 \noindent \textbf{Keywords:} vehicle, path, trajectory, planner, autopilot, assistant, module, automatic, parking, graph, Voronoi, visibility
 \end{abstract}}
@@ -1424,14 +1430,14 @@ Niemniej jednak opracowana aplikacja z powodzeniem wykorzystuje niektóre pomys�
 
 
 % --- 7. Wykaz symboli i skrótów - jeśli nie ma, zakomentować
-\chapter*{Wykaz symboli i skrótów}
+%\chapter*{Wykaz symboli i skrótów}
 
-\begin{tabular}{cl}
-nzw. & nadzwyczajny \\
-* & operator gwiazdka \\
-$\widetilde{}$ & tylda
-\end{tabular}
-\thispagestyle{empty}
+%\begin{tabular}{cl}
+%nzw. & nadzwyczajny \\
+%* & operator gwiazdka \\
+%$\widetilde{}$ & tylda
+%\end{tabular}
+%\thispagestyle{empty}
 
 
 % ----- 8. Spis rysunków - jeśli nie ma, zakomentować --------

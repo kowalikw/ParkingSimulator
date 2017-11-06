@@ -52,8 +52,6 @@ std::vector<glm::vec2> PathPlanner::UserPoints()
 
 Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * end)
 {
-	Path *path;
-
 	Path *pStart = createParkingPath(*vehicle, *start, Entry);
 	Path *pEnd = createParkingPath(*vehicle, *end, Exit);
 
@@ -73,7 +71,9 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * en
 	if(end->GetType() == ParkingSpaceType::Perpendicular)
 		pEnd->RemoveElement(endLine);
 
-	path = CreateAdmissiblePath(startLine, endLine);
+	Path *path = CreateAdmissiblePath(startLine, endLine);
+	if (path == nullptr)
+		return nullptr;
 
 	std::vector<Path*> pathParts;
 	pathParts.push_back(pStart);
@@ -102,6 +102,8 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 		pStart->RemoveElement(pStart->GetLastElement());
 
 	Path *path = CreateAdmissiblePath(startLine, endLine);
+	if (path == nullptr)
+		return nullptr;
 
 	std::vector<Path*> pathParts;
 	pathParts.push_back(pStart);
@@ -134,6 +136,8 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 		pEnd->RemoveElement(pEnd->GetFirstElement());
 
 	Path *path = CreateAdmissiblePath(startLine, endLine);
+	if (path == nullptr)
+		return nullptr;
 
 	std::vector<Path*> pathParts;
 	pathParts.push_back(path);
@@ -165,7 +169,10 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 	int indexStart, indexEnd;
 
 	voronoiGraph = new Graph(true);
-	voronoiGraph->CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd, true, graphExtraVerticesAlong, graphExtraVerticesAcross);
+	voronoiGraph->CreateVoronoiGraph(map);
+
+	fullVoronoiVisibilityGraph = new Graph(true);
+	fullVoronoiVisibilityGraph->CreateVoronoiVisibilityFullGraph(expandedMap, startLine, endLine, &indexStart, &indexEnd, true, graphExtraVerticesAlong, graphExtraVerticesAcross);
 
 	//œcie¿ka bezpoœrednia
 
@@ -182,7 +189,7 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 	if (collisionEdge != nullptr || polylinePath == nullptr)
 	{
-		polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+		polylinePath = fullVoronoiVisibilityGraph->FindPath(indexStart, indexEnd);
 
 		int element1, element2;
 		while (!checkPolylinePathCorectness(polylinePath, &element1, &element2) && polylinePath->GetElements().size() > 1)
@@ -193,9 +200,9 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 			else
 				line = dynamic_cast<Line*>(polylinePath->GetAt(element1));
 
-			voronoiGraph->RemoveEdge(line->GetV1(), line->GetV2());
+			fullVoronoiVisibilityGraph->RemoveEdge(line->GetV1(), line->GetV2());
 
-			polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+			polylinePath = fullVoronoiVisibilityGraph->FindPath(indexStart, indexEnd);
 		}
 
 		finalPath = CreateAdmissiblePath(polylinePath);
@@ -218,13 +225,13 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 			OutputDebugStringA(s.c_str());*/
 
-			voronoiGraph->RemoveEdge(collisionEdge);
+			fullVoronoiVisibilityGraph->RemoveEdge(collisionEdge);
 
 			delete polylinePath;
 			delete finalPath;
 			delete collisionEdge;
 
-			polylinePath = voronoiGraph->FindPath(indexStart, indexEnd);
+			polylinePath = fullVoronoiVisibilityGraph->FindPath(indexStart, indexEnd);
 			finalPath = CreateAdmissiblePath(polylinePath);
 
 			if (finalPath == nullptr || finalPath->GetElements().size() == 0)
@@ -466,7 +473,7 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 				if (line->GetV2() == end || line->GetV1() == end)
 					line = dynamic_cast<Line*>(polylinePath->GetPrevElement(line));
 
-				return voronoiGraph->GetEdge(line->GetV1(), line->GetV2()); //TODO: Sprawdzic czy to dzia³a
+				return fullVoronoiVisibilityGraph->GetEdge(line->GetV1(), line->GetV2()); //TODO: Sprawdzic czy to dzia³a
 			}
 			return new GraphEdge();
 		}
@@ -492,7 +499,7 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 					if (line->GetV2() == end)
 						line = dynamic_cast<Line*>(polylinePath->GetPrevElement(line));
 
-					return voronoiGraph->GetEdge(line->GetV1(), line->GetV2());
+					return fullVoronoiVisibilityGraph->GetEdge(line->GetV1(), line->GetV2());
 				}
 				return new GraphEdge();
 			}

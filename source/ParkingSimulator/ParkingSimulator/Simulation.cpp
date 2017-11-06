@@ -140,6 +140,16 @@ bool Simulation::GetUseAdmissibleArcsOnly()
 	return this->useAdmissibleArcsOnly;
 }
 
+int Simulation::GetExtraVerticesAlong()
+{
+	return this->extraVerticesAlong;
+}
+
+int Simulation::GetExtraVerticesAcross()
+{
+	return this->extraVerticesAcross;
+}
+
 float Simulation::GetSimulationTime()
 {
 	return this->simulationTime;
@@ -248,6 +258,16 @@ void Simulation::SetPathPlanningAlgorithm(PathPlanningAlgorithm pathPlanningAlgo
 void Simulation::SetUseAdmissibleArcsOnly(bool useAdmissibleArcsOnly)
 {
 	this->useAdmissibleArcsOnly = useAdmissibleArcsOnly;
+}
+
+void Simulation::SetExtraVerticesAlong(int extraVerticesAlong)
+{
+	this->extraVerticesAlong = extraVerticesAlong;
+}
+
+void Simulation::SetExtraVerticesAcross(int extraVerticesAcross)
+{
+	this->extraVerticesAcross = extraVerticesAcross;
 }
 
 void Simulation::SetSimulationTime(float simulationTime)

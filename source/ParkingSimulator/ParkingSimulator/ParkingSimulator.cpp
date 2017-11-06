@@ -581,8 +581,8 @@ void ParkingSimulator::updateTimerCall()
 			Line *line = dynamic_cast<Line*>(pathElement);
 
 			ui.pathElementType->setText(QString("Line"));
-			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(pathElement->GetFirstPoint().x).arg(pathElement->GetFirstPoint().y));
-			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(pathElement->GetLastPoint().x).arg(pathElement->GetLastPoint().y));
+			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().x)).arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().y)));
+			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().x)).arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().y)));
 		}
 		else if (dynamic_cast<Circle*>(pathElement) != NULL)
 		{
@@ -597,10 +597,10 @@ void ParkingSimulator::updateTimerCall()
 			BSpline *bSpline = dynamic_cast<BSpline*>(pathElement);
 
 			ui.pathElementType->setText(QString("B-Spline"));
-			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(pathElement->GetFirstPoint().x).arg(pathElement->GetFirstPoint().y));
-			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(pathElement->GetLastPoint().x).arg(pathElement->GetLastPoint().y));
+			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().x)).arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().y)));
+			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().x)).arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().y)));
 		}
-		ui.pathElementLength->setText(QString("%1 m").arg(pathElement->GetLength()));
+		ui.pathElementLength->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLength())));
 		ui.pathElementProperties->show();
 
 		pathPlanner.SetPathElementPropertiesChanged(false);
@@ -1015,8 +1015,8 @@ void ParkingSimulator::mapElementSaveProperties()
 	double oldRotation = selectedElement->GetRotation();
 
 	selectedElement->SetName(ui.mapElementName->toPlainText().toStdString());
-	selectedElement->SetSize(glm::vec2(ui.mapElementWidth->value(), ui.mapElementHeight->value()));
-	selectedElement->SetPosition(glm::vec2(ui.mapElementPositionX->value(), ui.mapElementPositionY->value()));
+	selectedElement->SetSize(glm::vec2(CommonHelper::ConverMetersToPixeks(ui.mapElementWidth->value()), CommonHelper::ConverMetersToPixeks(ui.mapElementHeight->value())));
+	selectedElement->SetPosition(glm::vec2(CommonHelper::ConverMetersToPixeks(ui.mapElementPositionX->value()), CommonHelper::ConverMetersToPixeks(ui.mapElementPositionY->value())));
 	selectedElement->SetRotation(glm::radians(ui.mapElementRotation->value()));
 
 	if (!mapEditor.IsMapElementAdmissible(selectedElement))
@@ -1621,7 +1621,7 @@ void ParkingSimulator::showParkingPath()
 {
 	if (pathPlanner.GetShowParkingPath())
 	{
-		pathPlanner.SetShowFinalPath(false);
+		pathPlanner.SetShowParkingPath(false);
 		ui.btnShowParkingPath->setStyleSheet("");
 	}
 	else

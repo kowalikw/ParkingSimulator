@@ -36,6 +36,8 @@ SimulationInfo::SimulationInfo(Simulation *simulation, QWidget *parent)
 	ui.pathPlanningAlgorithmLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_PathPlanningAlgorithm"]));
 	ui.useAdmissibleArcsOnlyLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_UseAdmissibleArcsOnly"]));
 	ui.collisionDetectionQualityLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_CollisionDetectionQuality"]));
+	ui.extraVerticesAlongLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_ExtraVerticesAlong"]));
+	ui.extraVerticesAcrossLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_ExtraVerticesAcross"]));
 	ui.btnClose->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Close"]));
 
 	ui.simulationName->setText(QString::fromStdString(simulation->GetName()));
@@ -46,6 +48,8 @@ SimulationInfo::SimulationInfo(Simulation *simulation, QWidget *parent)
 	ui.simulationPathPlanningAlgorithm->setText(pathPlanningAlgorithm);
 	ui.simulationUseAdmissibleArcsOnly->setText(simulation->GetUseAdmissibleArcsOnly() ? "True" : "False");
 	ui.simulationCollisionDetectionQuality->setText(collisionDetectionQuality);
+	ui.simulationExtraVerticesAlong->setText(QString("%1").arg(simulation->GetExtraVerticesAlong()));
+	ui.simulationExtraVerticesAcross->setText(QString("%1").arg(simulation->GetExtraVerticesAcross()));
 }
 
 SimulationInfo::~SimulationInfo()
