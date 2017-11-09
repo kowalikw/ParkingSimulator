@@ -942,7 +942,7 @@ Wyznaczanie trajektorii opartej na wpisywanych łukach
 \end{verbatim}
 \end{pseudokod}
 
-Przykładowa ścieżka wygenerowana z łamanej z poprzedniego rozdziału przy zastosowaniu algorytmu wpisywania łuków została przedstawiona na rysunku x.x.
+Przykładowa ścieżka wygenerowana z łamanej z poprzedniego rozdziału przy zastosowaniu algorytmu wpisywania łuków została przedstawiona na rysunku 5.11.
 
 \begin{figure}[h!]
 \centering
@@ -1019,7 +1019,7 @@ Pierwszym, podstawowym testem algorytmu planowania ruchu jest sprawdzenie jaka t
 \caption[Trajektoria ruchu w przód]{Trajektoria ruchu w przód}
 \end{figure}
 
-Kolejnym testem było sprawdzenie, jakie trajektorie wygenerują oba typy algorytmu dla przejazdu pojazdu na miejsce obok pierwotnego miejsca postoju zarówno ze zmianą jak i bez zmiany orientacji. Ścieżki otrzymane dla algorytmu wykorzystującego krzywe B-sklejane przedstawione zostały na obrazku x.x, zaś ścieżki wygenerowane metodą wpisywanych łuków na obrazku x.x.
+Kolejnym testem było sprawdzenie, jakie trajektorie wygenerują oba typy algorytmu dla przejazdu pojazdu na miejsce obok pierwotnego miejsca postoju zarówno ze zmianą jak i bez zmiany orientacji. Ścieżki otrzymane dla algorytmu wykorzystującego krzywe B-sklejane przedstawione zostały na obrazku 5.13, zaś ścieżki wygenerowane metodą wpisywanych łuków na obrazku 5.14.
 
 \begin{figure}[h!]
 \centering
@@ -1035,7 +1035,7 @@ Kolejnym testem było sprawdzenie, jakie trajektorie wygenerują oba typy algory
 
 Na pierwszy rzut oka ścieżki wygenerowane przy pomocy krzywej B-sklejanej wyglądają bardziej elegancko, jednak po uważnym spojrzeniu na pierwszą trajektorię przemieszczenia pojazdu bez zmiany jego orientacji nietrudno zauważyć, że zakręty na początku i na końcu ścieżki są zbyt ostre i w praktyce nieosiągalne dla prawdziwego samochodu. Jeśli jednak zaniedbamy chwilowo osiągalność poszczególnych skrętów, to ścieżki te są jak najbardziej poprawne i w dodatku są one zgodne z oczekiwaniami.
 
-Ścieżki, które zostały przedstawione na drugim obrazku nie wyglądają z pozoru już tak dobrze, w szczególności pierwsza z nich, która swoim kształtem może wydawać się dość zaskakująca. Jak się jednak okazuje ścieżka ta jest w pełni poprawna, a pojazd o maksymalnym skręcie kół około 45 stopni jest w stanie ją pokonać w rzeczywistości. Ścieżka ta ukazuje jednak problem jaki będzie się pojawiał podczas korzystania z algorytmu wpisywanych łuków, a dotyczy on sytuacji, w których krawędzie pomiędzy które wpisany ma zostać łuk są zbyt krótkie. W takiej sytuacji krawędź taka jest sztucznie wydłużana, co powoduje, że pomiędzy kolejnymi łukami mogą pojawiać się odcinki, po których pojazd będzie zmuszony przejechać do tyłu, aby z końca jednego łuku dostać się na początek następnego. Opisana sytuacja została w pełni zobrazowana na rysunku x.x.
+Ścieżki, które zostały przedstawione na drugim obrazku nie wyglądają z pozoru już tak dobrze, w szczególności pierwsza z nich, która swoim kształtem może wydawać się dość zaskakująca. Jak się jednak okazuje ścieżka ta jest w pełni poprawna, a pojazd o maksymalnym skręcie kół około 45 stopni jest w stanie ją pokonać w rzeczywistości. Ścieżka ta ukazuje jednak problem jaki będzie się pojawiał podczas korzystania z algorytmu wpisywanych łuków, a dotyczy on sytuacji, w których krawędzie pomiędzy które wpisany ma zostać łuk są zbyt krótkie. W takiej sytuacji krawędź taka jest sztucznie wydłużana, co powoduje, że pomiędzy kolejnymi łukami mogą pojawiać się odcinki, po których pojazd będzie zmuszony przejechać do tyłu, aby z końca jednego łuku dostać się na początek następnego. Opisana sytuacja została w pełni zobrazowana na rysunku 5.15.
 
 \begin{figure}[h!]
 \centering
@@ -1045,7 +1045,7 @@ Na pierwszy rzut oka ścieżki wygenerowane przy pomocy krzywej B-sklejanej wygl
 
 W przykładzie tym mamy do czynienia z klasycznym problemem, jaki występuje w metodzie wpisanych łuków. Widać, że w zaznaczonym obszarze łuki powinny się były spotkać swoimi końcami, jednak było tam zbyt ciasno, przez co krawędzie musiały zostać przedłużone i doszło do sytuacji, że pojazd aby przedostać się z jednego łuku na drugi musi wykonać ruch do tyłu. Mimo iż ścieżka ta wydaje się bardzo nieelegancka i w praktyce pewnie nigdy pojazd nie powinien się tak zachowywać, to jednak wciąż jest to poprawna ścieżka, która pozwala na bezkolizyjny ruch pojazdu pomiędzy zadanymi położeniami, a na dodatek wszystkie zakręty, które pojazd wykonuje podczas ruchu są dla niego osiągalne w rzeczywistości, przy zadanym maksymalnym skręcie kół.
 
-Poza dość prostymi testami jak te zaprezentowane powyżej zostały przeprowadzone również testy na dużo bardziej skomplikowanych mapach. W większości przypadków zakończyły się one pomyślnie i została wygenerowana mniej lub bardziej sensowna z punktu widzenia zwykłego człowieka trajektoria dla pojazdu. Zdarzały się jednak przypadki, iż ścieżka nie była wyznaczana i konieczne było dodanie określonej liczby sztucznych wierzchołków w sytuacji, w której na pierwszy rzut oka taka ścieżka powinna zostać wyznaczona bez większych problemów. Takie zachowanie algorytmu wynika z faktu, iż cały proces wyznaczania ścieżki jest determinowany poprzez położenie wierzchołków grafu i przy niefortunnym ułożeniu przeszkód wierzchołki mogą zostać tak rozmieszczone, że niemożliwa jest konstrukcja ścieżki bezkolizyjnej opartej na dowolnej łamanej złożonej z krawędzi takiego grafu. Dodanie sztucznych wierzchołków na ogół eliminowało takie problemy, ale w zamian za to czas obliczeń znacząco wzrastał. Na ostatnim już obrazku w tym podrozdziale została przedstawiona ścieżka dla dość skomplikowanej mapy.
+Poza dość prostymi testami jak te zaprezentowane powyżej zostały przeprowadzone również testy na dużo bardziej skomplikowanych mapach. W większości przypadków zakończyły się one pomyślnie i została wygenerowana mniej lub bardziej sensowna z punktu widzenia zwykłego człowieka trajektoria dla pojazdu. Zdarzały się jednak przypadki, iż ścieżka nie była wyznaczana i konieczne było dodanie określonej liczby sztucznych wierzchołków w sytuacji, w której na pierwszy rzut oka taka ścieżka powinna zostać wyznaczona bez większych problemów. Takie zachowanie algorytmu wynika z faktu, iż cały proces wyznaczania ścieżki jest determinowany poprzez położenie wierzchołków grafu i przy niefortunnym ułożeniu przeszkód wierzchołki mogą zostać tak rozmieszczone, że niemożliwa jest konstrukcja ścieżki bezkolizyjnej opartej na dowolnej łamanej złożonej z krawędzi takiego grafu. Dodanie sztucznych wierzchołków na ogół eliminowało takie problemy, ale w zamian za to czas obliczeń znacząco wzrastał. Na ostatnim już obrazku w tym podrozdziale została przedstawiona ścieżka dla dość skomplikowanej mapy - rysunek 5.16.
 
 \newpage
 
@@ -1421,10 +1421,10 @@ Niemniej jednak opracowana aplikacja z powodzeniem wykorzystuje niektóre pomys�
 % \bibitem[numerek]{referencja} Autor, \emph{Tytuł}, Wydawnictwo, rok, strony
 % cytowanie: \cite{referencja1, referencja 2,...}
 
-\bibitem[1]{Ktos} A. Aaaaa, \emph{Tytuł}, Wydawnictwo, rok, strona-strona.
-\bibitem[2]{Innyktos} J. Bobkowski, S. Dobkowski, \emph{Blebleble}, Magazyn nr, rok, strony.
-\bibitem[3]{B} C. Brink, \emph{Power structures}, Algebra Universalis 30(2), 1993, 177-216.
-\bibitem[4]{H} F. Burris, H. P. Sankappanavar, \emph{A Course of Universal Algebra}, Springer-Verlag, New York, 1981.
+\bibitem[1]{Ktos} Sungwoo CHOI, Clément Boussard, Brigitte d’Andréa-Novel, \emph{Easy Path Planning and Robust Control for Automatic Parallel Parking}, 2011.
+\bibitem[2]{Innyktos}  Jian-Min Wang, Sen-Tung Wu, Chao-Wei Ke, Bo-Kai Tzeng, \emph{Parking Path Programming Strategy for Automatic Parking System}, 2013.
+\bibitem[3]{B} prof. dr hab. inż Krzysztof Marciniak, \emph{Wykłady z Programowania Urządzeń Sterowanych Numerycznie oraz Modelowania Geometrycznego}, Politechnika Warszawska, Wydział Matematyki i Nauk Informacyjnych, 2017.
+\bibitem[4]{H} \emph{Ackermann Steering Geometry}, $https://en.wikipedia.org/wiki/AckermannSteeringGeometry$
 \end{thebibliography}
 \thispagestyle{empty}
 

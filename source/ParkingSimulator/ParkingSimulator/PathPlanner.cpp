@@ -718,6 +718,16 @@ Simulation * PathPlanner::GetSimulation()
 {
 	simulation = new Simulation(map, vehicle, finalPath);
 
+	simulation->SetPolylinePath(polylinePath);
+	simulation->SetParkingPathStart(parkingPathStart);
+	simulation->SetParkingPathEnd(parkingPathEnd);
+	simulation->SetExpandSize(expandSizePercent);
+	simulation->SetCollisionDetectionDensity(collisionDetectionDensity);
+	simulation->SetPathPlanningAlgorithm(pathPlanningAlgorithm);
+	simulation->SetUseAdmissibleArcsOnly(useAdmissibleArcsOnly);
+	simulation->SetExtraVerticesAlong(graphExtraVerticesAlong);
+	simulation->SetExtraVerticesAcross(graphExtraVerticesAcross);
+
 	return this->simulation;
 }
 

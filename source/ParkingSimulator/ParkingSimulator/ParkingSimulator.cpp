@@ -66,8 +66,6 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	updateTimer->setInterval(20);
 	updateTimer->start();
 
-	
-
 	connect(ui.btnGoToMapEditor, SIGNAL(released()), this, SLOT(goToMapEditor()));
 	connect(ui.btnGoToVehicleEditor, SIGNAL(released()), this, SLOT(goToVehicleEditor()));
 	connect(ui.btnGoToPathPlanner, SIGNAL(released()), this, SLOT(goToPathPlanner()));
