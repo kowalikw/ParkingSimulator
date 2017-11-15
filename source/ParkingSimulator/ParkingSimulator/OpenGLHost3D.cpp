@@ -230,7 +230,7 @@ void OpenGLHost3D::initializeGL()
 	camera = new Camera(glm::vec3(0.0f, 500.0f, 0.0));
 
 	// Light attributes
-	lightPos = glm::vec3(0.0f, 5.0f, 0.0f);
+	lightPos = glm::vec3(0.0f, 1000.0f, 0.0);
 }
 
 void OpenGLHost3D::resizeGL(int w, int h)
@@ -318,7 +318,7 @@ void OpenGLHost3D::paintGL()
 	// Use cooresponding shader when setting uniforms/drawing objects
 	GLint lightPosLoc = glGetUniformLocation(textureInstancedShader->Program, "light.position");
 	GLint viewPosLoc = glGetUniformLocation(textureInstancedShader->Program, "viewPos");
-	glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+	glUniform3f(lightPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
 	glUniform3f(viewPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
 
 	GLint matAmbientLoc = glGetUniformLocation(textureInstancedShader->Program, "material.ambient");
@@ -326,18 +326,18 @@ void OpenGLHost3D::paintGL()
 	GLint matSpecularLoc = glGetUniformLocation(textureInstancedShader->Program, "material.specular");
 	GLint matShineLoc = glGetUniformLocation(textureInstancedShader->Program, "material.shininess");
 
-	glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
-	glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
-	glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
-	glUniform1f(matShineLoc, 32.0f);
+	glUniform3f(matAmbientLoc, 0.5f, 0.5f, 0.5f);
+	glUniform3f(matDiffuseLoc, 1.0f, 1.0f, 1.0f);
+	glUniform3f(matSpecularLoc, 0.6f, 0.6f, 0.6f);
+	glUniform1f(matShineLoc, 2.0f);
 
 	GLint lightAmbientLoc = glGetUniformLocation(textureInstancedShader->Program, "light.ambient");
 	GLint lightDiffuseLoc = glGetUniformLocation(textureInstancedShader->Program, "light.diffuse");
 	GLint lightSpecularLoc = glGetUniformLocation(textureInstancedShader->Program, "light.specular");
 
-	glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
-	glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f); // Let's darken the light a bit to fit the scene
-	glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+	glUniform3f(lightAmbientLoc, 0.6f, 0.6f, 0.6f);
+	glUniform3f(lightDiffuseLoc, 0.7f, 0.7f, 0.7f); // Let's darken the light a bit to fit the scene
+	glUniform3f(lightSpecularLoc, 0.6f, 0.6f, 0.6f);
 
 	glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 10000.0f);
 	glm::mat4 view = camera->GetViewMatrix();
@@ -359,7 +359,7 @@ void OpenGLHost3D::paintGL()
 		// Use cooresponding shader when setting uniforms/drawing objects
 		GLint lightPosLoc = glGetUniformLocation(textureShader->Program, "light.position");
 		GLint viewPosLoc = glGetUniformLocation(textureShader->Program, "viewPos");
-		glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(lightPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
 		glUniform3f(viewPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
 
 		GLint matAmbientLoc = glGetUniformLocation(textureShader->Program, "material.ambient");
@@ -367,18 +367,18 @@ void OpenGLHost3D::paintGL()
 		GLint matSpecularLoc = glGetUniformLocation(textureShader->Program, "material.specular");
 		GLint matShineLoc = glGetUniformLocation(textureShader->Program, "material.shininess");
 
-		glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
-		glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
-		glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
-		glUniform1f(matShineLoc, 32.0f);
+		glUniform3f(matAmbientLoc, 0.5f, 0.5f, 0.5f);
+		glUniform3f(matDiffuseLoc, 1.0f, 1.0f, 1.0f);
+		glUniform3f(matSpecularLoc, 0.6f, 0.6f, 0.6f);
+		glUniform1f(matShineLoc, 2.0f);
 
 		GLint lightAmbientLoc = glGetUniformLocation(textureShader->Program, "light.ambient");
 		GLint lightDiffuseLoc = glGetUniformLocation(textureShader->Program, "light.diffuse");
 		GLint lightSpecularLoc = glGetUniformLocation(textureShader->Program, "light.specular");
 
-		glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
-		glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f); // Let's darken the light a bit to fit the scene
-		glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+		glUniform3f(lightAmbientLoc, 0.6f, 0.6f, 0.6f);
+		glUniform3f(lightDiffuseLoc, 0.7f, 0.7f, 0.7f); // Let's darken the light a bit to fit the scene
+		glUniform3f(lightSpecularLoc, 0.6f, 0.6f, 0.6f);
 
 		glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 10000.0f);
 		glm::mat4 view = camera->GetViewMatrix();

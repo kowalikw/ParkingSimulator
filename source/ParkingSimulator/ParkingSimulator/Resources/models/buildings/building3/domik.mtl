@@ -1,4 +1,4 @@
-newmtl alpha
+newmtl domik:alpha
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -8,7 +8,7 @@ map_Ka alpha.tga
 Ni 1.50
 Ks 0.00 0.00 0.00
 Ns 10.00
-newmtl domik1
+newmtl domik:domik1
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00

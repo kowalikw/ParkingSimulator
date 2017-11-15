@@ -1,4 +1,4 @@
-newmtl Glass
+newmtl soarer:Glass
 illum 4
 Kd 0.36 0.44 0.44
 Ka 0.00 0.00 0.00
@@ -6,17 +6,15 @@ Tf 0.75 0.75 0.75
 Ni 1.50
 Ks 0.52 0.57 0.56
 Ns 30.00
-newmtl Mag
+newmtl soarer:Mag
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
-map_Kd mag.jpg
-map_Ka mag.jpg
 Ni 1.50
 Ks 0.00 0.00 0.00
 Ns 10.00
-newmtl Metal_Chrome
+newmtl soarer:Metal_Chrome
 illum 4
 Kd 0.44 0.44 0.44
 Ka 0.00 0.00 0.00
@@ -24,7 +22,7 @@ Tf 1.00 1.00 1.00
 Ni 1.50
 Ks 1.35 1.35 1.35
 Ns 20.00
-newmtl blackGlass
+newmtl soarer:blackGlass
 illum 4
 Kd 0.11 0.11 0.11
 Ka 0.00 0.00 0.00
@@ -32,7 +30,7 @@ Tf 1.00 1.00 1.00
 Ni 1.50
 Ks 0.07 0.07 0.07
 Ns 26.00
-newmtl bodyPaint
+newmtl soarer:bodyPaint
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -42,7 +40,7 @@ map_Ka body_color.jpg
 Ni 1.50
 Ks 0.00 0.00 0.00
 Ns 0.00
-newmtl bottom
+newmtl soarer:bottom
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -50,7 +48,7 @@ Tf 1.00 1.00 1.00
 Ni 1.50
 Ks 0.00 0.00 0.00
 Ns 10.00
-newmtl brakeLight
+newmtl soarer:brakeLight
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -60,7 +58,7 @@ map_Ka brakeLight02.jpg
 Ni 1.50
 Ks 0.70 0.25 0.25
 Ns 30.00
-newmtl frontLight
+newmtl soarer:frontLight
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -70,7 +68,7 @@ map_Ka frontLight01.jpg
 Ni 1.50
 Ks 0.63 0.63 0.63
 Ns 30.00
-newmtl frontLogo
+newmtl soarer:frontLogo
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -80,7 +78,7 @@ map_Ka logoFront01.jpg
 Ni 1.50
 Ks 0.00 0.00 0.00
 Ns 10.00
-newmtl interiorBlack
+newmtl soarer:interiorBlack
 illum 4
 Kd 0.07 0.07 0.07
 Ka 0.00 0.00 0.00
@@ -88,7 +86,7 @@ Tf 1.00 1.00 1.00
 Ni 1.50
 Ks 0.37 0.37 0.37
 Ns 24.00
-newmtl interiorGlass
+newmtl soarer:interiorGlass
 illum 4
 Kd 0.36 0.44 0.44
 Ka 0.00 0.00 0.00
@@ -96,7 +94,7 @@ Tf 0.75 0.75 0.75
 Ni 1.50
 Ks 0.52 0.57 0.56
 Ns 30.00
-newmtl interiorLeather
+newmtl soarer:interiorLeather
 illum 4
 Kd 0.07 0.07 0.07
 Ka 0.00 0.00 0.00
@@ -104,7 +102,7 @@ Tf 1.00 1.00 1.00
 Ni 1.50
 Ks 0.37 0.37 0.37
 Ns 24.00
-newmtl mirror
+newmtl soarer:mirror
 illum 4
 Kd 1.00 1.00 1.00
 Ka 0.00 0.00 0.00
@@ -112,7 +110,7 @@ Tf 1.00 1.00 1.00
 Ni 1.50
 Ks 1.40 1.40 1.40
 Ns 36.00
-newmtl rearLight
+newmtl soarer:rearLight
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -122,7 +120,7 @@ map_Ka spotLight02.jpg
 Ni 1.50
 Ks 0.63 0.63 0.63
 Ns 30.00
-newmtl sign
+newmtl soarer:sign
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -132,7 +130,7 @@ map_Ka sign01.jpg
 Ni 1.50
 Ks 0.00 0.00 0.00
 Ns 10.00
-newmtl signalLight1
+newmtl soarer:signalLight1
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -142,7 +140,7 @@ map_Ka signalLight01.jpg
 Ni 1.50
 Ks 0.63 0.63 0.63
 Ns 30.00
-newmtl signalOrange
+newmtl soarer:signalOrange
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -152,7 +150,7 @@ map_Ka signal05.jpg
 Ni 1.50
 Ks 0.63 0.63 0.63
 Ns 30.00
-newmtl spotLight
+newmtl soarer:spotLight
 illum 4
 Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
@@ -162,16 +160,7 @@ map_Ka spotLight02.jpg
 Ni 1.50
 Ks 0.63 0.63 0.63
 Ns 30.00
-newmtl tyre
-illum 4
-Kd 0.16 0.16 0.16
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-bump tire_pattern.jpg -bm 0
-Ni 1.50
-Ks 0.13 0.13 0.13
-Ns 26.00
-newmtl tyreSide
+newmtl soarer:tyre
 illum 4
 Kd 0.16 0.16 0.16
 Ka 0.00 0.00 0.00
@@ -179,7 +168,15 @@ Tf 1.00 1.00 1.00
 Ni 1.50
 Ks 0.13 0.13 0.13
 Ns 26.00
-newmtl windowTrim
+newmtl soarer:tyreSide
+illum 4
+Kd 0.16 0.16 0.16
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.13 0.13 0.13
+Ns 26.00
+newmtl soarer:windowTrim
 illum 4
 Kd 0.09 0.09 0.09
 Ka 0.00 0.00 0.00
@@ -187,7 +184,7 @@ Tf 1.00 1.00 1.00
 Ni 1.50
 Ks 0.00 0.00 0.00
 Ns 10.00
-newmtl wire_154215229
+newmtl soarer:wire_154215229
 illum 4
 Kd 0.60 0.84 0.90
 Ka 0.00 0.00 0.00

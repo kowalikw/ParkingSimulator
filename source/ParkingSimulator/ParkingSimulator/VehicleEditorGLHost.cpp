@@ -85,7 +85,7 @@ void VehicleEditorGLHost::initializeGL()
 	camera = new Camera(glm::vec3(0.0f, 100.0f, 0.0));
 
 	// Light attributes
-	lightPos = glm::vec3(0.0f, 5.0f, 0.0f);
+	lightPos = glm::vec3(-30.0f, 100.0f, 0.0f);
 
 	vehicleEditor->GetVehicle()->SetFrontLeftWheelModel(new Model("Resources/models/vehicle/vehicle.obj"));
 	//auto measure = box->MeasureModel();
@@ -119,7 +119,7 @@ void VehicleEditorGLHost::paintGL()
 	// Use cooresponding shader when setting uniforms/drawing objects
 	GLint lightPosLoc = glGetUniformLocation(textureShader->Program, "light.position");
 	GLint viewPosLoc = glGetUniformLocation(textureShader->Program, "viewPos");
-	glUniform3f(lightPosLoc, lightPos.x, lightPos.y, lightPos.z);
+	glUniform3f(lightPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
 	glUniform3f(viewPosLoc, camera->Position.x, camera->Position.y, camera->Position.z);
 
 	GLint matAmbientLoc = glGetUniformLocation(textureShader->Program, "material.ambient");
@@ -127,18 +127,18 @@ void VehicleEditorGLHost::paintGL()
 	GLint matSpecularLoc = glGetUniformLocation(textureShader->Program, "material.specular");
 	GLint matShineLoc = glGetUniformLocation(textureShader->Program, "material.shininess");
 
-	glUniform3f(matAmbientLoc, 1.0f, 0.5f, 0.31f);
-	glUniform3f(matDiffuseLoc, 1.0f, 0.5f, 0.31f);
-	glUniform3f(matSpecularLoc, 0.5f, 0.5f, 0.5f);
+	glUniform3f(matAmbientLoc, 0.5f, 0.5f, 0.5f);
+	glUniform3f(matDiffuseLoc, 1.0f, 1.0f, 1.0f);
+	glUniform3f(matSpecularLoc, 0.6f, 0.6f, 0.6f);
 	glUniform1f(matShineLoc, 32.0f);
 
 	GLint lightAmbientLoc = glGetUniformLocation(textureShader->Program, "light.ambient");
 	GLint lightDiffuseLoc = glGetUniformLocation(textureShader->Program, "light.diffuse");
 	GLint lightSpecularLoc = glGetUniformLocation(textureShader->Program, "light.specular");
 
-	glUniform3f(lightAmbientLoc, 0.2f, 0.2f, 0.2f);
-	glUniform3f(lightDiffuseLoc, 0.5f, 0.5f, 0.5f); // Let's darken the light a bit to fit the scene
-	glUniform3f(lightSpecularLoc, 1.0f, 1.0f, 1.0f);
+	glUniform3f(lightAmbientLoc, 0.7f, 0.7f, 0.7f);
+	glUniform3f(lightDiffuseLoc, 0.8f, 0.8f, 0.8f); // Let's darken the light a bit to fit the scene
+	glUniform3f(lightSpecularLoc, 0.8f, 0.8f, 0.8f);
 
 
 	//glm::mat4 projection = glm::ortho(-5.0f, 5.0f, 5.0f, -5.0f, 0.01f, 100.0f);
@@ -147,26 +147,6 @@ void VehicleEditorGLHost::paintGL()
 	//glm::mat4 view;
 	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
-
-	//glm::mat4 model;
-
-	//if (visualization->GetCurrentSimulation() != NULL)
-	//{
-	//	// Draw map
-	//	Map *map = visualization->GetCurrentSimulation()->GetMap();
-
-	//	for (std::map<std::string, Model*>::iterator iterator = loadedModels.begin(); iterator != loadedModels.end(); iterator++)
-	//	{
-	//		// iterator->first = key
-	//		// iterator->second = value
-	//		// Repeat if you also want to iterate through the second map.
-	//		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(iterator->second->GetModelMatrix()));
-	//		iterator->second->Draw(*textureShader);
-	//	}
-	//}
-
-	//glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(box->GetModelMatrix()));
-	//box->Draw(*textureShader);
 
 	if (vehicleEditor->GetVehicleModelChanged())
 		initializeVehicleModel();
