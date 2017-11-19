@@ -97,6 +97,20 @@ double Circle::GetAngle(double t)
 	return angleFrom < angleTo ? angleFrom + t * (angleTo - angleFrom) : angleTo + t * (angleFrom - angleTo);
 }
 
+double Circle::GetCurvature(double t)
+{
+	if (t >= 0.01 && t <= 0.99f)
+	{
+		auto d1 = GetPoint(t - 0.01f) * GetPoint(t);
+		auto d2 = GetPoint(t) * GetPoint(t + 0.01f);
+
+		auto diff = d1 - d2;
+		return glm::length(diff);
+	}
+
+	return 0;
+}
+
 glm::vec2 Circle::GetFirstPoint()
 {
 	return GetPointForAngle(angleFrom);
@@ -119,6 +133,13 @@ SimulationState Circle::GetSimulationState(double t)
 	SimulationState simulationState;
 	simulationState.position = GetPoint(t);
 	simulationState.angle = circleType == CircleType::Right ?  -GetAngle(t) : GetAngle(t);
+	simulationState.curvature = GetCurvature(t);
+	simulationState.direction = GetDirection(t);
 
 	return simulationState;
+}
+
+CircleType Circle::GetDirection(double t)
+{
+	return CircleType();
 }

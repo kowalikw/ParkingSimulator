@@ -166,7 +166,7 @@ SimulationState Path::GetSimulationState(double t)
 		if (pathElement == NULL)
 		{
 			int error = 0;
-
+			return SimulationState();
 		}
 
 		double pathLength = GetLength();

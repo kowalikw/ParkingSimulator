@@ -292,7 +292,10 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 
 			if (i > 0)
 			{
-				path->AddElement(new Line(newPathTmp->GetAt(i - 1)->GetLastPoint(), newPathTmp->GetAt(i)->GetFirstPoint()));
+				Line* newLine = new Line(newPathTmp->GetAt(i - 1)->GetLastPoint(), newPathTmp->GetAt(i)->GetFirstPoint());
+				if(epsilonEquals(path->GetLastElement()->GetAngle(1.0), newLine->GetAngle(0.0)))
+					newLine = new Line(newPathTmp->GetAt(i)->GetFirstPoint(), newPathTmp->GetAt(i - 1)->GetLastPoint(), Back);
+				path->AddElement(newLine);
 			}
 
 			path->AddElement(newPathTmp->GetAt(i));

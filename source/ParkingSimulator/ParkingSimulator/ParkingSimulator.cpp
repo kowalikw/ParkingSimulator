@@ -1374,54 +1374,70 @@ void ParkingSimulator::updateVehicleProperties()
 
 void ParkingSimulator::updateVehicleFrontLeftWheelProperties()
 {
-	ui.vehicleFrontLeftWheelPositionX->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetTranslation().x);
-	ui.vehicleFrontLeftWheelPositionY->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetTranslation().y);
-	ui.vehicleFrontLeftWheelPositionZ->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetTranslation().z);
-	ui.vehicleFrontLeftWheelRotationX->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetRotation().x);
-	ui.vehicleFrontLeftWheelRotationY->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetRotation().y);
-	ui.vehicleFrontLeftWheelRotationZ->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetRotation().z);
-	ui.vehicleFrontLeftWheelScaleX->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetScale().x);
-	ui.vehicleFrontLeftWheelScaleY->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetScale().y);
-	ui.vehicleFrontLeftWheelScaleZ->setValue(vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetScale().z);
+	glm::vec3 translation = vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetTranslation();
+	glm::vec3 rotation = vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetRotation();
+	glm::vec3 scale = vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetScale();
+
+	ui.vehicleFrontLeftWheelPositionX->setValue(translation.x);
+	ui.vehicleFrontLeftWheelPositionY->setValue(translation.y);
+	ui.vehicleFrontLeftWheelPositionZ->setValue(translation.z);
+	ui.vehicleFrontLeftWheelRotationX->setValue(rotation.x);
+	ui.vehicleFrontLeftWheelRotationY->setValue(rotation.y);
+	ui.vehicleFrontLeftWheelRotationZ->setValue(rotation.z);
+	ui.vehicleFrontLeftWheelScaleX->setValue(scale.x);
+	ui.vehicleFrontLeftWheelScaleY->setValue(scale.y);
+	ui.vehicleFrontLeftWheelScaleZ->setValue(scale.z);
 }
 
 void ParkingSimulator::updateVehicleFrontRightWheelProperties()
 {
-	ui.vehicleFrontRightWheelPositionX->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetTranslation().x);
-	ui.vehicleFrontRightWheelPositionY->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetTranslation().y);
-	ui.vehicleFrontRightWheelPositionZ->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetTranslation().z);
-	ui.vehicleFrontRightWheelRotationX->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetRotation().x);
-	ui.vehicleFrontRightWheelRotationY->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetRotation().y);
-	ui.vehicleFrontRightWheelRotationZ->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetRotation().z);
-	ui.vehicleFrontRightWheelScaleX->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetScale().x);
-	ui.vehicleFrontRightWheelScaleY->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetScale().y);
-	ui.vehicleFrontRightWheelScaleZ->setValue(vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetScale().z);
+	glm::vec3 translation = vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetTranslation();
+	glm::vec3 rotation = vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetRotation();
+	glm::vec3 scale = vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetScale();
+
+	ui.vehicleFrontRightWheelPositionX->setValue(translation.x);
+	ui.vehicleFrontRightWheelPositionY->setValue(translation.y);
+	ui.vehicleFrontRightWheelPositionZ->setValue(translation.z);
+	ui.vehicleFrontRightWheelRotationX->setValue(rotation.x);
+	ui.vehicleFrontRightWheelRotationY->setValue(rotation.y);
+	ui.vehicleFrontRightWheelRotationZ->setValue(rotation.z);
+	ui.vehicleFrontRightWheelScaleX->setValue(scale.x);
+	ui.vehicleFrontRightWheelScaleY->setValue(scale.y);
+	ui.vehicleFrontRightWheelScaleZ->setValue(scale.z);
 }
 
 void ParkingSimulator::updateVehicleRearLeftWheelProperties()
 {
-	ui.vehicleRearLeftWheelPositionX->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetTranslation().x);
-	ui.vehicleRearLeftWheelPositionY->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetTranslation().y);
-	ui.vehicleRearLeftWheelPositionZ->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetTranslation().z);
-	ui.vehicleRearLeftWheelRotationX->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetRotation().x);
-	ui.vehicleRearLeftWheelRotationY->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetRotation().y);
-	ui.vehicleRearLeftWheelRotationZ->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetRotation().z);
-	ui.vehicleRearLeftWheelScaleX->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetScale().x);
-	ui.vehicleRearLeftWheelScaleY->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetScale().y);
-	ui.vehicleRearLeftWheelScaleZ->setValue(vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetScale().z);
+	glm::vec3 translation = vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetTranslation();
+	glm::vec3 rotation = vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetRotation();
+	glm::vec3 scale = vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetScale();
+
+	ui.vehicleRearLeftWheelPositionX->setValue(translation.x);
+	ui.vehicleRearLeftWheelPositionY->setValue(translation.y);
+	ui.vehicleRearLeftWheelPositionZ->setValue(translation.z);
+	ui.vehicleRearLeftWheelRotationX->setValue(rotation.x);
+	ui.vehicleRearLeftWheelRotationY->setValue(rotation.y);
+	ui.vehicleRearLeftWheelRotationZ->setValue(rotation.z);
+	ui.vehicleRearLeftWheelScaleX->setValue(scale.x);
+	ui.vehicleRearLeftWheelScaleY->setValue(scale.y);
+	ui.vehicleRearLeftWheelScaleZ->setValue(scale.z);
 }
 
 void ParkingSimulator::updateVehicleRearRightWheelProperties()
 {
-	ui.vehicleRearRightWheelPositionX->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetTranslation().x);
-	ui.vehicleRearRightWheelPositionY->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetTranslation().y);
-	ui.vehicleRearRightWheelPositionZ->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetTranslation().z);
-	ui.vehicleRearRightWheelRotationX->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetRotation().x);
-	ui.vehicleRearRightWheelRotationY->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetRotation().y);
-	ui.vehicleRearRightWheelRotationZ->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetRotation().z);
-	ui.vehicleRearRightWheelScaleX->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetScale().x);
-	ui.vehicleRearRightWheelScaleY->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetScale().y);
-	ui.vehicleRearRightWheelScaleZ->setValue(vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetScale().z);
+	glm::vec3 translation = vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetTranslation();
+	glm::vec3 rotation = vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetRotation();
+	glm::vec3 scale = vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetScale();
+
+	ui.vehicleRearRightWheelPositionX->setValue(translation.x);
+	ui.vehicleRearRightWheelPositionY->setValue(translation.y);
+	ui.vehicleRearRightWheelPositionZ->setValue(translation.z);
+	ui.vehicleRearRightWheelRotationX->setValue(rotation.x);
+	ui.vehicleRearRightWheelRotationY->setValue(rotation.y);
+	ui.vehicleRearRightWheelRotationZ->setValue(rotation.z);
+	ui.vehicleRearRightWheelScaleX->setValue(scale.x);
+	ui.vehicleRearRightWheelScaleY->setValue(scale.y);
+	ui.vehicleRearRightWheelScaleZ->setValue(scale.z);
 }
 
 void ParkingSimulator::vehicleFrontLeftWheelPropertiesChanged()

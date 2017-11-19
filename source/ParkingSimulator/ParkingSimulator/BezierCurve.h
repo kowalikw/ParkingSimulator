@@ -2,6 +2,7 @@
 #define BEZIER_CURVE_H
 
 #include "PathElement.h"
+#include "Arc.h"
 
 class BezierCurve : public PathElement
 {
@@ -12,10 +13,12 @@ public:
 
 	virtual double GetLength();
 	virtual double GetAngle(double t);
+	virtual double GetCurvature(double t);
 	virtual glm::vec2 GetFirstPoint();
 	virtual glm::vec2 GetLastPoint();
 	virtual glm::vec2 GetPoint(double t);
 	virtual SimulationState GetSimulationState(double t);
+	virtual CircleType GetDirection(double t);
 private:
 	glm::vec2 DeCasteljau(double t);
 	std::vector<glm::vec2> coefficients;

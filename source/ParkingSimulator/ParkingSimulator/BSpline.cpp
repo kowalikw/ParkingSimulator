@@ -245,6 +245,20 @@ double BSpline::GetAngle(double t)
 	return atan2(dir.y, dir.x);
 }
 
+double BSpline::GetCurvature(double t)
+{
+	if (t >= 0.01 && t <= 0.99f)
+	{
+		auto d1 = GetPoint(t - 0.01f) * GetPoint(t);
+		auto d2 = GetPoint(t) * GetPoint(t + 0.01f);
+
+		auto diff = d1 - d2;
+		return glm::length(diff) / 100.0f;
+	}
+
+	return 0;
+}
+
 glm::vec2 BSpline::GetFirstPoint()
 {
 	return CalculatePoint(knots[n]);
@@ -265,19 +279,26 @@ glm::vec2 BSpline::GetPoint(double t)
 
 SimulationState BSpline::GetSimulationState(double t)
 {
+	if (t < 0.1) t = 0.1f; // clamp min
+	if (t > 0.9f) t = 0.9f; // clamp max
 	double u = knots[n] + t * (knots[m - n] - knots[n]);
-
-	/*std::ostringstream ss;
-	ss << "t: " << t << endl;
-	ss << "u: " << u << endl;
-	ss << endl;
-	std::string s(ss.str());
-
-	OutputDebugStringA(s.c_str());*/
 
 	SimulationState simulationState;
 	simulationState.position = GetPoint(u);
 	simulationState.angle = M_PI - GetAngle(u);
+	simulationState.curvature = GetCurvature(u);
+	simulationState.direction = GetDirection(u);
 
 	return simulationState;
+}
+
+CircleType BSpline::GetDirection(double t)
+{
+	if (t >= 0.01 && t <= 0.99f)
+	{
+		if (GeometryHelper::GetVectorsDirection(GetPoint(t - 0.001f), GetPoint(t), GetPoint(t + 0.001f)) == CircleType::Left)
+			return CircleType::Right;
+		return CircleType::Left;
+	}
+	return CircleType::Undefined;
 }

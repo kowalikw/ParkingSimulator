@@ -1,6 +1,7 @@
 #include "OpenGLHost3D.h"
 #include "Settings.h"
 #include <QThread>
+#include "BSpline.h"
 
 class LoadModelsThread : public QThread
 {
@@ -119,6 +120,8 @@ protected:
 		Vehicle *vehicle = visualisation->GetCurrentSimulation()->GetVehicle();
 		vehicleModel = new Model(vehicle->GetVehicleModel()->path);
 
+
+
 		quit();
 	}
 private:
@@ -139,6 +142,9 @@ private:
 };
 
 LoadModelsThread loadModelsThread;
+glm::vec2 position, lastPosition;
+float rotationWheel;
+float angle, lastAngle;
 
 OpenGLHost3D::OpenGLHost3D(QWidget *parent) : QOpenGLWidget(parent)
 {
@@ -253,6 +259,7 @@ void OpenGLHost3D::paintGL()
 
 	if (reloadModels)
 	{
+		rotationWheel = 0;
 		reloadModels = false;
 		
 		std::map<std::string, Model*> *modelss = loadModelsThread.GetLoadedModels();
@@ -294,10 +301,31 @@ void OpenGLHost3D::paintGL()
 		}
 
 		Vehicle *vehicle = visualization->GetCurrentSimulation()->GetVehicle();
+
 		this->vehicleModel = new Model(vehicle->GetVehicleModel()->path, std::vector<InstanceData>(), &loadModelsThread.GetVehicleModel()->meshes);
 		this->vehicleModel->Translate(vehicle->GetVehicleModel()->GetTranslation());
 		this->vehicleModel->Rotate(vehicle->GetVehicleModel()->GetRotation());
 		this->vehicleModel->Scale(vehicle->GetVehicleModel()->GetScale());
+
+		this->leftFrontWheelModel = new Model(vehicle->GetFrontLeftWheelModel()->path);
+		this->leftFrontWheelModel->Translate(vehicle->GetFrontLeftWheelModel()->GetTranslation());
+		this->leftFrontWheelModel->Rotate(vehicle->GetFrontLeftWheelModel()->GetRotation());
+		this->leftFrontWheelModel->Scale(vehicle->GetFrontLeftWheelModel()->GetScale());
+
+		this->rightFrontWheelModel = new Model(vehicle->GetFrontRightWheelModel()->path);
+		this->rightFrontWheelModel->Translate(vehicle->GetFrontRightWheelModel()->GetTranslation());
+		this->rightFrontWheelModel->Rotate(vehicle->GetFrontRightWheelModel()->GetRotation());
+		this->rightFrontWheelModel->Scale(vehicle->GetFrontRightWheelModel()->GetScale());
+
+		this->leftRearWheelModel = new Model(vehicle->GetRearLeftWheelModel()->path);
+		this->leftRearWheelModel->Translate(vehicle->GetRearLeftWheelModel()->GetTranslation());
+		this->leftRearWheelModel->Rotate(vehicle->GetRearLeftWheelModel()->GetRotation());
+		this->leftRearWheelModel->Scale(vehicle->GetRearLeftWheelModel()->GetScale());
+
+		this->rightRearWheelModel = new Model(vehicle->GetRearRightWheelModel()->path);
+		this->rightRearWheelModel->Translate(vehicle->GetRearRightWheelModel()->GetTranslation());
+		this->rightRearWheelModel->Rotate(vehicle->GetRearRightWheelModel()->GetRotation());
+		this->rightRearWheelModel->Scale(vehicle->GetRearRightWheelModel()->GetScale());
 
 		pleaseWaitWindow->close();
 	}
@@ -386,10 +414,88 @@ void OpenGLHost3D::paintGL()
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
+		float factor = -1;
+		float timeRatio = visualization->GetCurrentSimulation()->GetCurrentSimulationTime() / visualization->GetCurrentSimulation()->GetSimulationTime();
+		auto element = visualization->GetCurrentSimulation()->GetFinalPath()->GetElement(timeRatio);
+		if (timeRatio < 1.0f && element->GetManeuverType() == Back)
+			factor *= -1;
+		position = vehicle->GetPosition();
+		float velocity = glm::distance(position, lastPosition);
+		float angularVelocity = factor * velocity / 20;
+		lastPosition = position;
+
+		auto simulationState = visualization->GetCurrentSimulation()->GetFinalPath()->GetSimulationState(timeRatio);
+
+		rotationWheel += angularVelocity;
+
 		vehicleModel->Translate(glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y));
 		vehicleModel->Rotate(glm::vec3(0, vehicle->GetRotation() - M_PI / 2.0f, 0));
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(vehicleModel->GetModelMatrix()));
 		vehicleModel->Draw(*textureShader, false);
+
+		glm::mat4 modelMatrix;
+		modelMatrix = glm::rotate(glm::mat4(), (float)(rotationWheel), glm::vec3(1, 0, 0));
+		if (dynamic_cast<Circle*>(element) != NULL)
+		{
+			Circle *circle = dynamic_cast<Circle*>(element);
+			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(circle->GetRadius(), circle->GetCircleType())), glm::vec3(0, 1, 0)) * modelMatrix;
+		}
+		else if (dynamic_cast<BSpline*>(element) && simulationState.curvature > 0)
+		{
+			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(50000.0f / simulationState.curvature, simulationState.direction)), glm::vec3(0, 1, 0)) * modelMatrix;
+		}
+		modelMatrix = glm::rotate(glm::mat4(), (float)(leftFrontWheelModel->GetRotation().y), glm::vec3(0, 1, 0)) * modelMatrix;
+		modelMatrix = glm::translate(glm::mat4(), leftFrontWheelModel->GetTranslation()) * modelMatrix;
+		modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetRotation() - M_PI / 2.0f), glm::vec3(0, 1, 0)) * modelMatrix;
+		modelMatrix = modelMatrix * glm::scale(glm::mat4(), leftFrontWheelModel->GetScale());
+		modelMatrix = glm::translate(glm::mat4(), glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y)) * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		leftFrontWheelModel->Draw(*textureShader, false);
+
+		modelMatrix = glm::mat4();
+		modelMatrix = glm::rotate(glm::mat4(), (float)(-rotationWheel), glm::vec3(1, 0, 0));
+		if (dynamic_cast<Circle*>(element) != NULL)
+		{
+			Circle *circle = dynamic_cast<Circle*>(element);
+			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(circle->GetRadius(), circle->GetCircleType())), glm::vec3(0, 1, 0)) * modelMatrix;
+		}
+		else if (dynamic_cast<BSpline*>(element) && simulationState.curvature > 0)
+		{
+			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(50000.0f / simulationState.curvature, simulationState.direction)), glm::vec3(0, 1, 0)) * modelMatrix;
+		}
+		modelMatrix = glm::rotate(glm::mat4(), (float)(rightFrontWheelModel->GetRotation().y), glm::vec3(0, 1, 0)) * modelMatrix;
+		modelMatrix = glm::translate(glm::mat4(), rightFrontWheelModel->GetTranslation()) * modelMatrix;
+		modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetRotation() - M_PI / 2.0f), glm::vec3(0, 1, 0)) * modelMatrix;
+		modelMatrix = modelMatrix * glm::scale(glm::mat4(), rightFrontWheelModel->GetScale());
+		modelMatrix = glm::translate(glm::mat4(), glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y)) * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		rightFrontWheelModel->Draw(*textureShader, false);
+
+		modelMatrix = glm::mat4();
+		modelMatrix = glm::rotate(glm::mat4(), (float)(rotationWheel), glm::vec3(1, 0, 0));
+		modelMatrix = glm::rotate(glm::mat4(), (float)(leftRearWheelModel->GetRotation().y), glm::vec3(0, 1, 0)) * modelMatrix;
+		modelMatrix = glm::translate(glm::mat4(), leftRearWheelModel->GetTranslation()) * modelMatrix;
+		modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetRotation() - M_PI / 2.0f), glm::vec3(0, 1, 0)) * modelMatrix;
+		modelMatrix = modelMatrix * glm::scale(glm::mat4(), leftRearWheelModel->GetScale());
+		modelMatrix = glm::translate(glm::mat4(), glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y)) * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		leftRearWheelModel->Draw(*textureShader, false);
+
+		modelMatrix = glm::mat4();
+		modelMatrix = glm::rotate(glm::mat4(), (float)(-rotationWheel), glm::vec3(1, 0, 0));
+		modelMatrix = glm::rotate(glm::mat4(), (float)(rightRearWheelModel->GetRotation().y), glm::vec3(0, 1, 0)) * modelMatrix;
+		modelMatrix = glm::translate(glm::mat4(), rightRearWheelModel->GetTranslation()) * modelMatrix;
+		modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetRotation() - M_PI / 2.0f), glm::vec3(0, 1, 0)) * modelMatrix;
+		modelMatrix = modelMatrix * glm::scale(glm::mat4(), rightRearWheelModel->GetScale());
+		modelMatrix = glm::translate(glm::mat4(), glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y)) * modelMatrix;
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
+		rightRearWheelModel->Draw(*textureShader, false);
+
+		/*std::ostringstream ss;
+		ss << "Curvature: " << 0 << endl;
+		ss << endl;
+		std::string s(ss.str());
+		OutputDebugStringA(s.c_str());*/
 	}
 }
 

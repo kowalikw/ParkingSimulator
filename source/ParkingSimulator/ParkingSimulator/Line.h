@@ -2,6 +2,7 @@
 #define LINE_H
 
 #include "PathElement.h"
+#include "Arc.h"
 
 class Line : public PathElement
 {
@@ -19,10 +20,12 @@ public:
 
 	virtual double GetLength();
 	virtual double GetAngle(double t);
+	virtual double GetCurvature(double t);
 	virtual glm::vec2 GetFirstPoint();
 	virtual glm::vec2 GetLastPoint();
 	virtual glm::vec2 GetPoint(double t);
 	virtual SimulationState GetSimulationState(double t);
+	virtual CircleType GetDirection(double t);
 
 	friend class boost::serialization::access;
 

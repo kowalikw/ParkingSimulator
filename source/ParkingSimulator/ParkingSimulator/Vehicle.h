@@ -62,6 +62,8 @@ public:
 	double GetWheelbase();
 	double GetMaxInsideAngle();
 	double GetMinOneManeouverLength(double insideAngle);
+	double GetInsideAngleForRadius(double radius, CircleType circleType);
+	double GetOutsideAngleForRadius(double radius, CircleType circleType);
 	glm::vec2 GetDirTrack();
 	glm::vec2 GetDirWheelbase();
 	glm::vec2 GetTurnCentre(double angle, CircleType circleType);

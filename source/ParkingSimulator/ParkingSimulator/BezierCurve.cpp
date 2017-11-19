@@ -24,6 +24,11 @@ double BezierCurve::GetAngle(double t)
 	return 0.0;
 }
 
+double BezierCurve::GetCurvature(double t)
+{
+	return 0.0;
+}
+
 glm::vec2 BezierCurve::GetFirstPoint()
 {
 	return glm::vec2();
@@ -42,6 +47,11 @@ glm::vec2 BezierCurve::GetPoint(double t)
 SimulationState BezierCurve::GetSimulationState(double t)
 {
 	return SimulationState();
+}
+
+CircleType BezierCurve::GetDirection(double t)
+{
+	return CircleType();
 }
 
 glm::vec2 BezierCurve::DeCasteljau(double t)

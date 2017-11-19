@@ -72,7 +72,9 @@ private:
 
 	Model *mapModel;
 	Model *vehicleModel;
-	
+	Model *leftFrontWheelModel, *rightFrontWheelModel;
+	Model *leftRearWheelModel, *rightRearWheelModel;
+
 	PleaseWaitWindow *pleaseWaitWindow;
 
 	std::map<std::string, Model*> *loadedModels;

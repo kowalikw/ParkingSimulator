@@ -66,6 +66,11 @@ double Line::GetAngle(double t)
 	return atan2(to.y - from.y, to.x - from.x) + M_PI;
 }
 
+double Line::GetCurvature(double t)
+{
+	return 0.0;
+}
+
 glm::vec2 Line::GetFirstPoint()
 {
 	return GetPoint(0);
@@ -92,6 +97,13 @@ SimulationState Line::GetSimulationState(double t)
 	SimulationState simulationState;
 	simulationState.position = GetPoint(t);
 	simulationState.angle = M_PI - GetAngle(t);
+	simulationState.curvature = GetCurvature(t);
+	simulationState.direction = GetDirection(t);
 
 	return simulationState;
+}
+
+CircleType Line::GetDirection(double t)
+{
+	return CircleType();
 }

@@ -11,10 +11,19 @@
 
 #define M_PI 3.14159265358979323846
 
+enum CircleType
+{
+	Left, // ccw
+	Right, // cw
+	Undefined // colinear
+};
+
 struct SimulationState
 {
 	glm::vec2 position;
 	double angle;
+	double curvature;
+	CircleType direction;
 };
 
 enum ManeuverType
@@ -34,10 +43,12 @@ public:
 
 	virtual double GetLength() = 0;
 	virtual double GetAngle(double t) = 0;
+	virtual double GetCurvature(double t) = 0;
 	virtual glm::vec2 GetFirstPoint() = 0;
 	virtual glm::vec2 GetLastPoint() = 0;
 	virtual glm::vec2 GetPoint(double t) = 0;
 	virtual SimulationState GetSimulationState(double t) = 0;
+	virtual CircleType GetDirection(double t) = 0;
 
 	friend class boost::serialization::access;
 

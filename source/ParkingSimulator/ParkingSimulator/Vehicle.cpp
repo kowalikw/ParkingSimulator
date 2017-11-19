@@ -169,6 +169,19 @@ double Vehicle::GetMinOneManeouverLength(double insideAngle)
 	return sqrt(GetRMax(insideAngle) * GetRMax(insideAngle) + GetRMin(insideAngle) * GetRMin(insideAngle));
 }
 
+double Vehicle::GetInsideAngleForRadius(double radius, CircleType circleType)
+{
+	double angle = atan(wheelbase / (radius - track / 2.0f));
+	if (circleType == Right)
+		angle *= -1;
+	return angle;
+}
+
+double Vehicle::GetOutsideAngleForRadius(double radius, CircleType circleType)
+{
+	return 0.0;
+}
+
 glm::vec2 Vehicle::GetDirTrack()
 {
 	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(), -(float)GetAngle(), glm::vec3(0.0f, 0.0f, 1.0f));
