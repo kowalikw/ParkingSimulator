@@ -1,4 +1,6 @@
 #include "Arc.h"
+#include "GeometryHelper.h"
+#include "CommonHelper.h"
 
 Circle::Circle()
 {
@@ -101,11 +103,17 @@ double Circle::GetCurvature(double t)
 {
 	if (t >= 0.01 && t <= 0.99f)
 	{
-		auto d1 = GetPoint(t - 0.01f) * GetPoint(t);
-		auto d2 = GetPoint(t) * GetPoint(t + 0.01f);
+		auto d1 = GetPoint(t - 0.01f) - GetPoint(t);
+		auto d2 = GetPoint(t) - GetPoint(t + 0.01f);
 
-		auto diff = d1 - d2;
-		return glm::length(diff);
+		double angle = GeometryHelper::GetAngleBetweenVectors(d1, d2);
+		double length = 0;
+		for (double u = t - 0.01 + 0.002; u < t + 0.01 + 0.002; u += 0.002)
+		{
+			length += GeometryHelper::GetDistanceBetweenPoints(GetPoint(u - 0.002), GetPoint(u));
+		}
+
+		return abs(angle / length);
 	}
 
 	return 0;

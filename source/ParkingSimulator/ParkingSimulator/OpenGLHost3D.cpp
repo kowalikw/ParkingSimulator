@@ -425,6 +425,7 @@ void OpenGLHost3D::paintGL()
 		lastPosition = position;
 
 		auto simulationState = visualization->GetCurrentSimulation()->GetFinalPath()->GetSimulationState(timeRatio);
+		auto turnRadius = 1.0 / (2 * simulationState.curvature);
 
 		rotationWheel += angularVelocity;
 
@@ -438,11 +439,11 @@ void OpenGLHost3D::paintGL()
 		if (dynamic_cast<Circle*>(element) != NULL)
 		{
 			Circle *circle = dynamic_cast<Circle*>(element);
-			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(circle->GetRadius(), circle->GetCircleType())), glm::vec3(0, 1, 0)) * modelMatrix;
+			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(turnRadius, circle->GetCircleType())), glm::vec3(0, 1, 0)) * modelMatrix;
 		}
 		else if (dynamic_cast<BSpline*>(element) && simulationState.curvature > 0)
 		{
-			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(50000.0f / simulationState.curvature, simulationState.direction)), glm::vec3(0, 1, 0)) * modelMatrix;
+			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(turnRadius, simulationState.direction)), glm::vec3(0, 1, 0)) * modelMatrix;
 		}
 		modelMatrix = glm::rotate(glm::mat4(), (float)(leftFrontWheelModel->GetRotation().y), glm::vec3(0, 1, 0)) * modelMatrix;
 		modelMatrix = glm::translate(glm::mat4(), leftFrontWheelModel->GetTranslation()) * modelMatrix;
@@ -457,11 +458,11 @@ void OpenGLHost3D::paintGL()
 		if (dynamic_cast<Circle*>(element) != NULL)
 		{
 			Circle *circle = dynamic_cast<Circle*>(element);
-			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(circle->GetRadius(), circle->GetCircleType())), glm::vec3(0, 1, 0)) * modelMatrix;
+			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(turnRadius, circle->GetCircleType())), glm::vec3(0, 1, 0)) * modelMatrix;
 		}
 		else if (dynamic_cast<BSpline*>(element) && simulationState.curvature > 0)
 		{
-			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(50000.0f / simulationState.curvature, simulationState.direction)), glm::vec3(0, 1, 0)) * modelMatrix;
+			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(turnRadius, simulationState.direction)), glm::vec3(0, 1, 0)) * modelMatrix;
 		}
 		modelMatrix = glm::rotate(glm::mat4(), (float)(rightFrontWheelModel->GetRotation().y), glm::vec3(0, 1, 0)) * modelMatrix;
 		modelMatrix = glm::translate(glm::mat4(), rightFrontWheelModel->GetTranslation()) * modelMatrix;
@@ -491,11 +492,11 @@ void OpenGLHost3D::paintGL()
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		rightRearWheelModel->Draw(*textureShader, false);
 
-		/*std::ostringstream ss;
-		ss << "Curvature: " << 0 << endl;
-		ss << endl;
-		std::string s(ss.str());
-		OutputDebugStringA(s.c_str());*/
+		//std::ostringstream ss;
+		//ss << "Curvature: " << 1.0 / (2 * simulationState.curvature) << endl;
+		//ss << endl;
+		//std::string s(ss.str());
+		//OutputDebugStringA(s.c_str());
 	}
 }
 

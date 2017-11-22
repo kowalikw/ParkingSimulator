@@ -61,8 +61,6 @@ double Line::GetLength()
 
 double Line::GetAngle(double t)
 {
-	
-
 	return atan2(to.y - from.y, to.x - from.x) + M_PI;
 }
 
