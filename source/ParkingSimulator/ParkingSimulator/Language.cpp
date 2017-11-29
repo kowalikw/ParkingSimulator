@@ -17,14 +17,12 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("Tab_PathPlanner", language.value("Tab_PathPlanner").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Tab_Visualisation", language.value("Tab_Visualisation").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Tab_Settings", language.value("Tab_Settings").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("Start_UniversityName", language.value("Start_UniversityName").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_FacultyName", language.value("Start_FacultyName").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_MastersThesis", language.value("Start_MastersThesis").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_ThesisTitle", language.value("Start_ThesisTitle").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_ThesisAuthor", language.value("Start_ThesisAuthor").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_ThesisSupervisor", language.value("Start_ThesisSupervisor").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("Start_GoToMapEditor", language.value("Start_GoToMapEditor").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_GoToVehicleEditor", language.value("Start_GoToMapEditor").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Start_GoToPathPlanner", language.value("Start_GoToPathPlanner").toString().toStdString()));
@@ -55,6 +53,8 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SetMap_FromMapEditor", language.value("PathPlanner_SetMap_FromMapEditor").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SetMap_FromFile", language.value("PathPlanner_SetMap_FromFile").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SetVehicle", language.value("PathPlanner_SetVehicle").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SetVehicle_FromVehicleEditor", language.value("PathPlanner_SetVehicle_FromVehicleEditor").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SetVehicle_FromFile", language.value("PathPlanner_SetVehicle_FromFile").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SetStart", language.value("PathPlanner_SetStart").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SetEnd", language.value("PathPlanner_SetEnd").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_FindPath", language.value("PathPlanner_FindPath").toString().toStdString()));
@@ -94,7 +94,6 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_NoMapInMapEditor_Content", language.value("WarningError_NoMapInMapEditor_Content").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_MapElementNotAdmissible_Title", language.value("WarningError_MapElementNotAdmissible_Title").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_MapElementNotAdmissible_Content", language.value("WarningError_MapElementNotAdmissible_Content").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("Common_Create", language.value("Common_Create").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_Map", language.value("PathPlanner_Map").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_Vehicle", language.value("PathPlanner_Vehicle").toString().toStdString()));
@@ -133,7 +132,6 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("AddMapElement_SelectVehicle", language.value("AddMapElement_SelectVehicle").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("AddMapElement_SelectTerrain", language.value("AddMapElement_SelectTerrain").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_Add", language.value("Common_Add").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("Settings_Language", language.value("Settings_Language").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Settings_ChooseLanguage", language.value("Settings_ChooseLanguage").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Settings_MapElements", language.value("Settings_MapElements").toString().toStdString()));

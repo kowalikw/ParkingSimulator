@@ -9,6 +9,7 @@
 #include "ParkingSpace.h"
 #include "Terrain.h"
 #include "Language.h"
+#include "CommonHelper.h"
 
 using namespace Ui;
 

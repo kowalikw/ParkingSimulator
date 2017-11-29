@@ -57,8 +57,8 @@ AddMapElement::AddMapElement(AddMapElementType type, QWidget *parent)
 	createElement(0);
 
 	ui.newElementName->setText(QString::fromStdString(model->name));
-	ui.newElementWidth->setValue(model->defaultWidth);
-	ui.newElementHeight->setValue(model->defaultHeight);
+	ui.newElementWidth->setValue(CommonHelper::ConvertPixelsToMeters(model->defaultWidth));
+	ui.newElementHeight->setValue(CommonHelper::ConvertPixelsToMeters(model->defaultHeight));
 }
 
 AddMapElement::~AddMapElement()
@@ -221,7 +221,7 @@ void AddMapElement::clickedSlot()
 {
 	int selectedIndex = -1;
 	auto btn = qobject_cast<QPushButton*>(sender());
-	for (int i = 1; i < ui.mapElementsContainer->count(); i++)
+	for (int i = 0; i < ui.mapElementsContainer->count(); i++)
 	{
 		auto el = ui.mapElementsContainer->itemAt(i)->widget();
 		QPushButton *element = dynamic_cast<QPushButton*>(el);
@@ -229,7 +229,7 @@ void AddMapElement::clickedSlot()
 		{
 			element->setStyleSheet("");
 			if (btn == element)
-				selectedIndex = i - 1;
+				selectedIndex = i;
 		}
 	}
 	btn->setStyleSheet("border: 3px solid #d86a39;");
@@ -239,8 +239,8 @@ void AddMapElement::clickedSlot()
 	createElement(selectedIndex);
 
 	ui.newElementName->setText(QString::fromStdString(model->name));
-	ui.newElementWidth->setValue(model->defaultWidth);
-	ui.newElementHeight->setValue(model->defaultHeight);
+	ui.newElementWidth->setValue(CommonHelper::ConvertPixelsToMeters(model->defaultWidth));
+	ui.newElementHeight->setValue(CommonHelper::ConvertPixelsToMeters(model->defaultHeight));
 }
 
 void AddMapElement::addElement()
@@ -251,9 +251,9 @@ void AddMapElement::addElement()
 	{
 		if (newMapElement != NULL)
 		{
-			newMapElement->SetSize(glm::vec2(ui.newElementWidth->value(), ui.newElementHeight->value()));
+			newMapElement->SetSize(glm::vec2(CommonHelper::ConverMetersToPixeks(ui.newElementWidth->value()), CommonHelper::ConverMetersToPixeks(ui.newElementHeight->value())));
 			newMapElement->SetName(ui.newElementName->text().toStdString());
-			newMapElement->SetRotation(glm::radians(ui.newElementRotation->value()));
+			newMapElement->SetRotation(CommonHelper::ConvertDegreesToRadians(ui.newElementRotation->value()));
 			newMapElement->SetThumbnailPath(model->thumbnail);
 			newMapElement->SetModelPath(model->model);
 		}

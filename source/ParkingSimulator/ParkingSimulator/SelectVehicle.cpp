@@ -9,6 +9,10 @@ SelectVehicle::SelectVehicle(VehicleEditor *vehicleEditor, QWidget *parent)
 	connect(ui.btnLoadFromFile, SIGNAL(released()), this, SLOT(loadVehicleFromFile()));
 	connect(ui.btnCancel, SIGNAL(released()), this, SLOT(reject()));
 
+	ui.btnLoadFromVehicleEditor->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_SetVehicle_FromVehicleEditor"]));
+	ui.btnLoadFromFile->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_SetVehicle_FromFile"]));
+	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Cancel"]));
+
 	this->vehicleEditor = vehicleEditor;
 }
 

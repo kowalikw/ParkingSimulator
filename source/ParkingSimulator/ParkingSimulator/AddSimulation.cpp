@@ -10,8 +10,8 @@ AddSimulation::AddSimulation(PathPlanner *pathPlanner, QDialog *parent)
 	connect(ui.btnLoadFromFile, SIGNAL(released()), this, SLOT(loadSimulationFromFile()));
 	connect(ui.btnCancel, SIGNAL(released()), this, SLOT(reject()));
 
-	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Visualisation_AddSimulation_FromPathPlanner"]));
-	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Visualisation_AddSimulation_FromFile"]));
+	ui.btnLoadFromPathPlanner->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Visualisation_AddSimulation_FromPathPlanner"]));
+	ui.btnLoadFromFile->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Visualisation_AddSimulation_FromFile"]));
 	ui.btnCancel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Cancel"]));
 
 	this->pathPlanner = pathPlanner;

@@ -256,8 +256,8 @@ void ParkingSimulator::setMapProperties()
 
 		ui.isMapSet->hide();
 		ui.mapPropertiesForm->show();
-		ui.mapWidthLabel->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(map->GetWidth())));
-		ui.mapHeightLabel->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(map->GetHeight())));
+		ui.mapWidthLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(map->GetWidth()), 'f', 2)));
+		ui.mapHeightLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(map->GetHeight()), 'f', 2)));
 		ui.mapElementsCountLabel->setText(QString("%1").arg(map->GetMapElements().size()));
 	}
 	else
@@ -276,9 +276,9 @@ void ParkingSimulator::setVehicleProperties()
 		ui.isVehicleSet->hide();
 		ui.vehiclePropertiesForm->show();
 		ui.vehicleNameLabel->setText(QString::fromStdString(vehicle->GetName()));
-		ui.vehicleWheelbaseLabel->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(vehicle->GetWheelbase())));
-		ui.vehicleTrackLabel->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(vehicle->GetTrack())));
-		ui.vehicleMaxAngleLabel->setText(QString("%1 deg").arg(glm::degrees(vehicle->GetMaxInsideAngle())));
+		ui.vehicleWheelbaseLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(vehicle->GetWheelbase()), 'f', 2)));
+		ui.vehicleTrackLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(vehicle->GetTrack()), 'f', 2)));
+		ui.vehicleMaxAngleLabel->setText(QString("%1 deg").arg(QString::number(CommonHelper::ConvertRadiansToDegrees(vehicle->GetMaxInsideAngle()), 'f', 2)));
 	}
 	else
 	{
@@ -293,32 +293,32 @@ void ParkingSimulator::setPathProperties()
 	{
 		glm::vec2 *startPoint = pathPlanner.GetStartPoint();
 		glm::vec2 *startDirection = pathPlanner.GetStartDirection();
-		float angle = glm::degrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *startDirection));
+		float angle = CommonHelper::ConvertRadiansToDegrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *startDirection));
 
-		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(startPoint->x).arg(startPoint->y).arg(angle));
+		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(startPoint->x, 'f', 2)).arg(QString::number(startPoint->y, 'f', 2)).arg(QString::number(angle, 'f', 2)));
 	}
 
 	if (pathPlanner.GetEndPoint() != NULL)
 	{
 		glm::vec2 *endPoint = pathPlanner.GetEndPoint();
 		glm::vec2 *endDirection = pathPlanner.GetEndDirection();
-		float angle = glm::degrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *endDirection));
+		float angle = CommonHelper::ConvertRadiansToDegrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *endDirection));
 
-		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(endPoint->x).arg(endPoint->y).arg(angle));
+		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(endPoint->x, 'f', 2)).arg(QString::number(endPoint->y, 'f', 2)).arg(QString::number(angle, 'f', 2)));
 	}
 
 	if (pathPlanner.GetStartParkingSpace() != NULL)
 	{
 		ParkingSpace *startParkingSpace = pathPlanner.GetStartParkingSpace();
 
-		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().x)).arg(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().y)).arg(startParkingSpace->GetRotation()));
+		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().y), 'f', 2)).arg(QString::number(CommonHelper::ConvertRadiansToDegrees(startParkingSpace->GetRotation()), 'f', 2)));
 	}
 
 	if (pathPlanner.GetEndParkingSpace() != NULL)
 	{
 		ParkingSpace *endParkingSpace = pathPlanner.GetEndParkingSpace();
 
-		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().x)).arg(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().y)).arg(endParkingSpace->GetRotation()));
+		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().y), 'f', 2)).arg(QString::number(CommonHelper::ConvertRadiansToDegrees(endParkingSpace->GetRotation()), 'f', 2)));
 	}
 
 	if (pathPlanner.GetStartPoint() == NULL && pathPlanner.GetStartParkingSpace() == NULL)
@@ -545,6 +545,11 @@ void ParkingSimulator::setLanguage()
 	ui.setVehicleRearRightWheelRotationLabel->setText(QString::fromStdString(dictionary["Common_Rotation"]));
 	ui.setVehicleRearRightWheelScaleLabel->setText(QString::fromStdString(dictionary["Common_Scale"]));
 	ui.pathCalculationInPrograssLabel->setText(QString::fromStdString(dictionary["PleaseWait_PathCalculation"]));
+	ui.vehicleModelIsSet->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
+	ui.vehicleFrontLeftWheelIsSet->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
+	ui.vehicleFrontRightWheelIsSet->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
+	ui.vehicleRearLeftWheelIsSet->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
+	ui.vehicleRearRightWheelIsSet->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
 
 	updateMapElementsTree();
 }
@@ -562,11 +567,11 @@ void ParkingSimulator::updateTimerCall()
 		MapElement *mapElement = mapEditor.GetSelectedElement();
 
 		ui.mapElementName->setText(QString::fromStdString(mapElement->GetName()));
-		ui.mapElementWidth->setValue(mapElement->GetSize().x);
-		ui.mapElementHeight->setValue(mapElement->GetSize().y);
-		ui.mapElementPositionX->setValue(mapElement->GetPosition().x);
-		ui.mapElementPositionY->setValue(mapElement->GetPosition().y);
-		ui.mapElementRotation->setValue(glm::degrees(mapElement->GetRotation()));
+		ui.mapElementWidth->setValue(CommonHelper::ConvertPixelsToMeters(mapElement->GetSize().x));
+		ui.mapElementHeight->setValue(CommonHelper::ConvertPixelsToMeters(mapElement->GetSize().y));
+		ui.mapElementPositionX->setValue(CommonHelper::ConvertPixelsToMeters(mapElement->GetPosition().x));
+		ui.mapElementPositionY->setValue(CommonHelper::ConvertPixelsToMeters(mapElement->GetPosition().y));
+		ui.mapElementRotation->setValue(CommonHelper::ConvertDegreesToRadians(mapElement->GetRotation()));
 
 		mapEditor.SetMapElementsPropertiesChanged(false);
 	}
@@ -579,26 +584,26 @@ void ParkingSimulator::updateTimerCall()
 			Line *line = dynamic_cast<Line*>(pathElement);
 
 			ui.pathElementType->setText(QString("Line"));
-			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().x)).arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().y)));
-			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().x)).arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().y)));
+			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().y), 'f', 2)));
+			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().y), 'f', 2)));
 		}
 		else if (dynamic_cast<Circle*>(pathElement) != NULL)
 		{
 			Circle *circle = dynamic_cast<Circle*>(pathElement);
 
 			ui.pathElementType->setText(QString("Circle"));
-			ui.pathElementFrom->setText(QString("%1 deg").arg(glm::degrees(circle->GetAngleFrom())));
-			ui.pathElementTo->setText(QString("%1 deg").arg(glm::degrees(circle->GetAngleTo())));
+			ui.pathElementFrom->setText(QString("%1 deg").arg(QString::number(glm::degrees(circle->GetAngleFrom()), 'f', 2)));
+			ui.pathElementTo->setText(QString("%1 deg").arg(QString::number(glm::degrees(circle->GetAngleTo()), 'f', 2)));
 		}
 		else if (dynamic_cast<BSpline*>(pathElement) != NULL)
 		{
 			BSpline *bSpline = dynamic_cast<BSpline*>(pathElement);
 
 			ui.pathElementType->setText(QString("B-Spline"));
-			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().x)).arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().y)));
-			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().x)).arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().y)));
+			ui.pathElementFrom->setText(QString("X: %1, Y: %2").arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetFirstPoint().y), 'f', 2)));
+			ui.pathElementTo->setText(QString("X: %1, Y: %2").arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetLastPoint().y), 'f', 2)));
 		}
-		ui.pathElementLength->setText(QString("%1 m").arg(CommonHelper::ConvertPixelsToMeters(pathElement->GetLength())));
+		ui.pathElementLength->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(pathElement->GetLength()), 'f', 2)));
 		ui.pathElementProperties->show();
 
 		pathPlanner.SetPathElementPropertiesChanged(false);
@@ -851,11 +856,14 @@ void ParkingSimulator::loadMap()
 
 void ParkingSimulator::clearMap()
 {
-	mapEditor.SetSelectedElement(nullptr);
-	while(mapEditor.GetMap()->GetMapElements().size() > 0)
-		mapEditor.GetMap()->RemoveMapElement(mapEditor.GetMap()->GetMapElements()[0]);
-	mapEditor.SetMapElementsChanged(true);
-	mapEditor.SetSelectedElementChanged(true);
+	if (mapEditor.GetMap() != nullptr)
+	{
+		mapEditor.SetSelectedElement(nullptr);
+		while (mapEditor.GetMap()->GetMapElements().size() > 0)
+			mapEditor.GetMap()->RemoveMapElement(mapEditor.GetMap()->GetMapElements()[0]);
+		mapEditor.SetMapElementsChanged(true);
+		mapEditor.SetSelectedElementChanged(true);
+	}
 }
 
 void ParkingSimulator::addBuilding()
@@ -1378,12 +1386,12 @@ void ParkingSimulator::updateVehicleFrontLeftWheelProperties()
 	glm::vec3 rotation = vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetRotation();
 	glm::vec3 scale = vehicleEditor.GetVehicle()->GetFrontLeftWheelModel()->GetScale();
 
-	ui.vehicleFrontLeftWheelPositionX->setValue(translation.x);
-	ui.vehicleFrontLeftWheelPositionY->setValue(translation.y);
-	ui.vehicleFrontLeftWheelPositionZ->setValue(translation.z);
-	ui.vehicleFrontLeftWheelRotationX->setValue(rotation.x);
-	ui.vehicleFrontLeftWheelRotationY->setValue(rotation.y);
-	ui.vehicleFrontLeftWheelRotationZ->setValue(rotation.z);
+	ui.vehicleFrontLeftWheelPositionX->setValue(CommonHelper::ConvertPixelsToMeters(translation.x));
+	ui.vehicleFrontLeftWheelPositionY->setValue(CommonHelper::ConvertPixelsToMeters(translation.y));
+	ui.vehicleFrontLeftWheelPositionZ->setValue(CommonHelper::ConvertPixelsToMeters(translation.z));
+	ui.vehicleFrontLeftWheelRotationX->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.x));
+	ui.vehicleFrontLeftWheelRotationY->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.y));
+	ui.vehicleFrontLeftWheelRotationZ->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.z));
 	ui.vehicleFrontLeftWheelScaleX->setValue(scale.x);
 	ui.vehicleFrontLeftWheelScaleY->setValue(scale.y);
 	ui.vehicleFrontLeftWheelScaleZ->setValue(scale.z);
@@ -1395,12 +1403,12 @@ void ParkingSimulator::updateVehicleFrontRightWheelProperties()
 	glm::vec3 rotation = vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetRotation();
 	glm::vec3 scale = vehicleEditor.GetVehicle()->GetFrontRightWheelModel()->GetScale();
 
-	ui.vehicleFrontRightWheelPositionX->setValue(translation.x);
-	ui.vehicleFrontRightWheelPositionY->setValue(translation.y);
-	ui.vehicleFrontRightWheelPositionZ->setValue(translation.z);
-	ui.vehicleFrontRightWheelRotationX->setValue(rotation.x);
-	ui.vehicleFrontRightWheelRotationY->setValue(rotation.y);
-	ui.vehicleFrontRightWheelRotationZ->setValue(rotation.z);
+	ui.vehicleFrontRightWheelPositionX->setValue(CommonHelper::ConvertPixelsToMeters(translation.x));
+	ui.vehicleFrontRightWheelPositionY->setValue(CommonHelper::ConvertPixelsToMeters(translation.y));
+	ui.vehicleFrontRightWheelPositionZ->setValue(CommonHelper::ConvertPixelsToMeters(translation.z));
+	ui.vehicleFrontRightWheelRotationX->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.x));
+	ui.vehicleFrontRightWheelRotationY->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.y));
+	ui.vehicleFrontRightWheelRotationZ->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.z));
 	ui.vehicleFrontRightWheelScaleX->setValue(scale.x);
 	ui.vehicleFrontRightWheelScaleY->setValue(scale.y);
 	ui.vehicleFrontRightWheelScaleZ->setValue(scale.z);
@@ -1412,12 +1420,12 @@ void ParkingSimulator::updateVehicleRearLeftWheelProperties()
 	glm::vec3 rotation = vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetRotation();
 	glm::vec3 scale = vehicleEditor.GetVehicle()->GetRearLeftWheelModel()->GetScale();
 
-	ui.vehicleRearLeftWheelPositionX->setValue(translation.x);
-	ui.vehicleRearLeftWheelPositionY->setValue(translation.y);
-	ui.vehicleRearLeftWheelPositionZ->setValue(translation.z);
-	ui.vehicleRearLeftWheelRotationX->setValue(rotation.x);
-	ui.vehicleRearLeftWheelRotationY->setValue(rotation.y);
-	ui.vehicleRearLeftWheelRotationZ->setValue(rotation.z);
+	ui.vehicleRearLeftWheelPositionX->setValue(CommonHelper::ConvertPixelsToMeters(translation.x));
+	ui.vehicleRearLeftWheelPositionY->setValue(CommonHelper::ConvertPixelsToMeters(translation.y));
+	ui.vehicleRearLeftWheelPositionZ->setValue(CommonHelper::ConvertPixelsToMeters(translation.z));
+	ui.vehicleRearLeftWheelRotationX->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.x));
+	ui.vehicleRearLeftWheelRotationY->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.y));
+	ui.vehicleRearLeftWheelRotationZ->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.z));
 	ui.vehicleRearLeftWheelScaleX->setValue(scale.x);
 	ui.vehicleRearLeftWheelScaleY->setValue(scale.y);
 	ui.vehicleRearLeftWheelScaleZ->setValue(scale.z);
@@ -1429,12 +1437,12 @@ void ParkingSimulator::updateVehicleRearRightWheelProperties()
 	glm::vec3 rotation = vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetRotation();
 	glm::vec3 scale = vehicleEditor.GetVehicle()->GetRearRightWheelModel()->GetScale();
 
-	ui.vehicleRearRightWheelPositionX->setValue(translation.x);
-	ui.vehicleRearRightWheelPositionY->setValue(translation.y);
-	ui.vehicleRearRightWheelPositionZ->setValue(translation.z);
-	ui.vehicleRearRightWheelRotationX->setValue(rotation.x);
-	ui.vehicleRearRightWheelRotationY->setValue(rotation.y);
-	ui.vehicleRearRightWheelRotationZ->setValue(rotation.z);
+	ui.vehicleRearRightWheelPositionX->setValue(CommonHelper::ConvertPixelsToMeters(translation.x));
+	ui.vehicleRearRightWheelPositionY->setValue(CommonHelper::ConvertPixelsToMeters(translation.y));
+	ui.vehicleRearRightWheelPositionZ->setValue(CommonHelper::ConvertPixelsToMeters(translation.z));
+	ui.vehicleRearRightWheelRotationX->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.x));
+	ui.vehicleRearRightWheelRotationY->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.y));
+	ui.vehicleRearRightWheelRotationZ->setValue(CommonHelper::ConvertRadiansToDegrees(rotation.z));
 	ui.vehicleRearRightWheelScaleX->setValue(scale.x);
 	ui.vehicleRearRightWheelScaleY->setValue(scale.y);
 	ui.vehicleRearRightWheelScaleZ->setValue(scale.z);
@@ -1442,8 +1450,8 @@ void ParkingSimulator::updateVehicleRearRightWheelProperties()
 
 void ParkingSimulator::vehicleFrontLeftWheelPropertiesChanged()
 {
-	glm::vec3 translation = glm::vec3(ui.vehicleFrontLeftWheelPositionX->value(), ui.vehicleFrontLeftWheelPositionY->value(), ui.vehicleFrontLeftWheelPositionZ->value());
-	glm::vec3 rotation = glm::vec3(ui.vehicleFrontLeftWheelRotationX->value(), ui.vehicleFrontLeftWheelRotationY->value(), ui.vehicleFrontLeftWheelRotationZ->value());
+	glm::vec3 translation = glm::vec3(CommonHelper::ConverMetersToPixeks(ui.vehicleFrontLeftWheelPositionX->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleFrontLeftWheelPositionY->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleFrontLeftWheelPositionZ->value()));
+	glm::vec3 rotation = glm::vec3(CommonHelper::ConvertDegreesToRadians(ui.vehicleFrontLeftWheelRotationX->value()), CommonHelper::ConvertDegreesToRadians(ui.vehicleFrontLeftWheelRotationY->value()), CommonHelper::ConvertDegreesToRadians(ui.vehicleFrontLeftWheelRotationZ->value()));
 	glm::vec3 scale = glm::vec3(ui.vehicleFrontLeftWheelScaleX->value(), ui.vehicleFrontLeftWheelScaleY->value(), ui.vehicleFrontLeftWheelScaleZ->value());
 
 	vehicleEditor.UpdateFrontLeftWheelProperties(translation, rotation, scale);
@@ -1451,8 +1459,8 @@ void ParkingSimulator::vehicleFrontLeftWheelPropertiesChanged()
 
 void ParkingSimulator::vehicleFrontRightWheelPropertiesChanged()
 {
-	glm::vec3 translation = glm::vec3(ui.vehicleFrontRightWheelPositionX->value(), ui.vehicleFrontRightWheelPositionY->value(), ui.vehicleFrontRightWheelPositionZ->value());
-	glm::vec3 rotation = glm::vec3(ui.vehicleFrontRightWheelRotationX->value(), ui.vehicleFrontRightWheelRotationY->value(), ui.vehicleFrontRightWheelRotationZ->value());
+	glm::vec3 translation = glm::vec3(CommonHelper::ConverMetersToPixeks(ui.vehicleFrontRightWheelPositionX->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleFrontRightWheelPositionY->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleFrontRightWheelPositionZ->value()));
+	glm::vec3 rotation = glm::vec3(CommonHelper::ConvertDegreesToRadians(ui.vehicleFrontRightWheelRotationX->value()), CommonHelper::ConvertDegreesToRadians(ui.vehicleFrontRightWheelRotationY->value()), CommonHelper::ConvertDegreesToRadians(ui.vehicleFrontRightWheelRotationZ->value()));
 	glm::vec3 scale = glm::vec3(ui.vehicleFrontRightWheelScaleX->value(), ui.vehicleFrontRightWheelScaleY->value(), ui.vehicleFrontRightWheelScaleZ->value());
 
 	vehicleEditor.UpdateFrontRightWheelProperties(translation, rotation, scale);
@@ -1460,8 +1468,8 @@ void ParkingSimulator::vehicleFrontRightWheelPropertiesChanged()
 
 void ParkingSimulator::vehicleRearLeftWheelPropertiesChanged()
 {
-	glm::vec3 translation = glm::vec3(ui.vehicleRearLeftWheelPositionX->value(), ui.vehicleRearLeftWheelPositionY->value(), ui.vehicleRearLeftWheelPositionZ->value());
-	glm::vec3 rotation = glm::vec3(ui.vehicleRearLeftWheelRotationX->value(), ui.vehicleRearLeftWheelRotationY->value(), ui.vehicleRearLeftWheelRotationZ->value());
+	glm::vec3 translation = glm::vec3(CommonHelper::ConverMetersToPixeks(ui.vehicleRearLeftWheelPositionX->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleRearLeftWheelPositionY->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleRearLeftWheelPositionZ->value()));
+	glm::vec3 rotation = glm::vec3(CommonHelper::ConvertDegreesToRadians(ui.vehicleRearLeftWheelRotationX->value()), CommonHelper::ConvertDegreesToRadians(ui.vehicleRearLeftWheelRotationY->value()), CommonHelper::ConvertDegreesToRadians(ui.vehicleRearLeftWheelRotationZ->value()));
 	glm::vec3 scale = glm::vec3(ui.vehicleRearLeftWheelScaleX->value(), ui.vehicleRearLeftWheelScaleY->value(), ui.vehicleRearLeftWheelScaleZ->value());
 
 	vehicleEditor.UpdateRearLeftWheelProperties(translation, rotation, scale);
@@ -1469,8 +1477,8 @@ void ParkingSimulator::vehicleRearLeftWheelPropertiesChanged()
 
 void ParkingSimulator::vehicleRearRightWheelPropertiesChanged()
 {
-	glm::vec3 translation = glm::vec3(ui.vehicleRearRightWheelPositionX->value(), ui.vehicleRearRightWheelPositionY->value(), ui.vehicleRearRightWheelPositionZ->value());
-	glm::vec3 rotation = glm::vec3(ui.vehicleRearRightWheelRotationX->value(), ui.vehicleRearRightWheelRotationY->value(), ui.vehicleRearRightWheelRotationZ->value());
+	glm::vec3 translation = glm::vec3(CommonHelper::ConverMetersToPixeks(ui.vehicleRearRightWheelPositionX->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleRearRightWheelPositionY->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleRearRightWheelPositionZ->value()));
+	glm::vec3 rotation = glm::vec3(CommonHelper::ConvertDegreesToRadians(ui.vehicleRearRightWheelRotationX->value()), CommonHelper::ConvertDegreesToRadians(ui.vehicleRearRightWheelRotationY->value()), CommonHelper::ConvertDegreesToRadians(ui.vehicleRearRightWheelRotationZ->value()));
 	glm::vec3 scale = glm::vec3(ui.vehicleRearRightWheelScaleX->value(), ui.vehicleRearRightWheelScaleY->value(), ui.vehicleRearRightWheelScaleZ->value());
 
 	vehicleEditor.UpdateRearRightWheelProperties(translation, rotation, scale);

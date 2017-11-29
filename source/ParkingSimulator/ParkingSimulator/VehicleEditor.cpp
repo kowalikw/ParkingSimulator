@@ -16,25 +16,6 @@ void VehicleEditor::CreateNewVehicle()
 
 void VehicleEditor::SaveVehicle(std::string path)
 {
-	/*simulation = new Simulation();
-	simulation->SetMap(map);
-	simulation->SetExpandedMap(expandedMap);
-	simulation->SetVehicle(vehicle);
-	simulation->SetPolylinePath(polylinePath);
-	simulation->SetParkingPathStart(parkingPathStart);
-	simulation->SetParkingPathEnd(parkingPathEnd);
-	simulation->SetFinalPath(finalPath);
-	simulation->SetStartPoint(startPoint);
-	simulation->SetEndPoint(endPoint);
-	simulation->SetStartDirection(startDirection);
-	simulation->SetEndDirection(endDirection);
-	simulation->SetStartParkingSpace(startParkingSpace);
-	simulation->SetEndParkingSpace(endParkingSpace);
-	simulation->SetExpandSize(expandSizePercent);
-	simulation->SetCollisionDetectionDensity(collisionDetectionDensity);
-	simulation->SetPathPlanningAlgorithm(pathPlanningAlgorithm);
-	simulation->SetUseAdmissibleArcsOnly(useAdmissibleArcsOnly);*/
-
 	ofstream f(path, ios::out);
 
 	boost::archive::text_oarchive oa(f);

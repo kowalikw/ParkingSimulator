@@ -1410,6 +1410,9 @@ margin-bottom: 5px;</string>
                           <property name="maximum">
                            <double>99999.000000000000000</double>
                           </property>
+                          <property name="singleStep">
+                           <double>0.100000000000000</double>
+                          </property>
                          </widget>
                         </item>
                         <item>
@@ -1420,6 +1423,9 @@ margin-bottom: 5px;</string>
                           <property name="maximum">
                            <double>99999.000000000000000</double>
                           </property>
+                          <property name="singleStep">
+                           <double>0.100000000000000</double>
+                          </property>
                          </widget>
                         </item>
                        </layout>
@@ -1427,10 +1433,10 @@ margin-bottom: 5px;</string>
                       <item row="4" column="1">
                        <widget class="QDoubleSpinBox" name="mapElementRotation">
                         <property name="minimum">
-                         <double>-9999.000000000000000</double>
+                         <double>-360.000000000000000</double>
                         </property>
                         <property name="maximum">
-                         <double>9999.000000000000000</double>
+                         <double>360.000000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -1439,12 +1445,27 @@ margin-bottom: 5px;</string>
                         <property name="maximum">
                          <double>9999.000000000000000</double>
                         </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                        <property name="value">
+                         <double>0.100000000000000</double>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="1">
                        <widget class="QDoubleSpinBox" name="mapElementWidth">
+                        <property name="minimum">
+                         <double>0.100000000000000</double>
+                        </property>
                         <property name="maximum">
                          <double>9999.000000000000000</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>0.100000000000000</double>
+                        </property>
+                        <property name="value">
+                         <double>0.100000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -2400,7 +2421,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -2428,7 +2449,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -2456,7 +2477,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -2759,7 +2780,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -2787,7 +2808,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -2815,7 +2836,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -3129,7 +3150,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -3157,7 +3178,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -3185,7 +3206,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -3476,7 +3497,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -3504,7 +3525,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -3532,7 +3553,7 @@ QPushButton:pressed {
                          <double>999.000000000000000</double>
                         </property>
                         <property name="singleStep">
-                         <double>1.000000000000000</double>
+                         <double>0.010000000000000</double>
                         </property>
                        </widget>
                       </item>
@@ -4126,7 +4147,7 @@ QPushButton#btnMapElementSaveProperties:pressed, QPushButton#btnMapElementRemove
                         </font>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">margin-right: 3px;</string>
+                        <string notr="true">0</string>
                        </property>
                        <property name="text">
                         <string>Map elements: </string>
@@ -7497,6 +7518,11 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
                    </property>
                    <item row="0" column="0">
                     <widget class="QLabel" name="settingsMapElementsAdmissibleBorderWidthLabel">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>TextLabel</string>
                      </property>
@@ -7504,6 +7530,11 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
                    </item>
                    <item row="2" column="0">
                     <widget class="QLabel" name="settingsMapElementsAdmissibleColorLabel">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>TextLabel</string>
                      </property>
@@ -7511,6 +7542,11 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
                    </item>
                    <item row="1" column="0">
                     <widget class="QLabel" name="settingsMapElementsAdmissibleBorderColorLabel">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>TextLabel</string>
                      </property>
@@ -7576,6 +7612,11 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
                    </property>
                    <item row="0" column="0">
                     <widget class="QLabel" name="settingsMapElementsNotAdmissibleBorderWidthLabel">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>TextLabel</string>
                      </property>
@@ -7583,6 +7624,11 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
                    </item>
                    <item row="2" column="0">
                     <widget class="QLabel" name="settingsMapElementsNotAdmissibleColorLabel">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>TextLabel</string>
                      </property>
@@ -7590,6 +7636,11 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
                    </item>
                    <item row="1" column="0">
                     <widget class="QLabel" name="settingsMapElementsNotAdmissibleBorderColorLabel">
+                     <property name="font">
+                      <font>
+                       <pointsize>9</pointsize>
+                      </font>
+                     </property>
                      <property name="text">
                       <string>TextLabel</string>
                      </property>

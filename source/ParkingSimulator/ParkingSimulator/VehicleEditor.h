@@ -1,6 +1,7 @@
 #ifndef VEHICLE_EDITOR_H
 #define VEHICLE_EDITOR_H
 
+#include "CommonHelper.h"
 #include "Vehicle.h"
 
 class VehicleEditor
