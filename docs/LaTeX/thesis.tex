@@ -1215,6 +1215,10 @@ Przykładowe ścieżki parkowania:
 
 Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuacje jakie mogą wystąpić podczas wykonywania manewru parkowania, gdy otoczenie wokół miejsca parkingowego jest bezkolizyjne. Jednak w przypadku, gdy jakiś obiekt znajduje się zbyt blisko ścieżki parkowania i powoduje kolizję z poruszającym się po ścieżce pojazdem, to algorytm zwraca informację, że zaparkowanie w tym miejscu nie jest możliwe, choć w rzeczywistości, często dałoby się taką przeszkodę ominąć i zakończyć manewr parkowania pomyślnie.  Dalszym krokiem w rozwoju algorytmu byłoby więc wykrywanie takich sytuacji i próba omijania przeszkód, aby możliwe było pomyślne dokończenie manewru, a nie natychmiastowe kończenie działania algorytmu. Nie ma natomiast żadnych zastrzeżeń co do czasu działania algorytmu. Wszystkie obliczenia wykonywane są błyskawicznie i odpowiedź algorytmu jest niemal natychmiastowa.
 
+\chapter{Wpływ parametrów na działanie algorytmu}
+
+% TODO:
+
 \chapter{Instrukcja użytkownika}
 
 Interfejs aplikacji został podzielony na 6 zakładek, w których kolejno znajduje się ekran startowy, edytor map, edytor pojazdów, planer ruchu, moduł wizualizacji oraz zakładka umożliwiająca zmianę ustawień aplikacji. Funkcjonalności i obsługa każdej z zakładek została przedstawiona w poniższych podrozdziałach.
@@ -1315,6 +1319,8 @@ Na ekranie edytora pojazdów znajdują się następujące przyciski i sekcje:
 
 Aby utworzyć nowy pojazd należy kliknąć w przycisk ''Utwórz nowy pojazd'', a następnie wczytać główny model pojazdu oraz ustawić parametry pojazdu. Dodanie modeli poszczególnych kół jest opcjonalne, jednak model główny musi być dodany obowiązkowo.
 
+Edytor pojazdów jest edytorem 3D. Aby poruszać kamerą w tym edytorze należy użyć myszki do wykonywania obrotów, natomiast do przesunięcia kamery służą przyciski WSAD.
+
 \section{Planer ruchu}
 
 Zrzut ekranu planera ruchu przedstawiono na poniższym obrazku.
@@ -1384,7 +1390,7 @@ Ekran modułu wizualizacji zawiera następujące przyciski i sekcje:
 	\item \textbf{[9]} - panel sterowania wizualizacją - umożliwia rozpoczęcie odtwarzania pauzowanie i przewijanie do dowolnego momentu.
 \end{itemize}
 
-W module wizualizacji użytkownik ma możliwość dodania nowej symulacji do wyświetlenia poprzez kliknięcie na przycisk ''Dodaj symulację''. Ma również możliwość usunięcia dodanej już symulacji, bądź wyświetlenia szczegółowych informacji na je temat. Po dodaniu symulacji aktywowana jest możliwość wizualizacji przejazdu pomiędzy położeniem początkowym i końcowym. Wizualizacja może odbywać się zarówno w trybie 2D jak i 3D. Ponadto użytkownik ma możliwość ustawienia czasu trwania przejazdu oraz włączenia/wyłączenia widoku wyznaczonej trajektorii.
+W module wizualizacji użytkownik ma możliwość dodania nowej symulacji do wyświetlenia poprzez kliknięcie na przycisk ''Dodaj symulację''. Ma również możliwość usunięcia dodanej już symulacji, bądź wyświetlenia szczegółowych informacji na je temat. Po dodaniu symulacji aktywowana jest możliwość wizualizacji przejazdu pomiędzy położeniem początkowym i końcowym. Wizualizacja może odbywać się zarówno w trybie 2D jak i 3D. W trybie 3D użytkownik może obracać kamerę przy użyciu myszki, natomiast przesuwanie kamery realizowane jest poprzez klawisze WSAD. Ponadto użytkownik ma możliwość ustawienia czasu trwania przejazdu oraz włączenia/wyłączenia widoku wyznaczonej trajektorii.
 
 Po wybraniu jednej z dodanych symulacji i kliknięciu na przycisk ''Informacje o symulacji'' wyświetlone zostanie okno przedstawione na poniższym zrzucie ekranu. Zawiera ono wszystkie podstawowe informacje na temat wybranej przez użytkownika symulacji, takie jak np. ilość elementów wchodzących w skład ścieżki, czy długość wyznaczonej trajektorii.
 

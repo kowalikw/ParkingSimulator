@@ -46,7 +46,7 @@ SimulationInfo::SimulationInfo(Simulation *simulation, QWidget *parent)
 	ui.simulationPathLength->setText(QString("%1").arg(CommonHelper::ConvertPixelsToMeters(simulation->GetFinalPath()->GetLength())));
 	ui.simulationExpandSizePercent->setText(QString("%1").arg(simulation->GetExpandSize()));
 	ui.simulationPathPlanningAlgorithm->setText(pathPlanningAlgorithm);
-	ui.simulationUseAdmissibleArcsOnly->setText(simulation->GetUseAdmissibleArcsOnly() ? "True" : "False");
+	ui.simulationUseAdmissibleArcsOnly->setText(simulation->GetUseAdmissibleArcsOnly() ? QString::fromStdString(Language::getInstance()->GetDictionary()["Common_True"]) : QString::fromStdString(Language::getInstance()->GetDictionary()["Common_False"]));
 	ui.simulationCollisionDetectionQuality->setText(collisionDetectionQuality);
 	ui.simulationExtraVerticesAlong->setText(QString("%1").arg(simulation->GetExtraVerticesAlong()));
 	ui.simulationExtraVerticesAcross->setText(QString("%1").arg(simulation->GetExtraVerticesAcross()));

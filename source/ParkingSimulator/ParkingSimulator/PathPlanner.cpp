@@ -209,22 +209,9 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 		GraphEdge *collisionEdge = ChackPathCollision(finalPath, map, true, indexStart, indexEnd);
 
-		//collisionEdge = nullptr;
-
-		//TODO: nie usuwaæ pocz¹tkowej ani koñcowaj jeœli nie jest to niezbêdne!!!
-
 		int i = 0;
 		while (collisionEdge != NULL && finalPath->GetElements().size() > 0)
 		{
-			i++;
-			/*std::ostringstream ss;
-			ss << "V1: " << collisionEdge->v1->x << endl;
-			ss << "V2: " << collisionEdge->v2->x << endl;
-			ss << endl;
-			std::string s(ss.str());
-
-			OutputDebugStringA(s.c_str());*/
-
 			fullVoronoiVisibilityGraph->RemoveEdge(collisionEdge);
 
 			delete polylinePath;
@@ -329,21 +316,24 @@ void PathPlanner::NewSimulation()
 {
 	simulation = new Simulation();
 
-	map = NULL;
-	expandedMap = NULL;
-	vehicle = NULL;
-	polylinePath = NULL;
-	parkingPathStart = NULL;
-	parkingPathEnd = NULL;
-	finalPath = NULL;
-	startPoint = NULL;
-	endPoint = NULL;
-	startDirection = NULL;
-	endDirection = NULL;
-	startParkingSpace = NULL;
-	endParkingSpace = NULL;
+	map = nullptr;
+	expandedMap = nullptr;
+	vehicle = nullptr;
+	polylinePath = nullptr;
+	parkingPathStart = nullptr;
+	parkingPathEnd = nullptr;
+	finalPath = nullptr;
+	startPoint = nullptr;
+	endPoint = nullptr;
+	startDirection = nullptr;
+	endDirection = nullptr;
+	startParkingSpace = nullptr;
+	endParkingSpace = nullptr;
+	voronoiGraph = nullptr;
+	fullVoronoiVisibilityGraph = nullptr;
+	selectedPathElement = nullptr;
 	expandSizePercent = 0;
-	collisionDetectionDensity = 0;
+	collisionDetectionDensity = 0;	
 	pathPlanningAlgorithm = PathPlanningAlgorithm::Spline;
 	useAdmissibleArcsOnly = false;
 }
@@ -377,6 +367,21 @@ void PathPlanner::OpenSimulation(string filePath)
 	collisionDetectionDensity = simulation->GetCollisionDetectionDensity();
 	pathPlanningAlgorithm = simulation->GetPathPlanningAlgorithm();
 	useAdmissibleArcsOnly = simulation->GetUseAdmissibleArcsOnly();
+
+	if (startPoint != nullptr || startParkingSpace != nullptr)
+	{
+		if (startPoint != nullptr)
+			vehicleStart->SetRotation(-atan2(startDirection->y, startDirection->x));
+		if (startParkingSpace != nullptr)
+			vehicleStart->SetRotation(-startParkingSpace->GetRotation());
+	}
+	if (endPoint != nullptr || endParkingSpace != nullptr)
+	{
+		if (endPoint != nullptr)
+			vehicleEnd->SetRotation(-atan2(endDirection->y, endDirection->x));
+		if (endParkingSpace != nullptr)
+			vehicleEnd->SetRotation(-endParkingSpace->GetRotation());
+	}
 }
 
 void PathPlanner::SaveSimulation(string filePath)
@@ -399,6 +404,8 @@ void PathPlanner::SaveSimulation(string filePath)
 	simulation->SetCollisionDetectionDensity(collisionDetectionDensity);
 	simulation->SetPathPlanningAlgorithm(pathPlanningAlgorithm);
 	simulation->SetUseAdmissibleArcsOnly(useAdmissibleArcsOnly);
+	simulation->SetExtraVerticesAcross(graphExtraVerticesAcross);
+	simulation->SetExtraVerticesAlong(graphExtraVerticesAlong);
 
 	ofstream f(filePath, ios::out);
 
@@ -469,6 +476,9 @@ void PathPlanner::SetGraphExtraVerticesAcross(int graphExtraVerticesAcross)
 
 GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGraph, int start, int end, MapElement * exceptionElement, bool invertPath)
 {
+	if (path == nullptr)
+		return nullptr;
+
 	double dt = 1.0 / collisionDetectionDensity;
 	auto mapElements = map->GetMapElements();
 	for (double t = 0; t < 1; t += dt)

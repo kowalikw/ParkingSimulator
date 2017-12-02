@@ -228,10 +228,7 @@ void PathPlannerGLHost::nvgRenderFrame()
 	if (pathPlanner->GetShowExpandedObstacles())
 		nvgHelper->DrawMap(pathPlanner->GetExpandedMap());
 
-	/*if (pathPlanner->GetFinalPath() != NULL)
-		nvgHelper->DrawPath(pathPlanner->GetFinalPath());*/
-
-	if (drawStartFlag)
+	if (pathPlanner->GetVehicleStart() != nullptr)
 	{
 		if (pathPlanner->GetSetStartPosition())
 		{
@@ -262,7 +259,7 @@ void PathPlannerGLHost::nvgRenderFrame()
 		}
 	}
 
-	if (drawEndFlag)
+	if (pathPlanner->GetVehicleEnd() != nullptr)
 	{
 		if (pathPlanner->GetSetEndPosition())
 		{

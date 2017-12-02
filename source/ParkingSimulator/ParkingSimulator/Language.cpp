@@ -216,6 +216,9 @@ void Language::LoadLanguage(std::string lang)
 
 	dictionary.insert(std::pair<std::string, std::string>("SimulationInfo_ExtraVerticesAlong", language.value("SimulationInfo_ExtraVerticesAlong").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("SimulationInfo_ExtraVerticesAcross", language.value("SimulationInfo_ExtraVerticesAcross").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Common_True", language.value("Common_True").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Common_False", language.value("Common_False").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SimulationFromPathPlanner", language.value("PathPlanner_SimulationFromPathPlanner").toString().toStdString()));
 }
 
 std::map<std::string, std::string> Language::GetDictionary()

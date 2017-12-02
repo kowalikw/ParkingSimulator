@@ -30,7 +30,7 @@ void AddSimulation::loadSimulationFromPathPlanner()
 {
 	this->simulation = pathPlanner->GetSimulation();
 	this->simulation->SetSimulationTime(10);
-	this->simulation->SetName("Simulation from path planner");
+	this->simulation->SetName(Language::getInstance()->GetDictionary()["PathPlanner_SimulationFromPathPlanner"]);
 
 	if (simulation != NULL && simulation->GetMap() != NULL && simulation->GetVehicle() != NULL && simulation->GetFinalPath() != NULL) //TODO:
 		accept();
@@ -57,8 +57,20 @@ void AddSimulation::loadSimulationFromFile()
 
 		ia >> *simulation;
 
+		if (simulation->GetFinalPath() == nullptr)
+		{
+			WarningErrorMsg warningWindow(Language::getInstance()->GetDictionary()["WarningError_NoSimulation_Title"], Language::getInstance()->GetDictionary()["WarningError_NoSimulation_Content"], MessageType::Warning);
+			warningWindow.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+			warningWindow.exec();
+			return;
+		}
+
+		QStringList filePathParts;
+		filePathParts = filePath.split("/");
+		filePathParts = filePathParts.at(filePathParts.size() - 1).split(".");
+		QString simulationName = filePathParts.at(0);
 		this->simulation->SetSimulationTime(10);
-		this->simulation->SetName(filePath.toStdString());
+		this->simulation->SetName(simulationName.toStdString());
 
 		accept();
 	}

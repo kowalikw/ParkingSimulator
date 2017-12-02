@@ -29,10 +29,10 @@ private:
 	PathPlanner *pathPlanner;
 	glm::vec2 positionOnMap;
 
-	bool drawStartFlag = false;
-	bool drawEndFlag = false;
-	bool startFlagAdmissible = false;
-	bool endFlagAdmissible = false;
+	bool drawStartFlag = true;
+	bool drawEndFlag = true;
+	bool startFlagAdmissible = true;
+	bool endFlagAdmissible = true;
 
 	Path pathPolyline;
 	Path *pathAdmissible;
