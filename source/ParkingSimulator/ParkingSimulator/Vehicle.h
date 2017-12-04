@@ -69,6 +69,9 @@ public:
 	glm::vec2 GetTurnCentre(double angle, CircleType circleType);
 	std::vector<glm::vec2> GetPoints2();
 
+	void SetWheelbase(double wheelbase);
+	void SetTrack(double track);
+
 	Circle *GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom = 0, double angleTo = 2 * M_PI, ManeuverType maneuverType = ManeuverType::Front);
 
 	Model* GetVehicleModel();

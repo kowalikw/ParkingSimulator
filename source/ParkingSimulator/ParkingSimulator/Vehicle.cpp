@@ -10,6 +10,7 @@ Vehicle::Vehicle()
 	this->dirWheelbase = glm::vec2(1.0f, 0.0f);
 	this->dirTrack = glm::vec2(0.0f, 1.0f);
 
+	this->points.clear();
 	this->points.push_back(glm::vec2(-size.x / 2.0f, -size.y / 2.0f));
 	this->points.push_back(glm::vec2(size.x / 2.0f, -size.y / 2.0f));
 	this->points.push_back(glm::vec2(size.x / 2.0f, size.y / 2.0f));
@@ -25,6 +26,8 @@ Vehicle::Vehicle(glm::vec2 position, glm::vec2 size, double rotation, std::vecto
 	this->rotation = rotation;
 	this->points = points;
 	this->isRectangular = false;
+	this->dirWheelbase = glm::vec2(1.0f, 0.0f);
+	this->dirTrack = glm::vec2(0.0f, 1.0f);
 }
 
 Vehicle::Vehicle(double wheelbase, double track)
@@ -37,6 +40,7 @@ Vehicle::Vehicle(double wheelbase, double track)
 	this->dirWheelbase = glm::vec2(1.0f, 0.0f);
 	this->dirTrack = glm::vec2(0.0f, 1.0f);
 
+	this->points.clear();
 	this->points.push_back(glm::vec2(-size.x / 2.0f, -size.y / 2.0f));
 	this->points.push_back(glm::vec2(size.x / 2.0f, -size.y / 2.0f));
 	this->points.push_back(glm::vec2(size.x / 2.0f, size.y / 2.0f));
@@ -196,6 +200,16 @@ glm::vec2 Vehicle::GetDirWheelbase()
 	glm::vec4 dirWheelbase = rotationMatrix * glm::vec4(this->dirWheelbase, 0.0f, 1.0f);
 
 	return glm::vec2(dirWheelbase);
+}
+
+void Vehicle::SetWheelbase(double wheelbase)
+{
+	this->wheelbase = wheelbase;
+}
+
+void Vehicle::SetTrack(double track)
+{
+	this->track = track;
 }
 
 Circle *Vehicle::GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom, double angleTo, ManeuverType maneuverType)

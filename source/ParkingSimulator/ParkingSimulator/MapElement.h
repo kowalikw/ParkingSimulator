@@ -12,6 +12,12 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
+
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream> 
+#include <Windows.h>
+
 class MapElement
 {
 public:
@@ -67,6 +73,14 @@ public:
 		ar & position;
 		ar & size;
 		ar & points;
+		std::ostringstream ss;
+		ss << "P0 - serialize: " << points[0].x << ", " << points[0].y << endl;
+		ss << "P1 - serialize: " << points[1].x << ", " << points[1].y << endl;
+		ss << "P2 - serialize: " << points[2].x << ", " << points[2].y << endl;
+		ss << "P3 - serialize: " << points[3].x << ", " << points[3].y << endl;
+		ss << endl;
+		std::string s(ss.str());
+		OutputDebugStringA(s.c_str());
 		ar & modelPath;
 		ar & thumbnailPath;
 		ar & mapThumbnailPath;

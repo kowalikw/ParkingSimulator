@@ -77,3 +77,5 @@ CMakeLists.txt.user*
 *.bak2
 *.bak3
 *.bak4
+/source/ParkingSimulator/ParkingSimulator/x64/Release
+/source/ParkingSimulator/x64/Release

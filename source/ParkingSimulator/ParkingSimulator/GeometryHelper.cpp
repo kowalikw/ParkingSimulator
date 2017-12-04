@@ -162,13 +162,13 @@ CircleType GeometryHelper::GetVectorsDirection(glm::vec2 v1, glm::vec2 v2)
 {
 	double crossProduct = CrossProduct(v1, v2);
 
-	std::ostringstream ss;
-	ss << "V1: " << v1.x << ", " << v1.y << endl;
-	ss << "V2: " << v2.x << ", " << v2.y << endl;
-	ss << "Cross: " << crossProduct << endl;
-	ss << endl;
-	std::string s(ss.str());
-	OutputDebugStringA(s.c_str());
+	//std::ostringstream ss;
+	//ss << "V1: " << v1.x << ", " << v1.y << endl;
+	//ss << "V2: " << v2.x << ", " << v2.y << endl;
+	//ss << "Cross: " << crossProduct << endl;
+	//ss << endl;
+	//std::string s(ss.str());
+	//OutputDebugStringA(s.c_str());
 
 	if (crossProduct < 0 && abs(crossProduct) > 10e-6)
 		return CircleType::Right;

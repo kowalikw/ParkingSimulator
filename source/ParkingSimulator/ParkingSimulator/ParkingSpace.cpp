@@ -1,5 +1,10 @@
 #include "ParkingSpace.h"
 
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream> 
+#include <Windows.h>
+
 ParkingSpace::ParkingSpace()
 {
 }
@@ -69,11 +74,30 @@ bool ParkingSpace::ContainVehicle(Vehicle vehicle)
 
 	auto parkingSpacePoints = GetPoints();
 	
-	return GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p0) ||
+	auto var = GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p0) ||
 		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p1) ||
 		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p2) ||
 		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p3) ||
 		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p4) ||
 		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p5) ||
 		GeometryHelper::CheckPolygonContainsPoint(parkingSpacePoints, p6); // TODO: Geometry helper::ContainsAnyPoint?
+
+	std::ostringstream ss;
+	ss << "ParkingSpace P0: " << parkingSpacePoints[0].x << ", " << parkingSpacePoints[0].y << endl;
+	ss << "ParkingSpace P1: " << parkingSpacePoints[1].x << ", " << parkingSpacePoints[1].y << endl;
+	ss << "ParkingSpace P2: " << parkingSpacePoints[2].x << ", " << parkingSpacePoints[2].y << endl;
+	ss << "ParkingSpace P3: " << parkingSpacePoints[3].x << ", " << parkingSpacePoints[3].y << endl;
+	ss << "p0: " << p0.x << ", " << p0.y << endl;
+	ss << "p1: " << p1.x << ", " << p1.y << endl;
+	ss << "p2: " << p2.x << ", " << p2.y << endl;
+	ss << "p3: " << p3.x << ", " << p3.y << endl;
+	ss << "p4: " << p4.x << ", " << p4.y << endl;
+	ss << "p5: " << p5.x << ", " << p5.y << endl;
+	ss << "p6: " << p6.x << ", " << p6.y << endl;
+	ss << "ContainVehicle: " << (var ? "True" : "False") << endl;
+	ss << endl;
+	std::string s(ss.str());
+	OutputDebugStringA(s.c_str());
+
+	return var;
 }

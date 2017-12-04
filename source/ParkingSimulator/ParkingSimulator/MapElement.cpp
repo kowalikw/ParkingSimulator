@@ -46,6 +46,8 @@ glm::vec2 MapElement::GetDirY()
 
 std::vector<glm::vec2> MapElement::GetPoints()
 {
+	transform();
+
 	return this->points;
 }
 
@@ -236,6 +238,14 @@ void MapElement::move()
 {
 	for (int i = 0; i < points.size(); i++)
 		points[i] = glm::vec2(points[i].x + position.x, points[i].y + position.y);
+	//std::ostringstream ss;
+	//ss << "P0 - move: " << points[0].x << ", " << points[0].y << endl;
+	//ss << "P1 - move: " << points[1].x << ", " << points[1].y << endl;
+	//ss << "P2 - move: " << points[2].x << ", " << points[2].y << endl;
+	//ss << "P3 - move: " << points[3].x << ", " << points[3].y << endl;
+	//ss << endl;
+	//std::string s(ss.str());
+	//OutputDebugStringA(s.c_str());
 }
 
 std::string MapElement::GetModelPath()
@@ -273,11 +283,32 @@ void MapElement::rotate()
 	glm::mat4 mtx;
 	mtx = glm::rotate(mtx, (float)rotation, glm::vec3(0.0f, 0.0f, 1.0f));
 
+	if (points.size() > 4)
+	{
+		for (int i = 0; i < points.size(); i++)
+			points[i] = glm::vec2(points[i].x - position.x, points[i].y - position.y);
+	}
+
 	for (int i = 0; i < points.size(); i++)
 	{
 		glm::vec4 rotatedPoint = mtx * glm::vec4(points[i].x, points[i].y, 0.0f, 1.0f);
 		points[i] = glm::vec2(rotatedPoint.x, rotatedPoint.y);
 	}
+
+	if (points.size() > 4)
+	{
+		for (int i = 0; i < points.size(); i++)
+			points[i] = glm::vec2(points[i].x + position.x, points[i].y + position.y);
+	}
+
+	//std::ostringstream ss;
+	//ss << "P0 - rotate: " << points[0].x << ", " << points[0].y << endl;
+	//ss << "P1 - rotate: " << points[1].x << ", " << points[1].y << endl;
+	//ss << "P2 - rotate: " << points[2].x << ", " << points[2].y << endl;
+	//ss << "P3 - rotate: " << points[3].x << ", " << points[3].y << endl;
+	//ss << endl;
+	//std::string s(ss.str());
+	//OutputDebugStringA(s.c_str());
 }
 
 void MapElement::resize()
@@ -290,8 +321,10 @@ void MapElement::resize()
 
 void MapElement::transform()
 {
-	if(isRectangular) 
+	if (points.size() <= 4)
+	{
 		resize();
-	rotate();
-	move();
+		rotate();
+		move();
+	}
 }

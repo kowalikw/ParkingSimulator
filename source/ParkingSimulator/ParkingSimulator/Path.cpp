@@ -159,41 +159,34 @@ void Path::Reverse()
 
 SimulationState Path::GetSimulationState(double t)
 {
-	try
+	PathElement *pathElement = GetElement(t);
+
+	if (pathElement == NULL)
 	{
-		PathElement *pathElement = GetElement(t);
-
-		if (pathElement == NULL)
-		{
-			int error = 0;
-			return SimulationState();
-		}
-
-		double pathLength = GetLength();
-		double lengthToPathElementExclude = GetLengthToElement(pathElement);
-		double lengthToPathElementInclude = pathElement->GetLength() + lengthToPathElementExclude;
-
-		double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
-		SimulationState simulationState = pathElement->GetSimulationState(u);
-
-		/*std::ostringstream ss;
-		ss << "PathLength: " << pathLength << endl;
-		ss << "lengthToPathElementExclude: " << lengthToPathElementExclude << endl;
-		ss << "lengthToPathElementInclude: " << lengthToPathElementInclude << endl;
-
-		ss << "u: " << u << endl;
-
-		ss << endl;
-		std::string s(ss.str());
-
-		OutputDebugStringA(s.c_str());*/
-
-		return simulationState;
+		int error = 0;
+		return SimulationState();
 	}
-	catch (std::exception e)
-	{
-		int lala = 0;
-	}
+
+	double pathLength = GetLength();
+	double lengthToPathElementExclude = GetLengthToElement(pathElement);
+	double lengthToPathElementInclude = pathElement->GetLength() + lengthToPathElementExclude;
+
+	double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
+	SimulationState simulationState = pathElement->GetSimulationState(u);
+
+	/*std::ostringstream ss;
+	ss << "PathLength: " << pathLength << endl;
+	ss << "lengthToPathElementExclude: " << lengthToPathElementExclude << endl;
+	ss << "lengthToPathElementInclude: " << lengthToPathElementInclude << endl;
+
+	ss << "u: " << u << endl;
+
+	ss << endl;
+	std::string s(ss.str());
+
+	OutputDebugStringA(s.c_str());*/
+
+	return simulationState;
 }
 
 std::vector<SimulationState> Path::GetAllSimulationStates(double step)

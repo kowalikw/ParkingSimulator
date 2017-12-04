@@ -11,7 +11,7 @@
 #include "MapEditor.h"
 #include "Visualisation.h"
 #include "MapEditorGLHost.h"
-#include "Settings.h";
+#include "Settings.h"
 #include "SelectMap.h"
 #include "SelectVehicle.h"
 #include "FindPath.h"
