@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <qsettings.h>
+#include <qdir.h>
 
 class Language
 {

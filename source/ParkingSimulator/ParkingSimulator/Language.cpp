@@ -4,7 +4,7 @@ Language* Language::s_instance = NULL;
 
 void Language::LoadLanguage(std::string lang)
 {
-	QString languageFilePath = QString("C:\\Users\\Wojtek\\Source\\Repos\\ParkingSimulator-NEW\\source\\ParkingSimulator\\x64\\Debug\\lang.%1.ini").arg(QString::fromStdString(lang));
+	QString languageFilePath = QString("%1/lang.%2.ini").arg(QDir::currentPath()).arg(QString::fromStdString(lang));
 
 	QSettings language(languageFilePath, QSettings::IniFormat);
 

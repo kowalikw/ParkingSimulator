@@ -79,3 +79,4 @@ CMakeLists.txt.user*
 *.bak4
 /source/ParkingSimulator/ParkingSimulator/x64/Release
 /source/ParkingSimulator/x64/Release
+*.ini

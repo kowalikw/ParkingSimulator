@@ -4,7 +4,7 @@ Settings* Settings::s_instance = NULL;
 
 void Settings::LoadSettings()
 {
-	settings = new QSettings(settingsFile, QSettings::IniFormat);
+	settings = new QSettings(QString("%1/settings.ini").arg(QDir::currentPath()), QSettings::IniFormat);
 
 	language = settings->value("Language").toString().toStdString();
 
@@ -79,44 +79,6 @@ void Settings::LoadSettings()
 void Settings::SaveSettings()
 {
 	settings->setValue("Language", QString::fromStdString(language));
-	/*for (int i = 0; i < 6; i++)
-	{
-		settings->setValue(QString("Building_%1_Name").arg(i), QString::fromStdString(buildings[i].name));
-		settings->setValue(QString("Building_%1_Thumbnail").arg(i), QString::fromStdString(buildings[i].thumbnail));
-		settings->setValue(QString("Building_%1_Model").arg(i), QString::fromStdString(buildings[i].model));
-		settings->setValue(QString("Building_%1_DefaultWidth").arg(i), buildings[i].defaultWidth);
-		settings->setValue(QString("Building_%1_DefaultHeight").arg(i), buildings[i].defaultHeight);
-	}
-
-	settings->setValue("DecorationsCount", decorations.size());
-	for (int i = 0; i < decorations.size(); i++)
-	{
-		settings->setValue(QString("Decoration_%1_Name").arg(i), QString::fromStdString(decorations[i].name));
-		settings->setValue(QString("Decoration_%1_Thumbnail").arg(i), QString::fromStdString(decorations[i].thumbnail));
-		settings->setValue(QString("Decoration_%1_Model").arg(i), QString::fromStdString(decorations[i].model));
-		settings->setValue(QString("Decoration_%1_DefaultWidth").arg(i), decorations[i].defaultWidth);
-		settings->setValue(QString("Decoration_%1_DefaultHeight").arg(i), decorations[i].defaultHeight);
-	}
-
-	settings->setValue("ParkingPlacesCount", parkingPlaces.size());
-	for (int i = 0; i < parkingPlaces.size(); i++)
-	{
-		settings->setValue(QString("ParkingPlace_%1_Name").arg(i), QString::fromStdString(parkingPlaces[i].name));
-		settings->setValue(QString("ParkingPlace_%1_Thumbnail").arg(i), QString::fromStdString(parkingPlaces[i].thumbnail));
-		settings->setValue(QString("ParkingPlace_%1_Model").arg(i), QString::fromStdString(parkingPlaces[i].model));
-		settings->setValue(QString("ParkingPlace_%1_DefaultWidth").arg(i), parkingPlaces[i].defaultWidth);
-		settings->setValue(QString("ParkingPlace_%1_DefaultHeight").arg(i), parkingPlaces[i].defaultHeight);
-	}
-
-	settings->setValue("VehiclesCount", vehicles.size());
-	for (int i = 0; i < parkingPlaces.size(); i++)
-	{
-		settings->setValue(QString("Vehicle_%1_Name").arg(i), QString::fromStdString(vehicles[i].name));
-		settings->setValue(QString("Vehicle_%1_Thumbnail").arg(i), QString::fromStdString(vehicles[i].thumbnail));
-		settings->setValue(QString("Vehicle_%1_Model").arg(i), QString::fromStdString(parkingPlaces[i].model));
-		settings->setValue(QString("Vehicle_%1_DefaultWidth").arg(i), vehicles[i].defaultWidth);
-		settings->setValue(QString("Vehicle_%1_DefaultHeight").arg(i), vehicles[i].defaultHeight);
-	}*/
 }
 
 int Settings::GetInt(std::string name)

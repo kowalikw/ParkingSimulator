@@ -6,6 +6,7 @@
 #include <qsettings.h>
 #include "nanovg.h"
 #include <qcolor.h>
+#include <qdir.h>
 
 struct MapElementModel
 {
@@ -63,7 +64,6 @@ private:
 	}
 
 	QSettings *settings;
-	QString settingsFile = "C:\\Users\\Wojtek\\Source\\Repos\\ParkingSimulator-NEW\\source\\ParkingSimulator\\x64\\Debug\\settings.ini";
 
 	std::string language;
 	std::vector<MapElementModel> buildings;
