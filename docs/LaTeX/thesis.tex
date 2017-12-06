@@ -1057,7 +1057,120 @@ Poza dość prostymi testami jak te zaprezentowane powyżej zostały przeprowadz
 
 Jak pokazały przeprowadzone testy algorytm działa poprawnie i potrafi wyznaczyć ścieżkę nawet w dość skomplikowanym przypadku. Zdarzają się jednak sytuacje, w których ścieżka nie zostaje znaleziona, choć patrząc na mapę od razu widać, że istnieje. W takich przypadkach najczęściej wystarczy zmienić parametry wyszukiwania ścieżki i dodać dodatkowe wierzchołki do konstruowanego grafu. Kolejnym etapem rozwoju algorytmu mogłaby być automatyzacja tego procesu i automatyczny dobór parametrów przez algorytm w zależności od wczytanej przez użytkownika mapy.
 
-Kolejne problemy jakie ujawniły testy to dodawanie krawędzi wstecznych w metodzie wpisywania łuków oraz bardzo długi czas obliczeń dla bardziej skomplikowanych map. Dla przykładu wyznaczanie trajektorii w sytuacji przedstawionej na rysunku x.x trwało blisko 5 minut, co w mojej ocenie jest czasem zbyt długim. Pokrywa się to jednak z przewidywaniami, ponieważ aktywny był algorytm wykrywania i eliminacji kolizji, a jest on procesem bardzo kosztownym. Rozwiązanie wymienionych problemów i optymalizacja algorytmu byłaby celem kolejnego etapu prac nad planerem ruchu, gdyby do niego doszło.
+Kolejne problemy jakie ujawniły testy to dodawanie krawędzi wstecznych w metodzie wpisywania łuków oraz długi czas obliczeń dla bardziej skomplikowanych map, gdy włączone jest wykrywanie i eliminacji kolizji pojazdu z przeszkodami. Pokrywa się to jednak z przewidywaniami, ponieważ algorytm wykrywania i eliminacji kolizji jest  procesem dość kosztownym i gdy układ przeszkód na mapie wymusza jego intensywne użycie to czas obliczeń znacząco rośnie. Rozwiązanie wymienionych problemów i optymalizacja algorytmu byłaby celem kolejnego etapu prac nad planerem ruchu, gdyby do niego doszło.
+
+\newpage
+
+\subsection{Wpływ parametrów algorytmu na czas obliczeń}
+
+W tej części dokumentu zaprezentowany zostanie wpływ następujących parametrów na czas działania algorytmu:
+\begin{itemize}
+	\item gęstości siatki sztucznych wierzchołków dodanych do grafu,
+	\item jakości algorytmu wykrywania i eliminacji kolizji.
+\end{itemize}
+
+Wpływ tych parametrów na czas obliczeń został przebadany empirycznie. Doświadczenia pokazały również, że pozostałe parametry konfigurowane przez użytkownika takie jak wartość procentowa szerokości pojazdu o jaką powiększane są przeszkody oraz wybór pomiędzy algorytmem opartym na krzywej B-sklejanej lub wpisywanych łukach nie mają większego wpływu na czas obliczeń tylko na jakość lub w ogóle istnienie ścieżki.
+
+Wszystkie czasy działania algorytmu zostały uśrednione - wykonanych zostało po 5 prób dla każdego zestawu parametrów i danych wejściowych, a następnie wyliczono średnią arytmetyczną z tych prób i ta wartość została zapisana. Wyniki pomiarów zostały w dalszej części zapisane w tabelach oraz zaprezentowane w postaci wykresów.
+
+Dla niezbyt skomplikowanych i średnio skomplikowanych map (do 25-30 przeszkód) czas obliczeń jest zadowalający. Jednak w przypadku bardziej skomplikowanych map, gdzie liczba przeszkód jest już bardzo duża, czas działania algorytmu znacząco się wydłuża. Jest to zdeterminowane głównie złożonością zaprojektowanego algorytmu wykrywania i eliminacji kolizji (gdy układ przeszkód na mapie powoduje jego intensywne wykorzystanie), a także wybranym podejściem do konstrukcji grafu, na podstawie którego konstruowana jest finalna ścieżka dla pojazdu.
+
+\subsubsection{Wpływ gęstości siatki sztucznych wierzchołków dodanych do grafu na czas obliczeń}
+
+Poniżej zaprezentowano wpływ gęstości siatki sztucznie dodanych wierzchołków w grafie (w którym następnie wyszukiwana jest łamana na podstawie której konstruowana jest finalna ścieżka) na czas działania algorytmu planowania ruchu. Mapa na której przeprowadzano testy zawierała 20 przeszkód, ale gwarantowała istnienie ścieżki pomiędzy położeniem początkowym i końcowym. Pomiary zostały wykonane dla następujących danych i parametrów:
+\begin{itemize}
+	\item procent powiększenia przeszkód: 50,
+	\item algorytm planowania ruchu: krzywa B-sklejana,
+	\item jakość algorytmu wykrywania i eliminacji kolizji: wyłączony.
+\end{itemize}
+
+\begin{center}
+	\begin{tabular}{ c c }
+		\begin{tabular}{ | c | c | }
+    \hline
+    \textbf{Gęstość siatki} & \textbf{Czas obliczeń [ms]} \\
+    \textbf{dodatkowych} &  \\
+    \textbf{wierzchołków} &  \\ \hline
+    	0 &	1146 \\ \hline
+		1 &	1154 \\ \hline
+		2 &	1172 \\ \hline
+		3 &	1198 \\ \hline
+		4 &	1234 \\ \hline
+		5 &	1284 \\ \hline
+		6 &	1339 \\ \hline
+		7 &	1440 \\ \hline
+	\end{tabular} &
+	\begin{tabular}{ | c | c | }
+    \hline
+    \textbf{Gęstość siatki} & \textbf{Czas obliczeń [ms]} \\
+    \textbf{dodatkowych} &  \\
+    \textbf{wierzchołków} &  \\ \hline
+		8 &	1485 \\ \hline
+	9 &	1586 \\ \hline
+	10 &	1729 \\ \hline
+	11 &	1833 \\ \hline
+	12 &	2033 \\ \hline
+	13 &	2190 \\ \hline
+	14 &	2344 \\ \hline
+	15 &	2560 \\ \hline
+  \end{tabular}
+	\end{tabular}\\
+  \vspace{0.6cm}
+  \textit{\textbf{Tabela 5.1.4.1}. Wpływ gęstości siatki sztucznych wierzchołków dodanych do grafu na czas obliczeń}
+\end{center}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{chartExtraVertices}
+\caption[Wpływ ilości sztucznych wierzchołków dodanych do grafu na czas obliczeń]{Wpływ gęstości siatki sztucznych wierzchołków dodanych do grafu na czas obliczeń}
+\end{figure}
+
+\subsubsection{Wpływ jakości wykrywania i eliminacji kolizji na czas obliczeń}
+
+Poniżej zaprezentowano wpływ parametru określającego jakość działania algorytmu wykrywania i eliminacji kolizji podczas wyznaczania ścieżki dla pojazdu. Parametr ten może przyjmować wartość od 0 do 100, gdzie 0 oznacza brak jakiegokolwiek sprawdzania kolizji pojazdu z przeszkodami na mapie, natomiast 100 oznacza najlepszy wariant i najbardziej dokładne obliczenia. W tym wypadku, aby w ogóle można było mierzyć czas potrzebny na sprawdzanie kolizji, na mapie znajdowało się 15 przeszkód. Pomiary zostały wykonane dla następujących danych i parametrów:
+\begin{itemize}
+	\item procent powiększenia przeszkód: 50%,
+	\item algorytm planowania ruchu: krzywa B-sklejana,
+	\item gęstość siatki sztucznie dodawanych wierzchołków do grafu: 0.
+\end{itemize}
+
+\begin{center}
+	\begin{tabular}{ c c }
+		\begin{tabular}{ | c | c | }
+    \hline
+    \textbf{Jakość wykrywania} & \textbf{Czas obliczeń [ms]} \\
+    \textbf{i eliminacji} &  \\
+    \textbf{kolizji} &  \\ \hline
+    	0 &	1146 \\ \hline
+		10 &	1139 \\ \hline
+		20 &	1838 \\ \hline
+		30 &	2347 \\ \hline
+		40 &	2398 \\ \hline
+		50 &	2466 \\ \hline
+	\end{tabular} &
+	\begin{tabular}{ | c | c | }
+    \hline
+    \textbf{Jakość wykrywania} & \textbf{Czas obliczeń [ms]} \\
+    \textbf{i eliminacji} &  \\
+    \textbf{kolizji} &  \\ \hline
+		60 &	2564 \\ \hline
+		70 &	2701 \\ \hline
+		80 &	2698 \\ \hline
+		90 &	2777 \\ \hline
+		100 &	2785 \\ \hline
+  \end{tabular}
+	\end{tabular}\\
+  \vspace{0.6cm}
+  \textit{\textbf{Tabela 5.1.4.1}. Wpływ jakości wykrywania i eliminacji kolizji na czas obliczeń}
+\end{center}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.8]{chartCollisionDetectionQuality}
+\caption[Wpływ jakości wykrywania i eliminacji kolizji na czas obliczeń]{Wpływ jakości wykrywania i eliminacji kolizji na czas obliczeń}
+\end{figure}
+
+Wyniki doświadczeń przeprowadzonych dla jakości działania algorytmu wykrywania i eliminacji kolizji są dość zaskakujące. Okazało się, że wpływ działania tego algorytmu na czas obliczeń jest ściśle związany z układem przeszkód na mapie. Dla testowej mapy już słaba jakość algorytmu (10 - 20) pozwalała na wykrycie i eliminację wszystkich kolizji i zwiększanie jakości nie powodowało znacznego wydłużania czasu obliczeń. Gdy jednak mapa jest bardziej skomplikowana a ścieżka trudna do wyznaczenia to algorytm ten może zacząć zachowywać się w zupełnie inny sposób i wówczas to jego złożoność będzie miała główny wpływ na czas działania całego algorytmu planowania ruchu. 
 
 \newpage
 
@@ -1214,10 +1327,6 @@ Przykładowe ścieżki parkowania:
 \end{itemize}
 
 Działanie algorytmu wyznaczania ścieżek parkingowych pokrywa wszystkie sytuacje jakie mogą wystąpić podczas wykonywania manewru parkowania, gdy otoczenie wokół miejsca parkingowego jest bezkolizyjne. Jednak w przypadku, gdy jakiś obiekt znajduje się zbyt blisko ścieżki parkowania i powoduje kolizję z poruszającym się po ścieżce pojazdem, to algorytm zwraca informację, że zaparkowanie w tym miejscu nie jest możliwe, choć w rzeczywistości, często dałoby się taką przeszkodę ominąć i zakończyć manewr parkowania pomyślnie.  Dalszym krokiem w rozwoju algorytmu byłoby więc wykrywanie takich sytuacji i próba omijania przeszkód, aby możliwe było pomyślne dokończenie manewru, a nie natychmiastowe kończenie działania algorytmu. Nie ma natomiast żadnych zastrzeżeń co do czasu działania algorytmu. Wszystkie obliczenia wykonywane są błyskawicznie i odpowiedź algorytmu jest niemal natychmiastowa.
-
-\chapter{Wpływ parametrów na działanie algorytmu}
-
-% TODO:
 
 \chapter{Instrukcja użytkownika}
 
