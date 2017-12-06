@@ -345,8 +345,13 @@ void ParkingSimulator::setPathProperties()
 
 		ui.isPathSet->hide();
 		ui.pathElementsList->clear();
+		int index = 0;
 		for (int i = 0; i < pathElementsCount; i++)
-			ui.pathElementsList->addItem(new QListWidgetItem(QString("%1 %2").arg(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_PathElement"])).arg(i + 1)));
+			if (dynamic_cast<Turn*>(pathPlanner.GetFinalPath()->GetElements()[i]) == NULL)
+			{
+				ui.pathElementsList->addItem(new QListWidgetItem(QString("%1 %2").arg(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_PathElement"])).arg(index + 1)));
+				index++;
+			}
 		ui.pathElementsList->show();
 	}
 	else
@@ -1737,7 +1742,20 @@ void ParkingSimulator::pathElementSelectionChange()
 {
 	int selectedIndex = ui.pathElementsList->currentRow();
 	if (selectedIndex >= 0 && selectedIndex < pathPlanner.GetFinalPath()->GetElements().size())
-		pathPlanner.SetSelectedPathElement(pathPlanner.GetFinalPath()->GetElements()[selectedIndex]);
+	{
+		int index = 0;
+		auto pathElements = pathPlanner.GetFinalPath()->GetElements();
+		for(int i = 0; i < pathElements.size(); i++)
+		{
+			if(dynamic_cast<Turn*>(pathElements[i]) == NULL)
+				index++;
+			if (index - 1 == selectedIndex)
+			{
+				pathPlanner.SetSelectedPathElement(pathElements[i]);
+				break;
+			}
+		}
+	}
 }
 
 void ParkingSimulator::enablePathPlannerButtons()

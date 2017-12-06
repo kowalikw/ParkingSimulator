@@ -7,6 +7,7 @@
 #include "Vehicle.h"
 #include "Map.h"
 #include <string>
+#include "Turn.h"
 
 using namespace std;
 
@@ -57,6 +58,11 @@ public:
 				ar & std::string("BSpline");
 				ar & *dynamic_cast<BSpline*>(elements[i]);
 			}
+			else if (elementType == std::string(typeid(Turn).name()))
+			{
+				ar & std::string("Turn");
+				ar & *dynamic_cast<Turn*>(elements[i]);
+			}
 		}
 	}
 	template<class Archive>
@@ -85,6 +91,12 @@ public:
 			else if (elementType == std::string("BSpline"))
 			{
 				BSpline *element = new BSpline();
+				ar & *element;
+				elements.push_back(element);
+			}
+			else if (elementType == std::string("Turn"))
+			{
+				Turn *element = new Turn();
 				ar & *element;
 				elements.push_back(element);
 			}

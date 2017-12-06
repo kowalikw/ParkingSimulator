@@ -23,13 +23,26 @@ BSpline::BSpline(vector<glm::vec2> controlPoints, int p)
 
 	this->p = p;
 	this->n = 3;
-	this->m = n + newControlPoints.size();
+	this->m = n + newControlPoints.size() + 1;
 	this->controlPoints = newControlPoints;
 	this->knots = vector<double>(m + 1);
 
-	for (int i = 0; i < m + 1; i++)
-		knots[i] = i * 1.0 / m;
-	
+	std::vector<double> L;
+	L.push_back(0);
+	for (int i = 1; i < newControlPoints.size(); i++)
+		L.push_back(L[i - 1] + GeometryHelper::GetDistanceBetweenPoints(newControlPoints[i - 1], newControlPoints[i]));
+
+	std::vector<double> t;
+	for (int i = 0; i < newControlPoints.size(); i++)
+		t.push_back(L[i] / L[newControlPoints.size() - 1]);
+
+	for (int i = 0; i <= n; i++) knots[i] = 0;
+	for (int i = 1; i <= newControlPoints.size() - n; i++)
+	{
+		knots[i + n] = 1.0f / (float)n * (t[i] + t[i + 1] + t[i + 2]);
+	}
+	for (int i = m - n; i <= m; i++) knots[i] = 1;
+
 	// calculate length
 	glm::vec2 currentPoint, prevPoint;
 	for (double t = 0; t < 1.0; t += 0.01)
@@ -166,7 +179,7 @@ double BSpline::GetLength()
 	if (this->length == 0)
 	{
 		glm::vec2 currentPoint, prevPoint;
-		for (double t = 0; t < 1.0; t += 0.01)
+		for (double t = 0; t <= 1.0; t += 0.01)
 		{
 			if (t == 0)
 				prevPoint = GetPoint(t);
@@ -199,22 +212,20 @@ double BSpline::GetInsideAngle(double t, double wheelbase, double track)
 
 double BSpline::GetCurvature(double t)
 {
-	if (t >= 0.01 && t <= 0.99f)
+	if (t == 0.0) t += 0.01;
+	if (t == 1.0) t -= 0.01;
+
+	auto d1 = GetPoint(t - 0.01f) - GetPoint(t);
+	auto d2 = GetPoint(t) - GetPoint(t + 0.01f);
+
+	double angle = GeometryHelper::GetAngleBetweenVectors(d1, d2);
+	double length = 0;
+	for (double u = t - 0.01 + 0.002; u < t + 0.01 + 0.002; u += 0.002)
 	{
-		auto d1 = GetPoint(t - 0.01f) - GetPoint(t);
-		auto d2 = GetPoint(t) - GetPoint(t + 0.01f);
-
-		double angle = GeometryHelper::GetAngleBetweenVectors(d1, d2);
-		double length = 0;
-		for (double u = t - 0.01 + 0.002; u < t + 0.01 + 0.002; u += 0.002)
-		{
-			length += GeometryHelper::GetDistanceBetweenPoints(GetPoint(u - 0.002), GetPoint(u));
-		}
-
-		return abs(angle / length);
+		length += GeometryHelper::GetDistanceBetweenPoints(GetPoint(u - 0.002), GetPoint(u));
 	}
 
-	return 0;
+	return abs(angle / length);
 }
 
 glm::vec2 BSpline::GetFirstPoint()
@@ -237,8 +248,8 @@ glm::vec2 BSpline::GetPoint(double t)
 
 SimulationState BSpline::GetSimulationState(double t)
 {
-	if (t < 0.1) t = 0.1f; // clamp min
-	if (t > 0.9f) t = 0.9f; // clamp max
+	if (t == 0) t = 0.01f; // clamp min
+	if (t == 1.0f) t = 0.99f; // clamp max
 
 	double u = knots[n] + t * (knots[m - n] - knots[n]);
 

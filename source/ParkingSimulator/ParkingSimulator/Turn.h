@@ -34,12 +34,20 @@ public:
 	{
 		ar & angleFrom;
 		ar & angleTo;
+		ar & position;
+		ar & rotation;
+		ar & length;
+		ar & lengthToElement;
 	}
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
 		ar & angleFrom;
 		ar & angleTo;
+		ar & position;
+		ar & rotation;
+		ar & length;
+		ar & lengthToElement;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:
