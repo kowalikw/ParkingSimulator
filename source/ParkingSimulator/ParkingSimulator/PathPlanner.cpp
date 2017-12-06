@@ -91,7 +91,7 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * en
 	pathParts.push_back(path);
 	pathParts.push_back(pEnd);
 
-	finalPath = new Path(pathParts);
+	finalPath = insertTurnsIntoPath(new Path(pathParts));
 
 	return finalPath;
 }
@@ -120,7 +120,7 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, glm::vec2 end)
 	pathParts.push_back(pStart);
 	pathParts.push_back(path);
 
-	finalPath = new Path(pathParts);
+	finalPath = insertTurnsIntoPath(new Path(pathParts));
 
 	return finalPath;
 }
@@ -154,7 +154,7 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, ParkingSpace * end)
 	pathParts.push_back(path);
 	pathParts.push_back(pEnd);
 
-	finalPath = new Path(pathParts);
+	finalPath = insertTurnsIntoPath(new Path(pathParts));
 
 	return finalPath;
 }
@@ -166,7 +166,9 @@ Path * PathPlanner::CreateAdmissiblePath(glm::vec2 start, glm::vec2 end)
 	Line* startLine = new Line(start, start + (float)vehicle->GetSize().x / 2.0f * startDirection);
 	Line* endLine = new Line(end - (float)vehicle->GetSize().x / 2.0f * endDirection, end);
 
-	return CreateAdmissiblePath(startLine, endLine);
+	finalPath = insertTurnsIntoPath(CreateAdmissiblePath(startLine, endLine));
+
+	return finalPath;
 }
 
 Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
@@ -1096,6 +1098,86 @@ Path * PathPlanner::createParkingPath(Vehicle vehicl, ParkingSpace parkingSpace,
 	}
 
 	return path;
+}
+
+Path * PathPlanner::insertTurnsIntoPath(Path *path)
+{
+	if (path == nullptr) return nullptr;
+
+	Path *resultPath = new Path();
+	std::vector<PathElement*> pathElements = path->GetElements();
+	for (int i = 0; i < pathElements.size(); i++)
+	{
+		if ( dynamic_cast<Circle*>(pathElements[i])!= NULL)
+		{
+			Circle *circle = dynamic_cast<Circle*>(pathElements[i]);
+			double turnAngleFrom, turnAngleTo;
+
+			if (i == 0 && i == pathElements.size() - 1)
+			{
+				turnAngleFrom = 0;
+				turnAngleTo = pathElements[i]->GetInsideAngle(0.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+				resultPath->AddElement(new Turn(turnAngleFrom, turnAngleTo, pathElements[i]->GetPoint(0.0), circle->GetCircleType() == CircleType::Left ? pathElements[i]->GetAngle(0.0) : -pathElements[i]->GetAngle(0.0))); // add position and rotation
+
+				resultPath->AddElement(pathElements[i]);
+
+				turnAngleFrom = pathElements[i]->GetInsideAngle(1.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+				turnAngleTo = 0;
+				resultPath->AddElement(new Turn(turnAngleFrom, turnAngleTo, pathElements[i]->GetPoint(1.0), circle->GetCircleType() == CircleType::Left ? pathElements[i]->GetAngle(1.0) : -pathElements[i]->GetAngle(1.0)));
+			}
+			else if (i == 0)
+			{
+				turnAngleFrom = 0;
+				turnAngleTo = pathElements[i]->GetInsideAngle(0.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+				resultPath->AddElement(new Turn(turnAngleFrom, turnAngleTo, pathElements[i]->GetPoint(0.0), circle->GetCircleType() == CircleType::Left ? pathElements[i]->GetAngle(0.0) : -pathElements[i]->GetAngle(0.0)));
+
+				resultPath->AddElement(pathElements[i]);
+
+				if (dynamic_cast<Circle*>(pathElements[i + 1]) == NULL)
+				{
+					turnAngleFrom = pathElements[i]->GetInsideAngle(1.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+					turnAngleTo = pathElements[i + 1]->GetInsideAngle(0.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+					resultPath->AddElement(new Turn(turnAngleFrom, turnAngleTo, pathElements[i]->GetPoint(1.0), circle->GetCircleType() == CircleType::Left ? pathElements[i]->GetAngle(1.0) : -pathElements[i]->GetAngle(1.0)));
+				}
+			}
+			else if (i == pathElements.size() - 1)
+			{
+				if (dynamic_cast<Circle*>(pathElements[i - 1]) == NULL)
+				{
+					turnAngleFrom = pathElements[i - 1]->GetInsideAngle(1.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+					turnAngleTo = pathElements[i]->GetInsideAngle(0.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+					resultPath->AddElement(new Turn(turnAngleFrom, turnAngleTo, pathElements[i]->GetPoint(0.0), circle->GetCircleType() == CircleType::Left ? pathElements[i]->GetAngle(0.0) : -pathElements[i]->GetAngle(0.0)));
+				}
+				
+				resultPath->AddElement(pathElements[i]);
+
+				turnAngleFrom = pathElements[i]->GetInsideAngle(1.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+				turnAngleTo = 0;
+				resultPath->AddElement(new Turn(turnAngleFrom, turnAngleTo, pathElements[i]->GetPoint(1.0), circle->GetCircleType() == CircleType::Left ? pathElements[i]->GetAngle(1.0) : -pathElements[i]->GetAngle(1.0)));
+			}
+			else // i > 0 && i < pathElements.size() - 1
+			{
+				turnAngleFrom = pathElements[i - 1]->GetInsideAngle(1.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+				turnAngleTo = pathElements[i]->GetInsideAngle(0.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+				resultPath->AddElement(new Turn(turnAngleFrom, turnAngleTo, pathElements[i]->GetPoint(0.0), circle->GetCircleType() == CircleType::Left ? pathElements[i]->GetAngle(0.0) : -pathElements[i]->GetAngle(0.0)));
+
+				resultPath->AddElement(pathElements[i]);
+
+				if (dynamic_cast<Circle*>(pathElements[i + 1]) == NULL) // next element is not an arc
+				{
+					turnAngleFrom = pathElements[i]->GetInsideAngle(1.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+					turnAngleTo = pathElements[i + 1]->GetInsideAngle(0.0, vehicle->GetWheelbase(), vehicle->GetTrack());
+					resultPath->AddElement(new Turn(turnAngleFrom, turnAngleTo, pathElements[i]->GetPoint(1.0), circle->GetCircleType() == CircleType::Left ? pathElements[i]->GetAngle(1.0) : -pathElements[i]->GetAngle(1.0)));
+				}
+			}
+		}
+		else
+		{
+			resultPath->AddElement(pathElements[i]);
+		}
+	}
+
+	return resultPath;
 }
 
 bool PathPlanner::GetSetStartPosition()

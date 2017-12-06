@@ -16,6 +16,10 @@
 #include "Simulation.h"
 #include "Visualisation.h"
 #include "PleaseWaitWindow.h"
+#include "Settings.h"
+#include <QThread>
+#include "BSpline.h"
+#include "Turn.h"
 #include <map.h>
 
 #include <glm.hpp>

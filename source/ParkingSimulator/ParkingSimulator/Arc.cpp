@@ -1,6 +1,4 @@
 #include "Arc.h"
-#include "GeometryHelper.h"
-#include "CommonHelper.h"
 
 Circle::Circle()
 {
@@ -99,24 +97,30 @@ double Circle::GetAngle(double t)
 	return angleFrom < angleTo ? angleFrom + t * (angleTo - angleFrom) : angleTo + t * (angleFrom - angleTo);
 }
 
+double Circle::GetInsideAngle(double t, double wheelbase, double track)
+{
+	double angle = atan(wheelbase / (radius - track / 2.0f));
+	if (circleType == Right)
+		angle *= -1;
+	return angle;
+}
+
 double Circle::GetCurvature(double t)
 {
-	if (t >= 0.01 && t <= 0.99f)
+	if (t == 0.0) t += 0.01;
+	if (t == 1.0) t -= 0.01;
+
+	auto d1 = GetPoint(t - 0.01f) - GetPoint(t);
+	auto d2 = GetPoint(t) - GetPoint(t + 0.01f);
+
+	double angle = GeometryHelper::GetAngleBetweenVectors(d1, d2);
+	double length = 0;
+	for (double u = t - 0.01 + 0.002; u < t + 0.01 + 0.002; u += 0.002)
 	{
-		auto d1 = GetPoint(t - 0.01f) - GetPoint(t);
-		auto d2 = GetPoint(t) - GetPoint(t + 0.01f);
-
-		double angle = GeometryHelper::GetAngleBetweenVectors(d1, d2);
-		double length = 0;
-		for (double u = t - 0.01 + 0.002; u < t + 0.01 + 0.002; u += 0.002)
-		{
-			length += GeometryHelper::GetDistanceBetweenPoints(GetPoint(u - 0.002), GetPoint(u));
-		}
-
-		return abs(angle / length);
+		length += GeometryHelper::GetDistanceBetweenPoints(GetPoint(u - 0.002), GetPoint(u));
 	}
 
-	return 0;
+	return abs(angle / length);
 }
 
 glm::vec2 Circle::GetFirstPoint()

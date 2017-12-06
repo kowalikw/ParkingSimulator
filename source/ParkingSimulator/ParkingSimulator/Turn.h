@@ -1,22 +1,21 @@
-#ifndef LINE_H
-#define LINE_H
+#pragma once
+#ifndef TURN_H
+#define TURN_H
 
 #include "PathElement.h"
-#include "Arc.h"
 
-class Line : public PathElement
+class Turn : public PathElement
 {
 public:
-	Line();
-	Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType = ManeuverType::Front);
-	Line(glm::vec2 from, glm::vec2 to, int v1, int v2, ManeuverType maneuverType = ManeuverType::Front);
-	glm::vec2 GetFrom() const;
-	glm::vec2 GetTo() const;
-	void SetFrom(glm::vec2 from);
-	void SetTo(glm::vec2 to);
+	Turn();
+	Turn(double angleFrom, double angleTo);
+	Turn(double angleFrom, double angleTo, glm::vec2 position, double rotation);
+	~Turn();
 
-	int GetV1() const;
-	int GetV2() const;
+	double GetAngleFrom();
+	double GetAngleTo();
+	void SetAngleFrom(double angleFrom);
+	void SetAngleTo(double angleTo);
 
 	virtual double GetLength();
 	virtual double GetAngle(double t);
@@ -33,24 +32,21 @@ public:
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
 	{
-		ar & boost::serialization::base_object<PathElement>(*this);
-		ar & from;
-		ar & to;
+		ar & angleFrom;
+		ar & angleTo;
 	}
 	template<class Archive>
 	void load(Archive & ar, const unsigned int version)
 	{
-		ar & boost::serialization::base_object<PathElement>(*this);
-		ar & from;
-		ar & to;
+		ar & angleFrom;
+		ar & angleTo;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:
-	glm::vec2 from;
-	glm::vec2 to;
-
-	int v1;
-	int v2;
+	double angleFrom;
+	double angleTo;
+	glm::vec2 position;
+	double rotation;
 };
 
 #endif

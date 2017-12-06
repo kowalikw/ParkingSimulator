@@ -9,7 +9,6 @@
 #include "Line.h"
 #include "Arc.h"
 #include "Simulation.h"
-#include "BezierCurve.h"
 #include "BSpline.h"
 #include <glm.hpp>
 #include "Settings.h"

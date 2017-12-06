@@ -4,7 +4,6 @@
 #include "OpenGLHost.h"
 #include "PathPlanner.h"
 #include "NvgDrawHelper.h"
-#include "BezierCurve.h"
 
 class PathPlannerGLHost : public OpenGLHost
 {

@@ -9,6 +9,7 @@
 #include "Line.h"
 #include "Arc.h"
 #include "BSpline.h"
+#include "Turn.h"
 #include "GeometryHelper.h"
 #include "Simulation.h"
 #include "ParkingSpace.h"
@@ -203,6 +204,7 @@ private:
 	bool epsilonEquals(float f1, float f2);
 	Path * createDirectPolylinePath(Line *startLine, Line *endLine);
 	Path *createArcsBetweenSegments(vector<glm::vec2> points);
+	Path *insertTurnsIntoPath(Path *path);
 	bool checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2);
 	bool checkArcsCorrectness(Path *pathArcs, int arc1, int arc2);
 	bool checkPolylinePathCorectness(Path *path, int *element1, int *element2);

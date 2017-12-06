@@ -169,7 +169,6 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("Settings_SaveSettings", language.value("Settings_SaveSettings").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_ElementsCount", language.value("Common_ElementsCount").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_PathElement", language.value("Common_PathElement").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_NoVehicleInVehicleEditor_Title", language.value("WarningError_NoVehicleInVehicleEditor_Title").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_NoVehicleInVehicleEditor_Content", language.value("WarningError_NoVehicleInVehicleEditor_Content").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("VehicleEditor_NewVehicle", language.value("VehicleEditor_NewVehicle").toString().toStdString()));
@@ -194,26 +193,22 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("Common_Scale", language.value("Common_Scale").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_NotSet", language.value("Common_NotSet").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_OK", language.value("Common_OK").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetStartPosition_Title", language.value("WarningError_SetStartPosition_Title").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetStartPosition_Content", language.value("WarningError_SetStartPosition_Content").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetEndPosition_Title", language.value("WarningError_SetEndPosition_Title").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("WarningError_SetEndPosition_Content", language.value("WarningError_SetEndPosition_Content").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("Quality_Disabled", language.value("Quality_Disabled").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Quality_VeryLow", language.value("Quality_VeryLow").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Quality_Low", language.value("Quality_Low").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Quality_Medium", language.value("Quality_Medium").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Quality_Good", language.value("Quality_Good").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Quality_VeryGood", language.value("Quality_VeryGood").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_GraphExtraVerticesAlong", language.value("PathPlanner_GraphExtraVerticesAlong").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_GraphExtraVerticesAcross", language.value("PathPlanner_GraphExtraVerticesAcross").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_FindPathTitle", language.value("PathPlanner_FindPathTitle").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_ExpandObstaclesPercent", language.value("PathPlanner_ExpandObstaclesPercent").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PleaseWait_LoadingModels", language.value("PleaseWait_LoadingModels").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PleaseWait_PathCalculation", language.value("PleaseWait_PathCalculation").toString().toStdString()));
-
 	dictionary.insert(std::pair<std::string, std::string>("SimulationInfo_ExtraVerticesAlong", language.value("SimulationInfo_ExtraVerticesAlong").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("SimulationInfo_ExtraVerticesAcross", language.value("SimulationInfo_ExtraVerticesAcross").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_True", language.value("Common_True").toString().toStdString()));

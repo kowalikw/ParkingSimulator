@@ -1,10 +1,4 @@
 #include "BSpline.h"
-#include "GeometryHelper.h"
-#include <string>       // std::string
-#include <iostream>     // std::cout
-#include <sstream> 
-
-#include <windows.h>
 
 BSpline::BSpline()
 {
@@ -86,51 +80,6 @@ glm::vec2 BSpline::CalculatePoint(double t)
 	}
 
 	return d[n][l];
-
-
-	//int h = 0;
-	//int s = 0;
-	//int k = 0;
-
-	//vector<vector<glm::vec2>> a(n + 1, vector<glm::vec2>(m));
-	//vector<vector<glm::vec2>> P(n + 1, vector<glm::vec2>(m));
-
-	//if (u < knots[n] || u > knots[m - n])
-	//	return glm::vec2();
-
-	//for (int j = 0; j < m; j++)
-	//{
-	//	if ((u >= knots[j] && u < knots[j + 1]) || knots[j] == 1)
-	//	{
-	//		k = j;
-	//		h = p;
-	//		s = 0;
-
-	//		break;
-	//	}
-	//}
-
-	//for (int i = 0; i < controlPoints.size(); i++)
-	//	P[i][0] = controlPoints[i];
-
-	////for (int r = 1; r <= h; r++)
-	//for(int r = 1; r <= n; r++)
-	//{
-	//	for (int i = k - n + r; i <= k; i++)
-	//	{
-	//		a[i][r].x = (u - knots[i]) / (knots[i + n - r + 1] - knots[i]);
-	//		P[i][r].x = (1 - a[i][r].x) * P[i - 1][r - 1].x + a[i][r].x * P[i][r - 1].x;
-
-	//		a[i][r].y = (u - knots[i]) / (knots[i + n - r + 1] - knots[i]);
-	//		P[i][r].y = (1 - a[i][r].y) * P[i - 1][r - 1].y + a[i][r].y * P[i][r - 1].y;
-
-	//		/*a[i][r].z = (u - knots[i]) / (knots[i + p - r + 1] - knots[i]);
-	//		P[i][r].z = (1 - a[i][r].z) * P[i - 1][r - 1].z + a[i][r].z * P[i][r - 1].z;*/
-	//	}
-	//}
-
-	////return P[k - s][p - s];
-	//return P[k][n];
 }
 
 double BSpline::GetPointX(double t)
@@ -144,9 +93,6 @@ double BSpline::GetPointX(double t)
 			break;
 		}
 	}
-
-	
-	//	return -999;
 
 	vector<vector<double>> a(n + 1, vector<double>(m));
 	for (int k = 1; k <= n; k++)
@@ -184,9 +130,6 @@ double BSpline::GetPointY(double t)
 			break;
 		}
 	}
-
-	//if (t < knots[n] || t > knots[m - n])
-	//	return -999;
 
 	vector<vector<double>> a(n + 1, vector<double>(m));
 	for (int k = 1; k <= n; k++)
@@ -245,6 +188,15 @@ double BSpline::GetAngle(double t)
 	return atan2(dir.y, dir.x);
 }
 
+double BSpline::GetInsideAngle(double t, double wheelbase, double track)
+{
+	auto turnRadius = 1.0 / (2 * GetCurvature(t));
+	double angle = atan(wheelbase / (turnRadius - track / 2.0f));
+	if (GetDirection(t) == Right)
+		angle *= -1;
+	return angle;
+}
+
 double BSpline::GetCurvature(double t)
 {
 	if (t >= 0.01 && t <= 0.99f)
@@ -287,6 +239,7 @@ SimulationState BSpline::GetSimulationState(double t)
 {
 	if (t < 0.1) t = 0.1f; // clamp min
 	if (t > 0.9f) t = 0.9f; // clamp max
+
 	double u = knots[n] + t * (knots[m - n] - knots[n]);
 
 	SimulationState simulationState;

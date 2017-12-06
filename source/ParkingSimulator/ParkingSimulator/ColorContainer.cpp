@@ -1,5 +1,4 @@
 #include "ColorContainer.h"
-#include <qcolordialog.h>
 
 ColorContainer::ColorContainer(QWidget* parent, Qt::WindowFlags f)
 	: QLabel(parent) {

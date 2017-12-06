@@ -43,6 +43,7 @@ public:
 
 	virtual double GetLength() = 0;
 	virtual double GetAngle(double t) = 0;
+	virtual double GetInsideAngle(double t, double wheelbase, double track) = 0;
 	virtual double GetCurvature(double t) = 0;
 	virtual glm::vec2 GetFirstPoint() = 0;
 	virtual glm::vec2 GetLastPoint() = 0;

@@ -64,6 +64,11 @@ double Line::GetAngle(double t)
 	return atan2(to.y - from.y, to.x - from.x) + M_PI;
 }
 
+double Line::GetInsideAngle(double t, double wheelbase, double track)
+{
+	return 0.0;
+}
+
 double Line::GetCurvature(double t)
 {
 	return 0.0;

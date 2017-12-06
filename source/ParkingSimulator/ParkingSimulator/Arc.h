@@ -2,6 +2,8 @@
 #define CIRCLE_H
 
 #include "PathElement.h"
+#include "GeometryHelper.h"
+#include "CommonHelper.h"
 
 class Circle : public PathElement
 {
@@ -22,6 +24,7 @@ public:
 
 	virtual double GetLength();
 	virtual double GetAngle(double t);
+	virtual double GetInsideAngle(double t, double wheelbase, double track);
 	virtual double GetCurvature(double t);
 	virtual glm::vec2 GetFirstPoint();
 	virtual glm::vec2 GetLastPoint();

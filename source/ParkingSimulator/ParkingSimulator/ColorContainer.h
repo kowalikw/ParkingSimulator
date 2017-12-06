@@ -1,6 +1,8 @@
-#pragma once
+#ifndef COLOR_CONTAINER_H
+#define COLOR_CONTAINER_H
 
 #include <qlabel.h>
+#include <qcolordialog.h>
 
 class ColorContainer : public QLabel
 {
@@ -17,3 +19,4 @@ signals:
 	void clicked(ColorContainer & pos);
 };
 
+#endif

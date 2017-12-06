@@ -1,7 +1,4 @@
 #include "OpenGLHost3D.h"
-#include "Settings.h"
-#include <QThread>
-#include "BSpline.h"
 
 class LoadModelsThread : public QThread
 {
@@ -445,6 +442,10 @@ void OpenGLHost3D::paintGL()
 		{
 			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(turnRadius, simulationState.direction)), glm::vec3(0, 1, 0)) * modelMatrix;
 		}
+		else if (dynamic_cast<Turn*>(element) != NULL)
+		{
+			modelMatrix = glm::rotate(glm::mat4(), (float)simulationState.curvature, glm::vec3(0, 1, 0)) * modelMatrix;
+		}
 		modelMatrix = glm::rotate(glm::mat4(), (float)(leftFrontWheelModel->GetRotation().y), glm::vec3(0, 1, 0)) * modelMatrix;
 		modelMatrix = glm::translate(glm::mat4(), leftFrontWheelModel->GetTranslation()) * modelMatrix;
 		modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetRotation() - M_PI / 2.0f), glm::vec3(0, 1, 0)) * modelMatrix;
@@ -463,6 +464,10 @@ void OpenGLHost3D::paintGL()
 		else if (dynamic_cast<BSpline*>(element) && simulationState.curvature > 0)
 		{
 			modelMatrix = glm::rotate(glm::mat4(), (float)(vehicle->GetInsideAngleForRadius(turnRadius, simulationState.direction)), glm::vec3(0, 1, 0)) * modelMatrix;
+		}
+		else if (dynamic_cast<Turn*>(element) != NULL)
+		{
+			modelMatrix = glm::rotate(glm::mat4(), (float)simulationState.curvature, glm::vec3(0, 1, 0)) * modelMatrix;
 		}
 		modelMatrix = glm::rotate(glm::mat4(), (float)(rightFrontWheelModel->GetRotation().y), glm::vec3(0, 1, 0)) * modelMatrix;
 		modelMatrix = glm::translate(glm::mat4(), rightFrontWheelModel->GetTranslation()) * modelMatrix;
@@ -492,11 +497,11 @@ void OpenGLHost3D::paintGL()
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		rightRearWheelModel->Draw(*textureShader, false);
 
-		//std::ostringstream ss;
-		//ss << "Curvature: " << 1.0 / (2 * simulationState.curvature) << endl;
-		//ss << endl;
-		//std::string s(ss.str());
-		//OutputDebugStringA(s.c_str());
+		std::ostringstream ss;
+		ss << "Turn radius: " << turnRadius << endl;
+		ss << endl;
+		std::string s(ss.str());
+		OutputDebugStringA(s.c_str());
 	}
 }
 
