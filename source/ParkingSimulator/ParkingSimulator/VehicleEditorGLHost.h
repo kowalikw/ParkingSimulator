@@ -71,6 +71,7 @@ private:
 
 	Model *mapModel;
 	Model *vehicleModel;
+	Model *skyboxModel;
 
 	std::map<std::string, Model*> loadedModels;
 

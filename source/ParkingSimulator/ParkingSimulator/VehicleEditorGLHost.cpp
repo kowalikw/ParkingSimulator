@@ -87,6 +87,8 @@ void VehicleEditorGLHost::initializeGL()
 	// Light attributes
 	lightPos = glm::vec3(-30.0f, 100.0f, 0.0f);
 
+	skyboxModel = new Model("Resources/skyboxes/vehicleEditor/skybox.obj");
+
 	vehicleEditor->GetVehicle()->SetFrontLeftWheelModel(new Model("Resources/models/vehicle/vehicle.obj"));
 	//auto measure = box->MeasureModel();
 	vehicleEditor->GetVehicle()->GetFrontLeftWheelModel()->Translate(glm::vec3());
@@ -158,6 +160,11 @@ void VehicleEditorGLHost::paintGL()
 		initializeVehicleRearLeftWheelModel();
 	if (vehicleEditor->GetVehicleRearRightWheelModelChanged())
 		initializeVehicleRearRightWheelModel();
+
+	skyboxModel->Scale(glm::vec3(5000, 5000, 5000));
+	skyboxModel->Translate(camera->Position);
+	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(skyboxModel->GetModelMatrix()));
+	skyboxModel->Draw(*textureShader, false);
 
 	if (vehicleEditor->GetVehicle() != NULL)
 	{

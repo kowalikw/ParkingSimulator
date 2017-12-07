@@ -54,7 +54,6 @@ private:
 	GLuint VBO, VAO, EBO;
 	Shader *textureInstancedShader, *textureShader, *phongShader;
 	Camera *camera;
-	Model *myModel, *box, *car;
 	vector<Model> models;
 	GLuint texture1, texture2;
 	int width, height;
@@ -74,6 +73,7 @@ private:
 	// Light attributes
 	glm::vec3 lightPos;
 
+	Model *skyboxModel;
 	Model *mapModel;
 	Model *vehicleModel;
 	Model *leftFrontWheelModel, *rightFrontWheelModel;

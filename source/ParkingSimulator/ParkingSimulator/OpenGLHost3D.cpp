@@ -234,6 +234,8 @@ void OpenGLHost3D::initializeGL()
 
 	// Light attributes
 	lightPos = glm::vec3(0.0f, 1000.0f, 0.0);
+
+	skyboxModel = new Model("Resources/skyboxes/visualisation3D/skybox.obj");
 }
 
 void OpenGLHost3D::resizeGL(int w, int h)
@@ -410,6 +412,11 @@ void OpenGLHost3D::paintGL()
 		//glm::mat4 view;
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
+
+		skyboxModel->Scale(glm::vec3(5000, 5000, 5000));
+		skyboxModel->Translate(camera->Position);
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(skyboxModel->GetModelMatrix()));
+		skyboxModel->Draw(*textureShader, false);
 
 		float factor = -1;
 		float timeRatio = visualization->GetCurrentSimulation()->GetCurrentSimulationTime() / visualization->GetCurrentSimulation()->GetSimulationTime();

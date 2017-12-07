@@ -1,10 +1,5 @@
 #include "Map.h"
 
-#include <string>       // std::string
-#include <iostream>     // std::cout
-#include <sstream> 
-#include <Windows.h>
-
 Map::Map()
 {
 	this->width = 0;
