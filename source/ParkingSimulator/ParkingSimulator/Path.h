@@ -8,6 +8,7 @@
 #include "Map.h"
 #include <string>
 #include "Turn.h"
+#include "BSpline.h"
 
 using namespace std;
 

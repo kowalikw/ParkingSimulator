@@ -298,6 +298,8 @@ void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices, int extraVe
 	{
 		for (int j = 0; j < VerticesCount(); j++)
 		{
+			canCancelCalculation = false;
+
 			if (i == j) continue;
 
 			bool addEdge = true;
@@ -311,6 +313,8 @@ void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices, int extraVe
 
 			if (addEdge)
 				AddEdge(i, j);
+
+			canCancelCalculation = true;
 		}
 	}
 
@@ -318,6 +322,7 @@ void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices, int extraVe
 	{
 		for (int j = 0; j < VerticesCount(); j++)
 		{
+			canCancelCalculation = false;
 			GraphEdge *e = GetEdge(i, j);
 			if (e != NULL)
 			{
@@ -328,6 +333,7 @@ void Graph::CreateVoronoiFullGraph(Map * map, bool addExtraVertices, int extraVe
 						|| GeometryHelper::CheckPolygonContainsPoint(mapElements[k]->GetPoints(), glm::vec2(e->v2->x, e->v2->y)))
 						RemoveEdge(i, j);
 			}
+			canCancelCalculation = true;
 		}
 	}
 }
@@ -429,6 +435,10 @@ Path * Graph::FindPath(int s, int t)
 		}
 	}
 
+	for (int i = 0; i < VerticesCount(); i++)
+		delete estimatedDist[i];
+	delete estimatedDist;
+
 	int w = t;
 	while (prev[w] != -1)
 	{
@@ -443,4 +453,9 @@ Path * Graph::FindPath(int s, int t)
 		path->AddElement(new Line(glm::vec2(vertices[pathVertices[i]]->x, vertices[pathVertices[i]]->y), glm::vec2(vertices[pathVertices[i + 1]]->x, vertices[pathVertices[i + 1]]->y), pathVertices[i], pathVertices[i + 1]));
 
 	return path;
+}
+
+bool Graph::CanCancelCalculation()
+{
+	return this->canCancelCalculation;
 }

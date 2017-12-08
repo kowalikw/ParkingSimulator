@@ -215,6 +215,8 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 			fullVoronoiVisibilityGraph->RemoveEdge(line->GetV1(), line->GetV2());
 
+			delete polylinePath;
+
 			polylinePath = fullVoronoiVisibilityGraph->FindPath(indexStart, indexEnd);
 		}
 
@@ -229,7 +231,8 @@ Path * PathPlanner::CreateAdmissiblePath(Line *startLine, Line *endLine)
 
 			delete polylinePath;
 			delete finalPath;
-			delete collisionEdge;
+			if(collisionEdge->v1 == nullptr || collisionEdge->v2 == nullptr)
+				delete collisionEdge;
 
 			polylinePath = fullVoronoiVisibilityGraph->FindPath(indexStart, indexEnd);
 			finalPath = CreateAdmissiblePath(polylinePath);
@@ -291,8 +294,12 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 				auto a1 = fmod(newPathTmp->GetAt(0)->GetAngle(0.0) + 2.0f * M_PI, 2.0f * M_PI);
 				auto a2 = fmod(newLine->GetAngle(1.0) - M_PI + 2.0f * M_PI, 2.0f * M_PI);
 				if (!epsilonEquals(a1, a2) && !epsilonEquals(a1 + a2, 2 * M_PI))
-					newLine = new Line(newLine->GetTo(), newLine->GetFrom(), Back);
-				path->AddElement(newLine);
+				{
+					path->AddElement(new Line(newLine->GetTo(), newLine->GetFrom(), Back));
+					delete newLine;
+				}
+				else
+					path->AddElement(newLine);
 			}
 
 			if (i > 0)
@@ -301,7 +308,11 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 				auto a1 = fmod(path->GetLastElement()->GetAngle(1.0) + 2.0f * M_PI, 2.0f * M_PI);
 				auto a2 = fmod(newLine->GetAngle(0.0) - M_PI + 2.0f * M_PI, 2.0f * M_PI);
 				if (!epsilonEquals(a1, a2) && !epsilonEquals(a1 + a2, 2 * M_PI))
-					newLine = new Line(newPathTmp->GetAt(i)->GetFirstPoint(), newPathTmp->GetAt(i - 1)->GetLastPoint(), Back);
+				{
+					path->AddElement(new Line(newPathTmp->GetAt(i)->GetFirstPoint(), newPathTmp->GetAt(i - 1)->GetLastPoint(), Back));
+					delete newLine;
+				}
+				else
 				path->AddElement(newLine);
 			}
 
@@ -313,8 +324,12 @@ Path * PathPlanner::CreateAdmissiblePath(vector<glm::vec2> points)
 				auto a1 = fmod(path->GetLastElement()->GetAngle(1.0) + 2.0f * M_PI, 2.0f * M_PI);
 				auto a2 = fmod(newLine->GetAngle(0.0) - M_PI + 2.0f * M_PI, 2.0f * M_PI);
 				if (!epsilonEquals(a1, a2) && !epsilonEquals(a1 + a2, 2 * M_PI))
-					newLine = new Line(newLine->GetTo(), newLine->GetFrom(), Back);
-				path->AddElement(newLine);
+				{
+					path->AddElement(new Line(newLine->GetTo(), newLine->GetFrom(), Back));
+					delete newLine;
+				}
+				else
+					path->AddElement(newLine);
 			}
 		}
 
@@ -1108,7 +1123,7 @@ Path * PathPlanner::insertTurnsIntoPath(Path *path)
 	std::vector<PathElement*> pathElements = path->GetElements();
 	for (int i = 0; i < pathElements.size(); i++)
 	{
-		if ( dynamic_cast<Circle*>(pathElements[i])!= NULL)
+		if (dynamic_cast<Circle*>(pathElements[i]) != NULL)
 		{
 			Circle *circle = dynamic_cast<Circle*>(pathElements[i]);
 			double turnAngleFrom, turnAngleTo;
@@ -1308,6 +1323,13 @@ bool PathPlanner::GetPathElementPropertiesChanged()
 void PathPlanner::SetPathElementPropertiesChanged(bool pathElementPropertiesChanged)
 {
 	this->pathElementPropertiesChanged = pathElementPropertiesChanged;
+}
+
+bool PathPlanner::GetCanCancelCalculation()
+{
+	if (fullVoronoiVisibilityGraph != nullptr)
+		return fullVoronoiVisibilityGraph->CanCancelCalculation();
+	return true;
 }
 
 MapElement * PathPlanner::GetHoverElement(glm::vec2 mousePosition)

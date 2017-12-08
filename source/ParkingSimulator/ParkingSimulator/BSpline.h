@@ -13,6 +13,7 @@ class BSpline : public PathElement
 public:
 	BSpline();
 	BSpline(vector<glm::vec2> controlPoints, int p = 3);
+	~BSpline();
 
 	glm::vec2 CalculatePoint(double u);
 	std::vector<glm::vec2> GetControlPoints();

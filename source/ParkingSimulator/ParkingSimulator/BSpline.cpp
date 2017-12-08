@@ -1,5 +1,11 @@
 #include "BSpline.h"
 
+#include <string>       // std::string
+#include <iostream>     // std::cout
+#include <sstream> 
+
+#include <windows.h>
+
 BSpline::BSpline()
 {
 }
@@ -56,6 +62,11 @@ BSpline::BSpline(vector<glm::vec2> controlPoints, int p)
 			this->length += GeometryHelper::GetDistanceBetweenPoints(prevPoint, currentPoint);
 		}
 	}
+}
+
+BSpline::~BSpline()
+{
+	int lala = 0;
 }
 
 glm::vec2 BSpline::CalculatePoint(double t)
@@ -212,11 +223,11 @@ double BSpline::GetInsideAngle(double t, double wheelbase, double track)
 
 double BSpline::GetCurvature(double t)
 {
-	if (t == 0.0) t += 0.01;
-	if (t == 1.0) t -= 0.01;
+	if (t < 0.1) t += 0.01;
+	if (t > 0.99) t -= 0.01;
 
 	auto d1 = GetPoint(t - 0.01f) - GetPoint(t);
-	auto d2 = GetPoint(t) - GetPoint(t + 0.01f);
+	auto d2 = GetPoint(t) - GetPoint(t + 0.02f);
 
 	double angle = GeometryHelper::GetAngleBetweenVectors(d1, d2);
 	double length = 0;
@@ -248,8 +259,14 @@ glm::vec2 BSpline::GetPoint(double t)
 
 SimulationState BSpline::GetSimulationState(double t)
 {
-	if (t == 0) t = 0.01f; // clamp min
-	if (t == 1.0f) t = 0.99f; // clamp max
+	if (t < 0.01) t = 0.01f; // clamp min
+	if (t > 0.99) t = 0.99f; // clamp max
+
+	std::ostringstream ss;
+	ss << "t: " << t << endl;
+	ss << endl;
+	std::string s(ss.str());
+	OutputDebugStringA(s.c_str());
 
 	double u = knots[n] + t * (knots[m - n] - knots[n]);
 

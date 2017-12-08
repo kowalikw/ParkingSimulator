@@ -32,15 +32,7 @@ protected:
 	void run() 
 	{
 		int error;
-		QTime t1 = QTime::currentTime();
 		planner->FindPath(&error);
-		QTime t2 = QTime::currentTime();
-		auto diff = t2.msecsSinceStartOfDay() - t1.msecsSinceStartOfDay();
-		std::ostringstream ss;
-		ss << "Time of execution: " << diff << endl;
-		ss << endl;
-		std::string s(ss.str());
-		OutputDebugStringA(s.c_str());
 		quit();
 	}
 private:
@@ -1711,7 +1703,8 @@ void ParkingSimulator::findPath()
 		findPathThread.SetPathPlanner(new PathPlanner(pathPlanner));
 		findPathThread.start();
 
-		QMovie *movie = new QMovie("Resources/loading.gif");
+		auto ppp = QString("C:/Users/Wojtek/Source/Repos/ParkingSimulator-NEW/source/ParkingSimulator/x64/Release/Resources/loading.gif");
+		QMovie *movie = new QMovie(ppp);//.arg(QDir::currentPath()));
 		ui.pathCalculationInPrograssMovie->setMovie(movie);
 		movie->start();
 
@@ -1796,24 +1789,15 @@ void ParkingSimulator::disablePathPlannerButtons()
 
 void ParkingSimulator::cancelPathCalculation()
 {
+	while (!findPathThread.GetPathPlanner()->GetCanCancelCalculation());
+	
 	findPathThread.terminate();
 }
 
 void ParkingSimulator::pathCalculationFinished()
 {
-	std::ostringstream ss;
-	ss << "Calculation completed." << endl;
-	ss << endl;
-	std::string s(ss.str());
-	OutputDebugStringA(s.c_str());
-
 	if (findPathThread.GetPathPlanner()->GetIsCalculationCompleted())
 	{
-		std::ostringstream ss;
-		ss << "OK." << endl;
-		ss << endl;
-		std::string s(ss.str());
-		OutputDebugStringA(s.c_str());
 		pathPlanner.SetExpandedMap(findPathThread.GetPathPlanner()->GetExpandedMap());
 		pathPlanner.SetVoronoiGraph(findPathThread.GetPathPlanner()->GetVoronoiGraph());
 		pathPlanner.SetFullVoronoiVisibilityGraph(findPathThread.GetPathPlanner()->GetFullVoronoiVisibilityGraph());
@@ -1822,6 +1806,7 @@ void ParkingSimulator::pathCalculationFinished()
 		pathPlanner.SetParkingPathEnd(findPathThread.GetPathPlanner()->GetParkingPathEnd());
 		pathPlanner.SetFinalPath(findPathThread.GetPathPlanner()->GetFinalPath());
 	}
+
 	ui.calculationInProgress->hide();
 	enablePathPlannerButtons();
 

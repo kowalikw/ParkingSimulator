@@ -28,6 +28,17 @@ Path::Path(std::vector<Path*> pathParts)
 
 Path::~Path()
 {
+	for (int i = 0; i < elements.size(); i++)
+	{
+		if(dynamic_cast<Circle*>(elements[i]) != nullptr)
+			delete dynamic_cast<Circle*>(elements[i]);
+		else if (dynamic_cast<BSpline*>(elements[i]) != nullptr)
+			delete dynamic_cast<BSpline*>(elements[i]);
+		else if (dynamic_cast<Line*>(elements[i]) != nullptr)
+			delete dynamic_cast<Line*>(elements[i]);
+		else if (dynamic_cast<Turn*>(elements[i]) != nullptr)
+			delete dynamic_cast<Turn*>(elements[i]);
+	}
 }
 
 PathElement *Path::GetAt(int i)
@@ -55,11 +66,6 @@ PathElement * Path::GetNextElement(PathElement * element)
 			break;
 		}
 
-	if (index + 1 >= elements.size())
-	{
-		int lala = 0;
-	}
-
 	return elements[index + 1];
 }
 
@@ -72,11 +78,6 @@ PathElement * Path::GetPrevElement(PathElement * element)
 			index = i;
 			break;
 		}
-
-	if (index - 1 < 0)
-	{
-		int lala = 0;
-	}
 
 	return elements[index - 1];
 }

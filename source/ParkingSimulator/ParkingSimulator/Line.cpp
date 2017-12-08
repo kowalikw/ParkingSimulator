@@ -22,6 +22,11 @@ Line::Line(glm::vec2 from, glm::vec2 to, int v1, int v2, ManeuverType maneuverTy
 	this->length = sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
 }
 
+Line::~Line()
+{
+	int lasl = 0;
+}
+
 glm::vec2 Line::GetFrom() const
 {
 	return this->from;

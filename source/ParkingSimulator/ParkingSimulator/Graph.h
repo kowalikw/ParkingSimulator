@@ -66,6 +66,10 @@ struct GraphVertex
 	double y;
 	GraphVertex() {}
 	GraphVertex(double x, double y) : x(x), y(y) {}
+	~GraphVertex()
+	{
+		int allala = 0;
+	}
 };
 
 struct GraphEdge
@@ -73,9 +77,14 @@ struct GraphEdge
 	GraphVertex *v1; // from
 	GraphVertex *v2; // to
 	double weight;
-	GraphEdge() {}
+	GraphEdge() { v1 = nullptr; v2 = nullptr; }
 	GraphEdge(GraphVertex *v1, GraphVertex *v2) : v1(v1), v2(v2) { weight = sqrt((v1->x - v2->x) * (v1->x - v2->x) + (v1->y - v2->y) * (v1->y - v2->y)); }
 	GraphEdge(GraphVertex *v1, GraphVertex *v2, double weight) : v1(v1), v2(v2), weight(weight) { }
+	~GraphEdge() 
+	{
+		if (v1 != nullptr) delete v1;
+		if (v2 != nullptr) delete v2;
+	}
 };
 
 class Graph
@@ -105,10 +114,14 @@ public:
 	void CreateVoronoiFullGraph(Map *map, bool addExtraVertices = false, int extraVerticesAlong = 0, int extraVerticesAcross = 0);
 	void CreateVoronoiVisibilityFullGraph(Map *map, Line *from, Line *to, int *indexFrom, int *indexTo, bool addExtraVertices = false, int extraVerticesAlong = 0, int extraVerticesAcross = 0);
 	Path *FindPath(int s, int t);
+
+	bool CanCancelCalculation();
 private:
 	bool directed;
 	std::vector<GraphVertex*> vertices;
 	std::vector<std::vector<GraphEdge*>> edges;
+
+	bool canCancelCalculation = true;
 };
 
 #endif

@@ -10,6 +10,7 @@ public:
 	Line();
 	Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType = ManeuverType::Front);
 	Line(glm::vec2 from, glm::vec2 to, int v1, int v2, ManeuverType maneuverType = ManeuverType::Front);
+	~Line();
 	glm::vec2 GetFrom() const;
 	glm::vec2 GetTo() const;
 	void SetFrom(glm::vec2 from);

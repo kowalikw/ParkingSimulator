@@ -8,7 +8,7 @@ Turn::Turn(double angleFrom, double angleTo)
 {
 	this->angleFrom = angleFrom;
 	this->angleTo = angleTo;
-	this->length = 10 * abs(angleTo - angleFrom); // TODO:
+	this->length = 10 * abs(angleTo - angleFrom);
 }
 
 Turn::Turn(double angleFrom, double angleTo, glm::vec2 position, double rotation)
@@ -17,7 +17,7 @@ Turn::Turn(double angleFrom, double angleTo, glm::vec2 position, double rotation
 	this->angleTo = angleTo;
 	this->position = position;
 	this->rotation = rotation;
-	this->length = 10 * abs(angleTo - angleFrom); // TODO:
+	this->length = 10 * abs(angleTo - angleFrom);
 }
 
 Turn::~Turn()

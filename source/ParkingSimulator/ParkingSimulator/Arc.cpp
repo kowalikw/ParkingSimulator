@@ -16,6 +16,11 @@ Circle::Circle(glm::vec2 centre, double radius, double angleFrom, double angleTo
 	this->length = abs(angleFrom - angleTo) * radius;
 }
 
+Circle::~Circle()
+{
+	int lala = 0;
+}
+
 double Circle::GetAngleFrom() const
 {
 	return this->angleFrom;

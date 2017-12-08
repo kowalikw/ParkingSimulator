@@ -1,5 +1,10 @@
 #include "PathElement.h"
 
+PathElement::~PathElement()
+{
+	int lala = 0;
+}
+
 ManeuverType PathElement::GetManeuverType()
 {
 	return this->maneuverType;

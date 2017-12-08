@@ -10,6 +10,7 @@ class Circle : public PathElement
 public:
 	Circle();
 	Circle(glm::vec2 centre, double radius, double angleFrom, double angleTo, std::vector<glm::vec2> circleBasePoints, CircleType circleType = CircleType::Right, ManeuverType maneuverType = ManeuverType::Front);
+	~Circle();
 	double GetAngleFrom() const;
 	double GetAngleTo() const;
 	double GetRadius() const;

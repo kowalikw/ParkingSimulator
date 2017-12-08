@@ -35,6 +35,8 @@ enum ManeuverType
 class PathElement
 {
 public:
+	~PathElement();
+
 	ManeuverType GetManeuverType();
 	void SetManeuverType(ManeuverType maneuvertype);
 

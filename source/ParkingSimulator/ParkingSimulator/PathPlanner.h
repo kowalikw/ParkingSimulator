@@ -147,6 +147,8 @@ public:
 	bool GetPathElementPropertiesChanged();
 	void SetPathElementPropertiesChanged(bool pathElementPropertiesChanged);
 
+	bool GetCanCancelCalculation();
+
 	MapElement * GetHoverElement(glm::vec2 mousePosition);
 
 	void FindPath(int *error);
