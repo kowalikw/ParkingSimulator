@@ -74,6 +74,12 @@
     <Filter Include="Header Files\OpenGLFramework">
       <UniqueIdentifier>{99da0b8d-394f-4802-b4fe-9400b19c44f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Controllers">
+      <UniqueIdentifier>{8e721991-7e91-440a-ab9d-f3b24f162105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Controllers">
+      <UniqueIdentifier>{af19e7c8-93d1-45a1-ace5-5c954c681ddb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

@@ -201,12 +201,12 @@
 
 % --------------------- Ustawienia użytkownika ------------------
 
-\newcommand{\tytul}{Planer ruchu pojazdu z Systemem Automatycznego Parkowania}
-\renewcommand{\title}{Vehicle path planner with Automatic Parking System}
+\newcommand{\tytul}{Opracowanie modułu automatycznego parkowania samochodu}
+\renewcommand{\title}{TODO}
 \renewcommand{\author}{Wojciech Kowalik}
 \newcommand{\album}{254199}
 \newcommand{\type}{magisters} % magisters, licencjac (Master or Engineer in English)
-\newcommand{\supervisor}{prof. dr hab. inż Krzysztof Marciniak}
+\newcommand{\supervisor}{prof. dr hab. inż. Krzysztof Marciniak}
 
 
 
@@ -224,7 +224,7 @@
 \tytul
 \end{center}
 
-Niniejsza praca dyplomowa opisuje proces powstawania aplikacji umożliwiającej planowanie ruchu pojazdu wyposażonego w moduł automatycznego parkowania. Aplikacja została wyposażona w kilka modułów, takich jak: edytor map, edytor pojazdów, planer ruchu oraz moduł wizualizacji. Ponadto możliwa jest zmiana wielu ustawień systemu takich jak wygląd rysowanych obiektów na mapie oraz jego język. Zgodnie z określonymi na wstępie wymaganiami aplikacja działa poprawnie na systemach operacyjnych z rodziny Windows począwszy od systemu Windows 7.
+Niniejsza praca dyplomowa opisuje proces powstawania aplikacji umożliwiającej planowanie ruchu pojazdu wyposażonego w moduł automatycznego parkowania. Aplikacja składa się z kilku modułów, takich jak: edytor map, edytor pojazdów, planer ruchu czy moduł wizualizacji. Ponadto możliwa jest zmiana wielu ustawień systemu takich jak wygląd rysowanych obiektów na mapie oraz jego język. Zgodnie z określonymi na wstępie wymaganiami aplikacja działa poprawnie na systemach operacyjnych z rodziny Windows począwszy od systemu Windows 7.
 
 W pierwszym rozdziale przedstawione zostały cele pracy oraz dostępne publikacje, które zostały wykorzystane w trakcie pisania pracy. Drugi rozdział zawiera szczegółowe informacje na temat wymagań funkcjonalnych każdego z modułów, w które została wyposażona aplikacja oraz wymagania niefunkcjonalne dotyczące całego systemu. Najważniejszą funkcjonalnością edytora map i pojazdów jest możliwość utworzenia nowej mapy lub pojazdu oraz zapisania ich do pliku. Planer ruchu umożliwia wyznaczenie trajektorii po której będzie poruszał się pojazd z uwzględnieniem różnych parametrów, zadanych przez użytkownika. Moduł wizualizacji pozwala na wczytanie gotowej symulacji a następnie wizualizuje przejazd pojazdu z położenia początkowego do położenia końcowego zarówno w trybie 2D jak i 3D. Ostatni z modułów pozwala na zmianę ustawień aplikacji.
 
@@ -232,9 +232,9 @@ W kolejnym rozdziale zostały przedstawione technologie, które zostały wykorzy
 
 Rozdziały czwarty i piąty szczegółowo opisują zasadę działania zaprojektowanych algorytmów planowania ruchu oraz automatycznego parkowania. Ponadto rozdziały te zawierają również testy zaprojektowanych algorytmów oraz przedstawiają w jakim kierunku powinny zmierzać dalsze prace nad algorytmami.
 
-Ostatni rozdział zawiera krótkie podsumowanie całej pracy.\\ 
+W szóstym rozdziale została przedstawiona dość szczegółowa instrukcja użytkownika, natomiast ostatni rozdział zawiera krótkie podsumowanie całej pracy.\\ 
 
-\noindent \textbf{Słowa kluczowe:} planer, ruchu, trajektorii, pojazdu, autopilot, asystent, moduł, automatycznego, parkowania, graf, Voronoi, widoczności
+\noindent \textbf{Słowa kluczowe:} planer, ruchu, trajektorii, pojazdu, autopilot, asystent, moduł, automatycznego, parkowania, asystent, graf, Voronoi, widoczności
 \end{abstract}
 
 \null\thispagestyle{empty}\newpage
@@ -246,15 +246,15 @@ Ostatni rozdział zawiera krótkie podsumowanie całej pracy.\\
 \title
 \end{center}
 
-This thesis describes the process of creating application that allows to path planning for vehicle equipped with automatic parking system.  The application has been divided into four  basics modules: map editor, vehicle editor, path planner, visualization. In addition, it is possible to change many system settings such as the appearance of the elements drawing on map or the language of the application. The program works properly on Windows operating systems family, starting from Windows 7.
+This thesis describes the process of creating application that allows to path planning for vehicle equipped with automatic parking system.  The application has been divided into four  basics modules: map editor, vehicle editor, path planner, visualisation. In addition, it is possible to change many system settings such as the appearance of the elements drawing on map or the language of the application. The program works properly on Windows operating systems family, starting from Windows 7.
 
 The first chapter presents the objectives of this thesis and the available publications which were used during the writing of this diploma thesis. The second chapter describes in detail all functional requirements for each module and nonfunctional requirements for the whole system. The main functionality of the map and vehicle editor is to enable the user to create new map or vehicle and save them to the result file. Path planner allows to find the path for the vehicle taking into account various parameters set by user. Visualisation module allows to load simulation from the file and then play vehicle motion between start and end position. The last module contains application settings.
 
-The next chapter presents technologies used for creating the application. The program was written in C++ programming language, but to create graphic user interface Qt library was used. Moreover the applications uses such libraries like Boost, NanoVG or Open GL for example to serialize objects or to render 3D visualization.
+The next chapter presents technologies used for creating the application. The program was written in C++ programming language, but to create graphic user interface Qt library was used. Moreover the applications uses such libraries like Boost, NanoVG or Open GL for example to serialize objects or to render 3D visualisation.
 
-The fourth and fifth chapters describes in detail path planning and parking algorithms. These chapters contains also tests of the designed algorithms and their advantages and disadvantages.
+The fourth and fifth chapters describes in detail path planning and parking algorithms. These chapters contains also tests of the designed algorithms and present their advantages and disadvantages.
 
-The last chapter contains short resume of the whole diploma thesis.\\
+The sixth chapter contains detialed user guide and the last chapter contains short resume of the whole diploma thesis.\\
 
 \noindent \textbf{Keywords:} vehicle, path, trajectory, planner, autopilot, assistant, module, automatic, parking, graph, Voronoi, visibility
 \end{abstract}}
@@ -271,7 +271,7 @@ Oświadczenie % Declaration - for English
 \end{center}
 
 \indent Oświadczam, że pracę \type ką pod
-tytułem ,,\tytul '', której promotorem jest \supervisor \ wykonałam/em
+tytułem ,,\tytul '', której promotorem jest \supervisor \ wykonałem
 samodzielnie, co poświadczam własnoręcznym podpisem.
 \vspace{2cm}
 
@@ -318,17 +318,17 @@ W przypadku bardziej zaawansowanych systemów parkowanie jest wykonywane w pełn
 
 Jak w praktyce wygląda działanie asystenta parkowania? Po pierwsze kierowca musi wybrać interesujący go tryb parkowania (prostopadłe lub równoległe), gdyż system zazwyczaj nie jest w stanie samodzielnie tego określić. Następnie rozpoczyna się proces wyszukiwania wolnego miejsca w czasie którego trzeba w miarę wolno jechać do przodu (zwykle maksymalnie 20-30 km/h). Gdy stosowne miejsce zostanie odnalezione komputer prosi o zatrzymanie się i najczęściej o włączenie biegu wstecznego. Od tego momentu komputer przejmuje pełną lub część kontroli nad pojazdem, w zależności od zaawansowania systemu. Oczywiście kierowca w dowolnym momencie może przerwać działanie systemu i samodzielnie kontynuować wykonywanie manewru. Cały proces parkowania zajmuje od kilkunastu do kilkudziesięciu sekund.
 
-Zupełnie inną kategorię systemów wspomagających kierowcę stanowią autopiloty. Obecnie najwięksi producenci aut na świecie testują swoje rozwiązania , a rezultaty tych testów są bardzo obiecujące. Dla przykładu w grudniu 2016 roku konwój ciężarówek z powodzeniem zakończył testowy przejazd po Europie. Ciężarówki takich firm jak DAF, Daimler, IVECO, MAN, Scania i Volvo wyruszyły z różnych miejsc w Europie, m.in. ze Szwecji, Belgii i Niemiec. Za cel obrały Rotterdam w Holandii. Ciężarówki jechały samodzielnie w kolumnach składających się z 2-3 pojazdów i zachowywały stałe tempo jazdy. Były połączone ze sobą za pomocą Wi-Fi. To ciężarówka z przodu ustalała trasę i prędkość, a pozostałe za nią podążały. Nad komputerem czuwał jednak człowiek, który siedział na miejscu kierowcy. Wszystkie ciężarówki szczęśliwie dojechały do Rotterdamu. 
+Zupełnie inną kategorię systemów wspomagających kierowcę stanowią autopiloty. Obecnie najwięksi producenci aut na świecie testują swoje rozwiązania, a rezultaty tych testów są bardzo obiecujące. Dla przykładu w grudniu 2016 roku konwój ciężarówek z powodzeniem zakończył testowy przejazd po Europie. Ciężarówki takich firm jak DAF, Daimler, IVECO, MAN, Scania i Volvo wyruszyły z różnych miejsc w Europie, m.in. ze Szwecji, Belgii i Niemiec. Za cel obrały Rotterdam w Holandii. Ciężarówki jechały samodzielnie w kolumnach składających się z 2-3 pojazdów i zachowywały stałe tempo jazdy. Były połączone ze sobą za pomocą Wi-Fi. To ciężarówka z przodu ustalała trasę i prędkość, a pozostałe za nią podążały. Nad komputerem czuwał jednak człowiek, który siedział na miejscu kierowcy. Wszystkie ciężarówki szczęśliwie dojechały do Rotterdamu. 
 
 Innym przykładem ukazującym potencjał jaki drzemie w samochodowych autopilotach jest sytuacja jaka miała miejsce również w grudniu 2016 roku w Holandii. Kierowca poruszający się pojazdem marki Tesla Model X uniknął kolizji na autostradzie dzięki wczesnej reakcji systemu autopilota, który wykonał hamowanie, podczas gdy dla kierowcy niebezpieczeństwo nie było jeszcze widoczne przez kolejny ułamek sekundy. Widać więc, że zaawansowane systemy, w które obecnie wyposażane są samochody nie tylko podnoszą komfort jazdy, ale niekiedy potrafią ratować również ludzkie życie.
 
-Niniejsza praca magisterska miała na celu opracowanie systemu, który umożliwia bezkolizyjny przejazd pojazdu z wyznaczonego miejsca i orientacji do miejsca docelowego. Dodatkowo pojazd ten miał być wyposażony w system automatycznego parkowania. W przygotowanej aplikacji użytkownik otrzymuje do dyspozycji edytor pozwalający na tworzenie/edycję map po których ma poruszać się pojazd, edytor pojazdów, planer ruchu, który odpowiedzialny jest za wyznaczenie ścieżki, biorąc pod uwagę różne parametry wprowadzane przez użytkownika oraz moduł wizualizacji, który jest dostępny zarówno w postaci wizualizacji 2D jak i 3D. 
+Niniejsza praca magisterska miała na celu opracowanie systemu, który umożliwia bezkolizyjny przejazd pojazdu z wyznaczonego miejsca i orientacji do miejsca docelowego. Dodatkowo pojazd ten został wyposażony w system automatycznego parkowania. W przygotowanej aplikacji użytkownik otrzymuje do dyspozycji edytor pozwalający na tworzenie/edycję map po których ma poruszać się pojazd, edytor pojazdów, planer ruchu, który odpowiedzialny jest za wyznaczenie ścieżki, biorąc pod uwagę różne parametry wprowadzane przez użytkownika oraz moduł wizualizacji, który jest dostępny zarówno w trybie 2D jak i 3D. 
 
 W celu stworzenia aplikacji wykorzystany został język programowania C++, natomiast interfejs użytkownika został wykonany z wykorzystaniem zestawu bibliotek Qt. Do stworzenia edytorów oraz wizualizacji 2D wykorzystano bibliotekę NanoVG. Wizualizacja 3D została przygotowana w całości w technologii OpenGL.
 
 \chapter{Cel pracy i dostępne publikacje}
 
-Tematem niniejszej pracy dyplomowej było opracowanie planera ruchu pojazdu wraz z systemem automatycznego parkowania. Podczas implementacji systemu wykorzystano umiejętności zdobyte na studiach drugiego stopnia, specjalność „Projektowanie systemów CAD/CAM”, jak również informacje zawarte w kilku publikacjach dostępnych w Internecie. Ich krótki przegląd przedstawiono poniżej. 
+Tematem niniejszej pracy dyplomowej było opracowanie modułu automatycznego parkowania dla samochodu. Jednak dodatkowo opracowany został planer ruchu, aby poza parkowaniem możliwe było również poruszanie się pojazdu pomiędzy zadanymi położeniami. Podczas implementacji systemu wykorzystano umiejętności zdobyte na studiach drugiego stopnia, specjalność „Projektowanie systemów CAD/CAM”, jak również informacje zawarte w kilku publikacjach dostępnych w Internecie. Ich krótki przegląd przedstawiono poniżej. 
 
 \section{Parking Path Programming Strategy for Automatic Parking System}
 
@@ -336,7 +336,7 @@ Autorami tej publikacji są Jian-Min Wang, Sen-Tung Wum Chao-Wei Ke oraz Bo-Kai 
  
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.40]{parallelParking}
+\includegraphics[scale=0.34]{parallelParking}
 \caption[Manewr parkowania równoległego]{Manewr parkowania równoległego}
 \end{figure} 
  
@@ -366,7 +366,7 @@ W dalszej części dokumentu autorzy przechodzą do propozycji algorytmu parkowa
 \caption[Pojazd poruszający się po kolejnych okręgach]{Pojazd poruszający się po kolejnych okręgach}
 \end{figure}
 
-Na koniec autorzy pokusili się jeszcze o przeprowadzenie analizy jak dużo miejsca potrzebne jest, aby pojazd o określonym maksymalnym kącie skrętu kół mógł zaparkować w jednym manewrze. Analiza ta została w mojej opinii przeprowadzona w bardzo dobry, a jednocześnie bardzo prosty sposób i jej wyniki również znajdują swoje zastosowanie w kolejnych rozdziałach niniejszej pracy.
+Na koniec autorzy pokusili się jeszcze o przeprowadzenie analizy jak dużo miejsca potrzeba, aby pojazd o określonym maksymalnym kącie skrętu kół mógł zaparkować w jednym manewrze. Analiza ta została w mojej opinii przeprowadzona w bardzo dobry, a jednocześnie bardzo prosty sposób i jej wyniki również znajdują swoje zastosowanie w kolejnych rozdziałach niniejszej pracy.
 
 \begin{figure}[h!]
 \centering
@@ -456,8 +456,8 @@ Po ustawieniu powyższych parametrów powinna aktywować się opcja wyznaczania 
 \begin{itemize}
 	\item procentowa wartość informująca algorytm o tym o jaki procent szerokości pojazdu mają zostać powiększone przeszkody znajdujące się na mapie,
 	\item rodzaj algorytmu planowania - do wyboru krzywa B-sklejana lub metoda wpisanych łuków,
-	\item w przypadku wyboru algorytmu wykorzystującego wpisane łuki, informacja czy pojazd może wykorzystywać dowolne czy tylko dopuszczalne dla swojej skrętności łuki,
-	\item jakość sprawdzania kolizji pojazdu z innymi obiektami na mapie,
+	\item w przypadku wyboru algorytmu wykorzystującego wpisywane łuki, informacja czy pojazd może wykorzystywać dowolne czy tylko dopuszczalne dla swojej skrętności kół łuki,
+	\item jakość sprawdzania i eliminacji kolizji pojazdu z innymi obiektami na mapie,
 	\item liczbę dodawanych do grafu sztucznych wierzchołków w poziomie,
 	\item liczbę dodawanych do grafu sztucznych wierzchołków w pionie.
 \end{itemize}
@@ -474,10 +474,10 @@ Po zakończeniu wyznaczania ścieżki użytkownik powinien zostać poinformowany
 
 \subsection{Wizualizacja}
 
-Głównym zadaniem modułu wizualizacji jest wyświetlanie symulacji przejazdu samochodu zarówno w trybie 2D jak i 3D. Moduł wizualizacji powinien być wyposażony w listę symulacji, na której znajdują się uprzednio wczytane symulacje, które są gotowe do wyświetlenia użytkownikowi. Symulacje mogę być dodawane na listę na dwa sposoby:
+Głównym zadaniem modułu wizualizacji jest wyświetlanie symulacji przejazdu samochodu zarówno w trybie 2D jak i 3D. Moduł wizualizacji powinien być wyposażony w listę symulacji, na której znajdują się uprzednio wczytane symulacje, które są gotowe do wyświetlenia użytkownikowi. Symulacje mogą być dodawane na listę na dwa sposoby:
 \begin{itemize}
 	\item import z modułu planera ruchu, pod warunkiem, że została tam przygotowana prawidłowa symulacja,
-	\item wczytywane z uprzednio zapisanych plików. 
+	\item wczytanie z uprzednio zapisanych plików. 
 \end{itemize}
 
 ~\\Po zaznaczeniu symulacji na liście powinny aktywować się następujące opcje:
@@ -514,7 +514,7 @@ Kolejnymi parametrami, których zmianę powinien umożliwiać moduł ''Ustawieni
 
 \section{Wymagania niefunkcjonalne}
 
-Poza wymienionymi powyżej wymaganiami funkcjonalnymi aplikacja powinna spełniać również pewne wymagania niefunkcjonalne. Najważniejszym z nich jest poprawne działanie aplikacji na systemach operacyjnych z rodziny Windows. Ponadto aplikacja powinna łatwo dać się tłumaczyć na inne języki oraz posiadać wbudowany język polski i angielski, a jej interfejs powinien być responsywny i prezentować się dobrze na monitorach o różnych rozdzielczościach.
+Poza wymienionymi powyżej wymaganiami funkcjonalnymi aplikacja powinna spełniać również pewne wymagania niefunkcjonalne. Najważniejszym z nich jest poprawne działanie aplikacji na systemach operacyjnych z rodziny Windows. Ponadto aplikacja powinna łatwo dać się tłumaczyć na inne języki oraz posiadać wbudowany język polski i angielski, a jej interfejs powinien być responsywny i prezentować się dobrze na monitorach o minimalnej rozdzielczości 1440×900 pikseli.
 
 \chapter{Technologia}
 
@@ -565,7 +565,7 @@ W przygotowanej aplikacji kolekcja bibliotek Boost została wykorzystana do impl
 \begin{pseudokod}
 Przykład serializacji obiektu z wykorzystaniem biblioteki Boost
 \begin{verbatim}
-    fragment serializujący dodany do klasy Model3D
+    // fragment serializujący dodany do klasy Model3D
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
@@ -610,7 +610,7 @@ Potencjał biblioteki NanoVg ukazuje przykładowy interfejs użytkownika przygot
 
 OpenGL obok DirectX i Vulkan API jest podstawową niskopoziomową biblioteką graficzną 3D, obsługiwaną przez wszystkie liczące się systemy operacyjne oraz większość dostępnych na rynku procesorów graficznych. Niezależność od platformy sprzętowej oraz ogólnie dostępna specyfikacja czyni z OpenGL standard powszechnie wykorzystywany przez producentów oprogramowania użytkowego i gier. Zestaw funkcji OpenGL składa się z 250 podstawowych wywołań, umożliwiających budowanie złożonych trójwymiarowych scen z podstawowych figur geometrycznych.
 
-Dzięki wykorzystaniu OpenGL w opracowanej aplikacji możliwe było stworzenie wydajnej wizualizacji 3D. Jako, że czysty OpenGL skupia się na dostarczaniu API służącego do komunikacji z procesorem karty graficznej i nie posiada takich narzędzi jak np. parsery plików z siatkami, to konieczne było użycie dodatkowych, dedykowanych bibliotek dla OpenGL. Najważniejsze z tych bibliotek wymieniono poniżej:
+Dzięki wykorzystaniu OpenGL w opracowanej aplikacji możliwe było stworzenie wydajnej wizualizacji 3D. Jako, że czysty OpenGL skupia się na dostarczaniu API służącego do komunikacji z procesorem karty graficznej i nie posiada takich narzędzi jak np. parsery plików z siatkami, to konieczne było użycie dodatkowych, dedykowanych bibliotek dla OpenGL. Najważniejsze z nich wymieniono poniżej:
 \begin{itemize}
 	\item GLEW - biblioteka pomagająca w odpytywaniu i ładowaniu rozszerzeń OpenGL. GLEW dostarcza efektywne mechanizmy do określania w czasie uruchamiania programu dostępnych rozszerzeń na danej platformie. Wszystkie rozszerzenia OpenGL są wylistowane w jednym pliku nagłówkowym, który z kolei jest maszynowo generowany na podstawie oficjalnej listy rozszerzeń.
 	\item GLM - dostarcza zestaw obiektów i funkcji matematycznych zaprojektowanych pod kątem użycia ich w OpenGL oraz w konwencji nazewniczej języka GLSL.
@@ -648,11 +648,11 @@ gdzie:
 
 \section{Wyznaczanie minimalnego promienia skrętu}
 
-Minimalny promień skrętu każdego pojazdu zależny jest od maksymalnego kąta skręcenia jego przednich kół, a precyzyjniej od maksymalnego kąta skręcenia koła znajdującego się po wewnętrznej stronie skrętu (co wynika z geometrii Ackermana). Samo pojęcie minimalnego promienia skrętu również wymaga doprecyzowania, gdyż można rozważać wiele różnych promieni skrętu, w zależności od przyjętego punktu odniesienia na pojeździe. W poniższej analizie wyznaczone zostaną trzy promienie skrętu:
+Minimalny promień skrętu każdego pojazdu zależny jest od maksymalnego kąta skręcenia jego przednich kół, a precyzyjniej od maksymalnego kąta skręcenia koła znajdującego się po wewnętrznej stronie zakrętu (co wynika z geometrii Ackermana). Samo pojęcie minimalnego promienia skrętu również wymaga doprecyzowania, gdyż można rozważać wiele różnych promieni skrętu, w zależności od przyjętego punktu odniesienia na pojeździe. W poniższej analizie wyznaczone zostaną trzy promienie skrętu:
 \begin{itemize}
-	\item dla tylnego koła znajdującego się po wewnętrznej stronie skrętu - $R_{min}$,
-	\item dla przedniego koła znajdującego się po zewnętrznej stronie skrętu - $R_{max}$,
-	\item dla środka poruszającego się pojazdu - $R$.
+	\item dla tylnego koła znajdującego się po wewnętrznej stronie zakrętu - $R_{min}$,
+	\item dla przedniego koła znajdującego się po zewnętrznej stronie zakrętu - $R_{max}$,
+	\item dla środka tylnej osi poruszającego się pojazdu - $R$.
 \end{itemize}
 
 Na poniższym rysunku zaznaczone zostały okręgi zakreślane przez skręcający pojazd oraz poszukiwane promienie.
@@ -663,7 +663,7 @@ Na poniższym rysunku zaznaczone zostały okręgi zakreślane przez skręcający
 \caption[Okręgi zakreślane przez skręcający pojazd i zaznaczone promienie]{Okręgi zakreślane przez skręcający pojazd i zaznaczone promienie}
 \end{figure}
 
-Do wykonania obliczeń zakładamy, że znamy rozstaw osi ($l$) oraz rozstaw kół pojazdu ($d$), a także kąt skręcenia wewnętrznego koła przedniego ($\beta$), który przy wyznaczaniu minimalnego promienia skrętu musi być równy maksymalnemu kątowi skrętu kół dla danego pojazdu (na ogół wartość ta waha się w granicach 36-42 stopnie). Zaznaczone na rysunku promienia obliczamy w następujący sposób:
+Do wykonania obliczeń zakładamy, że znamy rozstaw osi ($l$) oraz rozstaw kół pojazdu ($d$), a także kąt skręcenia wewnętrznego koła przedniego ($\beta$), który przy wyznaczaniu minimalnego promienia skrętu musi być równy maksymalnemu kątowi skrętu kół dla danego pojazdu (na ogół wartość ta waha się w granicach 36-42 stopnie). Zaznaczone na rysunku promienie obliczamy w następujący sposób:
 
 \begin{itemize}
 	\item $R_{min} = \frac{l}{\tg{\beta}}$
@@ -721,7 +721,7 @@ Zdefiniowane powyżej parametry są niezbędne do rozpoczęcia planowania ruchu 
 	\item na podstawie wyznaczonej łamanej, którą tworzą krawędzie wchodzące w skład ścieżki w grafie wyznaczyć trajektorię dopuszczalną dla pojazdu - przy pomocy krzywej sklejanej lub wpisując łuki pomiędzy kolejne odcinki łamanej.
 \end{itemize}
 
-Skuteczność opisanego powyżej algorytmu w praktyce była bardzo niewielka, dlatego na potrzeby tej pracy przebadano i opracowano następujące modyfikacje przedstawionego powyżej schematu:
+Skuteczność opisanego powyżej algorytmu w praktyce była niewielka, dlatego na potrzeby tej pracy przebadano i opracowano następujące modyfikacje przedstawionego powyżej schematu:
 \begin{itemize}
 	\item powiększanie przeszkód,
 	\item modyfikacja grafu Voronoi i ewentualne uzupełnienie go o dodatkowe wierzchołki i krawędzie,
@@ -744,13 +744,15 @@ Dodatkowym efektem powiększenia przeszkód jest zupełnie inna postać wyznaczo
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.4]{voronoiGraphForMap}
+\includegraphics[scale=0.36]{voronoiGraphForMap}
 \caption[Graf Voronoi dla mapy z przeszkodami przed powiększeniem]{Graf Voronoi dla mapy z przeszkodami przed powiększeniem}
 \end{figure}
 
+\newpage
+
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.4]{voronoiGraphForExpandedMap}
+\includegraphics[scale=0.36]{voronoiGraphForExpandedMap}
 \caption[Graf Voronoi dla mapy z przeszkodami po powiększeniu]{Graf Voronoi dla mapy z przeszkodami po powiększeniu}
 \end{figure}
 
@@ -961,7 +963,7 @@ Sam proces wykrywania kolizji jest dość prosty. Idea jest taka, że symulujemy
 \begin{pseudokod}
 Wykrywania i eliminacji kolizji
 \begin{verbatim}
-    dla określonej liczby położeń pojazdu na ścieżce zdefiniowanych przez użytkownika
+    dla określonej przez użytkownika liczby położeń pojazdu na ścieżce
         zaktualizuj stan pojazdu do określonego położenia na ścieżce
         sprawdź kolizję pojazdu z przeszkodami znajdującymi się na mapie
         jeśli nie występuje kolizja
@@ -994,7 +996,8 @@ Algorytm planowania ruchu
     wyznacz ścieżkę w utworzonym grafie pomiędzy punktem początkowy, 
     a punktem końcowym wykorzystując jeden z algorytmów wyszukiwania 
     ścieżki w grafie np. algorytm A*
-    dopóki włączona jest detekcja kolizji i występuje kolizja
+    dopóki włączona jest detekcja kolizji i występuje kolizja lub jest to pierwszy 
+    obrót pętli
         jeżeli wybrano algorytm wykorzystujący krzywą B-sklejaną
             wyznacz finalną trajektorię korzystając z algorytmu wykorzystującego 
             krzywą B-sklejaną
@@ -1045,7 +1048,7 @@ Na pierwszy rzut oka ścieżki wygenerowane przy pomocy krzywej B-sklejanej wygl
 
 W przykładzie tym mamy do czynienia z klasycznym problemem, jaki występuje w metodzie wpisanych łuków. Widać, że w zaznaczonym obszarze łuki powinny się były spotkać swoimi końcami, jednak było tam zbyt ciasno, przez co krawędzie musiały zostać przedłużone i doszło do sytuacji, że pojazd aby przedostać się z jednego łuku na drugi musi wykonać ruch do tyłu. Mimo iż ścieżka ta wydaje się bardzo nieelegancka i w praktyce pewnie nigdy pojazd nie powinien się tak zachowywać, to jednak wciąż jest to poprawna ścieżka, która pozwala na bezkolizyjny ruch pojazdu pomiędzy zadanymi położeniami, a na dodatek wszystkie zakręty, które pojazd wykonuje podczas ruchu są dla niego osiągalne w rzeczywistości, przy zadanym maksymalnym skręcie kół.
 
-Poza dość prostymi testami jak te zaprezentowane powyżej zostały przeprowadzone również testy na dużo bardziej skomplikowanych mapach. W większości przypadków zakończyły się one pomyślnie i została wygenerowana mniej lub bardziej sensowna z punktu widzenia zwykłego człowieka trajektoria dla pojazdu. Zdarzały się jednak przypadki, iż ścieżka nie była wyznaczana i konieczne było dodanie określonej liczby sztucznych wierzchołków w sytuacji, w której na pierwszy rzut oka taka ścieżka powinna zostać wyznaczona bez większych problemów. Takie zachowanie algorytmu wynika z faktu, iż cały proces wyznaczania ścieżki jest determinowany poprzez położenie wierzchołków grafu i przy niefortunnym ułożeniu przeszkód wierzchołki mogą zostać tak rozmieszczone, że niemożliwa jest konstrukcja ścieżki bezkolizyjnej opartej na dowolnej łamanej złożonej z krawędzi takiego grafu. Dodanie sztucznych wierzchołków na ogół eliminowało takie problemy, ale w zamian za to czas obliczeń znacząco wzrastał. Na ostatnim już obrazku w tym podrozdziale została przedstawiona ścieżka dla dość skomplikowanej mapy - rysunek 5.16.
+Poza dość prostymi testami jak te zaprezentowane powyżej zostały przeprowadzone również testy na dużo bardziej skomplikowanych mapach. W większości przypadków zakończyły się one pomyślnie i została wygenerowana mniej lub bardziej sensowna z punktu widzenia zwykłego człowieka trajektoria dla pojazdu. Zdarzały się jednak przypadki, iż ścieżka nie była wyznaczana i konieczne było dodanie określonej liczby sztucznych wierzchołków w sytuacji, w której na pierwszy rzut oka taka ścieżka powinna zostać wyznaczona bez większych problemów. Takie zachowanie algorytmu wynika z faktu, iż cały proces wyznaczania ścieżki jest determinowany poprzez położenie wierzchołków grafu i przy niefortunnym ułożeniu przeszkód wierzchołki mogą zostać tak rozmieszczone, że niemożliwa jest konstrukcja ścieżki bezkolizyjnej opartej na dowolnej łamanej złożonej z krawędzi takiego grafu. Dodanie sztucznych wierzchołków na ogół eliminowało takie problemy, ale w zamian za to czas obliczeń znacząco wzrastał. Na ostatnim już obrazku w tym podrozdziale została przedstawiona ścieżka dla bardziej skomplikowanej mapy - rysunek 5.16.
 
 \newpage
 
@@ -1084,6 +1087,7 @@ Poniżej zaprezentowano wpływ gęstości siatki sztucznie dodanych wierzchołk�
 	\item jakość algorytmu wykrywania i eliminacji kolizji: wyłączony.
 \end{itemize}
 
+\begin{table}[!h]
 \begin{center}
 	\begin{tabular}{ c c }
 		\begin{tabular}{ | c | c | }
@@ -1113,11 +1117,11 @@ Poniżej zaprezentowano wpływ gęstości siatki sztucznie dodanych wierzchołk�
 	13 &	2190 \\ \hline
 	14 &	2344 \\ \hline
 	15 &	2560 \\ \hline
-  \end{tabular}
+ 	\end{tabular}
 	\end{tabular}\\
-  \vspace{0.6cm}
-  \textit{\textbf{Tabela 5.1.4.1}. Wpływ gęstości siatki sztucznych wierzchołków dodanych do grafu na czas obliczeń}
 \end{center}
+\caption{Wpływ gęstości siatki sztucznych wierzchołków dodanych do grafu na czas obliczeń}
+\end{table}
 
 \begin{figure}[h!]
 \centering
@@ -1134,6 +1138,7 @@ Poniżej zaprezentowano wpływ parametru określającego jakość działania alg
 	\item gęstość siatki sztucznie dodawanych wierzchołków do grafu: 0.
 \end{itemize}
 
+\begin{table}[!h]
 \begin{center}
 	\begin{tabular}{ c c }
 		\begin{tabular}{ | c | c | }
@@ -1158,11 +1163,11 @@ Poniżej zaprezentowano wpływ parametru określającego jakość działania alg
 		80 &	2698 \\ \hline
 		90 &	2777 \\ \hline
 		100 &	2785 \\ \hline
-  \end{tabular}
+  	\end{tabular}
 	\end{tabular}\\
-  \vspace{0.6cm}
-  \textit{\textbf{Tabela 5.1.4.1}. Wpływ jakości wykrywania i eliminacji kolizji na czas obliczeń}
+  \caption{Wpływ jakości wykrywania i eliminacji kolizji na czas obliczeń}
 \end{center}
+\end{table}
 
 \begin{figure}[h!]
 \centering
@@ -1205,10 +1210,11 @@ Wyprowadzone zostaną teraz matematyczne warunki, jakie muszą wystąpić w każ
 \end{itemize}
 
 Na powyższym rysunku zaznaczone zostały okręgi, minimalny i maksymalny, jakie zarysowuje pojazd podczas parkowania. Do obliczenia minimalnej długości miejsca parkingowego potrzebnej do wykonania parkowania w pojedynczym manewrze przyjmijmy następujące oznaczenia:
-- $R_{min}$ – promień minimalnego okręgu wyznaczanego przez tylne koło znajdujące się po wewnętrznej stronie skrętu
-- $R_{max}$ – promień maksymalnego okręgu wyznaczanego przez przednie koło znajdujące się po zewnętrznej stronie skrętu
-- $d$ - minimalna długość miejsca parkingowego pozwalająca na parkowanie w pojedynczym manewrze
-Minimalną długość miejsca parkingowego można obliczyć w następujący sposób:
+\begin{itemize}
+\item $R_{min}$ – promień minimalnego okręgu wyznaczanego przez tylne koło znajdujące się po wewnętrznej stronie skrętu
+\item $R_{max}$ – promień maksymalnego okręgu wyznaczanego przez przednie koło znajdujące się po zewnętrznej stronie skrętu
+\item $d$ - minimalna długość miejsca parkingowego pozwalająca na parkowanie w pojedynczym manewrze:
+\end{itemize}
 $$
 d = \sqrt{R^{2}_{max} - R^{2}_{min}}
 $$
@@ -1232,7 +1238,7 @@ Trudniejszym zadaniem jest wyznaczenie ścieżki parkowania równoległego. Na p
 
 Zanim przedstawiony zostanie opis kolejnych manewrów wykonywanych przez pojazd warto najpierw  obliczyć jaka ilość miejsca na takie manewry jest dostępna. Aby to zrobić wystarczy od długości miejsca parkingowego odjąć długość pojazdu. Wartość jaką otrzymamy to całkowita ilość dostępnego miejsca na wykonywanie kolejnych manewrów. Pojedynczy manewr na tym etapie algorytmu składa się z dwóch łuków, gładko połączonych, po przejechaniu których pojazd znajduje się w takiej samej orientacji jak przed wykonaniem manewru, ale przemieszcza się na koniec dostępnego miejsca oraz coraz bliżej wyjazdu z miejsca parkingowego.
 
-Zakładając, że wyjazd z miejsca parkingowego znajduje się po lewej stronie pojazdu to pierwszy łuk będzie skierowany w lewo i będzie się kończył w połowie dostępnego miejsca. W tym punkcie koła pojazdu powinny zostać skręcone maksymalnie w drugą stronę, tak aby rozpoczął on ruch po drugim łuku i dojechał do końca dostępnego miejsca. W tym momencie pojazd powinien mieć taką samą orientację jak przed wykonaniem opisanych manewrów. Jeśli pojazd nie znajduje się jeszcze całkowicie poza miejscem parkingowym to ponownie wykonuje ruch po dwóch łukach, tym razem do tyłu. Operacje te są powtarzane do momentu całkowitego wyjazdu pojazdu z miejsca parkingowego.
+Zakładając, że wyjazd z miejsca parkingowego znajduje się po lewej stronie pojazdu to pierwszy łuk będzie skierowany w lewo i będzie się kończył w połowie dostępnego miejsca. W tym punkcie koła pojazdu powinny zostać skręcone maksymalnie w drugą stronę, tak aby rozpoczął on ruch po drugim łuku i aby pojazd dojechał do końca dostępnego miejsca. W tym momencie pojazd powinien mieć taką samą orientację jak przed wykonaniem opisanych manewrów. Jeśli pojazd nie znajduje się jeszcze całkowicie poza miejscem parkingowym to ponownie wykonuje ruch po dwóch łukach, tym razem do tyłu. Operacje te są powtarzane do momentu całkowitego wyjazdu pojazdu z miejsca parkingowego.
 
 \subsection{Pseudokod algorytmu parkowania równoległego}
 
@@ -1297,7 +1303,7 @@ Przykładowe ścieżki parkowania:
 	\item sytuacja, w której algorytm zwraca informację, że zaparkowanie nie jest możliwe, choć w rzeczywistości taki manewr dałoby się wykonać (przeszkoda znajduje się zbyt blisko wyznaczonej ścieżki parkowania i powoduje kolizję z poruszającym się po tej ścieżce pojazdem).
 	\begin{figure}[h!]
 \centering
-\includegraphics[scale=0.73]{parkingPathPerpendicular2}
+\includegraphics[scale=0.68]{parkingPathPerpendicular2}
 \caption[Brak ścieżki umożliwiającej zaparkowanie prostopadłe]{Brak ścieżki umożliwiającej zaparkowanie prostopadłe}
 \end{figure}
 \end{itemize}
@@ -1309,13 +1315,13 @@ Przykładowe ścieżki parkowania:
 	\item szerokie miejsce parkingowe – parkowanie w pojedynczym manewrze
 	\begin{figure}[h!]
 \centering
-\includegraphics[scale=0.79]{parkingPathParallel1}
+\includegraphics[scale=0.68]{parkingPathParallel1}
 \caption[Parkowanie w szerokim miejscu parkingowym]{Parkowanie w szerokim miejscu parkingowym}
 \end{figure}
 	\item wąskie miejsce parkingowe – parkowanie w kilku manewrach
 	\begin{figure}[h!]
 \centering
-\includegraphics[scale=0.8]{parkingPathParallel2}
+\includegraphics[scale=0.70]{parkingPathParallel2}
 \caption[Parkowanie w wąskim miejscu parkingowym]{Parkowanie w wąskim miejscu parkingowym}
 \end{figure}
 	\item ekstremalnie wąskie miejsce parkingowe – parkowanie w bardzo dużej liczbie manewrów, ale wciąż możliwe
@@ -1385,7 +1391,7 @@ Aby utworzyć nową mapę użytkownik powinien nacisnąć przycisk \textbf{[1]},
 \caption[Okno tworzenia nowej mapy]{Okno tworzenia nowej mapy}
 \end{figure}
 
-Po kliknięciu na jeden z przycisków umożliwiających dodanie nowego obiektu do mapy, zostanie wyświetlone okno dialogowe podobne do tego przedstawionego na poniższym zrzucie ekranu. Użytkownik ma możliwość wyboru konkretnego modelu danego obiektu jaki chce dodać do mapy, wpisania jego nazwy oraz podana wymiarów. Nie zaleca się jednak zmiany wymiarów obiektów posiadających skomplikowany model, gdyż jeśli podczas zmiany nie zostaną zachowane odpowiednie proporcje poszczególnych wymiarów, to obiekt może zostać znacząco zdeformowany.
+Po kliknięciu na jeden z przycisków umożliwiających dodanie nowego obiektu do mapy, zostanie wyświetlone okno dialogowe podobne do tego przedstawionego na poniższym zrzucie ekranu. Użytkownik ma możliwość wyboru konkretnego modelu danego obiektu jaki chce dodać do mapy, wpisania jego nazwy oraz podania wymiarów. Nie zaleca się jednak zmiany wymiarów obiektów posiadających skomplikowany model, gdyż jeśli podczas zmiany nie zostaną zachowane odpowiednie proporcje poszczególnych wymiarów, to obiekt może zostać znacząco zdeformowany.
 
 \begin{figure}[h!]
 \centering
@@ -1397,6 +1403,8 @@ Po wybraniu odpowiedniego modelu i zatwierdzeniu całej operacji poprzez klikni�
 
 Obiekty dodane do mapy można poddawać ponownej edycji. Aby to zrobić należy kliknąć w obiekt na mapie lub wybrać interesujący nas element z drzewa obiektów. Obiekt może być poddany operacji translacji, rotacji i skalowania. Po zaznaczeniu dowolnego obiektu, pod przyciskami służącymi dodawaniu nowych elementów do mapy wyświetlona zostanie sekcja wyświetlająca właściwości danego obiektu. Dowolny obiekt może zostać również usunięty z mapy.
 
+Podczas korzystania z edytora map jak i kolejnych modułów, które posiadają obszar interaktywny w trybie 2D, możliwe jest przybliżanie określonych fragmentów mapy używając w tym celu kółka myszki, a także przesuwanie mapy. Aby przesunąć mapę należy nacisnąć środkowy przycisk myszki i poruszyć myszką w odpowiednią stronę.
+
 \section{Edytor pojazdów}
 
 Edytor pojazdów umożliwia stworzenie nowego pojazdu. Pozwala on na ustawienie przez użytkownika takich parametrów pojazdu jak:
@@ -1404,7 +1412,7 @@ Edytor pojazdów umożliwia stworzenie nowego pojazdu. Pozwala on na ustawienie 
 	\item nazwa,
 	\item długość i szerokość,
 	\item rozstaw osi oraz rozstaw kół,
-	\item maksymalny kąt skrętu.
+	\item maksymalny kąt skrętu przednich kół.
 \end{itemize}
 
 Ekran edytora pojazdu został przedstawiony na poniższym zrzucie ekranu.
@@ -1428,7 +1436,7 @@ Na ekranie edytora pojazdów znajdują się następujące przyciski i sekcje:
 
 Aby utworzyć nowy pojazd należy kliknąć w przycisk ''Utwórz nowy pojazd'', a następnie wczytać główny model pojazdu oraz ustawić parametry pojazdu. Dodanie modeli poszczególnych kół jest opcjonalne, jednak model główny musi być dodany obowiązkowo.
 
-Edytor pojazdów jest edytorem 3D. Aby poruszać kamerą w tym edytorze należy użyć myszki do wykonywania obrotów, natomiast do przesunięcia kamery służą przyciski WSAD.
+Edytor pojazdów jest edytorem 3D. Aby poruszać kamerą w tym edytorze należy użyć myszki do wykonywania obrotów, natomiast do przesuwania kamery służą przyciski WSAD.
 
 \section{Planer ruchu}
 
@@ -1496,10 +1504,10 @@ Ekran modułu wizualizacji zawiera następujące przyciski i sekcje:
 	\item \textbf{[6]} - checkbox umożliwiający włączenie/wyłączenie widoku wyznaczonej ścieżki,
 	\item \textbf{[7]} - przyciski umożliwiające zmianę widoku pomiędzy 2D, a 3D,
 	\item \textbf{[8]} - okno wizualizacji,
-	\item \textbf{[9]} - panel sterowania wizualizacją - umożliwia rozpoczęcie odtwarzania pauzowanie i przewijanie do dowolnego momentu.
+	\item \textbf{[9]} - panel sterowania wizualizacją - umożliwia rozpoczęcie odtwarzania, pauzowanie i przewijanie do dowolnego momentu symulacji.
 \end{itemize}
 
-W module wizualizacji użytkownik ma możliwość dodania nowej symulacji do wyświetlenia poprzez kliknięcie na przycisk ''Dodaj symulację''. Ma również możliwość usunięcia dodanej już symulacji, bądź wyświetlenia szczegółowych informacji na je temat. Po dodaniu symulacji aktywowana jest możliwość wizualizacji przejazdu pomiędzy położeniem początkowym i końcowym. Wizualizacja może odbywać się zarówno w trybie 2D jak i 3D. W trybie 3D użytkownik może obracać kamerę przy użyciu myszki, natomiast przesuwanie kamery realizowane jest poprzez klawisze WSAD. Ponadto użytkownik ma możliwość ustawienia czasu trwania przejazdu oraz włączenia/wyłączenia widoku wyznaczonej trajektorii.
+W module wizualizacji użytkownik ma możliwość dodania nowej symulacji do wyświetlenia poprzez kliknięcie na przycisk ''Dodaj symulację''. Ma również możliwość usunięcia dodanej już symulacji, bądź wyświetlenia szczegółowych informacji na je temat. Po dodaniu symulacji aktywowana jest możliwość wizualizacji przejazdu pomiędzy położeniem początkowym i końcowym. Wizualizacja może odbywać się zarówno w trybie 2D jak i 3D. W trybie 3D użytkownik może obracać kamerę przy użyciu myszki, natomiast przesuwanie kamery realizowane jest poprzez klawisze WSAD. Ponadto użytkownik ma możliwość ustawienia czasu trwania przejazdu oraz włączenia/wyłączenia widoku wyznaczonej trajektorii w trybie 2D.
 
 Po wybraniu jednej z dodanych symulacji i kliknięciu na przycisk ''Informacje o symulacji'' wyświetlone zostanie okno przedstawione na poniższym zrzucie ekranu. Zawiera ono wszystkie podstawowe informacje na temat wybranej przez użytkownika symulacji, takie jak np. ilość elementów wchodzących w skład ścieżki, czy długość wyznaczonej trajektorii.
 
@@ -1513,7 +1521,7 @@ Po wybraniu jednej z dodanych symulacji i kliknięciu na przycisk ''Informacje o
 
 Zakładka ''Ustawienia'' umożliwia zmianę podstawowych ustawień aplikacji. Możliwa jest zmiana języka, poprzez wybranie interesującego języka z rozwijanej listy. Możliwa jest również zmiana wyglądu wielu elementów wyświetlanych na mapie. Zmiany szerokości tych elementów użytkownik dokonuje za pomocą odpowiedniego spinboxa, odpowiadającego danemu elementowi. Aby dokonać zmiany koloru danego elementu należy kliknąć w kolor przy elemencie który chcemy zmienić. Zostanie wyświetlone okienko dialogowe, które umożliwi wybór nowego koloru. Po zatwierdzeniu wyboru kolor zostanie zmieniony. Aby jednak jakiekolwiek zmiany weszły w życie przed opuszczeniem zakładki ''Ustawienia'' użytkownik musi zapisać zmiany których dokonał, poprzez kliknięcie w przycisk ''Zapisz zmiany''. 
 
-Zrzut ekranu prezentujący widok zakładki 
+Poniżej zrzut ekranu prezentujący widok zakładki.
 
 \begin{figure}[h!]
 \centering
@@ -1527,7 +1535,7 @@ Opracowanie planera ruchu pojazdu wraz z systemem automatycznego parkowania pozw
 
 Tym co odróżnia jednak zaprojektowany system od rzeczywistych autopilotów i modułów parkowania parkowania jest fakt, iż w opracowanej aplikacji wszystkie dane są dostępne od początku jego działania, tzn. planer ma wiedzę na temat wszystkich miejsc parkingowych, a asystent parkowania zna wszelkie parametry miejsca, w którym pojazd chce zaparkować. W rzeczywistym świecie informacje te nie są dostępne od początku i pojazd gromadzi je na bieżąco podczas ruchu, za pomocą wielu różnych czujników umieszczonych z każdej strony pojazdu. Ponadto otoczenie pojazdu w zaimplementowanej aplikacji jest statyczne - żadne obiekty na mapie poza pojazdem nie mogą się poruszać. W rzeczywistości taka idealna sytuacje nie występuje nigdy i wszystkie systemy muszą na bieżąco adaptować się do zmieniającego się otoczenia.
 
-Niemniej jednak opracowana aplikacja z powodzeniem wykorzystuje niektóre pomysły, które używane są również w komercyjnych rozwiązaniach, a jej działanie pozwala przynajmniej w przybliżony sposób zobaczyć w jak działają rzeczywiste systemy planowania ruchu i modułu automatycznego parkowania.
+Niemniej jednak opracowana aplikacja z powodzeniem wykorzystuje niektóre pomysły, które używane są również w komercyjnych rozwiązaniach, a jej działanie pozwala przynajmniej w przybliżony sposób zobaczyć w jak działają rzeczywiste systemy planowania ruchu i moduły automatycznego parkowania.
 
 % -------------------- 6. Bibliografia -----------------------
 % Bibliografia leksykograficznie wg nazwisk autorów
@@ -1540,6 +1548,7 @@ Niemniej jednak opracowana aplikacja z powodzeniem wykorzystuje niektóre pomys�
 \bibitem[2]{Innyktos}  Jian-Min Wang, Sen-Tung Wu, Chao-Wei Ke, Bo-Kai Tzeng, \emph{Parking Path Programming Strategy for Automatic Parking System}, 2013.
 \bibitem[3]{B} prof. dr hab. inż Krzysztof Marciniak, \emph{Wykłady z Programowania Urządzeń Sterowanych Numerycznie oraz Modelowania Geometrycznego}, Politechnika Warszawska, Wydział Matematyki i Nauk Informacyjnych, 2017.
 \bibitem[4]{H} \emph{Ackermann Steering Geometry}, $https://en.wikipedia.org/wiki/AckermannSteeringGeometry$
+\bibitem[5]{A} Tomasz Niechaj, \emph{Asystent parkowania}, $http://antyweb.pl/asystent-parkowania-jak-to-dziala-czy-rzeczywiscie-wyrecza-kierowce$
 \end{thebibliography}
 \thispagestyle{empty}
 
@@ -1561,9 +1570,9 @@ Niemniej jednak opracowana aplikacja z powodzeniem wykorzystuje niektóre pomys�
 
 
 % ------------ 9. Spis tabel - jak wyżej ------------------
-%\renewcommand{\listtablename}{Spis tabel}
-%\listoftables
-%\thispagestyle{empty}
+\renewcommand{\listtablename}{Spis tabel}
+\listoftables
+\thispagestyle{empty}
 
 
 

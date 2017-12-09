@@ -358,6 +358,7 @@ void ParkingSimulator::setLanguage()
 	Language *language = Language::getInstance();
 	std::map<std::string, std::string> dictionary = language->GetDictionary();
 
+	this->setWindowTitle(QString::fromStdString(dictionary["Window_Title"]));
 	ui.tabWidget->setTabText(0, QString::fromStdString(dictionary["Tab_Start"]));
 	ui.tabWidget->setTabText(1, QString::fromStdString(dictionary["Tab_MapEditor"]));
 	ui.tabWidget->setTabText(2, QString::fromStdString(dictionary["Tab_VehicleEditor"]));
@@ -711,7 +712,6 @@ void ParkingSimulator::loadSettings()
 	ui.edgeWidthSpinBox->setValue(Settings::getInstance()->GetInt("GRAPH_EDGE_WIDTH"));
 	ui.admissibleElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("ACTIVE_GOOD_BORDER_WIDTH"));
 	ui.notAdmissibleElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("ACTIVE_BAD_BORDER_WIDTH"));
-
 	ui.buildingBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_BORDER_COLOR").name()));
 	ui.buildingColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
 	ui.decorationBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("DECORATION_BORDER_COLOR").name()));
@@ -755,7 +755,6 @@ void ParkingSimulator::saveSettings()
 	Settings::getInstance()->SetInt("GRAPH_EDGE_WIDTH", ui.edgeWidthSpinBox->value());
 	Settings::getInstance()->SetInt("ACTIVE_GOOD_BORDER_WIDTH", ui.admissibleElementBorderWidthSpinBox->value());
 	Settings::getInstance()->SetInt("ACTIVE_BAD_BORDER_WIDTH", ui.notAdmissibleElementBorderWidthSpinBox->value());
-
 	Settings::getInstance()->SetColor("BUILDING_BORDER_COLOR", ui.buildingBorderColor->palette().button().color());
 	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.buildingColor->palette().button().color());
 	Settings::getInstance()->SetColor("DECORATION_BORDER_COLOR", ui.decorationBorderColor->palette().button().color());
@@ -780,10 +779,8 @@ void ParkingSimulator::saveSettings()
 	Settings::getInstance()->SetColor("ACTIVE_GOOD_COLOR", ui.admissibleElementColor->palette().button().color());
 	Settings::getInstance()->SetColor("ACTIVE_BAD_BORDER_COLOR", ui.notAdmissibleElementBorderColor->palette().button().color());
 	Settings::getInstance()->SetColor("ACTIVE_BAD_COLOR", ui.notAdmissibleElementColor->palette().button().color());
-
 	Settings::getInstance()->SetLanguage(ui.languagesList->currentText().toStdString());
 	Settings::getInstance()->SaveSettings();
-
 	Language::getInstance()->LoadLanguage(Settings::getInstance()->GetLanguage());
 
 	setLanguage();

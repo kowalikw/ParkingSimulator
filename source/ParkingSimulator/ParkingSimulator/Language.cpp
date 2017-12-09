@@ -214,6 +214,7 @@ void Language::LoadLanguage(std::string lang)
 	dictionary.insert(std::pair<std::string, std::string>("Common_True", language.value("Common_True").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("Common_False", language.value("Common_False").toString().toStdString()));
 	dictionary.insert(std::pair<std::string, std::string>("PathPlanner_SimulationFromPathPlanner", language.value("PathPlanner_SimulationFromPathPlanner").toString().toStdString()));
+	dictionary.insert(std::pair<std::string, std::string>("Window_Title", language.value("Window_Title").toString().toStdString()));
 }
 
 std::map<std::string, std::string> Language::GetDictionary()
