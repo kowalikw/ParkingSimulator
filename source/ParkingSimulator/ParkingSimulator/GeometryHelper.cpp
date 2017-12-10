@@ -107,7 +107,7 @@ bool GeometryHelper::CheckPolygonIntersection(std::vector<glm::vec2> polygon1, s
 			if (CheckSegmentsIntersection(polygon1[i], polygon1[(i + 1) % polygon1.size()], polygon2[j], polygon2[(j + 1) % polygon2.size()]))
 				return true;
 
-	return false;
+	return CheckPolygonContainsPolygon(polygon1, polygon2) || CheckPolygonContainsPolygon(polygon2, polygon1);
 }
 
 bool GeometryHelper::CheckPolygonContainsPolygon(std::vector<glm::vec2> subject, std::vector<glm::vec2> polygon)

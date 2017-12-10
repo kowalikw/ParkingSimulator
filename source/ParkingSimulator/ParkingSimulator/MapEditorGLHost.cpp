@@ -1,20 +1,4 @@
 #include "MapEditorGLHost.h"
-#include <string>       // std::string
-#include <iostream>     // std::cout
-#include <sstream> 
-
-#include "PathPlanner.h"
-
-Graph g;
-
-Map *mapa = new Map(1000, 550);
-Vehicle *vehicle = new Vehicle(100, 50);
-
-PathPlanner pathPlanner(*mapa, *vehicle);
-
-Path *path = new Path();
-MapElement *parkingSpace = new ParkingSpace(glm::vec2(200, 200), glm::vec2(300, 120), ParkingSpaceType::Paralell);
-Simulation *simulation = new Simulation(mapa, vehicle, path);
 
 MapEditorGLHost::MapEditorGLHost(QWidget *parent) : OpenGLHost(parent) 
 { 
@@ -39,7 +23,7 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 
 	this->mouseMoveEvent(event);
 
-	if (mapEditor->GetSelectedElement() != NULL)
+	if (mapEditor->GetSelectedElement() != NULL && mapEditor->IsMapElementAdmissible(mapEditor->GetSelectedElement()))
 	{
 		int resizeCorner;
 		MapElement *selectedElement = mapEditor->GetSelectedElement();
@@ -58,7 +42,7 @@ void MapEditorGLHost::mousePressEvent(QMouseEvent * event)
 		}
 	}
 
-	if (mapEditor->GetHoverElement(positionOnMap) != NULL && !mapEditor->GetAddTerrain())
+	if (mapEditor->GetNewElement() == nullptr && mapEditor->GetHoverElement(positionOnMap) != NULL && !mapEditor->GetAddTerrain())
 	{
 		MapElement *selectedElement = mapEditor->GetSelectedElement();
 		if (selectedElement == NULL ||
@@ -165,7 +149,7 @@ void MapEditorGLHost::mouseMoveEvent(QMouseEvent * event)
 		}
 	}
 
-	if (!mapEditor->GetAddTerrain() && mapEditor->GetHoverElement(positionOnMap) != NULL && mapEditor->GetHoverElement(positionOnMap) != selectedElement)
+	if (mapEditor->GetNewElement() == nullptr && !mapEditor->GetAddTerrain() && mapEditor->GetHoverElement(positionOnMap) != NULL && mapEditor->GetHoverElement(positionOnMap) != selectedElement)
 	{
 		if (selectedElement == NULL ||
 			(!selectedElement->IsMoveHover() && !selectedElement->IsRotationHover() && !selectedElement->IsResizeHover()))
@@ -199,7 +183,6 @@ void MapEditorGLHost::wheelEvent(QWheelEvent * event)
 {
 	OpenGLHost::wheelEvent(event);
 
-	//drawMap(&mapEditor->GetMap());
 	adjustMaxOffset();
 }
 
@@ -246,7 +229,6 @@ void MapEditorGLHost::resizeGL(int w, int h)
 {
 	OpenGLHost::resizeGL(w, h);
 
-	//drawMap(&mapEditor->GetMap());
 	adjustMaxOffset();
 }
 
@@ -268,18 +250,6 @@ void MapEditorGLHost::paintGL()
 
 #pragma region Private methods.
 
-/*void MapEditorGLHost::adjustMaxOffset()
-{
-	if (offsetX > maxOffsetX + EXTRA_OFFSET)
-		offsetX = maxOffsetX + EXTRA_OFFSET;
-	if (offsetX < -maxOffsetX - EXTRA_OFFSET)
-		offsetX = -maxOffsetX - EXTRA_OFFSET;
-	if (offsetY > maxOffsetY + EXTRA_OFFSET)
-		offsetY = maxOffsetY + EXTRA_OFFSET;
-	if (offsetY < -maxOffsetY - EXTRA_OFFSET)
-		offsetY = -maxOffsetY - EXTRA_OFFSET;
-}*/
-
 void MapEditorGLHost::nvgRenderFrame()
 {
 	if (mapEditor->GetMap() == NULL) return;
@@ -288,12 +258,11 @@ void MapEditorGLHost::nvgRenderFrame()
 
 	if (mapEditor->GetAddTerrain())
 	{
-		//nvgHelper->DrawMeshOnMap(mapEditor->GetMap());
 		nvgHelper->DrawTerrain(mapEditor->GetHoverTerrain(positionOnMap), true);
 	}
 
-	if((!mapEditor->GetAddTerrain() && mapEditor->GetSelectedElement() == NULL) || 
-		(!mapEditor->GetAddTerrain() && !mapEditor->GetSelectedElement()->IsMoveHover() && !mapEditor->GetSelectedElement()->IsRotationHover() && !mapEditor->GetSelectedElement()->IsResizeHover()))
+	if((mapEditor->GetNewElement() == nullptr && !mapEditor->GetAddTerrain() && mapEditor->GetSelectedElement() == NULL) ||
+		(mapEditor->GetNewElement() == nullptr && !mapEditor->GetAddTerrain() && !mapEditor->GetSelectedElement()->IsMoveHover() && !mapEditor->GetSelectedElement()->IsRotationHover() && !mapEditor->GetSelectedElement()->IsResizeHover()))
 			nvgHelper->DrawHoverElement(mapEditor->GetHoverElement(positionOnMap));
 
 	nvgHelper->DrawSelectedElement(mapEditor->GetSelectedElement());

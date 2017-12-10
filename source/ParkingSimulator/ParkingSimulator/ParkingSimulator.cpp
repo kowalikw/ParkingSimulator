@@ -1515,7 +1515,21 @@ void ParkingSimulator::setMap()
 	if (selectMapWindow.exec())
 	{
 		pathPlanner.SetMap(selectMapWindow.GetMap());
+		pathPlanner.SetExpandedMap(nullptr);
+		pathPlanner.SetVoronoiGraph(nullptr);
+		pathPlanner.SetFullVoronoiVisibilityGraph(nullptr);
+		pathPlanner.SetStartPoint(nullptr);
+		pathPlanner.SetStartDirection(nullptr);
+		pathPlanner.SetStartParkingSpace(nullptr);
+		pathPlanner.SetEndPoint(nullptr);
+		pathPlanner.SetEndDrection(nullptr);
+		pathPlanner.SetEndParkingSpace(nullptr);
+		pathPlanner.SetPolylinePath(nullptr);
+		pathPlanner.SetParkingPathStart(nullptr);
+		pathPlanner.SetParkingPathEnd(nullptr);
+		pathPlanner.SetFinalPath(nullptr);
 		setMapProperties();
+		setPathProperties();
 	}
 }
 
@@ -1528,7 +1542,18 @@ void ParkingSimulator::setVehicle()
 		pathPlanner.SetVehicle(selectVehicleWindow.GetVehicle());
 		pathPlanner.SetVehicleStart(new Vehicle(*selectVehicleWindow.GetVehicle()));
 		pathPlanner.SetVehicleEnd(new Vehicle(*selectVehicleWindow.GetVehicle()));
+		pathPlanner.SetStartPoint(nullptr);
+		pathPlanner.SetStartDirection(nullptr);
+		pathPlanner.SetStartParkingSpace(nullptr);
+		pathPlanner.SetEndPoint(nullptr);
+		pathPlanner.SetEndDrection(nullptr);
+		pathPlanner.SetEndParkingSpace(nullptr);
+		pathPlanner.SetPolylinePath(nullptr);
+		pathPlanner.SetParkingPathStart(nullptr);
+		pathPlanner.SetParkingPathEnd(nullptr);
+		pathPlanner.SetFinalPath(nullptr);
 		setVehicleProperties();
+		setPathProperties();
 	}
 }
 

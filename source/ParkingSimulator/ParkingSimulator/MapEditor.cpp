@@ -211,8 +211,9 @@ MapElement * MapEditor::GetSelectedElement()
 {
 	if (selectedElement != NULL)
 	{
-		selectedElement->SetIsAdmissible(true);
-		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), selectedElement->GetPoints()))
+		selectedElement->SetIsAdmissible(IsMapElementAdmissible(selectedElement));
+		
+		/*if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), selectedElement->GetPoints()))
 			selectedElement->SetIsAdmissible(false);
 		std::vector<MapElement*> mapElements = map->GetMapElements();
 		for (int i = 0; i < mapElements.size(); i++)
@@ -221,7 +222,7 @@ MapElement * MapEditor::GetSelectedElement()
 				continue;
 			if (GeometryHelper::CheckPolygonIntersection(mapElements[i]->GetPoints(), selectedElement->GetPoints()))
 				selectedElement->SetIsAdmissible(false);
-		}
+		}*/
 	}
 
 	return this->selectedElement;
@@ -330,6 +331,8 @@ bool MapEditor::MapElementIntersectsMapElement(MapElement * mapElement)
 	for (int i = 0; i < mapElements.size(); i++)
 	{
 		if (mapElements[i] == mapElement) continue;
+		if (dynamic_cast<Vehicle*>(mapElement) != nullptr && dynamic_cast<ParkingSpace*>(mapElements[i]) != nullptr) 
+			continue;
 
 		if (GeometryHelper::CheckPolygonIntersection(mapElement->GetPoints(), mapElements[i]->GetPoints()))
 			return true;

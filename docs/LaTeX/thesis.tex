@@ -994,7 +994,7 @@ Algorytm planowania ruchu
     powiększ przeszkody znajdujące się na mapie zgodnie z parametrami użytkownika
     utwórz graf Voronoi lub zmodyfikowany graf Voronoi w zależności od 
     parametrów dostarczonych przez użytkownika
-    wyznacz ścieżkę w utworzonym grafie pomiędzy punktem początkowy, 
+    wyznacz ścieżkę w utworzonym grafie pomiędzy punktem początkowym, 
     a punktem końcowym wykorzystując jeden z algorytmów wyszukiwania 
     ścieżki w grafie np. algorytm A*
     dopóki włączona jest detekcja kolizji i występuje kolizja lub jest to pierwszy 
@@ -1132,7 +1132,7 @@ Poniżej zaprezentowano wpływ gęstości siatki sztucznie dodanych wierzchołk�
 
 \subsubsection{Wpływ jakości wykrywania i eliminacji kolizji na czas obliczeń}
 
-Poniżej zaprezentowano wpływ parametru określającego jakość działania algorytmu wykrywania i eliminacji kolizji podczas wyznaczania ścieżki dla pojazdu. Parametr ten może przyjmować wartość od 0 do 100, gdzie 0 oznacza brak jakiegokolwiek sprawdzania kolizji pojazdu z przeszkodami na mapie, natomiast 100 oznacza najlepszy wariant i najbardziej dokładne obliczenia. W tym wypadku, aby w ogóle można było mierzyć czas potrzebny na sprawdzanie kolizji, na mapie znajdowało się 15 przeszkód. Pomiary zostały wykonane dla następujących danych i parametrów:
+Poniżej zaprezentowano wpływ parametru określającego jakość działania algorytmu wykrywania i eliminacji kolizji podczas wyznaczania ścieżki dla pojazdu. Parametr ten może przyjmować wartość od 0 do 100, gdzie 0 oznacza brak jakiegokolwiek wykrywania kolizji pojazdu z przeszkodami na mapie, natomiast 100 oznacza najlepszy wariant i najbardziej dokładne obliczenia. W tym wypadku, aby w ogóle można było mierzyć czas potrzebny na sprawdzanie kolizji, na mapie znajdowało się 15 przeszkód. Pomiary zostały wykonane dla następujących danych i parametrów:
 \begin{itemize}
 	\item procent powiększenia przeszkód: 50%,
 	\item algorytm planowania ruchu: krzywa B-sklejana,
@@ -1189,11 +1189,11 @@ W tym podrozdziale opisany zostanie algorytm, który umożliwi zaparkowanie poja
 Podczas próby zaparkowania równoległego pojazdu w wybranym miejscu parkingowym możliwe jest wystąpienie jednej z wymienionych poniżej sytuacji:
 \begin{itemize}
 	\item miejsce parkingowe jest za małe i zaparkowanie pojazdu w ogóle nie jest możliwe,
-	\item miejsce parkingowe jest wystarczającej wielkości aby pojazd się w nim zmieścił, ale wymaga wykonania kilku ruchów w przód i w tył.	
-	\item miejsce parkingowe jest dostatecznie duże i możliwe jest zaparkowanie w jednym manewrze,
+	\item miejsce parkingowe jest wystarczającej wielkości aby pojazd się w nim zmieścił, ale wymaga wykonania kilku ruchów w przód i w tył,
+	\item miejsce parkingowe jest dostatecznie duże i możliwe jest zaparkowanie w jednym manewrze.
 \end{itemize}
 
-Oczywiście przy definiowaniu powyższych przypadków nie są brane pod uwagę dodatkowe ograniczenia, które mogą wystąpić w otoczeniu miejsca parkingowego i np. uniemożliwić parkowanie prostopadłe w pojedynczym manewrze. Przy projektowaniu algorytmów parkowania przyjęto założenie, że obszar wokół miejsc parkingowych, po którym porusza się pojazd już podczas wykonywania manewru parkowania jest bezkolizyjny, a jeśli zdefiniowana przez użytkownika mapa nie zapewnia takowej bezkolizyjności zwracany jest komunikat, ze zaparkowanie w wybranym miejscu nie jest możliwe. 
+Oczywiście przy definiowaniu powyższych przypadków nie są brane pod uwagę dodatkowe ograniczenia, które mogą wystąpić w otoczeniu miejsca parkingowego i np. uniemożliwić parkowanie prostopadłe w pojedynczym manewrze. Przy projektowaniu algorytmów parkowania przyjęto założenie, że obszar wokół miejsc parkingowych, po którym porusza się pojazd już podczas wykonywania manewru parkowania jest bezkolizyjny, a jeśli zdefiniowana przez użytkownika mapa nie zapewnia takowej bezkolizyjności zwracany jest komunikat, że zaparkowanie w wybranym miejscu nie jest możliwe. 
 
 Wyprowadzone zostaną teraz matematyczne warunki, jakie muszą wystąpić w każdej z wyżej opisanych sytuacji:
 \begin{itemize}
@@ -1266,15 +1266,15 @@ Algorytm parkowania
             okrąg = wyznacz lewy okrąg dla maksymalnego skrętu kół pojazdu 
                     i ruchu w przód dla którego kąt znajduje się w przedziale 
                     [kąt startowy, kąt końcowy]
-        jeżeli liczba okręgów % 4 == 0
+        jeżeli liczba okręgów % 4 == 1
             okrąg = wyznacz prawy okrąg dla maksymalnego skrętu kół pojazdu 
                     i ruchu w przód dla którego kąt znajduje się w przedziale 
                     [2 * PI - kąt końcowy, 2 * PI + kąt startowy]
-        jeżeli liczba okręgów % 4 == 0
+        jeżeli liczba okręgów % 4 == 2
             okrąg = wyznacz lewy okrąg dla maksymalnego skrętu kół pojazdu 
                     i ruchu w tył dla którego kąt znajduje się w przedziale 
                     [2 * PI + kąt startowy, 2 * PI - kąt końcowy]
-        jeżeli liczba okręgów % 4 == 0
+        jeżeli liczba okręgów % 4 == 3
             okrąg = wyznacz prawy okrąg dla maksymalnego skrętu kół pojazdu 
                     i ruchu w tył dla którego kąt znajduje się w przedziale 
                     [kąt końcowy, kąt startowy]
