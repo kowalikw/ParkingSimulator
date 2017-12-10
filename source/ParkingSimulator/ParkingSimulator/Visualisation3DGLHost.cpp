@@ -1,4 +1,4 @@
-#include "OpenGLHost3D.h"
+#include "Visualisation3DGLHost.h"
 
 class LoadModelsThread : public QThread
 {
@@ -143,7 +143,7 @@ glm::vec2 position, lastPosition;
 float rotationWheel;
 float angle, lastAngle;
 
-OpenGLHost3D::OpenGLHost3D(QWidget *parent) : QOpenGLWidget(parent)
+Visualisation3DGLHost::Visualisation3DGLHost(QWidget *parent) : QOpenGLWidget(parent)
 {
 	setFocus();
 	for (int i = 0; i < 1024; i++)
@@ -154,7 +154,7 @@ OpenGLHost3D::OpenGLHost3D(QWidget *parent) : QOpenGLWidget(parent)
 
 #pragma region User input events.
 
-void OpenGLHost3D::mousePressEvent(QMouseEvent *event)
+void Visualisation3DGLHost::mousePressEvent(QMouseEvent *event)
 {
 	mouseLastX = event->x();
 	mouseLastY = event->y();
@@ -168,7 +168,7 @@ void OpenGLHost3D::mousePressEvent(QMouseEvent *event)
 	setFocus();
 }
 
-void OpenGLHost3D::mouseReleaseEvent(QMouseEvent * event)
+void Visualisation3DGLHost::mouseReleaseEvent(QMouseEvent * event)
 {
 	if (event->button() == MouseButton::LeftButton)
 		mouseLeftPressed = false;
@@ -178,7 +178,7 @@ void OpenGLHost3D::mouseReleaseEvent(QMouseEvent * event)
 		mouseMiddlePressed = false;
 }
 
-void OpenGLHost3D::mouseMoveEvent(QMouseEvent * event)
+void Visualisation3DGLHost::mouseMoveEvent(QMouseEvent * event)
 {
 	if (mouseLeftPressed)
 	{
@@ -192,21 +192,21 @@ void OpenGLHost3D::mouseMoveEvent(QMouseEvent * event)
 	}
 }
 
-void OpenGLHost3D::keyPressEvent(QKeyEvent * event)
+void Visualisation3DGLHost::keyPressEvent(QKeyEvent * event)
 {
 	int key = event->key();
 	if (key >= 0 && key < 1024)
 		keys[key] = true;
 }
 
-void OpenGLHost3D::keyReleaseEvent(QKeyEvent * event)
+void Visualisation3DGLHost::keyReleaseEvent(QKeyEvent * event)
 {
 	int key = event->key();
 	if (key >= 0 && key < 1024)
 		keys[key] = false;
 }
 
-void OpenGLHost3D::SetVisualisation(Visualisation * visualisation)
+void Visualisation3DGLHost::SetVisualisation(Visualisation * visualisation)
 {
 	this->visualization = visualisation;
 }
@@ -215,7 +215,7 @@ void OpenGLHost3D::SetVisualisation(Visualisation * visualisation)
 
 #pragma region OpenGL methods.
 
-void OpenGLHost3D::initializeGL()
+void Visualisation3DGLHost::initializeGL()
 {
 	time.start();
 	glewInit();
@@ -238,14 +238,14 @@ void OpenGLHost3D::initializeGL()
 	skyboxModel = new Model("Resources/skyboxes/visualisation3D/skybox.obj");
 }
 
-void OpenGLHost3D::resizeGL(int w, int h)
+void Visualisation3DGLHost::resizeGL(int w, int h)
 {
 	WIDTH = w;
 	HEIGHT = h;
 	glViewport(0, 0, WIDTH, HEIGHT);
 }
 
-void OpenGLHost3D::paintGL()
+void Visualisation3DGLHost::paintGL()
 {
 	if (loadModelsInProgress) return;
 
@@ -514,7 +514,7 @@ void OpenGLHost3D::paintGL()
 
 #pragma endregion
 
-void OpenGLHost3D::MoveCamera()
+void Visualisation3DGLHost::MoveCamera()
 {
 	if (keys[Key::Key_W])
 		camera->ProcessKeyboard(FORWARD, deltaTime);
@@ -526,7 +526,7 @@ void OpenGLHost3D::MoveCamera()
 		camera->ProcessKeyboard(RIGHT, deltaTime);
 }
 
-void OpenGLHost3D::initializeVisualization()
+void Visualisation3DGLHost::initializeVisualization()
 {
 	if (visualization->GetCurrentSimulation() == NULL) return;
 
@@ -541,7 +541,7 @@ void OpenGLHost3D::initializeVisualization()
 	pleaseWaitWindow->show();
 }
 
-void OpenGLHost3D::loadModel(std::string modelPath, std::vector<InstanceData> instances, Model *m)
+void Visualisation3DGLHost::loadModel(std::string modelPath, std::vector<InstanceData> instances, Model *m)
 {
 	Model *model = new Model(modelPath, instances, m != nullptr ? &m->meshes : nullptr);
 	model->Translate(glm::vec3(0, 0, 0));
@@ -552,7 +552,7 @@ void OpenGLHost3D::loadModel(std::string modelPath, std::vector<InstanceData> in
 	loadedModels->insert(std::pair<std::string, Model*>(modelPath, model));
 }
 
-void OpenGLHost3D::loadModelsFinished()
+void Visualisation3DGLHost::loadModelsFinished()
 {
 	this->loadModelsInProgress = false;
 	this->reloadModels = true;

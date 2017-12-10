@@ -28,11 +28,11 @@
 
 using namespace Qt;
 
-class OpenGLHost3D : public QOpenGLWidget, protected QOpenGLFunctions
+class Visualisation3DGLHost : public QOpenGLWidget, protected QOpenGLFunctions
 {
 	Q_OBJECT
 public:
-	OpenGLHost3D(QWidget *parent);
+	Visualisation3DGLHost(QWidget *parent);
 
 	void mousePressEvent(QMouseEvent * event);
 	void mouseReleaseEvent(QMouseEvent * event);

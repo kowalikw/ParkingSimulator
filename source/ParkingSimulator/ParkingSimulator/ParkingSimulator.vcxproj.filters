@@ -44,18 +44,6 @@
     <Filter Include="Source Files\OpenGLHosts">
       <UniqueIdentifier>{1c10bf5b-8e47-4f74-b381-cfbbd5e08a42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\PathElements">
-      <UniqueIdentifier>{b227a7f4-5992-481d-80c1-f8b561511c8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\PathElements">
-      <UniqueIdentifier>{634c2946-8cdd-453f-a436-9b5467556879}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\MapElements">
-      <UniqueIdentifier>{41a55405-1d75-404b-9fc9-c606fe160b5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\MapElements">
-      <UniqueIdentifier>{f5bc0bb7-0779-4e6c-9414-3fa1ffa74fba}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Helpers">
       <UniqueIdentifier>{0912ce52-244e-4d79-8f32-1fdb67128dc9}</UniqueIdentifier>
     </Filter>
@@ -79,6 +67,30 @@
     </Filter>
     <Filter Include="Header Files\Controllers">
       <UniqueIdentifier>{af19e7c8-93d1-45a1-ace5-5c954c681ddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Common">
+      <UniqueIdentifier>{b8a39681-9469-4263-bc08-b6230ed61645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Common">
+      <UniqueIdentifier>{756ccdc8-c2e2-41d3-b842-9188f6867b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{7ec6d2af-d3d1-4d98-b5b1-bdb07b6ce487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\MapElements">
+      <UniqueIdentifier>{41a55405-1d75-404b-9fc9-c606fe160b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models\PathElements">
+      <UniqueIdentifier>{b227a7f4-5992-481d-80c1-f8b561511c8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{c2516b89-8526-4ed5-9616-bcafba15fe7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\MapElements">
+      <UniqueIdentifier>{f5bc0bb7-0779-4e6c-9414-3fa1ffa74fba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models\PathElements">
+      <UniqueIdentifier>{634c2946-8cdd-453f-a436-9b5467556879}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -118,41 +130,26 @@
     <ClCompile Include="VisualisationGLHost.cpp">
       <Filter>Source Files\OpenGLHosts</Filter>
     </ClCompile>
-    <ClCompile Include="PathPlanner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vehicle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Path.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Arc.cpp">
-      <Filter>Source Files\PathElements</Filter>
+      <Filter>Source Files\Models\PathElements</Filter>
     </ClCompile>
     <ClCompile Include="BSpline.cpp">
-      <Filter>Source Files\PathElements</Filter>
+      <Filter>Source Files\Models\PathElements</Filter>
     </ClCompile>
     <ClCompile Include="Line.cpp">
-      <Filter>Source Files\PathElements</Filter>
+      <Filter>Source Files\Models\PathElements</Filter>
     </ClCompile>
     <ClCompile Include="PathElement.cpp">
-      <Filter>Source Files\PathElements</Filter>
+      <Filter>Source Files\Models\PathElements</Filter>
     </ClCompile>
     <ClCompile Include="MapElement.cpp">
-      <Filter>Source Files\MapElements</Filter>
+      <Filter>Source Files\Models\MapElements</Filter>
     </ClCompile>
     <ClCompile Include="ParkingSpace.cpp">
-      <Filter>Source Files\MapElements</Filter>
+      <Filter>Source Files\Models\MapElements</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.cpp">
-      <Filter>Source Files\MapElements</Filter>
-    </ClCompile>
-    <ClCompile Include="MapEditor.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Models\MapElements</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CreateMap.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -166,20 +163,11 @@
     <ClCompile Include="GeneratedFiles\Release\moc_MapEditorGLHost.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="Graph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_VisualisationGLHost.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_VisualisationGLHost.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="Visualisation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Simulation.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeometryHelper.cpp">
       <Filter>Source Files\Helpers</Filter>
@@ -210,9 +198,6 @@
     </ClCompile>
     <ClCompile Include="AddMapElement.cpp">
       <Filter>Source Files\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_SimulationInfo.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -259,12 +244,6 @@
     <ClCompile Include="AddSimulation.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_OpenGLHost3D.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_OpenGLHost3D.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\OpenGLFramework</Filter>
     </ClCompile>
@@ -277,17 +256,8 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\OpenGLFramework</Filter>
     </ClCompile>
-    <ClCompile Include="OpenGLHost3D.cpp">
-      <Filter>Source Files\OpenGLHosts</Filter>
-    </ClCompile>
     <ClCompile Include="Terrain.cpp">
-      <Filter>Source Files\MapElements</Filter>
-    </ClCompile>
-    <ClCompile Include="Language.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ColorContainer.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Models\MapElements</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_ColorContainer.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -297,9 +267,6 @@
     </ClCompile>
     <ClCompile Include="CommonHelper.cpp">
       <Filter>Source Files\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="VehicleEditor.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VehicleEditorGLHost.cpp">
       <Filter>Source Files\OpenGLHosts</Filter>
@@ -320,7 +287,52 @@
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
     <ClCompile Include="Turn.cpp">
-      <Filter>Source Files\PathElements</Filter>
+      <Filter>Source Files\Models\PathElements</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditor.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="PathPlanner.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="VehicleEditor.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Visualisation.cpp">
+      <Filter>Source Files\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Language.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorContainer.cpp">
+      <Filter>Source Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Simulation.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Vehicle.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Visualisation3DGLHost.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Visualisation3DGLHost.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Visualisation3DGLHost.cpp">
+      <Filter>Source Files\OpenGLHosts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,12 +405,6 @@
     <CustomBuild Include="AddSimulation.h">
       <Filter>Header Files\Windows</Filter>
     </CustomBuild>
-    <CustomBuild Include="OpenGLHost3D.h">
-      <Filter>Header Files\OpenGLHosts</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ColorContainer.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="VehicleEditorGLHost.h">
       <Filter>Header Files\OpenGLHosts</Filter>
     </CustomBuild>
@@ -408,58 +414,40 @@
     <CustomBuild Include="PleaseWaitWindow.h">
       <Filter>Header Files\Windows</Filter>
     </CustomBuild>
+    <CustomBuild Include="ColorContainer.h">
+      <Filter>Header Files\Common</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Visualisation3DGLHost.h">
+      <Filter>Header Files\OpenGLHosts</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeneratedFiles\ui_ParkingSimulator.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="PathPlanner.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vehicle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Arc.h">
-      <Filter>Header Files\PathElements</Filter>
+      <Filter>Header Files\Models\PathElements</Filter>
     </ClInclude>
     <ClInclude Include="BSpline.h">
-      <Filter>Header Files\PathElements</Filter>
+      <Filter>Header Files\Models\PathElements</Filter>
     </ClInclude>
     <ClInclude Include="Line.h">
-      <Filter>Header Files\PathElements</Filter>
+      <Filter>Header Files\Models\PathElements</Filter>
     </ClInclude>
     <ClInclude Include="PathElement.h">
-      <Filter>Header Files\PathElements</Filter>
+      <Filter>Header Files\Models\PathElements</Filter>
     </ClInclude>
     <ClInclude Include="MapElement.h">
-      <Filter>Header Files\MapElements</Filter>
+      <Filter>Header Files\Models\MapElements</Filter>
     </ClInclude>
     <ClInclude Include="ParkingSpace.h">
-      <Filter>Header Files\MapElements</Filter>
+      <Filter>Header Files\Models\MapElements</Filter>
     </ClInclude>
     <ClInclude Include="Obstacle.h">
-      <Filter>Header Files\MapElements</Filter>
-    </ClInclude>
-    <ClInclude Include="MapEditor.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Models\MapElements</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_CreateMap.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Graph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Visualisation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Simulation.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeometryHelper.h">
       <Filter>Header Files\Helpers</Filter>
@@ -472,9 +460,6 @@
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_AddMapElement.h">
       <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_SimulationInfo.h">
       <Filter>Generated Files</Filter>
@@ -504,22 +489,49 @@
       <Filter>Header Files\OpenGLFramework</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
-      <Filter>Header Files\MapElements</Filter>
-    </ClInclude>
-    <ClInclude Include="Language.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Models\MapElements</Filter>
     </ClInclude>
     <ClInclude Include="CommonHelper.h">
       <Filter>Header Files\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="VehicleEditor.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_PleaseWaitWindow.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="Turn.h">
-      <Filter>Header Files\PathElements</Filter>
+      <Filter>Header Files\Models\PathElements</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditor.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="PathPlanner.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleEditor.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Visualisation.h">
+      <Filter>Header Files\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Language.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Simulation.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicle.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

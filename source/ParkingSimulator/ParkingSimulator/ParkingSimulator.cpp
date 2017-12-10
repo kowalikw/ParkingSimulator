@@ -52,7 +52,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	((VehicleEditorGLHost*)ui.glVehicleEditor)->SetVehicleEditor(&vehicleEditor);
 	((PathPlannerGLHost*)ui.glPathPlanner)->SetPathPlanner(&pathPlanner);
 	((VisualisationGLHost*)ui.glVisualisation)->SetVisualisation(&visualisation);
-	((OpenGLHost3D*)ui.glVisualisation3D)->SetVisualisation(&visualisation);
+	((Visualisation3DGLHost*)ui.glVisualisation3D)->SetVisualisation(&visualisation);
 
 	renderTimer = new QTimer();
 	renderTimer->setInterval(10);

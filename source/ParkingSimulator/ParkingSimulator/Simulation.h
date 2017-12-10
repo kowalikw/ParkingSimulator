@@ -90,6 +90,8 @@ public:
 		ar & (map != NULL);
 		ar & (expandedMap != NULL);
 		ar & (vehicle != NULL);
+		ar & (voronoiGraph != NULL);
+		ar & (fullVoronoiVisibilityGraph != NULL);
 		ar & (polylinePath != NULL);
 		ar & (parkingPathStart != NULL);
 		ar & (parkingPathEnd != NULL);
@@ -104,6 +106,8 @@ public:
 		if (map != NULL) ar & *map;
 		if (expandedMap != NULL) ar & *expandedMap;
 		if (vehicle != NULL) ar & *vehicle;
+		if (voronoiGraph != NULL) ar & *voronoiGraph;
+		if (fullVoronoiVisibilityGraph != NULL) ar & *fullVoronoiVisibilityGraph;
 		if (polylinePath != NULL) ar & *polylinePath;
 		if (parkingPathStart != NULL) ar & *parkingPathStart;
 		if (parkingPathEnd != NULL) ar & *parkingPathEnd;
@@ -126,6 +130,7 @@ public:
 	void load(Archive & ar, const unsigned int version)
 	{
 		bool isMap, isExpandedMap, isVehicle;
+		bool isVoronoiGraph, isFullVoronoiVisibilityGraph;
 		bool isPolylinePath, isParkingPathStart, isParkingPathEnd, isFinalPath;
 		bool isStartPoint, isEndPoint;
 		bool isStartDirection, isEndDirection;
@@ -134,6 +139,8 @@ public:
 		ar & isMap;
 		ar & isExpandedMap;
 		ar & isVehicle;
+		ar & isVoronoiGraph;
+		ar & isFullVoronoiVisibilityGraph;
 		ar & isPolylinePath;
 		ar & isParkingPathStart;
 		ar & isParkingPathEnd;
@@ -161,6 +168,18 @@ public:
 		{
 			vehicle = new Vehicle();
 			ar & *vehicle;
+		}
+
+		if (isVoronoiGraph)
+		{
+			voronoiGraph = new Graph();
+			ar & *voronoiGraph;
+		}
+
+		if (isFullVoronoiVisibilityGraph)
+		{
+			fullVoronoiVisibilityGraph = new Graph();
+			ar & *fullVoronoiVisibilityGraph;
 		}
 
 		if (isPolylinePath)

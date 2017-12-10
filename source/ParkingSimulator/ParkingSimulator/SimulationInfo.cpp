@@ -28,6 +28,7 @@ SimulationInfo::SimulationInfo(Simulation *simulation, QWidget *parent)
 	else if (simulation->GetPathPlanningAlgorithm() == PathPlanningAlgorithm::Arcs)
 		pathPlanningAlgorithm = QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_Algorithm_Arcs"]);
 
+	ui.simulationInfoTitle->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_Title"]));
 	ui.simulationNameLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_Name"]));
 	ui.vehicleNameLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_VehicleName"]));
 	ui.pathElementsLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["SimulationInfo_PathElements"]));

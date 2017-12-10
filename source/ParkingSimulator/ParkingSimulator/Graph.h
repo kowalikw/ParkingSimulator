@@ -66,9 +66,15 @@ struct GraphVertex
 	double y;
 	GraphVertex() {}
 	GraphVertex(double x, double y) : x(x), y(y) {}
-	~GraphVertex()
+	~GraphVertex() { }
+
+	friend class boost::serialization::access;
+
+	template<class Archive>
+	void serialize(Archive & ar, const unsigned int version)
 	{
-		int allala = 0;
+		ar & x;
+		ar & y;
 	}
 };
 
@@ -78,13 +84,50 @@ struct GraphEdge
 	GraphVertex *v2; // to
 	double weight;
 	GraphEdge() { v1 = nullptr; v2 = nullptr; }
-	GraphEdge(GraphVertex *v1, GraphVertex *v2) : v1(v1), v2(v2) { weight = sqrt((v1->x - v2->x) * (v1->x - v2->x) + (v1->y - v2->y) * (v1->y - v2->y)); }
+	GraphEdge(GraphVertex *v1, GraphVertex *v2) : v1(v1), v2(v2) 
+	{ 
+		if(v1 != nullptr && v2 != nullptr)
+			weight = sqrt((v1->x - v2->x) * (v1->x - v2->x) + (v1->y - v2->y) * (v1->y - v2->y)); 
+	}
 	GraphEdge(GraphVertex *v1, GraphVertex *v2, double weight) : v1(v1), v2(v2), weight(weight) { }
 	~GraphEdge() 
 	{
 		if (v1 != nullptr) delete v1;
 		if (v2 != nullptr) delete v2;
 	}
+
+	friend class boost::serialization::access;
+
+	template<class Archive>
+	void save(Archive & ar, const unsigned int version) const
+	{
+		ar & v1 != nullptr;
+		ar & v2 != nullptr;
+
+		if (v1 != nullptr) ar & *v1;
+		if (v2 != nullptr) ar & *v2;
+	}
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{
+		bool isV1, isV2;
+
+		ar & isV1;
+		ar & isV2;
+
+		if (isV1)
+		{
+			this->v1 = new GraphVertex();
+			ar & *v1;
+		}
+
+		if (isV2)
+		{
+			this->v2 = new GraphVertex();
+			ar & *v2;
+		}
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 class Graph
@@ -116,6 +159,57 @@ public:
 	Path *FindPath(int s, int t);
 
 	bool CanCancelCalculation();
+
+	friend class boost::serialization::access;
+
+	template<class Archive>
+	void save(Archive & ar, const unsigned int version) const
+	{
+		ar & directed;
+		ar & vertices.size();
+		for (int i = 0; i < vertices.size(); i++)
+			ar & *vertices[i];
+		for (int i = 0; i < vertices.size(); i++)
+			for (int j = 0; j < vertices.size(); j++)
+			{
+				if (edges[i][j] != nullptr)
+					ar & *edges[i][j];
+				else
+					ar & GraphEdge(nullptr, nullptr);
+			}
+	}
+	template<class Archive>
+	void load(Archive & ar, const unsigned int version)
+	{
+		int verticesCount;
+		GraphVertex *vertex;
+		GraphEdge *edge;
+
+		ar & directed;
+		ar & verticesCount;
+
+		for (int i = 0; i < verticesCount; i++)
+		{
+			vertex = new GraphVertex();
+			ar & *vertex;
+			this->vertices.push_back(vertex);
+		}
+
+		for (int i = 0; i < verticesCount; i++)
+		{
+			this->edges.push_back(std::vector<GraphEdge*>());
+			for (int j = 0; j < verticesCount; j++)
+			{
+				edge = new GraphEdge();
+				ar & *edge;
+				if (edge->v1 != nullptr && edge->v2 != nullptr)
+					this->edges[i].push_back(edge);
+				else
+					this->edges[i].push_back(nullptr);
+			}
+		}
+	}
+	BOOST_SERIALIZATION_SPLIT_MEMBER()
 private:
 	bool directed;
 	std::vector<GraphVertex*> vertices;

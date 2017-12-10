@@ -5941,7 +5941,7 @@ background-color: #3b3e41;</string>
              </widget>
             </item>
             <item>
-             <widget class="OpenGLHost3D" name="glVisualisation3D">
+             <widget class="Visualisation3DGLHost" name="glVisualisation3D">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -7723,9 +7723,9 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
    <header>VisualisationGLHost.h</header>
   </customwidget>
   <customwidget>
-   <class>OpenGLHost3D</class>
+   <class>Visualisation3DGLHost</class>
    <extends>QOpenGLWidget</extends>
-   <header>OpenGLHost3D.h</header>
+   <header>Visualisation3DGLHost.h</header>
   </customwidget>
   <customwidget>
    <class>ColorContainer</class>

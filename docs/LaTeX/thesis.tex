@@ -202,7 +202,7 @@
 % --------------------- Ustawienia użytkownika ------------------
 
 \newcommand{\tytul}{Opracowanie modułu automatycznego parkowania samochodu}
-\renewcommand{\title}{TODO}
+\renewcommand{\title}{Design of automatic parking system for vehicle}
 \renewcommand{\author}{Wojciech Kowalik}
 \newcommand{\album}{254199}
 \newcommand{\type}{magisters} % magisters, licencjac (Master or Engineer in English)
@@ -536,12 +536,12 @@ Przykład stylizacji przycisku w Qt
         color: white;
     }
     
-    //stylizacja wyglądu po najechaniu myszka nad przycisk
+    //stylizacja wyglądu po najechaniu myszką nad przycisk
     QPushButton#idPrzycisku:hover {
         background-color: #85b448;
     }
     
-    //stylizacja wyglądu po naciścięciu przycisku
+    //stylizacja wyglądu po naciśnięciu przycisku
     QPushButton#idPrzycisku:pressed {
         background-color: #d86a39;
     }
@@ -615,7 +615,7 @@ Dzięki wykorzystaniu OpenGL w opracowanej aplikacji możliwe było stworzenie w
 	\item GLEW - biblioteka pomagająca w odpytywaniu i ładowaniu rozszerzeń OpenGL. GLEW dostarcza efektywne mechanizmy do określania w czasie uruchamiania programu dostępnych rozszerzeń na danej platformie. Wszystkie rozszerzenia OpenGL są wylistowane w jednym pliku nagłówkowym, który z kolei jest maszynowo generowany na podstawie oficjalnej listy rozszerzeń.
 	\item GLM - dostarcza zestaw obiektów i funkcji matematycznych zaprojektowanych pod kątem użycia ich w OpenGL oraz w konwencji nazewniczej języka GLSL.
 	\item SOIL - biblioteka dostarczająca mechanizm umożliwiający wczytywanie obrazków oraz tekstur 3D do OpenGL. Biblioteka obsługuje wszystkie najpopularniejsze formaty.
-	\item ASSIMP - biblioteka umożliwiająca łatwe załadowanie modeli 3D wraz z ich materiałami i innymi właściwościami do OpenGL. Biblioteka ta, podobnie jak biblioteka SOIL obsługuje wszystkie najpopularniejsze formaty modeli 3D. Ponadto, jeśli zostaną ustawione odpowiednie parametry, to biblioteka ASSIMP juz na etapie wczytywania jest w stanie dokonać optymalizacji wczytywanych siatek 3D.
+	\item ASSIMP - biblioteka umożliwiająca łatwe załadowanie modeli 3D wraz z ich materiałami i innymi właściwościami do OpenGL. Biblioteka ta, podobnie jak biblioteka SOIL obsługuje wszystkie najpopularniejsze formaty modeli 3D. Ponadto, jeśli zostaną ustawione odpowiednie parametry, to biblioteka ASSIMP już na etapie wczytywania jest w stanie dokonać optymalizacji wczytywanych siatek 3D.
 \end{itemize}
 
 Użycie powyższych bibliotek w połączeniu z OpenGL jest w dzisiejszych czasach standardem.
@@ -758,7 +758,7 @@ Dodatkowym efektem powiększenia przeszkód jest zupełnie inna postać wyznaczo
 
 \subsubsection{Konstrukcja grafu i wyszukiwanie ścieżki}
 
-Jak nie trudno się domyślić konstrukcja grafu, w którym wyszukiwana będzie ścieżka pomiędzy wierzchołkiem startowym i końcowym rozpoczyna się od wyznaczenia grafu Voronoi dla zadanej mapy (z powiększonymi przeszkodami lub nie). Ponieważ doświadczenia empiryczne pokazały, że sam graf Voronoi bardzo często zawiera zbyt mało wierzchołków i krawędzi, aby możliwe było wyznaczenie sensownej trajektorii dla pojazdu należało w jakiś sposób wzbogacić ten graf o nowe wierzchołki i krawędzie. Podstawowy pomysł polega na dodaniu krawędzi pomiędzy wszystkimi wierzchołkami, które są dla siebie na wzajem "widoczne", tzn. krawędź pomiędzy tymi wierzchołkami nie przechodzi przez żaden obiekt mapy (lub powiększony obiekt mapy). Przykładowy graf z dodatkowymi krawędziami przedstawia rysunek 5.4.
+Jak nie trudno się domyślić konstrukcja grafu, w którym wyszukiwana będzie ścieżka pomiędzy wierzchołkiem startowym i końcowym rozpoczyna się od wyznaczenia grafu Voronoi dla zadanej mapy (z powiększonymi przeszkodami lub nie). Ponieważ doświadczenia empiryczne pokazały, że sam graf Voronoi bardzo często zawiera zbyt mało wierzchołków i krawędzi, aby możliwe było wyznaczenie sensownej trajektorii dla pojazdu należało w jakiś sposób wzbogacić ten graf o nowe wierzchołki i krawędzie. Podstawowy pomysł polega na dodaniu krawędzi pomiędzy wszystkimi wierzchołkami, które są dla siebie nawzajem "widoczne", tzn. krawędź pomiędzy tymi wierzchołkami nie przechodzi przez żaden obiekt mapy (lub powiększony obiekt mapy). Przykładowy graf z dodatkowymi krawędziami przedstawia rysunek 5.4.
 
 \begin{figure}[h!]
 \centering
@@ -873,7 +873,7 @@ Aby móc wpisać łuk pomiędzy zadane odcinki należy wyznaczyć środek okręg
 	$$normal(B,A) = [dir(B,A).y, -dir(B,A).x]$$
 	$$normal(C,B) = [dir(C,B).y, -dir(C,B).x]$$
 	\item pobranie minimalnego promienia skrętu, który jest dozwolony dla danego pojazdu - $r_{min}$,
-	\item umieszczenie dwóch punktów $P$ i $K$ na dwóch odcinkach w odległości od punktu $B$ równej długości dłuższej krawędzi ($length$). W zaprezentowany przykładzie złożyło się tak, iż pokrywają się one z punktami $A$ i $C$, ponieważ oba odcinki są równej długości,
+	\item umieszczenie dwóch punktów $P$ i $K$ na dwóch odcinkach w odległości od punktu $B$ równej długości dłuższej krawędzi ($length$). W zaprezentowanym przykładzie złożyło się tak, iż pokrywają się one z punktami $A$ i $C$, ponieważ oba odcinki są równej długości,
 	\item wyznaczanie środka okręgu oraz iteracyjne ściąganie punktów $P$ i $K$ w kierunku punktu $B$ do momentu, aż promień okręgu nie osiągnie wartości minimalnego promienia dla danego pojazdu. Poniżej zaprezentowano obliczenia i rysunek przedstawiający opisaną sytuację:
 	$$P = B - length * dir(B,A)$$
 	$$K = B + length * dir(C,B)$$
@@ -926,7 +926,7 @@ Wpisywanie łuku pomiędzy dwa odcinki
 \end{verbatim}
 \end{pseudokod}
 
-Znając metodę wyznaczania parametrów łuku wpisanego pomiędzy dwa odcinki można przedstawić kompletny algorytm konstrukcji finalnej trajektorii na podstawie łamanej. Tutaj sprawa jest dość prosta, ponieważ tak naprawdę wystarczy wyznaczyć listę łuków wpisanych pomiędzy każdą parę odcinków, a następnie pomiędzy każdą parę łuków wstawić linię łącząca końcowy punkt pierwszego łuku w początkowym punktem drugiego łuku. Ponadto należy dodać linie łączące punkt startowy z punktem początkowym pierwszego łuku na liście oraz linię łączącą końcowy punkt ostatniego łuku z listy z punktem końcowym. Całość procedury przedstawia poniższy pseudokod.
+Znając metodę wyznaczania parametrów łuku wpisanego pomiędzy dwa odcinki można przedstawić kompletny algorytm konstrukcji finalnej trajektorii na podstawie łamanej. Tutaj sprawa jest dość prosta, ponieważ tak naprawdę wystarczy wyznaczyć listę łuków wpisanych pomiędzy każdą parę odcinków, a następnie pomiędzy każdą parę łuków wstawić linię łącząca końcowy punkt pierwszego łuku z początkowym punktem drugiego łuku. Ponadto należy dodać linie łączące punkt startowy z punktem początkowym pierwszego łuku na liście oraz linię łączącą końcowy punkt ostatniego łuku z listy z punktem końcowym. Całość procedury przedstawia poniższy pseudokod.
 
 \begin{pseudokod}
 Wyznaczanie trajektorii opartej na wpisywanych łukach
@@ -938,7 +938,8 @@ Wyznaczanie trajektorii opartej na wpisywanych łukach
     dla każdej pary łuków znajdujących się w finalnej ścieżce
         dodaj linię do finalnej ścieżki, która łączy koniec jednego łuku 
         z początkiem drugiego
-    dodaj linię łączącą punkt początkowy z pierwszym punktem pierwszego łuku w finalnej ścieżce
+    dodaj linię łączącą punkt początkowy z pierwszym punktem pierwszego łuku w 
+    finalnej ścieżce
     dodaj linię łączącą punkt końcowy z ostatnim punktem ostatniego łuku w finalnej ścieżce
     zwróć finalną ścieżkę
 \end{verbatim}
@@ -961,7 +962,7 @@ Sam proces wykrywania kolizji jest dość prosty. Idea jest taka, że symulujemy
 \newpage
 
 \begin{pseudokod}
-Wykrywania i eliminacji kolizji
+Wykrywanie i eliminacja kolizji
 \begin{verbatim}
     dla określonej przez użytkownika liczby położeń pojazdu na ścieżce
         zaktualizuj stan pojazdu do określonego położenia na ścieżce
@@ -1046,7 +1047,7 @@ Na pierwszy rzut oka ścieżki wygenerowane przy pomocy krzywej B-sklejanej wygl
 \caption[Proste ścieżki wygenerowane przy użyciu metody wpisanych łuków]{Proste ścieżki wygenerowane przy użyciu metody wpisanych łuków}
 \end{figure}
 
-W przykładzie tym mamy do czynienia z klasycznym problemem, jaki występuje w metodzie wpisanych łuków. Widać, że w zaznaczonym obszarze łuki powinny się były spotkać swoimi końcami, jednak było tam zbyt ciasno, przez co krawędzie musiały zostać przedłużone i doszło do sytuacji, że pojazd aby przedostać się z jednego łuku na drugi musi wykonać ruch do tyłu. Mimo iż ścieżka ta wydaje się bardzo nieelegancka i w praktyce pewnie nigdy pojazd nie powinien się tak zachowywać, to jednak wciąż jest to poprawna ścieżka, która pozwala na bezkolizyjny ruch pojazdu pomiędzy zadanymi położeniami, a na dodatek wszystkie zakręty, które pojazd wykonuje podczas ruchu są dla niego osiągalne w rzeczywistości, przy zadanym maksymalnym skręcie kół.
+W przykładzie tym mamy do czynienia z klasycznym problemem, jaki występuje w metodzie wpisanych łuków. Widać, że w zaznaczonym obszarze łuki powinny się spotkać swoimi końcami, jednak było tam zbyt ciasno, przez co krawędzie musiały zostać przedłużone i doszło do sytuacji, że pojazd aby przedostać się z jednego łuku na drugi musi wykonać ruch do tyłu. Mimo iż ścieżka ta wydaje się bardzo nieelegancka i w praktyce pewnie nigdy pojazd nie powinien się tak zachowywać, to jednak wciąż jest to poprawna ścieżka, która pozwala na bezkolizyjny ruch pojazdu pomiędzy zadanymi położeniami, a na dodatek wszystkie zakręty, które pojazd wykonuje podczas ruchu są dla niego osiągalne w rzeczywistości, przy zadanym maksymalnym skręcie kół.
 
 Poza dość prostymi testami jak te zaprezentowane powyżej zostały przeprowadzone również testy na dużo bardziej skomplikowanych mapach. W większości przypadków zakończyły się one pomyślnie i została wygenerowana mniej lub bardziej sensowna z punktu widzenia zwykłego człowieka trajektoria dla pojazdu. Zdarzały się jednak przypadki, iż ścieżka nie była wyznaczana i konieczne było dodanie określonej liczby sztucznych wierzchołków w sytuacji, w której na pierwszy rzut oka taka ścieżka powinna zostać wyznaczona bez większych problemów. Takie zachowanie algorytmu wynika z faktu, iż cały proces wyznaczania ścieżki jest determinowany poprzez położenie wierzchołków grafu i przy niefortunnym ułożeniu przeszkód wierzchołki mogą zostać tak rozmieszczone, że niemożliwa jest konstrukcja ścieżki bezkolizyjnej opartej na dowolnej łamanej złożonej z krawędzi takiego grafu. Dodanie sztucznych wierzchołków na ogół eliminowało takie problemy, ale w zamian za to czas obliczeń znacząco wzrastał. Na ostatnim już obrazku w tym podrozdziale została przedstawiona ścieżka dla bardziej skomplikowanej mapy - rysunek 5.16.
 
@@ -1060,7 +1061,7 @@ Poza dość prostymi testami jak te zaprezentowane powyżej zostały przeprowadz
 
 Jak pokazały przeprowadzone testy algorytm działa poprawnie i potrafi wyznaczyć ścieżkę nawet w dość skomplikowanym przypadku. Zdarzają się jednak sytuacje, w których ścieżka nie zostaje znaleziona, choć patrząc na mapę od razu widać, że istnieje. W takich przypadkach najczęściej wystarczy zmienić parametry wyszukiwania ścieżki i dodać dodatkowe wierzchołki do konstruowanego grafu. Kolejnym etapem rozwoju algorytmu mogłaby być automatyzacja tego procesu i automatyczny dobór parametrów przez algorytm w zależności od wczytanej przez użytkownika mapy.
 
-Kolejne problemy jakie ujawniły testy to dodawanie krawędzi wstecznych w metodzie wpisywania łuków oraz długi czas obliczeń dla bardziej skomplikowanych map, gdy włączone jest wykrywanie i eliminacji kolizji pojazdu z przeszkodami. Pokrywa się to jednak z przewidywaniami, ponieważ algorytm wykrywania i eliminacji kolizji jest  procesem dość kosztownym i gdy układ przeszkód na mapie wymusza jego intensywne użycie to czas obliczeń znacząco rośnie. Rozwiązanie wymienionych problemów i optymalizacja algorytmu byłaby celem kolejnego etapu prac nad planerem ruchu, gdyby do niego doszło.
+Kolejne problemy jakie ujawniły testy to dodawanie krawędzi wstecznych w metodzie wpisywania łuków oraz długi czas obliczeń dla bardziej skomplikowanych map, gdy włączony jest algorytm wykrywania i eliminacji kolizji pojazdu z przeszkodami. Pokrywa się to jednak z przewidywaniami, ponieważ algorytm wykrywania i eliminacji kolizji jest  procesem dość kosztownym i gdy układ przeszkód na mapie wymusza jego intensywne użycie to czas obliczeń znacząco rośnie. Rozwiązanie wymienionych problemów i optymalizacja algorytmu byłaby celem kolejnego etapu prac nad planerem ruchu, gdyby do niego doszło.
 
 \newpage
 

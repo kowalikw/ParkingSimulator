@@ -381,6 +381,8 @@ void PathPlanner::OpenSimulation(string filePath)
 	vehicle = simulation->GetVehicle();
 	vehicleStart = new Vehicle(*simulation->GetVehicle());
 	vehicleEnd = new Vehicle (*simulation->GetVehicle());
+	voronoiGraph = simulation->GetVoronoiGraph();
+	fullVoronoiVisibilityGraph = simulation->GetFullVoronoiVisibilityGraph();
 	polylinePath = simulation->GetPolylinePath();
 	parkingPathStart = simulation->GetParkingPathStart();
 	parkingPathEnd = simulation->GetParkingPathEnd();
@@ -418,6 +420,8 @@ void PathPlanner::SaveSimulation(string filePath)
 	simulation->SetMap(map);
 	simulation->SetExpandedMap(expandedMap);
 	simulation->SetVehicle(vehicle);
+	simulation->SetVoronoiGraph(voronoiGraph);
+	simulation->SetFullVoronoiVisibilityGraph(fullVoronoiVisibilityGraph);
 	simulation->SetPolylinePath(polylinePath);
 	simulation->SetParkingPathStart(parkingPathStart);
 	simulation->SetParkingPathEnd(parkingPathEnd);
