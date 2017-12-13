@@ -1,8 +1,7 @@
 #include "ColorContainer.h"
 
-ColorContainer::ColorContainer(QWidget* parent, Qt::WindowFlags f)
-	: QLabel(parent) {
-	this->setStyleSheet("background-color: green;");
+ColorContainer::ColorContainer(QWidget* parent, Qt::WindowFlags f) : QLabel(parent) 
+{	
 }
 
 ColorContainer::~ColorContainer()

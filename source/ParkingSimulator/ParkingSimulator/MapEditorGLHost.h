@@ -32,9 +32,7 @@ protected:
 	virtual void resizeGL(int w, int h) override;
 	virtual void paintGL() override;
 private:
-	/*void adjustMaxOffset();*/
 	void nvgRenderFrame();
-	//void drawActiveElement();
 
 	MapEditor *mapEditor;
 	glm::vec2 positionOnMap;

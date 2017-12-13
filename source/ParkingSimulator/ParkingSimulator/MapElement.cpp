@@ -238,14 +238,6 @@ void MapElement::move()
 {
 	for (int i = 0; i < points.size(); i++)
 		points[i] = glm::vec2(points[i].x + position.x, points[i].y + position.y);
-	//std::ostringstream ss;
-	//ss << "P0 - move: " << points[0].x << ", " << points[0].y << endl;
-	//ss << "P1 - move: " << points[1].x << ", " << points[1].y << endl;
-	//ss << "P2 - move: " << points[2].x << ", " << points[2].y << endl;
-	//ss << "P3 - move: " << points[3].x << ", " << points[3].y << endl;
-	//ss << endl;
-	//std::string s(ss.str());
-	//OutputDebugStringA(s.c_str());
 }
 
 std::string MapElement::GetModelPath()
@@ -300,15 +292,6 @@ void MapElement::rotate()
 		for (int i = 0; i < points.size(); i++)
 			points[i] = glm::vec2(points[i].x + position.x, points[i].y + position.y);
 	}
-
-	//std::ostringstream ss;
-	//ss << "P0 - rotate: " << points[0].x << ", " << points[0].y << endl;
-	//ss << "P1 - rotate: " << points[1].x << ", " << points[1].y << endl;
-	//ss << "P2 - rotate: " << points[2].x << ", " << points[2].y << endl;
-	//ss << "P3 - rotate: " << points[3].x << ", " << points[3].y << endl;
-	//ss << endl;
-	//std::string s(ss.str());
-	//OutputDebugStringA(s.c_str());
 }
 
 void MapElement::resize()

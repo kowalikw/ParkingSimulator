@@ -87,13 +87,7 @@ void VehicleEditorGLHost::initializeGL()
 	// Light attributes
 	lightPos = glm::vec3(-30.0f, 100.0f, 0.0f);
 
-	skyboxModel = new Model("Resources/skyboxes/vehicleEditor/skybox.obj");
-
-	vehicleEditor->GetVehicle()->SetFrontLeftWheelModel(new Model("Resources/models/vehicle/vehicle.obj"));
-	//auto measure = box->MeasureModel();
-	vehicleEditor->GetVehicle()->GetFrontLeftWheelModel()->Translate(glm::vec3());
-	vehicleEditor->GetVehicle()->GetFrontLeftWheelModel()->Rotate(glm::vec3());
-	vehicleEditor->GetVehicle()->GetFrontLeftWheelModel()->Scale(glm::vec3(1, 1, 1));
+	skyboxModel = new Model("Resources/models/skyboxes/vehicleEditor/skybox.obj");
 }
 
 void VehicleEditorGLHost::resizeGL(int w, int h)
@@ -142,11 +136,9 @@ void VehicleEditorGLHost::paintGL()
 	glUniform3f(lightDiffuseLoc, 0.8f, 0.8f, 0.8f); // Let's darken the light a bit to fit the scene
 	glUniform3f(lightSpecularLoc, 0.8f, 0.8f, 0.8f);
 
-
-	//glm::mat4 projection = glm::ortho(-5.0f, 5.0f, 5.0f, -5.0f, 0.01f, 100.0f);
-	glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 10000.0f);
+	glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 1.0f, 10000.0f);
 	glm::mat4 view = camera->GetViewMatrix();
-	//glm::mat4 view;
+	
 	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 

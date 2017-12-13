@@ -2,6 +2,7 @@
 #define VISUALISATION_H
 
 #include <vector>
+#include "PathPlanner.h"
 #include "Simulation.h"
 #include "Graph.h"
 
@@ -24,10 +25,6 @@ public:
 
 	bool GetVisualisationChanged();
 	void SetVisualisationChanged(bool visualisationChanged);
-
-	//temp
-	Graph voronoi;
-	Map *mapa2;
 private:
 	bool showPath = false;
 	bool visualisation2D = false;

@@ -32,7 +32,7 @@ void AddSimulation::loadSimulationFromPathPlanner()
 	this->simulation->SetSimulationTime(10);
 	this->simulation->SetName(Language::getInstance()->GetDictionary()["PathPlanner_SimulationFromPathPlanner"]);
 
-	if (simulation != NULL && simulation->GetMap() != NULL && simulation->GetVehicle() != NULL && simulation->GetFinalPath() != NULL) //TODO:
+	if (simulation != NULL && simulation->GetMap() != NULL && simulation->GetVehicle() != NULL && simulation->GetFinalPath() != NULL)
 		accept();
 	else
 	{

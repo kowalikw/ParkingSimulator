@@ -53,6 +53,8 @@ public:
 	virtual SimulationState GetSimulationState(double t) = 0;
 	virtual CircleType GetDirection(double t) = 0;
 
+#pragma region Boost serialization.
+
 	friend class boost::serialization::access;
 
 	template<class Archive>
@@ -66,6 +68,9 @@ public:
 		ar & maneuverType;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+#pragma endregion
+
 protected:
 	ManeuverType maneuverType;
 	double length = 0;

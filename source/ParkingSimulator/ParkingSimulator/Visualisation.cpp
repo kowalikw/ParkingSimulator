@@ -1,7 +1,5 @@
 #include "Visualisation.h"
 
-#include "PathPlanner.h"
-
 Visualisation::Visualisation()
 {
 	this->visualisation2D = true;

@@ -262,12 +262,6 @@ SimulationState BSpline::GetSimulationState(double t)
 	if (t < 0.01) t = 0.01f; // clamp min
 	if (t > 0.99) t = 0.99f; // clamp max
 
-	std::ostringstream ss;
-	ss << "t: " << t << endl;
-	ss << endl;
-	std::string s(ss.str());
-	OutputDebugStringA(s.c_str());
-
 	double u = knots[n] + t * (knots[m - n] - knots[n]);
 
 	SimulationState simulationState;

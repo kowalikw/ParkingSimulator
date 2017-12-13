@@ -27,6 +27,8 @@ public:
 	virtual SimulationState GetSimulationState(double t);
 	virtual CircleType GetDirection(double t);
 
+#pragma region Boost serialization.
+
 	friend class boost::serialization::access;
 
 	template<class Archive>
@@ -50,11 +52,14 @@ public:
 		ar & lengthToElement;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+#pragma endregion
+
 private:
 	double angleFrom;
 	double angleTo;
-	glm::vec2 position;
 	double rotation;
+	glm::vec2 position;
 };
 
 #endif

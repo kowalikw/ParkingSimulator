@@ -4,9 +4,9 @@
 #include <vector>
 #include <string>
 #include <qsettings.h>
-#include "nanovg.h"
 #include <qcolor.h>
 #include <qdir.h>
+#include "nanovg.h"
 
 struct MapElementModel
 {

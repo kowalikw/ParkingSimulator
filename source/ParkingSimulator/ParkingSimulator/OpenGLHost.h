@@ -16,7 +16,7 @@
 
 using namespace Qt;
 
-class OpenGLHost : public QOpenGLWidget//, protected QOpenGLFunctions
+class OpenGLHost : public QOpenGLWidget
 {
 	Q_OBJECT
 

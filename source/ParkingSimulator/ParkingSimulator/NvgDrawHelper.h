@@ -37,6 +37,7 @@ class NvgDrawHelper
 {
 public:
 	NvgDrawHelper(NVGcontext *vg, glm::vec2 *widgetSize, glm::vec2 *offset, glm::vec2 *maxOffset, glm::vec2 *drawAreaSize, glm::vec2 *drawAreaPosition, float *magnificationRatio);
+	~NvgDrawHelper();
 
 	void DrawMap(Map *map);
 	void DrawVehicle(Vehicle *vehicle, VehicleType type = VehicleType::VehicleStandard);
@@ -49,10 +50,10 @@ public:
 	void DrawSelectedElement(MapElement *mapElement);
 	void DrawStartFlag(Vehicle *vehicle, bool isAdmissible = false);
 	void DrawEndFlag(Vehicle *vehicle, bool isAdmissible = false);
-	void DrawArrow(glm::vec2 point, glm::vec2 direction);
 	void DrawPathElement(PathElement *pathElement, bool isSelected = false);
 	void DrawMeshOnMap(Map *map, int width = 3);
 	void DrawTerrain(Terrain *terrain, bool isHover = false);
+	void UpdateSettings();
 
 	int SELECTED_MARKER_SIZE = Settings::getInstance()->GetInt("SELECTED_MARKER_SIZE");
 	NVGcolor SELECTED_MARKER_COLOR = Settings::getInstance()->GetColor("SELECTED_MARKER_COLOR");
@@ -67,32 +68,32 @@ public:
 	NVGcolor MAP_COLOR = Settings::getInstance()->GetColor("MAP_COLOR");
 	NVGcolor MAP_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_BORDER_COLOR");
 
-	 int MAP_ELEMENT_HOVER_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH");
-	 NVGcolor MAP_ELEMENT_HOVER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_COLOR");
-	 NVGcolor MAP_ELEMENT_HOVER_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_BORDER_COLOR");
+	int MAP_ELEMENT_HOVER_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH");
+	NVGcolor MAP_ELEMENT_HOVER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_COLOR");
+	NVGcolor MAP_ELEMENT_HOVER_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_BORDER_COLOR");
 
-	 int MAP_ELEMENT_SELECTED_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH");
-	 NVGcolor MAP_ELEMENT_SELECTED_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_COLOR");
-	 NVGcolor MAP_ELEMENT_SELECTED_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_BORDER_COLOR");
+	int MAP_ELEMENT_SELECTED_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH");
+	NVGcolor MAP_ELEMENT_SELECTED_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_COLOR");
+	NVGcolor MAP_ELEMENT_SELECTED_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_BORDER_COLOR");
 
-	 int BUILDING_BORDER_WIDTH = Settings::getInstance()->GetInt("BUILDING_BORDER_WIDTH");
-	 NVGcolor BUILDING_COLOR = Settings::getInstance()->GetColor("BUILDING_COLOR");
-	 NVGcolor BUILDING_BORDER_COLOR = Settings::getInstance()->GetColor("BUILDING_BORDER_COLOR");
+	int BUILDING_BORDER_WIDTH = Settings::getInstance()->GetInt("BUILDING_BORDER_WIDTH");
+	NVGcolor BUILDING_COLOR = Settings::getInstance()->GetColor("BUILDING_COLOR");
+	NVGcolor BUILDING_BORDER_COLOR = Settings::getInstance()->GetColor("BUILDING_BORDER_COLOR");
 
-	 int DECORATION_BORDER_WIDTH = Settings::getInstance()->GetInt("DECORATION_BORDER_WIDTH");
-	 NVGcolor DECORATION_COLOR = Settings::getInstance()->GetColor("DECORATION_COLOR");
-	 NVGcolor DECORATION_BORDER_COLOR = Settings::getInstance()->GetColor("DECORATION_BORDER_COLOR");
+	int DECORATION_BORDER_WIDTH = Settings::getInstance()->GetInt("DECORATION_BORDER_WIDTH");
+	NVGcolor DECORATION_COLOR = Settings::getInstance()->GetColor("DECORATION_COLOR");
+	NVGcolor DECORATION_BORDER_COLOR = Settings::getInstance()->GetColor("DECORATION_BORDER_COLOR");
 
-	 int PARKING_SPACE_BORDER_WIDTH = Settings::getInstance()->GetInt("PARKING_SPACE_BORDER_WIDTH");
-	 NVGcolor PARKING_SPACE_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_COLOR");
-	 NVGcolor PARKING_SPACE_BORDER_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_BORDER_COLOR");
+	int PARKING_SPACE_BORDER_WIDTH = Settings::getInstance()->GetInt("PARKING_SPACE_BORDER_WIDTH");
+	NVGcolor PARKING_SPACE_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_COLOR");
+	NVGcolor PARKING_SPACE_BORDER_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_BORDER_COLOR");
 
-	 int VEHICLE_BORDER_WIDTH = Settings::getInstance()->GetInt("VEHICLE_BORDER_WIDTH");
-	 NVGcolor VEHICLE_COLOR = Settings::getInstance()->GetColor("VEHICLE_COLOR");
-	 NVGcolor VEHICLE_BORDER_COLOR = Settings::getInstance()->GetColor("VEHICLE_BORDER_COLOR");
+	int VEHICLE_BORDER_WIDTH = Settings::getInstance()->GetInt("VEHICLE_BORDER_WIDTH");
+	NVGcolor VEHICLE_COLOR = Settings::getInstance()->GetColor("VEHICLE_COLOR");
+	NVGcolor VEHICLE_BORDER_COLOR = Settings::getInstance()->GetColor("VEHICLE_BORDER_COLOR");
 
-	 int GRAPH_EDGE_WIDTH = Settings::getInstance()->GetInt("GRAPH_EDGE_WIDTH");
-	 NVGcolor GRAPH_EDGE_COLOR = Settings::getInstance()->GetColor("GRAPH_EDGE_COLOR");
+	int GRAPH_EDGE_WIDTH = Settings::getInstance()->GetInt("GRAPH_EDGE_WIDTH");
+	NVGcolor GRAPH_EDGE_COLOR = Settings::getInstance()->GetColor("GRAPH_EDGE_COLOR");
 
 	int GRAPH_VERTEX_RADIUS = Settings::getInstance()->GetInt("GRAPH_VERTEX_RADIUS");
 	NVGcolor GRAPH_VERTEX_COLOR = Settings::getInstance()->GetColor("GRAPH_VERTEX_COLOR");
@@ -125,15 +126,12 @@ public:
 	NVGcolor TERRAIN_HOVER_COLOR = Settings::getInstance()->GetColor("TERRAIN_HOVER_COLOR");
 
 	int meshOnMapSize = Settings::getInstance()->GetInt("TERRAIN_SLICE_SIZE");
-
-	void UpdateSettings();
-
 private:
 	NVGcontext *vg;
 	glm::vec2 *widgetSize;
 	glm::vec2 *offset;
 	glm::vec2 *maxOffset;
-	glm::vec2 *drawAreaSize; // draw area is a map
+	glm::vec2 *drawAreaSize;
 	glm::vec2 *drawAreaPosition;
 	float *magnificationRatio;
 	int vehicleImage;
@@ -141,7 +139,6 @@ private:
 	int vehicleEndImage;
 	int VehicleErrorImage;
 
-	void updateDrawAreaProperties();
 	void drawMapElements(std::vector<MapElement*> mapElements);
 	void drawObstacle(Obstacle *obstacle);
 	void drawVehicle(Vehicle *vehicle);

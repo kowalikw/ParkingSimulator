@@ -79,7 +79,7 @@ QSpinBox::up-button {
 }
 
 QSpinBox::up-arrow {
-    image: url(Resources/arrow_up.png);
+    image: url(Resources/icons/spinBox/arrow_up.png);
     width: 12px;
     height: 12px;
 	padding-top: 3px;
@@ -87,7 +87,7 @@ QSpinBox::up-arrow {
 }
 
 QSpinBox::up-arrow:hover {
-	image: url(Resources/arrow_up_hover.png);
+	image: url(Resources/icons/spinBox/arrow_up_hover.png);
 }
 
 QSpinBox::down-button {
@@ -99,7 +99,7 @@ QSpinBox::down-button {
 }
 
 QSpinBox::down-arrow {
-    image: url(Resources/arrow_down.png);
+    image: url(Resources/icons/spinBox/arrow_down.png);
     width: 12px;
     height: 12px;
 	padding-bottom: 3px;
@@ -107,7 +107,7 @@ QSpinBox::down-arrow {
 }
 
 QSpinBox::down-arrow:hover {
-	image: url(Resources/arrow_down_hover.png);
+	image: url(Resources/icons/spinBox/arrow_down_hover.png);
 }</string>
        </property>
        <layout class="QFormLayout" name="formLayout">

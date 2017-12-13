@@ -12,16 +12,11 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
-
-#include <string>       // std::string
-#include <iostream>     // std::cout
-#include <sstream> 
-#include <Windows.h>
-
 class MapElement
 {
 public:
 	virtual ~MapElement();
+
 	std::string GetName();
 	double GetRotation();
 	glm::vec2 GetPosition();
@@ -61,10 +56,10 @@ public:
 	void SetThumbnailPath(std::string thumbnailPath);
 	void SetMapThumbnailPath(std::string thumbnailPath);
 
+#pragma region Boost serialization.
+
 	friend class boost::serialization::access;
-	// When the class Archive corresponds to an output archive, the
-	// & operator is defined similar to <<.  Likewise, when the class Archive
-	// is a type of input archive the & operator is defined similar to >>.
+	
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int version)
 	{
@@ -77,6 +72,9 @@ public:
 		ar & thumbnailPath;
 		ar & mapThumbnailPath;
 	}
+
+#pragma endregion
+
 protected:
 	std::string name;
 	double rotation;

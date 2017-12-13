@@ -11,6 +11,7 @@ public:
 	Line(glm::vec2 from, glm::vec2 to, ManeuverType maneuverType = ManeuverType::Front);
 	Line(glm::vec2 from, glm::vec2 to, int v1, int v2, ManeuverType maneuverType = ManeuverType::Front);
 	~Line();
+
 	glm::vec2 GetFrom() const;
 	glm::vec2 GetTo() const;
 	void SetFrom(glm::vec2 from);
@@ -29,6 +30,8 @@ public:
 	virtual SimulationState GetSimulationState(double t);
 	virtual CircleType GetDirection(double t);
 
+#pragma region Boost serialization.
+
 	friend class boost::serialization::access;
 
 	template<class Archive>
@@ -46,6 +49,9 @@ public:
 		ar & to;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+#pragma endregion
+
 private:
 	glm::vec2 from;
 	glm::vec2 to;

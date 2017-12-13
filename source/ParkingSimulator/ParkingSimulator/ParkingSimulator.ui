@@ -141,7 +141,7 @@ QPushButton#btnGoToMapEditor:pressed, QPushButton#btnGoToVehicleEditor:pressed, 
             <item>
              <widget class="QLabel" name="label">
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;img src=&quot;Resources/pw_logo.png&quot;/&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;img src=&quot;Resources/icons/start/pw_logo.png&quot;/&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -223,7 +223,7 @@ QPushButton#btnGoToMapEditor:pressed, QPushButton#btnGoToVehicleEditor:pressed, 
             <item>
              <widget class="QLabel" name="label_2">
               <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;img src=&quot;Resources/mini_logo.png&quot;/&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;img src=&quot;Resources/icons/start/mini_logo.png&quot;/&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
@@ -373,7 +373,7 @@ QPushButton#btnGoToMapEditor:pressed, QPushButton#btnGoToVehicleEditor:pressed, 
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>Resources/StartIcons/goToVehicleEditorIcon.png</normaloff>Resources/StartIcons/goToVehicleEditorIcon.png</iconset>
+                <normaloff>Resources/icons/start/goToVehicleEditorIcon.png</normaloff>Resources/icons/start/goToVehicleEditorIcon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -405,7 +405,7 @@ QPushButton#btnGoToMapEditor:pressed, QPushButton#btnGoToVehicleEditor:pressed, 
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>Resources/StartIcons/goToMapEditorIcon.png</normaloff>Resources/StartIcons/goToMapEditorIcon.png</iconset>
+                <normaloff>Resources/icons/start/goToMapEditorIcon.png</normaloff>Resources/icons/start/goToMapEditorIcon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -450,7 +450,7 @@ QPushButton#btnGoToMapEditor:pressed, QPushButton#btnGoToVehicleEditor:pressed, 
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>Resources/StartIcons/goToSettingsIcon.png</normaloff>Resources/StartIcons/goToSettingsIcon.png</iconset>
+                <normaloff>Resources/icons/start/goToSettingsIcon.png</normaloff>Resources/icons/start/goToSettingsIcon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -488,7 +488,7 @@ QPushButton#btnGoToMapEditor:pressed, QPushButton#btnGoToVehicleEditor:pressed, 
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>Resources/StartIcons/goToExitIcon.png</normaloff>Resources/StartIcons/goToExitIcon.png</iconset>
+                <normaloff>Resources/icons/start/goToExitIcon.png</normaloff>Resources/icons/start/goToExitIcon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -520,7 +520,7 @@ QPushButton#btnGoToMapEditor:pressed, QPushButton#btnGoToVehicleEditor:pressed, 
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>Resources/StartIcons/goToVisualisationIcon.png</normaloff>Resources/StartIcons/goToVisualisationIcon.png</iconset>
+                <normaloff>Resources/icons/start/goToVisualisationIcon.png</normaloff>Resources/icons/start/goToVisualisationIcon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -552,7 +552,7 @@ QPushButton#btnGoToMapEditor:pressed, QPushButton#btnGoToVehicleEditor:pressed, 
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>Resources/StartIcons/goToPathPlannerIcon.png</normaloff>Resources/StartIcons/goToPathPlannerIcon.png</iconset>
+                <normaloff>Resources/icons/start/goToPathPlannerIcon.png</normaloff>Resources/icons/start/goToPathPlannerIcon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -606,27 +606,27 @@ QToolButton#btnClearMap {
 }
 
 QTreeView::branch:has-siblings:!adjoins-item {
-    border-image: url(Resources/TreeWidgetIcons/vline.png) 0;
+    border-image: url(Resources/icons/treeWidget/vline.png) 0;
 }
 
 QTreeView::branch:has-siblings:adjoins-item {
-    border-image: url(Resources/TreeWidgetIcons/branch-more.png) 0;
+    border-image: url(Resources/icons/treeWidget/branch-more.png) 0;
 }
 
 QTreeView::branch:!has-children:!has-siblings:adjoins-item {
-    border-image: url(Resources/TreeWidgetIcons/branch-end.png) 0;
+    border-image: url(Resources/icons/treeWidget/branch-end.png) 0;
 }
 
 QTreeView::branch:has-children:!has-siblings:closed,
 QTreeView::branch:closed:has-children:has-siblings {
         border-image: none;
-        image: url(Resources/TreeWidgetIcons/branch-closed.png);
+        image: url(Resources/icons/treeWidget/branch-closed.png);
 }
 
 QTreeView::branch:open:has-children:!has-siblings,
 QTreeView::branch:open:has-children:has-siblings  {
         border-image: none;
-        image: url(Resources/TreeWidgetIcons/branch-open.png);
+        image: url(Resources/icons/treeWidget/branch-open.png);
 }
 
 QPushButton#btnAddBuilding, QPushButton#btnAddDecoration, QPushButton#btnAddCar, QPushButton#btnAddParkPlace, QPushButton#btnAddTerrain {
@@ -749,7 +749,7 @@ QPushButton#btnAddBuilding:pressed, QPushButton#btnAddDecoration:pressed, QPushB
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/MapEditorIcons/new.png</normaloff>Resources/MapEditorIcons/new.png</iconset>
+                    <normaloff>Resources/icons/mapEditor/new.png</normaloff>Resources/icons/mapEditor/new.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -787,7 +787,7 @@ QPushButton#btnAddBuilding:pressed, QPushButton#btnAddDecoration:pressed, QPushB
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/MapEditorIcons/open.png</normaloff>Resources/MapEditorIcons/open.png</iconset>
+                    <normaloff>Resources/icons/mapEditor/open.png</normaloff>Resources/icons/mapEditor/open.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -825,7 +825,7 @@ QPushButton#btnAddBuilding:pressed, QPushButton#btnAddDecoration:pressed, QPushB
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/MapEditorIcons/save.png</normaloff>Resources/MapEditorIcons/save.png</iconset>
+                    <normaloff>Resources/icons/mapEditor/save.png</normaloff>Resources/icons/mapEditor/save.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -1005,7 +1005,7 @@ border-radius: 3px;</string>
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>Resources/MapEditorIcons/carIcon.png</normaloff>Resources/MapEditorIcons/carIcon.png</iconset>
+                      <normaloff>Resources/icons/mapEditor/carIcon.png</normaloff>Resources/icons/mapEditor/carIcon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -1043,7 +1043,7 @@ border-radius: 3px;</string>
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>Resources/MapEditorIcons/buildingIcon.png</normaloff>Resources/MapEditorIcons/buildingIcon.png</iconset>
+                      <normaloff>Resources/icons/mapEditor/buildingIcon.png</normaloff>Resources/icons/mapEditor/buildingIcon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -1081,7 +1081,7 @@ border-radius: 3px;</string>
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>Resources/MapEditorIcons/decorationIcon.png</normaloff>Resources/MapEditorIcons/decorationIcon.png</iconset>
+                      <normaloff>Resources/icons/mapEditor/decorationIcon.png</normaloff>Resources/icons/mapEditor/decorationIcon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -1119,7 +1119,7 @@ border-radius: 3px;</string>
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>Resources/MapEditorIcons/parkingIcon.png</normaloff>Resources/MapEditorIcons/parkingIcon.png</iconset>
+                      <normaloff>Resources/icons/mapEditor/parkingIcon.png</normaloff>Resources/icons/mapEditor/parkingIcon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -1148,7 +1148,7 @@ border-radius: 3px;</string>
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/MapEditorIcons/terrainIcon.png</normaloff>Resources/MapEditorIcons/terrainIcon.png</iconset>
+                   <normaloff>Resources/icons/mapEditor/terrainIcon.png</normaloff>Resources/icons/mapEditor/terrainIcon.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -1203,7 +1203,7 @@ QDoubleSpinBox::up-button {
 }
 
 QDoubleSpinBox::up-arrow {
-    image: url(Resources/arrow_up.png);
+    image: url(Resources/icons/spinBox/arrow_up.png);
     width: 12px;
     height: 12px;
 	padding-top: 3px;
@@ -1211,7 +1211,7 @@ QDoubleSpinBox::up-arrow {
 }
 
 QDoubleSpinBox::up-arrow:hover {
-	image: url(Resources/arrow_up_hover.png);
+	image: url(Resources/icons/spinBox/arrow_up_hover.png);
 }
 
 QDoubleSpinBox::down-button {
@@ -1223,7 +1223,7 @@ QDoubleSpinBox::down-button {
 }
 
 QDoubleSpinBox::down-arrow {
-    image: url(Resources/arrow_down.png);
+    image: url(Resources/icons/spinBox/arrow_down.png);
     width: 12px;
     height: 12px;
 	padding-bottom: 3px;
@@ -1231,7 +1231,7 @@ QDoubleSpinBox::down-arrow {
 }
 
 QDoubleSpinBox::down-arrow:hover {
-	image: url(Resources/arrow_down_hover.png);
+	image: url(Resources/icons/spinBox/arrow_down_hover.png);
 }
 
 QPushButton#btnMapElementSaveProperties, QPushButton#btnMapElementRemove {
@@ -1628,7 +1628,7 @@ QDoubleSpinBox::up-button {
 }
 
 QDoubleSpinBox::up-arrow {
-    image: url(Resources/arrow_up.png);
+    image: url(Resources/icons/spinBox/arrow_up.png);
     width: 12px;
     height: 12px;
 	padding-top: 3px;
@@ -1636,7 +1636,7 @@ QDoubleSpinBox::up-arrow {
 }
 
 QDoubleSpinBox::up-arrow:hover {
-	image: url(Resources/arrow_up_hover.png);
+	image: url(Resources/icons/spinBox/arrow_up_hover.png);
 }
 
 QDoubleSpinBox::down-button {
@@ -1648,7 +1648,7 @@ QDoubleSpinBox::down-button {
 }
 
 QDoubleSpinBox::down-arrow {
-    image: url(Resources/arrow_down.png);
+    image: url(Resources/icons/spinBox/arrow_down.png);
     width: 12px;
     height: 12px;
 	padding-bottom: 3px;
@@ -1656,7 +1656,7 @@ QDoubleSpinBox::down-arrow {
 }
 
 QDoubleSpinBox::down-arrow:hover {
-	image: url(Resources/arrow_down_hover.png);
+	image: url(Resources/icons/spinBox/arrow_down_hover.png);
 }</string>
        </property>
        <attribute name="title">
@@ -1728,7 +1728,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/MapEditorIcons/new.png</normaloff>Resources/MapEditorIcons/new.png</iconset>
+                   <normaloff>Resources/icons/vehicleEditor/new.png</normaloff>Resources/icons/vehicleEditor/new.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -1754,7 +1754,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/MapEditorIcons/open.png</normaloff>Resources/MapEditorIcons/open.png</iconset>
+                   <normaloff>Resources/icons/vehicleEditor/open.png</normaloff>Resources/icons/vehicleEditor/open.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -1786,7 +1786,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/MapEditorIcons/save.png</normaloff>Resources/MapEditorIcons/save.png</iconset>
+                   <normaloff>Resources/icons/vehicleEditor/save.png</normaloff>Resources/icons/vehicleEditor/save.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -3862,7 +3862,7 @@ QListWidget::item:hover {
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/MapEditorIcons/new.png</normaloff>Resources/MapEditorIcons/new.png</iconset>
+                    <normaloff>Resources/icons/pathPlanner/new.png</normaloff>Resources/icons/pathPlanner/new.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -3894,7 +3894,7 @@ QListWidget::item:hover {
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/MapEditorIcons/open.png</normaloff>Resources/MapEditorIcons/open.png</iconset>
+                    <normaloff>Resources/icons/pathPlanner/open.png</normaloff>Resources/icons/pathPlanner/open.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -3926,7 +3926,7 @@ QListWidget::item:hover {
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/MapEditorIcons/save.png</normaloff>Resources/MapEditorIcons/save.png</iconset>
+                    <normaloff>Resources/icons/pathPlanner/save.png</normaloff>Resources/icons/pathPlanner/save.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -4767,7 +4767,7 @@ background: #35383b;</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/PathPlannerIcons/endPositionIcon.png</normaloff>Resources/PathPlannerIcons/endPositionIcon.png</iconset>
+                    <normaloff>Resources/icons/pathPlanner/endPositionIcon.png</normaloff>Resources/icons/pathPlanner/endPositionIcon.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -4805,7 +4805,7 @@ background: #35383b;</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/PathPlannerIcons/startPositionIcon.png</normaloff>Resources/PathPlannerIcons/startPositionIcon.png</iconset>
+                    <normaloff>Resources/icons/pathPlanner/startPositionIcon.png</normaloff>Resources/icons/pathPlanner/startPositionIcon.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -4843,7 +4843,7 @@ background: #35383b;</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/PathPlannerIcons/vehicleIcon.png</normaloff>Resources/PathPlannerIcons/vehicleIcon.png</iconset>
+                    <normaloff>Resources/icons/pathPlanner/vehicleIcon.png</normaloff>Resources/icons/pathPlanner/vehicleIcon.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -4881,7 +4881,7 @@ background: #35383b;</string>
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/PathPlannerIcons/mapIcon.png</normaloff>Resources/PathPlannerIcons/mapIcon.png</iconset>
+                    <normaloff>Resources/icons/pathPlanner/mapIcon.png</normaloff>Resources/icons/pathPlanner/mapIcon.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -4919,7 +4919,7 @@ background: #35383b;</string>
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>Resources/PathPlannerIcons/findPathIcon.png</normaloff>Resources/PathPlannerIcons/findPathIcon.png</iconset>
+                 <normaloff>Resources/icons/pathPlanner/findPathIcon.png</normaloff>Resources/icons/pathPlanner/findPathIcon.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -5008,7 +5008,7 @@ background: #35383b;</string>
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>Resources/PathPlannerIcons/cancelIcon.png</normaloff>Resources/PathPlannerIcons/cancelIcon.png</iconset>
+                      <normaloff>Resources/icons/pathPlanner/cancelIcon.png</normaloff>Resources/icons/pathPlanner/cancelIcon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -5269,7 +5269,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showFinalPath.png</normaloff>Resources/PathPlannerIcons/showFinalPath.png</iconset>
+                   <normaloff>Resources/icons/pathPlanner/showFinalPath.png</normaloff>Resources/icons/pathPlanner/showFinalPath.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -5295,7 +5295,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showPolylinePath.png</normaloff>Resources/PathPlannerIcons/showPolylinePath.png</iconset>
+                   <normaloff>Resources/icons/pathPlanner/showPolylinePath.png</normaloff>Resources/icons/pathPlanner/showPolylinePath.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -5321,7 +5321,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showParkingPathIcon.png</normaloff>Resources/PathPlannerIcons/showParkingPathIcon.png</iconset>
+                   <normaloff>Resources/icons/pathPlanner/showParkingPathIcon.png</normaloff>Resources/icons/pathPlanner/showParkingPathIcon.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -5347,7 +5347,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showVoronoiVisibilityFullGraph.png</normaloff>Resources/PathPlannerIcons/showVoronoiVisibilityFullGraph.png</iconset>
+                   <normaloff>Resources/icons/pathPlanner/showVoronoiVisibilityFullGraph.png</normaloff>Resources/icons/pathPlanner/showVoronoiVisibilityFullGraph.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -5373,7 +5373,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showVoronoiGraph.png</normaloff>Resources/PathPlannerIcons/showVoronoiGraph.png</iconset>
+                   <normaloff>Resources/icons/pathPlanner/showVoronoiGraph.png</normaloff>Resources/icons/pathPlanner/showVoronoiGraph.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -5399,7 +5399,7 @@ QDoubleSpinBox::down-arrow:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>Resources/PathPlannerIcons/showExpandedObstacles.png</normaloff>Resources/PathPlannerIcons/showExpandedObstacles.png</iconset>
+                   <normaloff>Resources/icons/pathPlanner/showExpandedObstacles.png</normaloff>Resources/icons/pathPlanner/showExpandedObstacles.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -5553,7 +5553,7 @@ QSpinBox::up-button {
 }
 
 QSpinBox::up-arrow {
-    image: url(Resources/arrow_up.png);
+    image: url(Resources/icons/spinBox/arrow_up.png);
     width: 12px;
     height: 12px;
 	padding-top: 3px;
@@ -5561,7 +5561,7 @@ QSpinBox::up-arrow {
 }
 
 QSpinBox::up-arrow:hover {
-	image: url(Resources/arrow_up_hover.png);
+	image: url(Resources/icons/spinBox/arrow_up_hover.png);
 }
 
 QSpinBox::down-button {
@@ -5573,7 +5573,7 @@ QSpinBox::down-button {
 }
 
 QSpinBox::down-arrow {
-    image: url(Resources/arrow_down.png);
+    image: url(Resources/icons/spinBox/arrow_down.png);
     width: 12px;
     height: 12px;
 	padding-bottom: 3px;
@@ -5581,7 +5581,7 @@ QSpinBox::down-arrow {
 }
 
 QSpinBox::down-arrow:hover {
-	image: url(Resources/arrow_down_hover.png);
+	image: url(Resources/icons/spinBox/arrow_down_hover.png);
 }</string>
        </property>
        <attribute name="title">
@@ -5672,7 +5672,7 @@ QSpinBox::down-arrow:hover {
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/VisualisationIcons/plus.png</normaloff>Resources/VisualisationIcons/plus.png</iconset>
+                    <normaloff>Resources/icons/visualisation/plus.png</normaloff>Resources/icons/visualisation/plus.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -5704,7 +5704,7 @@ QSpinBox::down-arrow:hover {
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/VisualisationIcons/minus.png</normaloff>Resources/VisualisationIcons/minus.png</iconset>
+                    <normaloff>Resources/icons/visualisation/minus.png</normaloff>Resources/icons/visualisation/minus.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -5736,7 +5736,7 @@ QSpinBox::down-arrow:hover {
                   </property>
                   <property name="icon">
                    <iconset>
-                    <normaloff>Resources/VisualisationIcons/info.png</normaloff>Resources/VisualisationIcons/info.png</iconset>
+                    <normaloff>Resources/icons/visualisation/info.png</normaloff>Resources/icons/visualisation/info.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -5962,7 +5962,7 @@ background-color: #3b3e41;</string>
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normaloff>Resources/VisualisationIcons/play.png</normaloff>Resources/VisualisationIcons/play.png</iconset>
+                  <normaloff>Resources/icons/visualisation/play.png</normaloff>Resources/icons/visualisation/play.png</iconset>
                 </property>
                </widget>
               </item>
@@ -5976,7 +5976,7 @@ background-color: #3b3e41;</string>
                 </property>
                 <property name="icon">
                  <iconset>
-                  <normaloff>Resources/VisualisationIcons/stop.png</normaloff>Resources/VisualisationIcons/stop.png</iconset>
+                  <normaloff>Resources/icons/visualisation/stop.png</normaloff>Resources/icons/visualisation/stop.png</iconset>
                 </property>
                </widget>
               </item>
@@ -6028,7 +6028,7 @@ QSpinBox::up-button {
 }
 
 QSpinBox::up-arrow {
-    image: url(Resources/arrow_up.png);
+    image: url(Resources/icons/spinBox/arrow_up.png);
     width: 12px;
     height: 12px;
 	padding-top: 3px;
@@ -6036,7 +6036,7 @@ QSpinBox::up-arrow {
 }
 
 QSpinBox::up-arrow:hover {
-	image: url(Resources/arrow_up_hover.png);
+	image: url(Resources/icons/spinBox/arrow_up_hover.png);
 }
 
 QSpinBox::down-button {
@@ -6048,7 +6048,7 @@ QSpinBox::down-button {
 }
 
 QSpinBox::down-arrow {
-    image: url(Resources/arrow_down.png);
+    image: url(Resources/icons/spinBox/arrow_down.png);
     width: 12px;
     height: 12px;
 	padding-bottom: 3px;
@@ -6056,7 +6056,7 @@ QSpinBox::down-arrow {
 }
 
 QSpinBox::down-arrow:hover {
-	image: url(Resources/arrow_down_hover.png);
+	image: url(Resources/icons/spinBox/arrow_down_hover.png);
 }
 
 QPushButton#btnSaveSettings {
@@ -6114,7 +6114,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-    image: url(Resources/arrow_down.png);
+    image: url(Resources/icons/spinBox/arrow_down.png);
     width: 12px;
     height: 12px;
 	padding-top: 0px;
@@ -6122,7 +6122,7 @@ QComboBox::down-arrow {
 }
 
 QComboBox::down-arrow:hover {
-    image: url(Resources/arrow_down_hover.png);
+    image: url(Resources/icons/spinBox/arrow_down_hover.png);
 }
 
 QComboBox::down-arrow:on { /* shift the arrow when popup is open */

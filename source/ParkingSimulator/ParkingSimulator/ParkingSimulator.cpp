@@ -1,46 +1,5 @@
 #include "ParkingSimulator.h"
 
-#include <fstream>
-
-#include <iostream>
-
-#include <QFileDialog>
-
-#include <boost/filesystem.hpp>
-
-#include <QThread>
-#include <qmovie.h>
-
-using namespace boost::filesystem;
-
-class FindPathThread : public QThread
-{
-	
-public:
-	FindPathThread() {}
-	void SetPathPlanner(PathPlanner *pathPlanner)
-	{
-		this->planner = pathPlanner;
-	}
-
-	PathPlanner * GetPathPlanner()
-	{
-		return this->planner;
-	}
-
-protected:
-	void run() 
-	{
-		int error;
-		planner->FindPath(&error);
-		quit();
-	}
-private:
-	PathPlanner *planner;
-};
-
-FindPathThread findPathThread;
-
 ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -66,6 +25,11 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	updateTimer->setInterval(20);
 	updateTimer->start();
 
+	connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderTimerCall()));
+	connect(render3DTimer, SIGNAL(timeout()), this, SLOT(render3DTimerCall()));
+	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimerCall()));
+
+	// Start
 	connect(ui.btnGoToMapEditor, SIGNAL(released()), this, SLOT(goToMapEditor()));
 	connect(ui.btnGoToVehicleEditor, SIGNAL(released()), this, SLOT(goToVehicleEditor()));
 	connect(ui.btnGoToPathPlanner, SIGNAL(released()), this, SLOT(goToPathPlanner()));
@@ -73,10 +37,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnGoToSettings, SIGNAL(released()), this, SLOT(goToSettings()));
 	connect(ui.btnClose, SIGNAL(released()), this, SLOT(close()));
 
-	connect(renderTimer, SIGNAL(timeout()), this, SLOT(renderTimerCall()));
-	connect(render3DTimer, SIGNAL(timeout()), this, SLOT(render3DTimerCall()));
-	connect(updateTimer, SIGNAL(timeout()), this, SLOT(updateTimerCall()));
-
+	// Map Editor
 	connect(ui.btnNewMap, SIGNAL(released()), this, SLOT(createMap()));
 	connect(ui.btnSaveMap, SIGNAL(released()), this, SLOT(saveMap()));
 	connect(ui.btnLoadMap, SIGNAL(released()), this, SLOT(loadMap()));
@@ -88,8 +49,11 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnAddTerrain, SIGNAL(released()), this, SLOT(addTerrain()));
 	connect(ui.btnMapElementRemove, SIGNAL(released()), this, SLOT(mapElementRemove()));
 	connect(ui.btnMapElementSaveProperties, SIGNAL(released()), this, SLOT(mapElementSaveProperties()));
+	connect(ui.treeMapElements, SIGNAL(itemSelectionChanged()), this, SLOT(treeMapElementsSelectionChanged()));
+	ui.treeMapElements->setColumnCount(1);
+	ui.treeMapElements->insertTopLevelItems(0, *mapEditor.GetMapElementsTreeItems());
 
-	// vehicle editor
+	// Vehicle Editor
 	connect(ui.btnNewVehicle, SIGNAL(released()), this, SLOT(newVehicle()));
 	connect(ui.btnOpenVehicle, SIGNAL(released()), this, SLOT(openVehicle()));
 	connect(ui.btnSaveVehicle, SIGNAL(released()), this, SLOT(saveVehicle()));
@@ -99,7 +63,6 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnLoadVehicleRightFrontWheelModel, SIGNAL(released()), this, SLOT(loadVehicleRightFrontWheelModel()));
 	connect(ui.btnLoadVehicleLeftRearWheelModel, SIGNAL(released()), this, SLOT(loadVehicleLeftRearWheelModel()));
 	connect(ui.btnLoadRightRearWheelModel, SIGNAL(released()), this, SLOT(loadVehicleRightRearWheelModel()));
-
 	connect(ui.vehicleFrontLeftWheelPositionX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
 	connect(ui.vehicleFrontLeftWheelPositionY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
 	connect(ui.vehicleFrontLeftWheelPositionZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
@@ -109,7 +72,6 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.vehicleFrontLeftWheelScaleX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
 	connect(ui.vehicleFrontLeftWheelScaleY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
 	connect(ui.vehicleFrontLeftWheelScaleZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontLeftWheelPropertiesChanged()));
-
 	connect(ui.vehicleFrontRightWheelPositionX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
 	connect(ui.vehicleFrontRightWheelPositionY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
 	connect(ui.vehicleFrontRightWheelPositionZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
@@ -119,7 +81,6 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.vehicleFrontRightWheelScaleX, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
 	connect(ui.vehicleFrontRightWheelScaleY, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
 	connect(ui.vehicleFrontRightWheelScaleZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleFrontRightWheelPropertiesChanged()));
-
 	connect(ui.vehicleRearLeftWheelPositionX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
 	connect(ui.vehicleRearLeftWheelPositionY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
 	connect(ui.vehicleRearLeftWheelPositionZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
@@ -129,7 +90,6 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.vehicleRearLeftWheelScaleX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
 	connect(ui.vehicleRearLeftWheelScaleY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
 	connect(ui.vehicleRearLeftWheelScaleZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearLeftWheelPropertiesChanged()));
-
 	connect(ui.vehicleRearRightWheelPositionX, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
 	connect(ui.vehicleRearRightWheelPositionY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
 	connect(ui.vehicleRearRightWheelPositionZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
@@ -140,6 +100,7 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.vehicleRearRightWheelScaleY, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
 	connect(ui.vehicleRearRightWheelScaleZ, SIGNAL(valueChanged(double)), this, SLOT(vehicleRearRightWheelPropertiesChanged()));
 
+	// Path Planner
 	connect(ui.btnNewSimulation, SIGNAL(released()), this, SLOT(newSimulation()));
 	connect(ui.btnOpenSimulation, SIGNAL(released()), this, SLOT(openSimulation()));
 	connect(ui.btnSaveSimulation, SIGNAL(released()), this, SLOT(saveSimulation()));
@@ -156,7 +117,12 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.btnFindPath, SIGNAL(released()), this, SLOT(findPath()));
 	connect(ui.btnCancelPathCalculation, SIGNAL(released()), this, SLOT(cancelPathCalculation()));
 	connect(ui.pathElementsList, SIGNAL(itemSelectionChanged()), this, SLOT(pathElementSelectionChange()));
+	ui.mapPropertiesForm->hide();
+	ui.vehiclePropertiesForm->hide();
+	ui.pathElementsList->hide();
+	ui.calculationInProgress->hide();
 
+	// Visualisation
 	connect(ui.btnAddSimulation, SIGNAL(released()), this, SLOT(addSimulation()));
 	connect(ui.btnRemoveSimulation, SIGNAL(released()), this, SLOT(removeSimulation()));
 	connect(ui.btnInfoSimulation, SIGNAL(released()), this, SLOT(infoSimulation()));
@@ -169,8 +135,13 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.simulationPrograssBar, SIGNAL(sliderPressed()), this, SLOT(simulationProgressBarPressed()));
 	connect(ui.simulationPrograssBar, SIGNAL(sliderReleased()), this, SLOT(simulationProgressBarReleased()));
 	connect(ui.listSimulations, SIGNAL(itemSelectionChanged()), this, SLOT(simulationSelectionChange()));
+	ui.simulationPrograssBar->setTracking(false);
+	enableVisualisation2D();
+	ui.glVisualisation3D->hide();
+	ui.mapElementProperties->hide();
+	ui.pathElementProperties->hide();
 
-	//settings
+	// Settings
 	connect(ui.btnSaveSettings, SIGNAL(released()), this, SLOT(saveSettings()));
 	connect(ui.buildingBorderColor, SIGNAL(clicked(ColorContainer &)), this, SLOT(changeColor(ColorContainer &)));
 	connect(ui.buildingColor, SIGNAL(clicked(ColorContainer &)), this, SLOT(changeColor(ColorContainer &)));
@@ -196,162 +167,14 @@ ParkingSimulator::ParkingSimulator(QWidget *parent) : QMainWindow(parent)
 	connect(ui.admissibleElementColor, SIGNAL(clicked(ColorContainer &)), this, SLOT(changeColor(ColorContainer &)));
 	connect(ui.notAdmissibleElementBorderColor, SIGNAL(clicked(ColorContainer &)), this, SLOT(changeColor(ColorContainer &)));
 	connect(ui.notAdmissibleElementColor, SIGNAL(clicked(ColorContainer &)), this, SLOT(changeColor(ColorContainer &)));
-
-	connect(ui.treeMapElements, SIGNAL(itemSelectionChanged()), this, SLOT(treeMapElementsSelectionChanged()));
-
-	connect(&findPathThread, SIGNAL(finished()), this, SLOT(pathCalculationFinished()));
-
-	ui.mapElementProperties->hide();
-	ui.pathElementProperties->hide();
-
-	ui.simulationPrograssBar->setTracking(false);
-
-	ui.treeMapElements->setColumnCount(1);
-	ui.treeMapElements->insertTopLevelItems(0, *mapEditor.GetMapElementsTreeItems());
-
-	// Path planner start
-
-	ui.mapPropertiesForm->hide();
-	ui.vehiclePropertiesForm->hide();
-	ui.pathElementsList->hide();
-
-	// Path planner end
-
-	ui.glVisualisation3D->hide();
-	ui.calculationInProgress->hide();
-
-	Language::getInstance()->LoadLanguage(Settings::getInstance()->GetLanguage());
-
 	setLanguage();
 	initializeLanguages();
 	loadSettings();
 
-	enableVisualisation2D();
+	connect(&findPathThread, SIGNAL(finished()), this, SLOT(pathCalculationFinished()));	
 }
 
-void ParkingSimulator::renderTimerCall()
-{
-	ui.glMapEditor->repaint();
-	ui.glPathPlanner->repaint();
-	ui.glVisualisation->repaint();
-
-	if (mapEditor.GetResetAddButtons())
-	{
-		clearMapEditorButtons();
-		updateMapElementsTree();
-	}
-}
-
-void ParkingSimulator::render3DTimerCall()
-{
-	ui.glVehicleEditor->repaint();
-	ui.glVisualisation3D->repaint();
-}
-
-void ParkingSimulator::setMapProperties()
-{
-	if (pathPlanner.GetMap() != NULL)
-	{
-		Map *map = pathPlanner.GetMap();
-
-		ui.isMapSet->hide();
-		ui.mapPropertiesForm->show();
-		ui.mapWidthLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(map->GetWidth()), 'f', 2)));
-		ui.mapHeightLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(map->GetHeight()), 'f', 2)));
-		ui.mapElementsCountLabel->setText(QString("%1").arg(map->GetMapElements().size()));
-	}
-	else
-	{
-		ui.isMapSet->show();
-		ui.mapPropertiesForm->hide();
-	}
-}
-
-void ParkingSimulator::setVehicleProperties()
-{
-	if (pathPlanner.GetVehicle() != NULL)
-	{
-		Vehicle *vehicle = pathPlanner.GetVehicle();
-
-		ui.isVehicleSet->hide();
-		ui.vehiclePropertiesForm->show();
-		ui.vehicleNameLabel->setText(QString::fromStdString(vehicle->GetName()));
-		ui.vehicleWheelbaseLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(vehicle->GetWheelbase()), 'f', 2)));
-		ui.vehicleTrackLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(vehicle->GetTrack()), 'f', 2)));
-		ui.vehicleMaxAngleLabel->setText(QString("%1 deg").arg(QString::number(CommonHelper::ConvertRadiansToDegrees(vehicle->GetMaxInsideAngle()), 'f', 2)));
-	}
-	else
-	{
-		ui.isVehicleSet->show();
-		ui.vehiclePropertiesForm->hide();
-	}
-}
-
-void ParkingSimulator::setPathProperties()
-{
-	if (pathPlanner.GetStartPoint() != NULL)
-	{
-		glm::vec2 *startPoint = pathPlanner.GetStartPoint();
-		glm::vec2 *startDirection = pathPlanner.GetStartDirection();
-		float angle = CommonHelper::ConvertRadiansToDegrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *startDirection));
-
-		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(startPoint->x, 'f', 2)).arg(QString::number(startPoint->y, 'f', 2)).arg(QString::number(angle, 'f', 2)));
-	}
-
-	if (pathPlanner.GetEndPoint() != NULL)
-	{
-		glm::vec2 *endPoint = pathPlanner.GetEndPoint();
-		glm::vec2 *endDirection = pathPlanner.GetEndDirection();
-		float angle = CommonHelper::ConvertRadiansToDegrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *endDirection));
-
-		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(endPoint->x, 'f', 2)).arg(QString::number(endPoint->y, 'f', 2)).arg(QString::number(angle, 'f', 2)));
-	}
-
-	if (pathPlanner.GetStartParkingSpace() != NULL)
-	{
-		ParkingSpace *startParkingSpace = pathPlanner.GetStartParkingSpace();
-
-		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().y), 'f', 2)).arg(QString::number(CommonHelper::ConvertRadiansToDegrees(startParkingSpace->GetRotation()), 'f', 2)));
-	}
-
-	if (pathPlanner.GetEndParkingSpace() != NULL)
-	{
-		ParkingSpace *endParkingSpace = pathPlanner.GetEndParkingSpace();
-
-		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().y), 'f', 2)).arg(QString::number(CommonHelper::ConvertRadiansToDegrees(endParkingSpace->GetRotation()), 'f', 2)));
-	}
-
-	if (pathPlanner.GetStartPoint() == NULL && pathPlanner.GetStartParkingSpace() == NULL)
-	{
-		ui.pathStartPositionLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_NotSet"]));
-	}
-
-	if (pathPlanner.GetEndPoint() == NULL && pathPlanner.GetEndParkingSpace() == NULL)
-	{
-		ui.pathEndPositionLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_NotSet"]));
-	}
-
-	if (pathPlanner.GetFinalPath() != NULL && pathPlanner.GetFinalPath()->GetElements().size() > 0)
-	{
-		int pathElementsCount = pathPlanner.GetFinalPath()->GetElements().size();
-
-		ui.isPathSet->hide();
-		ui.pathElementsList->clear();
-		int index = 0;
-		for (int i = 0; i < pathElementsCount; i++)
-			if (dynamic_cast<Turn*>(pathPlanner.GetFinalPath()->GetElements()[i]) == NULL)
-			{
-				ui.pathElementsList->addItem(new QListWidgetItem(QString("%1 %2").arg(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_PathElement"])).arg(index + 1)));
-				index++;
-			}
-		ui.pathElementsList->show();
-	}
-	else
-	{
-		ui.isPathSet->show();
-		ui.pathElementsList->hide();
-	}
-}
+#pragma region Common.
 
 void ParkingSimulator::setLanguage()
 {
@@ -428,7 +251,7 @@ void ParkingSimulator::setLanguage()
 	ui.pathElementPropertiesFromLabel->setText(QString::fromStdString(dictionary["Common_From"]));
 	ui.pathElementPropertiesToLabel->setText(QString::fromStdString(dictionary["Common_To"]));
 	ui.pathElementPropertiesLengthLabel->setText(QString::fromStdString(dictionary["Common_Length"]));
-	if(pathPlanner.GetStartPoint() == NULL && pathPlanner.GetStartParkingSpace() == NULL)
+	if (pathPlanner.GetStartPoint() == NULL && pathPlanner.GetStartParkingSpace() == NULL)
 		ui.pathStartPositionLabel->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
 	if (pathPlanner.GetEndPoint() == NULL && pathPlanner.GetEndParkingSpace() == NULL)
 		ui.pathEndPositionLabel->setText(QString::fromStdString(dictionary["PathPlanner_NotSet"]));
@@ -549,6 +372,25 @@ void ParkingSimulator::setLanguage()
 	updateMapElementsTree();
 }
 
+void ParkingSimulator::renderTimerCall()
+{
+	ui.glMapEditor->repaint();
+	ui.glPathPlanner->repaint();
+	ui.glVisualisation->repaint();
+
+	if (mapEditor.GetResetAddButtons())
+	{
+		clearMapEditorButtons();
+		updateMapElementsTree();
+	}
+}
+
+void ParkingSimulator::render3DTimerCall()
+{
+	ui.glVehicleEditor->repaint();
+	ui.glVisualisation3D->repaint();
+}
+
 void ParkingSimulator::updateTimerCall()
 {
 	if (mapEditor.GetMapElementsChanged())
@@ -571,7 +413,7 @@ void ParkingSimulator::updateTimerCall()
 		mapEditor.SetMapElementsPropertiesChanged(false);
 	}
 
-	if (pathPlanner.GetSelectedPathElement() != NULL && pathPlanner.GetPathElementPropertiesChanged()) //TODO:
+	if (pathPlanner.GetSelectedPathElement() != NULL && pathPlanner.GetPathElementPropertiesChanged())
 	{
 		PathElement *pathElement = pathPlanner.GetSelectedPathElement();
 		if (dynamic_cast<Line*>(pathElement) != NULL)
@@ -685,109 +527,9 @@ void ParkingSimulator::updateTimerCall()
 	}
 }
 
-#pragma region Start.
-
-
-
 #pragma endregion
 
-#pragma region Map editor.
-
-void ParkingSimulator::loadSettings()
-{
-	Settings::getInstance()->LoadSettings();
-
-	ui.buildingBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("BUILDING_BORDER_WIDTH"));
-	ui.decorationBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("DECORATION_BORDER_WIDTH"));
-	ui.parkingPlaceBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("PARKING_SPACE_BORDER_WIDTH"));
-	ui.vehicleBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("VEHICLE_BORDER_WIDTH"));
-	ui.hoverMapElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH"));
-	ui.selectedMapElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH"));
-	ui.mapBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("MAP_BORDER_WIDTH"));
-	ui.lineWidthSpinBox->setValue(Settings::getInstance()->GetInt("PATH_LINE_WIDTH"));
-	ui.circleWidthSpinBox->setValue(Settings::getInstance()->GetInt("PATH_CIRCLE_WIDTH"));
-	ui.splineWidthSpinBox->setValue(Settings::getInstance()->GetInt("PATH_BSPLINE_WIDTH"));
-	ui.selectedPathElementWidthSpinBox->setValue(Settings::getInstance()->GetInt("PATH_ELEMENT_SELECTED_WIDTH"));
-	ui.vertexRadiusSpinBox->setValue(Settings::getInstance()->GetInt("GRAPH_VERTEX_RADIUS"));
-	ui.edgeWidthSpinBox->setValue(Settings::getInstance()->GetInt("GRAPH_EDGE_WIDTH"));
-	ui.admissibleElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("ACTIVE_GOOD_BORDER_WIDTH"));
-	ui.notAdmissibleElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("ACTIVE_BAD_BORDER_WIDTH"));
-	ui.buildingBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_BORDER_COLOR").name()));
-	ui.buildingColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
-	ui.decorationBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("DECORATION_BORDER_COLOR").name()));
-	ui.decorationColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("DECORATION_COLOR").name()));
-	ui.parkingPlaceBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PARKING_SPACE_BORDER_COLOR").name()));
-	ui.parkingPlaceColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PARKING_SPACE_COLOR").name()));
-	ui.vehicleBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("VEHICLE_BORDER_COLOR").name()));
-	ui.vehicleColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("VEHICLE_COLOR").name()));
-	ui.hoverMapElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_ELEMENT_HOVER_BORDER_COLOR").name()));
-	ui.hoverMapElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_ELEMENT_HOVER_COLOR").name()));
-	ui.selectedMapElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_ELEMENT_SELECTED_BORDER_COLOR").name()));
-	ui.selectedMapElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_ELEMENT_SELECTED_COLOR").name()));
-	ui.mapBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_BORDER_COLOR").name()));
-	ui.mapColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_COLOR").name()));
-	ui.lineColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PATH_LINE_COLOR").name()));
-	ui.arcColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PATH_CIRCLE_COLOR").name()));
-	ui.splineColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PATH_BSPLINE_COLOR").name()));
-	ui.selectedPathElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PATH_ELEMENT_SELECTED_COLOR").name()));
-	ui.graphVertexColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("GRAPH_VERTEX_COLOR").name()));
-	ui.graphEdgeColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("GRAPH_EDGE_COLOR").name()));
-	ui.admissibleElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("ACTIVE_GOOD_BORDER_COLOR").name()));
-	ui.admissibleElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("ACTIVE_GOOD_COLOR").name()));
-	ui.notAdmissibleElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("ACTIVE_BAD_BORDER_COLOR").name()));
-	ui.notAdmissibleElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("ACTIVE_BAD_COLOR").name()));
-}
-
-void ParkingSimulator::saveSettings()
-{
-	Settings::getInstance()->SetInt("BUILDING_BORDER_WIDTH", ui.buildingBorderWidthSpinBox->value());
-	Settings::getInstance()->SetInt("DECORATION_BORDER_WIDTH", ui.decorationBorderWidthSpinBox->value());
-	Settings::getInstance()->SetInt("PARKING_SPACE_BORDER_WIDTH", ui.parkingPlaceBorderWidthSpinBox->value());
-	Settings::getInstance()->SetInt("VEHICLE_BORDER_WIDTH", ui.vehicleBorderWidthSpinBox->value());
-	Settings::getInstance()->SetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH", ui.hoverMapElementBorderWidthSpinBox->value());
-	Settings::getInstance()->SetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH", ui.selectedMapElementBorderWidthSpinBox->value());
-	Settings::getInstance()->SetInt("MAP_BORDER_WIDTH", ui.mapBorderWidthSpinBox->value());
-	Settings::getInstance()->SetInt("PATH_LINE_WIDTH", ui.lineWidthSpinBox->value());
-	Settings::getInstance()->SetInt("PATH_CIRCLE_WIDTH", ui.circleWidthSpinBox->value());
-	Settings::getInstance()->SetInt("PATH_BSPLINE_WIDTH", ui.splineWidthSpinBox->value());
-	Settings::getInstance()->SetInt("PATH_ELEMENT_SELECTED_WIDTH", ui.selectedPathElementWidthSpinBox->value());
-	Settings::getInstance()->SetInt("GRAPH_VERTEX_RADIUS", ui.vertexRadiusSpinBox->value());
-	Settings::getInstance()->SetInt("GRAPH_EDGE_WIDTH", ui.edgeWidthSpinBox->value());
-	Settings::getInstance()->SetInt("ACTIVE_GOOD_BORDER_WIDTH", ui.admissibleElementBorderWidthSpinBox->value());
-	Settings::getInstance()->SetInt("ACTIVE_BAD_BORDER_WIDTH", ui.notAdmissibleElementBorderWidthSpinBox->value());
-	Settings::getInstance()->SetColor("BUILDING_BORDER_COLOR", ui.buildingBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.buildingColor->palette().button().color());
-	Settings::getInstance()->SetColor("DECORATION_BORDER_COLOR", ui.decorationBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("DECORATION_COLOR", ui.decorationColor->palette().button().color());
-	Settings::getInstance()->SetColor("PARKING_SPACE_BORDER_COLOR", ui.parkingPlaceBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("PARKING_SPACE_COLOR", ui.parkingPlaceColor->palette().button().color());
-	Settings::getInstance()->SetColor("VEHICLE_BORDER_COLOR", ui.vehicleBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("VEHICLE_COLOR", ui.vehicleColor->palette().button().color());
-	Settings::getInstance()->SetColor("MAP_ELEMENT_HOVER_BORDER_COLOR", ui.hoverMapElementBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("MAP_ELEMENT_HOVER_COLOR", ui.hoverMapElementColor->palette().button().color());
-	Settings::getInstance()->SetColor("MAP_ELEMENT_SELECTED_COLOR", ui.selectedMapElementBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("MAP_ELEMENT_SELECTED_COLOR", ui.selectedMapElementColor->palette().button().color());
-	Settings::getInstance()->SetColor("MAP_BORDER_COLOR", ui.mapBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("MAP_COLOR", ui.mapColor->palette().button().color());
-	Settings::getInstance()->SetColor("PATH_LINE_COLOR", ui.lineColor->palette().button().color());
-	Settings::getInstance()->SetColor("PATH_CIRCLE_COLOR", ui.arcColor->palette().button().color());
-	Settings::getInstance()->SetColor("PATH_BSPLINE_COLOR", ui.splineColor->palette().button().color());
-	Settings::getInstance()->SetColor("PATH_ELEMENT_SELECTED_COLOR", ui.selectedPathElementColor->palette().button().color());
-	Settings::getInstance()->SetColor("GRAPH_VERTEX_COLOR", ui.graphVertexColor->palette().button().color());
-	Settings::getInstance()->SetColor("GRAPH_EDGE_COLOR", ui.graphEdgeColor->palette().button().color());
-	Settings::getInstance()->SetColor("ACTIVE_GOOD_BORDER_COLOR", ui.admissibleElementBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("ACTIVE_GOOD_COLOR", ui.admissibleElementColor->palette().button().color());
-	Settings::getInstance()->SetColor("ACTIVE_BAD_BORDER_COLOR", ui.notAdmissibleElementBorderColor->palette().button().color());
-	Settings::getInstance()->SetColor("ACTIVE_BAD_COLOR", ui.notAdmissibleElementColor->palette().button().color());
-	Settings::getInstance()->SetLanguage(ui.languagesList->currentText().toStdString());
-	Settings::getInstance()->SaveSettings();
-	Language::getInstance()->LoadLanguage(Settings::getInstance()->GetLanguage());
-
-	setLanguage();
-	((MapEditorGLHost*)ui.glMapEditor)->UpdateSettings();
-	((PathPlannerGLHost*)ui.glPathPlanner)->UpdateSettings();
-	((VisualisationGLHost*)ui.glVisualisation)->UpdateSettings();
-}
+#pragma region Start.
 
 void ParkingSimulator::goToMapEditor()
 {
@@ -813,6 +555,10 @@ void ParkingSimulator::goToSettings()
 {
 	ui.tabWidget->setCurrentIndex(5);
 }
+
+#pragma endregion
+
+#pragma region Map editor.
 
 void ParkingSimulator::createMap()
 {
@@ -1161,7 +907,7 @@ void ParkingSimulator::clearMapEditorButtonsStyle()
 
 #pragma endregion
 
-#pragma region Path planner.
+#pragma region Vehicle Editor
 
 void ParkingSimulator::newVehicle()
 {
@@ -1219,9 +965,9 @@ void ParkingSimulator::applyVehicleProperties()
 	{
 		vehicleEditor.GetVehicle()->SetName(ui.vehicleName->text().toStdString());
 		vehicleEditor.GetVehicle()->SetSize(glm::vec2(CommonHelper::ConverMetersToPixeks(ui.vehicleLength->value()), CommonHelper::ConverMetersToPixeks(ui.vehicleWidth->value())));
-		vehicleEditor.GetVehicle()->wheelbase = CommonHelper::ConverMetersToPixeks(ui.vehicleWheelbase->value());
-		vehicleEditor.GetVehicle()->track = CommonHelper::ConverMetersToPixeks(ui.vehicleTrack->value());
-		vehicleEditor.GetVehicle()->maxInsideAngle = CommonHelper::ConvertDegreesToRadians(ui.vehicleMaxAngle->value());
+		vehicleEditor.GetVehicle()->SetWheelbase(CommonHelper::ConverMetersToPixeks(ui.vehicleWheelbase->value()));
+		vehicleEditor.GetVehicle()->SetTrack(CommonHelper::ConverMetersToPixeks(ui.vehicleTrack->value()));
+		vehicleEditor.GetVehicle()->SetMaxInsideAngle(CommonHelper::ConvertDegreesToRadians(ui.vehicleMaxAngle->value()));
 	}
 }
 
@@ -1475,6 +1221,10 @@ void ParkingSimulator::vehicleRearRightWheelPropertiesChanged()
 	vehicleEditor.UpdateRearRightWheelProperties(translation, rotation, scale);
 }
 
+#pragma endregion 
+
+#pragma region Path Planner.
+
 void ParkingSimulator::newSimulation()
 {
 	pathPlanner.NewSimulation();
@@ -1725,8 +1475,7 @@ void ParkingSimulator::findPath()
 		findPathThread.SetPathPlanner(new PathPlanner(pathPlanner));
 		findPathThread.start();
 
-		auto ppp = QString("C:/Users/Wojtek/Source/Repos/ParkingSimulator-NEW/source/ParkingSimulator/x64/Release/Resources/loading.gif");
-		QMovie *movie = new QMovie(ppp);//.arg(QDir::currentPath()));
+		QMovie *movie = new QMovie(QString("%1/Resources/icons/common/loading.gif").arg(QDir::currentPath()));
 		ui.pathCalculationInPrograssMovie->setMovie(movie);
 		movie->start();
 
@@ -1840,6 +1589,111 @@ void ParkingSimulator::pathCalculationFinished()
 	}
 
 	setPathProperties();
+}
+
+void ParkingSimulator::setMapProperties()
+{
+	if (pathPlanner.GetMap() != NULL)
+	{
+		Map *map = pathPlanner.GetMap();
+
+		ui.isMapSet->hide();
+		ui.mapPropertiesForm->show();
+		ui.mapWidthLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(map->GetWidth()), 'f', 2)));
+		ui.mapHeightLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(map->GetHeight()), 'f', 2)));
+		ui.mapElementsCountLabel->setText(QString("%1").arg(map->GetMapElements().size()));
+	}
+	else
+	{
+		ui.isMapSet->show();
+		ui.mapPropertiesForm->hide();
+	}
+}
+
+void ParkingSimulator::setVehicleProperties()
+{
+	if (pathPlanner.GetVehicle() != NULL)
+	{
+		Vehicle *vehicle = pathPlanner.GetVehicle();
+
+		ui.isVehicleSet->hide();
+		ui.vehiclePropertiesForm->show();
+		ui.vehicleNameLabel->setText(QString::fromStdString(vehicle->GetName()));
+		ui.vehicleWheelbaseLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(vehicle->GetWheelbase()), 'f', 2)));
+		ui.vehicleTrackLabel->setText(QString("%1 m").arg(QString::number(CommonHelper::ConvertPixelsToMeters(vehicle->GetTrack()), 'f', 2)));
+		ui.vehicleMaxAngleLabel->setText(QString("%1 deg").arg(QString::number(CommonHelper::ConvertRadiansToDegrees(vehicle->GetMaxInsideAngle()), 'f', 2)));
+	}
+	else
+	{
+		ui.isVehicleSet->show();
+		ui.vehiclePropertiesForm->hide();
+	}
+}
+
+void ParkingSimulator::setPathProperties()
+{
+	if (pathPlanner.GetStartPoint() != NULL)
+	{
+		glm::vec2 *startPoint = pathPlanner.GetStartPoint();
+		glm::vec2 *startDirection = pathPlanner.GetStartDirection();
+		float angle = CommonHelper::ConvertRadiansToDegrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *startDirection));
+
+		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(startPoint->x, 'f', 2)).arg(QString::number(startPoint->y, 'f', 2)).arg(QString::number(angle, 'f', 2)));
+	}
+
+	if (pathPlanner.GetEndPoint() != NULL)
+	{
+		glm::vec2 *endPoint = pathPlanner.GetEndPoint();
+		glm::vec2 *endDirection = pathPlanner.GetEndDirection();
+		float angle = CommonHelper::ConvertRadiansToDegrees(GeometryHelper::GetAngleBetweenVectors(glm::vec2(1, 0), *endDirection));
+
+		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(endPoint->x, 'f', 2)).arg(QString::number(endPoint->y, 'f', 2)).arg(QString::number(angle, 'f', 2)));
+	}
+
+	if (pathPlanner.GetStartParkingSpace() != NULL)
+	{
+		ParkingSpace *startParkingSpace = pathPlanner.GetStartParkingSpace();
+
+		ui.pathStartPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(startParkingSpace->GetPosition().y), 'f', 2)).arg(QString::number(CommonHelper::ConvertRadiansToDegrees(startParkingSpace->GetRotation()), 'f', 2)));
+	}
+
+	if (pathPlanner.GetEndParkingSpace() != NULL)
+	{
+		ParkingSpace *endParkingSpace = pathPlanner.GetEndParkingSpace();
+
+		ui.pathEndPositionLabel->setText(QString("X: %1, Y: %2\nAngle: %3 deg").arg(QString::number(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().x), 'f', 2)).arg(QString::number(CommonHelper::ConvertPixelsToMeters(endParkingSpace->GetPosition().y), 'f', 2)).arg(QString::number(CommonHelper::ConvertRadiansToDegrees(endParkingSpace->GetRotation()), 'f', 2)));
+	}
+
+	if (pathPlanner.GetStartPoint() == NULL && pathPlanner.GetStartParkingSpace() == NULL)
+	{
+		ui.pathStartPositionLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_NotSet"]));
+	}
+
+	if (pathPlanner.GetEndPoint() == NULL && pathPlanner.GetEndParkingSpace() == NULL)
+	{
+		ui.pathEndPositionLabel->setText(QString::fromStdString(Language::getInstance()->GetDictionary()["PathPlanner_NotSet"]));
+	}
+
+	if (pathPlanner.GetFinalPath() != NULL && pathPlanner.GetFinalPath()->GetElements().size() > 0)
+	{
+		int pathElementsCount = pathPlanner.GetFinalPath()->GetElements().size();
+
+		ui.isPathSet->hide();
+		ui.pathElementsList->clear();
+		int index = 0;
+		for (int i = 0; i < pathElementsCount; i++)
+			if (dynamic_cast<Turn*>(pathPlanner.GetFinalPath()->GetElements()[i]) == NULL)
+			{
+				ui.pathElementsList->addItem(new QListWidgetItem(QString("%1 %2").arg(QString::fromStdString(Language::getInstance()->GetDictionary()["Common_PathElement"])).arg(index + 1)));
+				index++;
+			}
+		ui.pathElementsList->show();
+	}
+	else
+	{
+		ui.isPathSet->show();
+		ui.pathElementsList->hide();
+	}
 }
 
 #pragma endregion
@@ -1964,16 +1818,6 @@ void ParkingSimulator::simulationProgressBarChange(int time)
 	}
 }
 
-void ParkingSimulator::simulationProgressBarPressed()
-{
-
-}
-
-void ParkingSimulator::simulationProgressBarReleased()
-{
-
-}
-
 void ParkingSimulator::simulationSelectionChange()
 {
 	int selectedIndex = ui.listSimulations->currentRow();
@@ -1981,6 +1825,106 @@ void ParkingSimulator::simulationSelectionChange()
 		visualisation.SetCurrentSimulation(visualisation.GetSimulations()[selectedIndex]);
 	else
 		visualisation.SetCurrentSimulation(nullptr);
+}
+
+#pragma endregion
+
+#pragma region Settings.
+
+void ParkingSimulator::loadSettings()
+{
+	Settings::getInstance()->LoadSettings();
+
+	ui.buildingBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("BUILDING_BORDER_WIDTH"));
+	ui.decorationBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("DECORATION_BORDER_WIDTH"));
+	ui.parkingPlaceBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("PARKING_SPACE_BORDER_WIDTH"));
+	ui.vehicleBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("VEHICLE_BORDER_WIDTH"));
+	ui.hoverMapElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH"));
+	ui.selectedMapElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH"));
+	ui.mapBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("MAP_BORDER_WIDTH"));
+	ui.lineWidthSpinBox->setValue(Settings::getInstance()->GetInt("PATH_LINE_WIDTH"));
+	ui.circleWidthSpinBox->setValue(Settings::getInstance()->GetInt("PATH_CIRCLE_WIDTH"));
+	ui.splineWidthSpinBox->setValue(Settings::getInstance()->GetInt("PATH_BSPLINE_WIDTH"));
+	ui.selectedPathElementWidthSpinBox->setValue(Settings::getInstance()->GetInt("PATH_ELEMENT_SELECTED_WIDTH"));
+	ui.vertexRadiusSpinBox->setValue(Settings::getInstance()->GetInt("GRAPH_VERTEX_RADIUS"));
+	ui.edgeWidthSpinBox->setValue(Settings::getInstance()->GetInt("GRAPH_EDGE_WIDTH"));
+	ui.admissibleElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("ACTIVE_GOOD_BORDER_WIDTH"));
+	ui.notAdmissibleElementBorderWidthSpinBox->setValue(Settings::getInstance()->GetInt("ACTIVE_BAD_BORDER_WIDTH"));
+	ui.buildingBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_BORDER_COLOR").name()));
+	ui.buildingColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("BUILDING_COLOR").name()));
+	ui.decorationBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("DECORATION_BORDER_COLOR").name()));
+	ui.decorationColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("DECORATION_COLOR").name()));
+	ui.parkingPlaceBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PARKING_SPACE_BORDER_COLOR").name()));
+	ui.parkingPlaceColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PARKING_SPACE_COLOR").name()));
+	ui.vehicleBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("VEHICLE_BORDER_COLOR").name()));
+	ui.vehicleColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("VEHICLE_COLOR").name()));
+	ui.hoverMapElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_ELEMENT_HOVER_BORDER_COLOR").name()));
+	ui.hoverMapElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_ELEMENT_HOVER_COLOR").name()));
+	ui.selectedMapElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_ELEMENT_SELECTED_BORDER_COLOR").name()));
+	ui.selectedMapElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_ELEMENT_SELECTED_COLOR").name()));
+	ui.mapBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_BORDER_COLOR").name()));
+	ui.mapColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("MAP_COLOR").name()));
+	ui.lineColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PATH_LINE_COLOR").name()));
+	ui.arcColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PATH_CIRCLE_COLOR").name()));
+	ui.splineColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PATH_BSPLINE_COLOR").name()));
+	ui.selectedPathElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("PATH_ELEMENT_SELECTED_COLOR").name()));
+	ui.graphVertexColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("GRAPH_VERTEX_COLOR").name()));
+	ui.graphEdgeColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("GRAPH_EDGE_COLOR").name()));
+	ui.admissibleElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("ACTIVE_GOOD_BORDER_COLOR").name()));
+	ui.admissibleElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("ACTIVE_GOOD_COLOR").name()));
+	ui.notAdmissibleElementBorderColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("ACTIVE_BAD_BORDER_COLOR").name()));
+	ui.notAdmissibleElementColor->setStyleSheet(QString("background-color: %1;").arg(Settings::getInstance()->GetQColor("ACTIVE_BAD_COLOR").name()));
+}
+
+void ParkingSimulator::saveSettings()
+{
+	Settings::getInstance()->SetInt("BUILDING_BORDER_WIDTH", ui.buildingBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("DECORATION_BORDER_WIDTH", ui.decorationBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("PARKING_SPACE_BORDER_WIDTH", ui.parkingPlaceBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("VEHICLE_BORDER_WIDTH", ui.vehicleBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH", ui.hoverMapElementBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH", ui.selectedMapElementBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("MAP_BORDER_WIDTH", ui.mapBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("PATH_LINE_WIDTH", ui.lineWidthSpinBox->value());
+	Settings::getInstance()->SetInt("PATH_CIRCLE_WIDTH", ui.circleWidthSpinBox->value());
+	Settings::getInstance()->SetInt("PATH_BSPLINE_WIDTH", ui.splineWidthSpinBox->value());
+	Settings::getInstance()->SetInt("PATH_ELEMENT_SELECTED_WIDTH", ui.selectedPathElementWidthSpinBox->value());
+	Settings::getInstance()->SetInt("GRAPH_VERTEX_RADIUS", ui.vertexRadiusSpinBox->value());
+	Settings::getInstance()->SetInt("GRAPH_EDGE_WIDTH", ui.edgeWidthSpinBox->value());
+	Settings::getInstance()->SetInt("ACTIVE_GOOD_BORDER_WIDTH", ui.admissibleElementBorderWidthSpinBox->value());
+	Settings::getInstance()->SetInt("ACTIVE_BAD_BORDER_WIDTH", ui.notAdmissibleElementBorderWidthSpinBox->value());
+	Settings::getInstance()->SetColor("BUILDING_BORDER_COLOR", ui.buildingBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("BUILDING_COLOR", ui.buildingColor->palette().button().color());
+	Settings::getInstance()->SetColor("DECORATION_BORDER_COLOR", ui.decorationBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("DECORATION_COLOR", ui.decorationColor->palette().button().color());
+	Settings::getInstance()->SetColor("PARKING_SPACE_BORDER_COLOR", ui.parkingPlaceBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("PARKING_SPACE_COLOR", ui.parkingPlaceColor->palette().button().color());
+	Settings::getInstance()->SetColor("VEHICLE_BORDER_COLOR", ui.vehicleBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("VEHICLE_COLOR", ui.vehicleColor->palette().button().color());
+	Settings::getInstance()->SetColor("MAP_ELEMENT_HOVER_BORDER_COLOR", ui.hoverMapElementBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("MAP_ELEMENT_HOVER_COLOR", ui.hoverMapElementColor->palette().button().color());
+	Settings::getInstance()->SetColor("MAP_ELEMENT_SELECTED_COLOR", ui.selectedMapElementBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("MAP_ELEMENT_SELECTED_COLOR", ui.selectedMapElementColor->palette().button().color());
+	Settings::getInstance()->SetColor("MAP_BORDER_COLOR", ui.mapBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("MAP_COLOR", ui.mapColor->palette().button().color());
+	Settings::getInstance()->SetColor("PATH_LINE_COLOR", ui.lineColor->palette().button().color());
+	Settings::getInstance()->SetColor("PATH_CIRCLE_COLOR", ui.arcColor->palette().button().color());
+	Settings::getInstance()->SetColor("PATH_BSPLINE_COLOR", ui.splineColor->palette().button().color());
+	Settings::getInstance()->SetColor("PATH_ELEMENT_SELECTED_COLOR", ui.selectedPathElementColor->palette().button().color());
+	Settings::getInstance()->SetColor("GRAPH_VERTEX_COLOR", ui.graphVertexColor->palette().button().color());
+	Settings::getInstance()->SetColor("GRAPH_EDGE_COLOR", ui.graphEdgeColor->palette().button().color());
+	Settings::getInstance()->SetColor("ACTIVE_GOOD_BORDER_COLOR", ui.admissibleElementBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("ACTIVE_GOOD_COLOR", ui.admissibleElementColor->palette().button().color());
+	Settings::getInstance()->SetColor("ACTIVE_BAD_BORDER_COLOR", ui.notAdmissibleElementBorderColor->palette().button().color());
+	Settings::getInstance()->SetColor("ACTIVE_BAD_COLOR", ui.notAdmissibleElementColor->palette().button().color());
+	Settings::getInstance()->SetLanguage(ui.languagesList->currentText().toStdString());
+	Settings::getInstance()->SaveSettings();
+	Language::getInstance()->LoadLanguage(Settings::getInstance()->GetLanguage());
+
+	setLanguage();
+	((MapEditorGLHost*)ui.glMapEditor)->UpdateSettings();
+	((PathPlannerGLHost*)ui.glPathPlanner)->UpdateSettings();
+	((VisualisationGLHost*)ui.glVisualisation)->UpdateSettings();
 }
 
 void ParkingSimulator::initializeLanguages()

@@ -1,11 +1,5 @@
 #include "PathPlanner.h"
 
-#include <string>       // std::string
-#include <iostream>     // std::cout
-#include <sstream> 
-
-#include <windows.h>
-
 PathPlanner::PathPlanner()
 {
 	simulation = new Simulation();
@@ -61,13 +55,6 @@ Path * PathPlanner::CreateAdmissiblePath(ParkingSpace * start, ParkingSpace * en
 
 	parkingPathStart = pStart;
 	parkingPathEnd = pEnd;
-
-	std::ostringstream ss;
-	ss << "pStart: " << parkingPathStart->GetElements().size() << endl;
-	ss << "pEnd: " << parkingPathEnd->GetElements().size() << endl;
-	ss << endl;
-	std::string s(ss.str());
-	OutputDebugStringA(s.c_str());
 
 	pEnd->Reverse();
 	if (pStart == nullptr || pEnd == nullptr || ChackPathCollision(pStart, map, false, 0, 0, start) != nullptr || ChackPathCollision(pEnd, map, false, 0, 0, end, true) != nullptr)
@@ -519,7 +506,7 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 		vehicle->UpdateState(simulationState);
 
 		auto vehiclePoints = vehicle->GetPoints2();
-		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), vehicle->GetPoints2())) // check whether vehicle is all on the map
+		if (!GeometryHelper::CheckPolygonContainsPolygon(map->GetPoints(), vehicle->GetPoints2())) // check whether vehicle is all inside the map
 		{
 			if (useGraph && polylinePath != nullptr)
 			{
@@ -530,7 +517,7 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 				if (line->GetV2() == end || line->GetV1() == end)
 					line = dynamic_cast<Line*>(polylinePath->GetPrevElement(line));
 
-				return fullVoronoiVisibilityGraph->GetEdge(line->GetV1(), line->GetV2()); //TODO: Sprawdzic czy to dzia³a
+				return fullVoronoiVisibilityGraph->GetEdge(line->GetV1(), line->GetV2());
 			}
 			return new GraphEdge();
 		}
@@ -549,7 +536,7 @@ GraphEdge * PathPlanner::ChackPathCollision(Path * path, Map * Map, bool useGrap
 			{
 				if (useGraph && polylinePath != nullptr)
 				{
-					Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t)); //TODO: use graph ?
+					Line *line = dynamic_cast<Line*>(polylinePath->GetElement(t));
 
 					if (line->GetV1() == start)
 						line = dynamic_cast<Line*>(polylinePath->GetNextElement(line));
@@ -597,7 +584,7 @@ Path * PathPlanner::createArcsBetweenSegments(vector<glm::vec2> points)
 		glm::vec2 n2(dir2.y, -dir2.x);
 
 		double length = l1 > l2 ? l2 : l1;
-		double radiusMin = vehicle->GetRMin(vehicle->maxInsideAngle);
+		double radiusMin = vehicle->GetRMin(vehicle->GetMaxInsideAngle());
 		double radius;
 		glm::vec2 center;
 		do
@@ -653,13 +640,13 @@ bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int *arc1, int *arc2)
 		Circle *circle = dynamic_cast<Circle*>(arcs[i]);
 		Circle *nextCircle = dynamic_cast<Circle*>(arcs[i + 1]);
 
-		auto p1 = circle->GetPointForAngle(circle->angleTo);
-		auto p2 = nextCircle->GetPointForAngle(nextCircle->angleFrom);
+		auto p1 = circle->GetPointForAngle(circle->GetAngleTo());
+		auto p2 = nextCircle->GetPointForAngle(nextCircle->GetAngleFrom());
 
 		if (p1 == p2) continue;
 
 		auto dir1 = GeometryHelper::GetLineDirection(p1, p2);
-		auto dir2 = GeometryHelper::GetLineDirection(circle->circleBasePoints[1], circle->circleBasePoints[2]);
+		auto dir2 = GeometryHelper::GetLineDirection(circle->GetCircleBasePoints()[1], circle->GetCircleBasePoints()[2]);
 
 		if (!epsilonEquals(dir1.x, dir2.x) || !epsilonEquals(dir1.y, dir2.y)) 
 		{
@@ -679,13 +666,13 @@ bool PathPlanner::checkArcsCorrectness(Path *pathArcs, int arc1, int arc2)
 	Circle *circle = dynamic_cast<Circle*>(arcs[arc1]);
 	Circle *nextCircle = dynamic_cast<Circle*>(arcs[arc2]);
 
-	auto p1 = circle->GetPointForAngle(circle->angleTo);
-	auto p2 = nextCircle->GetPointForAngle(nextCircle->angleFrom);
+	auto p1 = circle->GetPointForAngle(circle->GetAngleTo());
+	auto p2 = nextCircle->GetPointForAngle(nextCircle->GetAngleFrom());
 
 	if (p1 == p2) return true;
 
 	auto dir1 = GeometryHelper::GetLineDirection(p1, p2);
-	auto dir2 = GeometryHelper::GetLineDirection(circle->circleBasePoints[1], circle->circleBasePoints[2]);
+	auto dir2 = GeometryHelper::GetLineDirection(circle->GetCircleBasePoints()[1], circle->GetCircleBasePoints()[2]);
 
 	if (!epsilonEquals(dir1.x, dir2.x) || !epsilonEquals(dir1.y, dir2.y))
 		return false;
@@ -945,15 +932,11 @@ Path * PathPlanner::createDirectPolylinePath(Line *startLine, Line *endLine)
 	return path;
 }
 
-Path * PathPlanner::createParkingPath(Vehicle vehicl, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType)
+Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace, ParkManeuverType parkManeuverType)
 {
 	Path *path = new Path();
 
-	std::ostringstream ss;
-	ss << "vehicl position 1: " << vehicl.GetPosition().x << ", " << vehicl.GetPosition().y << endl;
-	ss << endl;
-
-	if (parkingSpace.GetSize().x < vehicl.GetWheelbase() || parkingSpace.GetSize().y < vehicl.GetTrack())
+	if (parkingSpace.GetSize().x < vehicle.GetWheelbase() || parkingSpace.GetSize().y < vehicle.GetTrack())
 		return nullptr;
 
 	glm::vec2 parkingPlaceDirection;
@@ -961,112 +944,71 @@ Path * PathPlanner::createParkingPath(Vehicle vehicl, ParkingSpace parkingSpace,
 	{
 		auto rot = parkingSpace.GetRotation();
 		int arcCount = 0;
-		double insideAngle = vehicl.GetMaxInsideAngle();
+		double insideAngle = vehicle.GetMaxInsideAngle();
 		double angleFrom = 0;
 		double angleTo = 0;
 
-		vehicl.UpdateState(0.0);
-		vehicl.UpdateState(parkingSpace.GetPosition() - (float)(vehicl.GetSize().x / 2.0) * vehicl.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
+		vehicle.UpdateState(0.0);
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetSize().x / 2.0) * vehicle.GetDirWheelbase(), 0); // ustawienie auta na œrodku miejsca
 
-		ss << "vehicl position 2: " << vehicl.GetPosition().x << ", " << vehicl.GetPosition().y << endl;
-		ss << endl;
+		auto p1 = vehicle.GetPosition();
 
-		auto p1 = vehicl.GetPosition();
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(parkingSpace.GetSize().x / 2.0) * vehicle.GetDirWheelbase()); // przesuniêcie auta do koñca miejsca
 
-		vehicl.UpdateState(parkingSpace.GetPosition() - (float)(parkingSpace.GetSize().x / 2.0) * vehicl.GetDirWheelbase()); // przesuniêcie auta do koñca miejsca
-
-		ss << "vehicl position 3: " << vehicl.GetPosition().x << ", " << vehicl.GetPosition().y << endl;
-		ss << endl;
-
-		auto p2 = vehicl.GetPosition();
+		auto p2 = vehicle.GetPosition();
 
 		// zak³adamy, ¿e pojazd jest w tej samej orientacji co miejsce parkingowe
-		Circle* circle = vehicl.GetTurnCircle(insideAngle, Left);
-
-		ss << "ParkingSpace ROT: " << rot << endl;
-		ss << "Circle RADIUS: " << circle->radius << endl;
-		ss << endl;
-
-		ss << "ParkingSpace SIZE:" << parkingSpace.GetSize().x << ", " << parkingSpace.GetSize().y << endl;
-		ss << "ParkingSpace Point0: " << parkingSpace.GetPoints()[0].x << ", " << parkingSpace.GetPoints()[0].y << endl;
-		ss << "ParkingSpace Point1: " << parkingSpace.GetPoints()[1].x << ", " << parkingSpace.GetPoints()[1].y << endl;
-		ss << "ParkingSpace Point2: " << parkingSpace.GetPoints()[2].x << ", " << parkingSpace.GetPoints()[2].y << endl;
-		ss << "ParkingSpace Point3: " << parkingSpace.GetPoints()[3].x << ", " << parkingSpace.GetPoints()[3].y << endl;
+		Circle* circle = vehicle.GetTurnCircle(insideAngle, Left);
 
 		parkingSpace.SetRotation(0);
-		auto pp = parkingSpace.GetPosition().x - vehicl.GetSize().x / 2.0;
+		auto pp = parkingSpace.GetPosition().x - vehicle.GetSize().x / 2.0;
 		while (circle->GetPointForAngle(angleTo).x < pp)
 			angleTo += 0.001;
 		parkingSpace.SetRotation(rot);
 
-		ss << "ParkingSpace Point0a: " << parkingSpace.GetPoints()[0].x << ", " << parkingSpace.GetPoints()[0].y << endl;
-		ss << "ParkingSpace Point1a: " << parkingSpace.GetPoints()[1].x << ", " << parkingSpace.GetPoints()[1].y << endl;
-		ss << "ParkingSpace Point2a: " << parkingSpace.GetPoints()[2].x << ", " << parkingSpace.GetPoints()[2].y << endl;
-		ss << "ParkingSpace Point3a: " << parkingSpace.GetPoints()[3].x << ", " << parkingSpace.GetPoints()[3].y << endl;
+		vehicle.UpdateState(-parkingSpace.GetRotation());
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(vehicle.GetSize().x / 2.0) * vehicle.GetDirWheelbase(), -parkingSpace.GetRotation()); // ustawienie auta na œrodku miejsca
 
-		vehicl.UpdateState(-parkingSpace.GetRotation());
-		vehicl.UpdateState(parkingSpace.GetPosition() - (float)(vehicl.GetSize().x / 2.0) * vehicl.GetDirWheelbase(), -parkingSpace.GetRotation()); // ustawienie auta na œrodku miejsca
+		p1 = vehicle.GetPosition();
 
-		ss << "vehicl position 4: " << vehicl.GetPosition().x << ", " << vehicl.GetPosition().y << endl;
-		ss << endl;
+		vehicle.UpdateState(parkingSpace.GetPosition() - (float)(parkingSpace.GetSize().x / 2.0) * vehicle.GetDirWheelbase()); // przesuniêcie auta do koñca miejsca
 
-		p1 = vehicl.GetPosition();
-
-		vehicl.UpdateState(parkingSpace.GetPosition() - (float)(parkingSpace.GetSize().x / 2.0) * vehicl.GetDirWheelbase()); // przesuniêcie auta do koñca miejsca
-
-		p2 = vehicl.GetPosition();
-
-		ss << "vehicl position 5: " << vehicl.GetPosition().x << ", " << vehicl.GetPosition().y << endl;
-		ss << endl;
-		std::string s(ss.str());
-		OutputDebugStringA(s.c_str());
+		p2 = vehicle.GetPosition();
 
 		path->AddElement(new Line(p2, p1, Back));
 
-		parkingPlaceDirection = vehicl.GetDirWheelbase();
+		parkingPlaceDirection = vehicle.GetDirWheelbase();
 
-		while (parkingSpace.ContainVehicle(vehicl) || arcCount % 2 == 1) // ³uki
+		while (parkingSpace.ContainVehicle(vehicle) || arcCount % 2 == 1) // ³uki
 		{
-			std::ostringstream ss2;
-			ss2 << "Arcs: " << arcCount << endl;
-			ss2 << endl;
-			std::string s(ss2.str());
-			OutputDebugStringA(s.c_str());
 			switch (arcCount % 4)
 			{
 			case 0:
-				circle = vehicl.GetTurnCircle(insideAngle, Left, angleFrom - rot, angleTo - rot);
-				vehicl.UpdateState(circle->GetPointForAngle(circle->angleTo), circle->angleTo);
+				circle = vehicle.GetTurnCircle(insideAngle, Left, angleFrom - rot, angleTo - rot);
+				vehicle.UpdateState(circle->GetPointForAngle(circle->GetAngleTo()), circle->GetAngleTo());
 				break;
 			case 1:
-				circle = vehicl.GetTurnCircle(insideAngle, Right, 2 * M_PI - angleTo + rot, 2 * M_PI + angleFrom + rot);
-				vehicl.UpdateState(circle->GetPointForAngle(circle->angleTo), -circle->angleTo);
+				circle = vehicle.GetTurnCircle(insideAngle, Right, 2 * M_PI - angleTo + rot, 2 * M_PI + angleFrom + rot);
+				vehicle.UpdateState(circle->GetPointForAngle(circle->GetAngleTo()), -circle->GetAngleTo());
 				break;
 			case 2:
-				circle = vehicl.GetTurnCircle(insideAngle, Left, 2 * M_PI + angleFrom - rot, 2 * M_PI - angleTo - rot, ManeuverType::Back);
-				vehicl.UpdateState(circle->GetPointForAngle(circle->angleTo), circle->angleTo);
+				circle = vehicle.GetTurnCircle(insideAngle, Left, 2 * M_PI + angleFrom - rot, 2 * M_PI - angleTo - rot, ManeuverType::Back);
+				vehicle.UpdateState(circle->GetPointForAngle(circle->GetAngleTo()), circle->GetAngleTo());
 				break;
 			case 3:
-				circle = vehicl.GetTurnCircle(insideAngle, Right, angleTo + rot, angleFrom + rot, ManeuverType::Back);
-				vehicl.UpdateState(circle->GetPointForAngle(circle->angleTo), -circle->angleTo);
+				circle = vehicle.GetTurnCircle(insideAngle, Right, angleTo + rot, angleFrom + rot, ManeuverType::Back);
+				vehicle.UpdateState(circle->GetPointForAngle(circle->GetAngleTo()), -circle->GetAngleTo());
 				break;
 			}
 
 			arcCount++;
 			path->AddElement(circle);
-			//vehicl.UpdateState(circle->GetPointForAngle(circle->angleTo), arcCount % 2 == 0 ? circle->angleTo : -circle->angleTo);
 		}
 
-		std::ostringstream ss2;
-		ss2 << "Za whilem..." << endl;
-		ss2 << endl;
-		std::string s2(ss2.str());
-		OutputDebugStringA(s2.c_str());
-
-		path->AddElement(new Line(vehicl.GetPosition(), vehicl.GetPosition() + (float)vehicl.GetSize().x / 2.0f * vehicl.GetDirWheelbase()));
+		path->AddElement(new Line(vehicle.GetPosition(), vehicle.GetPosition() + (float)vehicle.GetSize().x / 2.0f * vehicle.GetDirWheelbase()));
 
 		glm::vec2 pathTranslation;
-		pathTranslation = (float)vehicl.GetSize().x / 2.0f * parkingPlaceDirection;
+		pathTranslation = (float)vehicle.GetSize().x / 2.0f * parkingPlaceDirection;
 		auto pathElements = path->GetElements();
 		for (int i = 0; i < pathElements.size(); i++)
 		{
@@ -1079,26 +1021,26 @@ Path * PathPlanner::createParkingPath(Vehicle vehicl, ParkingSpace parkingSpace,
 			else if (dynamic_cast<Circle*>(pathElements[i]) != NULL)
 			{
 				Circle *circle = dynamic_cast<Circle*>(pathElements[i]);
-				circle->center = circle->center + pathTranslation;
+				circle->GetCenter() = circle->GetCenter() + pathTranslation;
 			}
 		}
 	}
 	else if (parkingSpace.GetType() == ParkingSpaceType::Perpendicular)
 	{
-		vehicl.UpdateState(parkingSpace.GetRotation());
-		vehicl.UpdateState(parkingSpace.GetPosition(), parkingSpace.GetRotation()); // ustawienie auta na œrodku miejsca
+		vehicle.UpdateState(parkingSpace.GetRotation());
+		vehicle.UpdateState(parkingSpace.GetPosition(), parkingSpace.GetRotation()); // ustawienie auta na œrodku miejsca
 
-		auto p1 = vehicl.GetPosition();
+		auto p1 = vehicle.GetPosition();
 
-		vehicl.UpdateState(parkingSpace.GetPosition() - parkingSpace.GetSize().x * vehicl.GetDirWheelbase()); // przesuniêcie auta do koñca miejsca
+		vehicle.UpdateState(parkingSpace.GetPosition() - parkingSpace.GetSize().x * vehicle.GetDirWheelbase()); // przesuniêcie auta do koñca miejsca
 
-		auto p2 = vehicl.GetPosition();
+		auto p2 = vehicle.GetPosition();
 
 		path->AddElement(new Line(p2, p1, Back));
 
-		path->AddElement(new Line(vehicl.GetPosition() - (float)vehicl.GetSize().x / 2.0f * vehicl.GetDirWheelbase(), p2, Back));
+		path->AddElement(new Line(vehicle.GetPosition() - (float)vehicle.GetSize().x / 2.0f * vehicle.GetDirWheelbase(), p2, Back));
 
-		parkingPlaceDirection = vehicl.GetDirWheelbase();
+		parkingPlaceDirection = vehicle.GetDirWheelbase();
 	}
 
 	if (parkManeuverType == ParkManeuverType::Exit)

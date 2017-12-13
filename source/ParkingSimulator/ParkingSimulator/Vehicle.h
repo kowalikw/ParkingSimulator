@@ -13,6 +13,8 @@
 
 using namespace std;
 
+#pragma region Boost glm::vec2 and glm::vec3 serialization.
+
 BOOST_SERIALIZATION_SPLIT_FREE(glm::vec3)
 BOOST_SERIALIZATION_SPLIT_FREE(glm::vec2)
 
@@ -42,12 +44,16 @@ namespace boost
 	}
 }
 
+#pragma endregion
+
 class Vehicle : public MapElement
 {
 public:
 	Vehicle();
 	Vehicle(glm::vec2 position, glm::vec2 size, double rotation, std::vector<glm::vec2> points);
 	Vehicle(double wheelbase, double track);
+	~Vehicle();
+
 	void UpdateState(double angle);
 	void UpdateState(glm::vec2 position);
 	void UpdateState(glm::vec2 position, double angle);
@@ -71,6 +77,7 @@ public:
 
 	void SetWheelbase(double wheelbase);
 	void SetTrack(double track);
+	void SetMaxInsideAngle(double maxInsideAngle);
 
 	Circle *GetTurnCircle(double insideAngle, CircleType circleType, double angleFrom = 0, double angleTo = 2 * M_PI, ManeuverType maneuverType = ManeuverType::Front);
 
@@ -86,12 +93,7 @@ public:
 	void SetRearLeftWheelModel(Model* rearLeftWheelModel);
 	void SetRearRightWheelModel(Model* rearRightWheelModel);
 
-	double wheelbase; // rozstaw osi
-	double track; // rozstaw kó³
-	double maxInsideAngle = M_PI / 4;
-
-	glm::vec2 dirWheelbase;
-	glm::vec2 dirTrack;
+#pragma region Boost serialization.
 
 	friend class boost::serialization::access;
 
@@ -170,7 +172,16 @@ public:
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
+#pragma endregion
+
 private:
+	double wheelbase; // rozstaw osi
+	double track; // rozstaw kó³
+	double maxInsideAngle = M_PI / 4;
+
+	glm::vec2 dirWheelbase;
+	glm::vec2 dirTrack;
+
 	Model* vehicleModel = NULL;
 	Model* frontLeftWheelModel = NULL;
 	Model* frontRightWheelModel = NULL;

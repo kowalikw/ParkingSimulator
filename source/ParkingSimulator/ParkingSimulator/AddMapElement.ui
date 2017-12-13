@@ -61,7 +61,7 @@ QDoubleSpinBox::up-button {
 }
 
 QDoubleSpinBox::up-arrow {
-    image: url(Resources/arrow_up.png);
+    image: url(Resources/icons/spinBox/arrow_up.png);
     width: 12px;
     height: 12px;
 	padding-top: 3px;
@@ -69,7 +69,7 @@ QDoubleSpinBox::up-arrow {
 }
 
 QDoubleSpinBox::up-arrow:hover {
-	image: url(Resources/arrow_up_hover.png);
+	image: url(Resources/icons/spinBox/arrow_up_hover.png);
 }
 
 QDoubleSpinBox::down-button {
@@ -81,7 +81,7 @@ QDoubleSpinBox::down-button {
 }
 
 QDoubleSpinBox::down-arrow {
-    image: url(Resources/arrow_down.png);
+    image: url(Resources/icons/spinBox/arrow_down.png);
     width: 12px;
     height: 12px;
 	padding-bottom: 3px;
@@ -89,7 +89,7 @@ QDoubleSpinBox::down-arrow {
 }
 
 QDoubleSpinBox::down-arrow:hover {
-	image: url(Resources/arrow_down_hover.png);
+	image: url(Resources/icons/spinBox/arrow_down_hover.png);
 }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">

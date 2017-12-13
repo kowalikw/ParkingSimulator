@@ -62,6 +62,10 @@ Obstacle::Obstacle(glm::vec2 position, glm::vec2 size, ObstacleType type, std::s
 	transform();
 }
 
+Obstacle::~Obstacle()
+{
+}
+
 ObstacleType Obstacle::GetType()
 {
 	return this->type;

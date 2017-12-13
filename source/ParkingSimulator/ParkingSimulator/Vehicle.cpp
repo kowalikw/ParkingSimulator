@@ -1,5 +1,7 @@
 #include "Vehicle.h"
 
+#pragma Constructors and destructor.
+
 Vehicle::Vehicle()
 {
 	this->position = glm::vec2(0, 0);
@@ -48,6 +50,12 @@ Vehicle::Vehicle(double wheelbase, double track)
 
 	transform();
 }
+
+Vehicle::~Vehicle()
+{
+}
+
+#pragma endregion
 
 void Vehicle::UpdateState(double angle)
 {
@@ -166,6 +174,11 @@ double Vehicle::GetWheelbase()
 double Vehicle::GetMaxInsideAngle()
 {
 	return this->maxInsideAngle;
+}
+
+void Vehicle::SetMaxInsideAngle(double maxInsideAngle)
+{
+	this->maxInsideAngle = maxInsideAngle;
 }
 
 double Vehicle::GetMinOneManeouverLength(double insideAngle)

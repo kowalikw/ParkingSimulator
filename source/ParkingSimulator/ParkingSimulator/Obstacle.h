@@ -17,7 +17,11 @@ public:
 	Obstacle(glm::vec2 position, ObstacleType type);
 	Obstacle(glm::vec2 position, glm::vec2 size, double rotation, std::vector<glm::vec2> points, ObstacleType type);
 	Obstacle(glm::vec2 position, glm::vec2 size, ObstacleType type, std::string name);
+	~Obstacle();
+
 	ObstacleType GetType();
+
+#pragma region Boost serialization.
 
 	friend class boost::serialization::access;
 
@@ -27,6 +31,9 @@ public:
 		ar & boost::serialization::base_object<MapElement>(*this);
 		ar & type;
 	}
+
+#pragma endregion
+
 private:
 	ObstacleType type;
 };

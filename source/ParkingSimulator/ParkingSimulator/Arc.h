@@ -11,6 +11,7 @@ public:
 	Circle();
 	Circle(glm::vec2 centre, double radius, double angleFrom, double angleTo, std::vector<glm::vec2> circleBasePoints, CircleType circleType = CircleType::Right, ManeuverType maneuverType = ManeuverType::Front);
 	~Circle();
+
 	double GetAngleFrom() const;
 	double GetAngleTo() const;
 	double GetRadius() const;
@@ -32,6 +33,8 @@ public:
 	virtual glm::vec2 GetPoint(double t);
 	virtual SimulationState GetSimulationState(double t);
 	virtual CircleType GetDirection(double t);
+
+#pragma region Boost serialization.
 
 	friend class boost::serialization::access;
 
@@ -71,7 +74,9 @@ public:
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
-//private:
+#pragma endregion
+
+private:
 	double angleFrom;
 	double angleTo;
 	double radius;

@@ -1,9 +1,6 @@
 #include "Path.h"
-#include <string>       // std::string
-#include <iostream>     // std::cout
-#include <sstream> 
 
-#include <windows.h>
+#pragma region Constructors and destructor.
 
 Path::Path()
 {
@@ -40,6 +37,8 @@ Path::~Path()
 			delete dynamic_cast<Turn*>(elements[i]);
 	}
 }
+
+#pragma endregion
 
 PathElement *Path::GetAt(int i)
 {
@@ -163,10 +162,7 @@ SimulationState Path::GetSimulationState(double t)
 	PathElement *pathElement = GetElement(t);
 
 	if (pathElement == NULL)
-	{
-		int error = 0;
 		return SimulationState();
-	}
 
 	double pathLength = GetLength();
 	double lengthToPathElementExclude = GetLengthToElement(pathElement);
@@ -174,18 +170,6 @@ SimulationState Path::GetSimulationState(double t)
 
 	double u = abs((lengthToPathElementExclude - (t * pathLength)) / pathElement->GetLength());
 	SimulationState simulationState = pathElement->GetSimulationState(u);
-
-	/*std::ostringstream ss;
-	ss << "PathLength: " << pathLength << endl;
-	ss << "lengthToPathElementExclude: " << lengthToPathElementExclude << endl;
-	ss << "lengthToPathElementInclude: " << lengthToPathElementInclude << endl;
-
-	ss << "u: " << u << endl;
-
-	ss << endl;
-	std::string s(ss.str());
-
-	OutputDebugStringA(s.c_str());*/
 
 	return simulationState;
 }

@@ -1,15 +1,11 @@
 #ifndef MAP_EDITOR_H
 #define MAP_EDITOR_H
 
-#include "Map.h"
-#include "GeometryHelper.h"
 #include <qlist.h>
 #include <qtreewidget.h>
-
-#include <string>       // std::string
-#include <iostream>     // std::cout
-#include <sstream> 
-#include <Windows.h>
+#include "Map.h"
+#include "Language.h"
+#include "GeometryHelper.h"
 
 class MapEditor
 {

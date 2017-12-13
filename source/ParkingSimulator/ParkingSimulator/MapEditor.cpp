@@ -1,5 +1,4 @@
 #include "MapEditor.h"
-#include "Language.h"
 
 MapEditor::MapEditor()
 {

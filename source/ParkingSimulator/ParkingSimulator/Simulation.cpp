@@ -1,5 +1,7 @@
 #include "Simulation.h"
 
+#pragma region Constructors and destructor.
+
 Simulation::Simulation()
 {
 	this->simulationTime = 0;
@@ -39,6 +41,12 @@ Simulation::Simulation(Map *map, Vehicle *vehicle, Path *path, float simulationT
 
 	this->simulationTime = simulationTime;
 }
+
+Simulation::~Simulation()
+{
+}
+
+#pragma endregion
 
 std::string Simulation::GetName()
 {

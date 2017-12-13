@@ -1,9 +1,6 @@
 #include "GeometryHelper.h"
-#include "OpenGLHost.h"
 
-#include <string>       // std::string
-#include <iostream>     // std::cout
-#include <sstream> 
+#pragma region Public methods.
 
 double GeometryHelper::CrossProduct(glm::vec2 v1, glm::vec2 v2)
 {
@@ -28,7 +25,7 @@ double GeometryHelper::GetDistanceBetweenPoints(glm::vec2 p1, glm::vec2 p2)
 	return glm::distance(p1, p2);
 }
 
-glm::vec2 GeometryHelper::GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4) // XZ plane
+glm::vec2 GeometryHelper::GetLineIntersectionPoint(glm::vec2 p1, glm::vec2 p2, glm::vec2 p3, glm::vec2 p4)
 {
 	double a1 = (p1.y - p2.y) / (p1.x - p2.x);
 	double b1 = p2.y - a1 * p2.x;
@@ -100,6 +97,14 @@ bool GeometryHelper::CheckPolygonContainsPoint(std::vector<glm::vec2> polygon, g
 	return !(abs(totalAngle) < EPS);
 }
 
+bool GeometryHelper::CheckPolygonContainsAnyPoint(std::vector<glm::vec2> polygon, std::vector<glm::vec2> points)
+{
+	for (int i = 0; i < points.size(); i++)
+		if (CheckPolygonContainsPoint(polygon, points[i]))
+			return true;
+	return false;
+}
+
 bool GeometryHelper::CheckPolygonIntersection(std::vector<glm::vec2> polygon1, std::vector<glm::vec2> polygon2)
 {
 	for (int i = 0; i < polygon1.size(); i++)
@@ -128,28 +133,13 @@ bool GeometryHelper::CheckPolygonSegmentIntersection(glm::vec2 p1, glm::vec2 p2,
 	return false;
 }
 
-double GeometryHelper::GetAngle(glm::vec2 pivot, glm::vec2 source, glm::vec2 dest)
-{
-	glm::vec2 s = glm::vec2(source.x - pivot.x, source.y - pivot.y);
-	glm::vec2 d = glm::vec2(dest.x - pivot.x, dest.y - pivot.y);
-
-	return atan2(CrossProduct(s, d), DotProduct(s, d));
-}
-
-/*double GeometryHelper::GetDistanceBetweenPoints(Point p1, Point p2)
-{
-	return sqrt((p1.GetX() - p2.GetX()) * (p1.GetX() - p2.GetX()) + (p1.GetY() - p2.GetY()) * (p1.GetY() - p2.GetY()) + (p1.GetZ() - p2.GetZ()) * (p1.GetZ() - p2.GetZ()));
-}*/
-
 double GeometryHelper::GetAngleVector(glm::vec2 p1, glm::vec2 p2, CircleType direction)
 {
 	double alfa = 0;
-
 	if(direction == CircleType::Left)
 		alfa = 2 * M_PI - atan2(p2.y - p1.y, p2.x - p1.x);
 	else if(direction == CircleType::Right)
 		alfa = atan2(p2.y - p1.y, p2.x - p1.x);
-	
 	return alfa;
 }
 
@@ -161,15 +151,6 @@ double GeometryHelper::GetAngleBetweenVectors(glm::vec2 v1, glm::vec2 v2)
 CircleType GeometryHelper::GetVectorsDirection(glm::vec2 v1, glm::vec2 v2)
 {
 	double crossProduct = CrossProduct(v1, v2);
-
-	//std::ostringstream ss;
-	//ss << "V1: " << v1.x << ", " << v1.y << endl;
-	//ss << "V2: " << v2.x << ", " << v2.y << endl;
-	//ss << "Cross: " << crossProduct << endl;
-	//ss << endl;
-	//std::string s(ss.str());
-	//OutputDebugStringA(s.c_str());
-
 	if (crossProduct < 0 && abs(crossProduct) > 10e-6)
 		return CircleType::Right;
 	if (crossProduct > 0 && abs(crossProduct) > 10e-6)
@@ -201,3 +182,17 @@ glm::vec2 GeometryHelper::GetLineNormal(glm::vec2 p1, glm::vec2 p2)
 
 	return normal;
 }
+
+#pragma endregion
+
+#pragma region Private methods.
+
+double GeometryHelper::GetAngle(glm::vec2 pivot, glm::vec2 source, glm::vec2 dest)
+{
+	glm::vec2 s = glm::vec2(source.x - pivot.x, source.y - pivot.y);
+	glm::vec2 d = glm::vec2(dest.x - pivot.x, dest.y - pivot.y);
+
+	return atan2(CrossProduct(s, d), DotProduct(s, d));
+}
+
+#pragma endregion

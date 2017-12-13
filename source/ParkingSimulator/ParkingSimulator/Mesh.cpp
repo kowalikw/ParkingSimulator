@@ -26,26 +26,21 @@ void Mesh::Draw(Shader shader, bool instanced)
 	GLuint specularNr = 1;
 	for (GLuint i = 0; i < this->textures.size(); i++)
 	{
-		glActiveTexture(GL_TEXTURE0 + i); // Activate proper texture unit before binding
-										  // Retrieve texture number (the N in diffuse_textureN)
+		glActiveTexture(GL_TEXTURE0 + i); 
+										  
 		stringstream ss;
 		string number;
 		string name = this->textures[i].type;
 		if (name == "texture_diffuse")
-			ss << diffuseNr++; // Transfer GLuint to stream
+			ss << diffuseNr++;
 		else if (name == "texture_specular")
-			ss << specularNr++; // Transfer GLuint to stream
+			ss << specularNr++;
 		number = ss.str();
 
 		glUniform1f(glGetUniformLocation(shader.Program, ("material." + name + number).c_str()), i);
 		glBindTexture(GL_TEXTURE_2D, this->textures[i].id);
 	}
 	glActiveTexture(GL_TEXTURE0);
-
-	/*GLint objectColorLoc = glGetUniformLocation(shader.Program, "objectColor");
-	GLint lightColorLoc = glGetUniformLocation(shader.Program, "lightColor");
-	glUniform3f(objectColorLoc, 1.0f, 0.5f, 0.31f);
-	glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Also set light's color (white)*/
 
 	// Draw mesh
 	glBindVertexArray(this->VAO);
@@ -102,36 +97,6 @@ void Mesh::setupMesh()
 		glVertexAttribDivisor(5, 1);
 	}
 
-
-	// ------------------
-
-	//// the offsets
-	//GLfloat translationData[] = {
-	//	20.0f, 0.0f, 0.0f,  // cube 0
-	//	40.0f, 0.0f, 0.0f,  // cube 1
-	//	60.0f, 0.0f, 0.0f,  // cube 2
-	//	80.0f, 0.0f, 0.0f,  // cube 3
-	//	100.0f, 0.0f, 0.0f,  // cube 4
-	//	120.0f, 0.0f, 0.0f,  // cube 5
-	//	130.0f, 0.0f, 0.0f,  // cube 6
-	//	140.0f, 0.0f, 0.0f,  // cube 7
-	//}; // 8 offsets with 3 components each
-
-	//// --------------------
-
-	//// generate and bind the vertex buffer object containing the
-	//// instance offsets
-	//glGenBuffers(1, &tbo);
-	//glBindBuffer(GL_ARRAY_BUFFER, this->tbo);
-
-	//   // fill with data
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * 8, translationData, GL_DYNAMIC_DRAW);
-
-	//// set up generic attrib pointers
-	//glEnableVertexAttribArray(3);
-	//glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)(0));
-	//glVertexAttribDivisor(3, 1);
-
 	glBindVertexArray(0);
 }
 
@@ -166,4 +131,3 @@ glm::vec3 Mesh::GetMeshMaxCoordinates()
 
 	return glm::vec3(maxX, maxY, maxZ);
 }
-

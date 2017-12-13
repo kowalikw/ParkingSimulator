@@ -25,6 +25,7 @@ public:
 	static std::vector<glm::vec2> ExpandPolygon(std::vector<glm::vec2> polygon, float expandSize);
 	static bool CheckSegmentsIntersection(glm::vec2 p1, glm::vec2 p2, glm::vec2 q1, glm::vec2 q2);
 	static bool CheckPolygonContainsPoint(std::vector<glm::vec2> polygon, glm::vec2 point);
+	static bool CheckPolygonContainsAnyPoint(std::vector<glm::vec2> polygon, std::vector<glm::vec2> points);
 	static bool CheckPolygonIntersection(std::vector<glm::vec2> polygon1, std::vector<glm::vec2> polygon2);
 	static bool CheckPolygonContainsPolygon(std::vector<glm::vec2> subject, std::vector<glm::vec2> polygon);
 	static bool CheckPolygonSegmentIntersection(glm::vec2 p1, glm::vec2 p2, std::vector<glm::vec2> polygon);

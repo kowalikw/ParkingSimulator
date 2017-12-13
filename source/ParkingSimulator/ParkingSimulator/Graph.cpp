@@ -1,5 +1,7 @@
 #include "Graph.h"
 
+#pragma region Constructors and destructor.
+
 Graph::Graph(bool directed)
 {
 	this->directed = directed;
@@ -21,6 +23,12 @@ Graph::Graph(int verticesCount, bool directed)
 		for (int j = 0; j < verticesCount; j++)
 			edges[i][j] = nullptr;
 }
+
+Graph::~Graph()
+{
+}
+
+#pragma endregion
 
 GraphVertex * Graph::GetVertex(int v)
 {
@@ -231,6 +239,12 @@ void Graph::CreateVoronoiGraph(Map * map)
 				auto mapElements = map->GetMapElements();
 				for (int i = 0; i < mapElements.size(); i++)
 				{
+					if (GeometryHelper::CheckPolygonContainsPoint(mapElements[i]->GetPoints(), glm::vec2(edge->vertex0()->x(), edge->vertex0()->y())) || GeometryHelper::CheckPolygonContainsPoint(mapElements[i]->GetPoints(), glm::vec2(edge->vertex1()->x(), edge->vertex1()->y())))
+					{
+						edgeAdmissible = false;
+						break;
+					}
+
 					auto pts = mapElements[i]->GetPoints();
 					for (int j = 0; j < pts.size(); j++)
 					{

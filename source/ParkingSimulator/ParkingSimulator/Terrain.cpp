@@ -21,6 +21,10 @@ Terrain::Terrain(std::string modelPath, glm::vec3 color, glm::vec2 position)
 	this->position = position;
 }
 
+Terrain::~Terrain()
+{
+}
+
 std::string Terrain::GetModelPath()
 {
 	return this->modelPath;

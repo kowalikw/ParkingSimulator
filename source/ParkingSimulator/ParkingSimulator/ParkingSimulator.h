@@ -1,8 +1,15 @@
 #pragma once
 
+#include <QTimer>
+#include <map>
 #include <QtWidgets/QMainWindow>
 #include <QColorDialog>
-#include <QTimer>
+#include <fstream>
+#include <iostream>
+#include <QFileDialog>
+#include <boost/filesystem.hpp>
+#include <QThread>
+#include <qmovie.h>
 #include "glew.h"
 #include "ui_ParkingSimulator.h"
 #include "CreateMap.h"
@@ -18,10 +25,36 @@
 #include "AddSimulation.h"
 #include "SimulationInfo.h"
 #include "Language.h"
-#include <map>
 #include "CommonHelper.h"
 
 using namespace Ui;
+using namespace boost::filesystem;
+
+class FindPathThread : public QThread
+{
+
+public:
+	FindPathThread() {}
+	void SetPathPlanner(PathPlanner *pathPlanner)
+	{
+		this->planner = pathPlanner;
+	}
+
+	PathPlanner * GetPathPlanner()
+	{
+		return this->planner;
+	}
+
+protected:
+	void run()
+	{
+		int error;
+		planner->FindPath(&error);
+		quit();
+	}
+private:
+	PathPlanner *planner;
+};
 
 class ParkingSimulator : public QMainWindow
 {
@@ -39,14 +72,10 @@ private:
 	VehicleEditor vehicleEditor;
 	PathPlanner pathPlanner;
 	Visualisation visualisation;
+	FindPathThread findPathThread;
 
 	bool updateSimulationProgressBarEnable = false;
 
-	void setMapProperties();
-	void setVehicleProperties();
-	void setPathProperties();
-
-	void setLanguage();
 public slots:
 	void renderTimerCall();
 	void render3DTimerCall();
@@ -73,7 +102,6 @@ public slots:
 	void addTerrain();
 	void mapElementRemove();
 	void mapElementSaveProperties();
-
 	void updateMapElementsTree();
 	void treeMapElementsSelectionChanged();
 	void clearMapEditorButtons();
@@ -88,18 +116,15 @@ public slots:
 	void loadVehicleRightFrontWheelModel();
 	void loadVehicleLeftRearWheelModel();
 	void loadVehicleRightRearWheelModel();
-
 	void enableVehicleFrontLeftWheelProperties();
 	void enableVehicleFrontRightWheelProperties();
 	void enableVehicleRearLeftWheelProperties();
 	void enableVehicleRearRightWheelProperties();
-
 	void updateVehicleProperties();
 	void updateVehicleFrontLeftWheelProperties();
 	void updateVehicleFrontRightWheelProperties();
 	void updateVehicleRearLeftWheelProperties();
 	void updateVehicleRearRightWheelProperties();
-
 	void applyVehicleProperties();
 	void vehicleFrontLeftWheelPropertiesChanged();
 	void vehicleFrontRightWheelPropertiesChanged();
@@ -128,6 +153,9 @@ public slots:
 	void disablePathPlannerButtons();
 	void cancelPathCalculation();
 	void pathCalculationFinished();
+	void setMapProperties();
+	void setVehicleProperties();
+	void setPathProperties();
 
 	// visualisation
 	void addSimulation();
@@ -139,11 +167,10 @@ public slots:
 	void enableVisualisation3D();
 	void showSimulationPath(int checked);
 	void simulationProgressBarChange(int time);
-	void simulationProgressBarPressed();
-	void simulationProgressBarReleased();
 	void simulationSelectionChange();
 
 	// settings
+	void setLanguage();
 	void initializeLanguages();
 	void changeColor(ColorContainer & pos);
 };

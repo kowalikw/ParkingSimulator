@@ -1,12 +1,12 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
+#include <string.h>
 #include <QElapsedTimer>
 #include "Map.h"
 #include "Vehicle.h"
 #include "Path.h"
 #include "Graph.h"
-#include <string.h>
 
 enum PathPlanningAlgorithm
 {
@@ -20,6 +20,7 @@ public:
 	Simulation();
 	Simulation(Map *map, Vehicle *vehicle, Path *path);
 	Simulation(Map *map, Vehicle *vehicle, Path *path, float simulationTime);
+	~Simulation();
 
 	std::string GetName();
 	Map *GetMap();
@@ -81,6 +82,8 @@ public:
 	bool IsStarted();
 	bool IsPaused();
 	bool IsStopped();
+
+#pragma region Boost serialization.
 
 	friend class boost::serialization::access;
 
@@ -245,6 +248,9 @@ public:
 		ar & extraVerticesAcross;
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+#pragma endregion
+
 private:
 	std::string name;
 

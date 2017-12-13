@@ -19,8 +19,12 @@ public:
 	ParkingSpace(glm::vec2 position, ParkingSpaceType type = ParkingSpaceType::Both);
 	ParkingSpace(glm::vec2 position, glm::vec2 size, ParkingSpaceType type = ParkingSpaceType::Both);
 	ParkingSpace(glm::vec2 position, glm::vec2 size, double rotation, std::vector<glm::vec2> points, ParkingSpaceType type = ParkingSpaceType::Both);
+	~ParkingSpace();
+
 	ParkingSpaceType GetType();
-	bool ContainVehicle(Vehicle vehicle); // I assume parking space is always a rectangle
+	bool ContainVehicle(Vehicle vehicle);
+
+#pragma region Boost serialization.
 
 	friend class boost::serialization::access;
 
@@ -30,6 +34,9 @@ public:
 		ar & boost::serialization::base_object<MapElement>(*this);
 		ar & type;
 	}
+
+#pragma endregion
+
 private:
 	ParkingSpaceType type;
 };

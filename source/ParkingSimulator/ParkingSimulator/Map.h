@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <fstream>
-
 #include "Terrain.h"
 #include "MapElement.h"
 #include "Obstacle.h"
@@ -21,6 +20,8 @@ class Map
 public:
 	Map();
 	Map(int width, int height);
+	~Map();
+
 	int GetWidth();
 	int GetHeight();
 	void AddMapElement(MapElement *mapElement);
@@ -45,6 +46,10 @@ public:
 	bool IsMapElementAdmissible(MapElement *mapElement);
 	bool MapContainsMapElement(MapElement *mapElement);
 	bool MapElementIntersectsMapElement(MapElement *mapElement);
+
+#pragma region Boost serialization.
+
+	friend class boost::serialization::access;
 
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
@@ -131,6 +136,9 @@ public:
 		}
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+#pragma endregion
+
 private:
 	int width;
 	int height;
@@ -142,8 +150,6 @@ private:
 	std::vector<Vehicle*> vehicles;
 	std::vector<ParkingSpace*> parkingSpaces;
 	std::vector<glm::vec2> points;
-
-	friend class boost::serialization::access;
 };
 
 #endif

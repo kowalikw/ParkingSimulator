@@ -1,12 +1,12 @@
 #ifndef PATH_H
 #define PATH_H
 
+#include <string>
 #include <vector>
 #include <glm.hpp>
 #include "PathElement.h"
 #include "Vehicle.h"
 #include "Map.h"
-#include <string>
 #include "Turn.h"
 #include "BSpline.h"
 
@@ -18,6 +18,7 @@ public:
 	Path();
 	Path(std::vector<Path*> pathParts);
 	~Path();
+
 	PathElement *GetAt(int i);
 	PathElement *GetFirstElement();
 	PathElement *GetLastElement();
@@ -36,6 +37,10 @@ public:
 
 	SimulationState GetSimulationState(double t);
 	std::vector<SimulationState> GetAllSimulationStates(double step);
+
+#pragma region Boost serialization.
+
+	friend class boost::serialization::access;
 
 	template<class Archive>
 	void save(Archive & ar, const unsigned int version) const
@@ -106,12 +111,13 @@ public:
 		CalculatePathElementsLength();
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
+
+#pragma endregion
+
 private:
 	std::vector<PathElement*> elements;
 
 	double calculateLengthToElement(PathElement *pathElement);
-
-	friend class boost::serialization::access;
 };
 
 #endif

@@ -31,6 +31,8 @@ public:
 	virtual SimulationState GetSimulationState(double t);
 	virtual CircleType GetDirection(double t);
 
+#pragma region Boost serialization.
+
 	friend class boost::serialization::access;
 
 	template<class Archive>
@@ -76,7 +78,10 @@ public:
 		}
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
-//private:
+
+#pragma endregion
+
+private:
 	int n; // n+1 control points
 	int m; // m+1 knots
 	int p; // degree of b-spline

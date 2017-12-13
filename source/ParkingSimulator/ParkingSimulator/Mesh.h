@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-
 #include <glew.h>
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
@@ -52,7 +51,6 @@ public:
 	void Draw(Shader shader, bool instanced = true);
 	glm::vec3 GetMeshMinCoordinates();
 	glm::vec3 GetMeshMaxCoordinates();
-
 
 	/*  Render data  */
 	GLuint VAO, VBO, EBO, IBO, tbo;

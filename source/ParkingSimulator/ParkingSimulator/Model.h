@@ -7,8 +7,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
-
-#include <glew.h> // Contains all the necessery OpenGL includes
+#include <glew.h> 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <SOIL2.h>
@@ -27,8 +26,6 @@ using namespace std;
 class Model
 {
 public:
-	/*  Functions   */
-	// Constructor, expects a filepath to a 3D model.
 	Model();
 	Model(GLchar* path);
 	Model(std::string path, bool createModel = true);
@@ -37,7 +34,6 @@ public:
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation);
 	Model(GLchar* path, glm::vec3 translation, glm::vec3 rotation, glm::vec3 scale);
 
-	// Draws the model, and thus all its meshes
 	void Draw(Shader shader, bool instanced = true);
 
 	void Translate(glm::vec3 translation);
@@ -58,6 +54,9 @@ public:
 	glm::vec3 GetScale();
 
 	std::string path;
+	vector<Mesh> meshes;
+
+#pragma region Boost serialization.
 
 	friend class boost::serialization::access;
 
@@ -79,34 +78,26 @@ public:
 	}
 	BOOST_SERIALIZATION_SPLIT_MEMBER()
 
+#pragma endregion
 
-	/* Model matrix data */
+private:
 	glm::vec3 translation;
 	glm::vec3 rotation;
 	glm::vec3 scale;
 
-	/*  Model Data  */
-	vector<Mesh> meshes;
 	string directory;
-	vector<Texture> textures_loaded;	// Stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
-
-	/*  Functions   */
-	// Loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
-	void loadModel(string path, std::vector<InstanceData> instances, std::vector<Mesh> *meshes = nullptr);
-
-	// Processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
-	void processNode(aiNode* node, const aiScene* scene, std::vector<InstanceData> instances, std::vector<Mesh> *meshes = nullptr);
-
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene, std::vector<InstanceData> instances, Mesh *m_mesh = nullptr);
-
-	// Checks all material textures of a given type and loads the textures if they're not loaded yet.
-	// The required info is returned as a Texture struct.
-	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
-	GLint textureFromFile(const char* path, string directory);
-	
-	GLint textureFromColor(aiColor4D color);
+	vector<Texture> textures_loaded;	
 
 	glm::vec3 measure;
+
+	void loadModel(string path, std::vector<InstanceData> instances, std::vector<Mesh> *meshes = nullptr);
+	void processNode(aiNode* node, const aiScene* scene, std::vector<InstanceData> instances, std::vector<Mesh> *meshes = nullptr);
+	Mesh processMesh(aiMesh* mesh, const aiScene* scene, std::vector<InstanceData> instances, Mesh *m_mesh = nullptr);
+	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
+	GLint textureFromFile(const char* path, string directory);
+	GLint textureFromColor(aiColor4D color);
+
+	
 };
 
 #endif

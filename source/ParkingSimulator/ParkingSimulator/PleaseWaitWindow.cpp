@@ -5,7 +5,7 @@ PleaseWaitWindow::PleaseWaitWindow(QDialog *parent)
 {
 	ui.setupUi(this);
 
-	QMovie *movie = new QMovie("Resources/loadingBig.gif");
+	QMovie *movie = new QMovie(QString("%1/Resources/icons/common/loadingBig.gif").arg(QDir::currentPath()));
 	ui.loadingModelsInProgressMovie->setMovie(movie);
 	movie->start();
 

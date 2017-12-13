@@ -135,6 +135,8 @@ class Graph
 public:
 	Graph(bool directed = false);
 	Graph(int verticesCount, bool directed = false);
+	~Graph();
+
 	GraphVertex *GetVertex(int v);
 	GraphEdge *GetEdge(int v1, int v2);
 	void AddVertex(double x, double y);

@@ -13,4 +13,4 @@ public:
 	static double ConvertDegreesToRadians(double degrees);
 };
 
-#endif // !COMMON_HELPER_H
+#endif

@@ -117,8 +117,6 @@ protected:
 		Vehicle *vehicle = visualisation->GetCurrentSimulation()->GetVehicle();
 		vehicleModel = new Model(vehicle->GetVehicleModel()->path);
 
-
-
 		quit();
 	}
 private:
@@ -235,7 +233,7 @@ void Visualisation3DGLHost::initializeGL()
 	// Light attributes
 	lightPos = glm::vec3(0.0f, 1000.0f, 0.0);
 
-	skyboxModel = new Model("Resources/skyboxes/visualisation3D/skybox.obj");
+	skyboxModel = new Model("Resources/models/skyboxes/visualisation3D/skybox.obj");
 }
 
 void Visualisation3DGLHost::resizeGL(int w, int h)
@@ -366,7 +364,7 @@ void Visualisation3DGLHost::paintGL()
 	glUniform3f(lightDiffuseLoc, 0.7f, 0.7f, 0.7f); // Let's darken the light a bit to fit the scene
 	glUniform3f(lightSpecularLoc, 0.6f, 0.6f, 0.6f);
 
-	glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 10000.0f);
+	glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 2.0f, 4000.0f);
 	glm::mat4 view = camera->GetViewMatrix();
 	glUniformMatrix4fv(glGetUniformLocation(textureInstancedShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 	glUniformMatrix4fv(glGetUniformLocation(textureInstancedShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
@@ -407,13 +405,13 @@ void Visualisation3DGLHost::paintGL()
 		glUniform3f(lightDiffuseLoc, 0.7f, 0.7f, 0.7f); // Let's darken the light a bit to fit the scene
 		glUniform3f(lightSpecularLoc, 0.6f, 0.6f, 0.6f);
 
-		glm::mat4 projection = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 0.1f, 10000.0f);
-		glm::mat4 view = camera->GetViewMatrix();
-		//glm::mat4 view;
-		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+		glm::mat4 projection2 = glm::perspective(camera->Zoom, (float)WIDTH / (float)HEIGHT, 2.0f, 4000.0f);
+		view = camera->GetViewMatrix();
+
+		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "projection"), 1, GL_FALSE, glm::value_ptr(projection2));
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 
-		skyboxModel->Scale(glm::vec3(5000, 5000, 5000));
+		skyboxModel->Scale(glm::vec3(1000, 1000, 1000));
 		skyboxModel->Translate(camera->Position);
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(skyboxModel->GetModelMatrix()));
 		skyboxModel->Draw(*textureShader, false);
@@ -503,12 +501,6 @@ void Visualisation3DGLHost::paintGL()
 		modelMatrix = glm::translate(glm::mat4(), glm::vec3(vehicle->GetPosition().x, 0, vehicle->GetPosition().y)) * modelMatrix;
 		glUniformMatrix4fv(glGetUniformLocation(textureShader->Program, "model"), 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		rightRearWheelModel->Draw(*textureShader, false);
-
-		std::ostringstream ss;
-		ss << "Turn radius: " << turnRadius << endl;
-		ss << endl;
-		std::string s(ss.str());
-		OutputDebugStringA(s.c_str());
 	}
 }
 

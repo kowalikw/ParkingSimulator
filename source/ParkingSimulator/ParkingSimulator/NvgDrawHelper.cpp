@@ -1,6 +1,6 @@
 #include "NvgDrawHelper.h"
 
-#pragma region Public methods.
+#pragma region Constructors and destructor.
 
 NvgDrawHelper::NvgDrawHelper(NVGcontext * vg, glm::vec2 * widgetSize, glm::vec2 * offset, glm::vec2 * maxOffset, glm::vec2 * drawAreaSize, glm::vec2 * drawAreaPosition, float * magnificationRatio)
 {
@@ -11,13 +11,21 @@ NvgDrawHelper::NvgDrawHelper(NVGcontext * vg, glm::vec2 * widgetSize, glm::vec2 
 	this->drawAreaSize = drawAreaSize;
 	this->drawAreaPosition = drawAreaPosition;
 	this->magnificationRatio = magnificationRatio;
-	this->vehicleImage = nvgCreateImage(vg, "Resources/carIcon.png", 0);
-	this->vehicleStartImage = nvgCreateImage(vg, "Resources/vehicleIconStart.png", 0);
-	this->vehicleEndImage = nvgCreateImage(vg, "Resources/vehicleIconEnd.png", 0);
-	this->VehicleErrorImage = nvgCreateImage(vg, "Resources/vehicleErrorIcon.png", 0);
+	this->vehicleImage = nvgCreateImage(vg, "Resources/icons/common/vehicleIcon.png", 0);
+	this->vehicleStartImage = nvgCreateImage(vg, "Resources/icons/common/vehicleIconStart.png", 0);
+	this->vehicleEndImage = nvgCreateImage(vg, "Resources/icons/common/vehicleIconEnd.png", 0);
+	this->VehicleErrorImage = nvgCreateImage(vg, "Resources/icons/common/vehicleErrorIcon.png", 0);
 
 	UpdateSettings();
 }
+
+NvgDrawHelper::~NvgDrawHelper()
+{
+}
+
+#pragma endregion
+
+#pragma region Public methods.
 
 void NvgDrawHelper::DrawMap(Map * map)
 {
@@ -296,22 +304,6 @@ void NvgDrawHelper::DrawEndFlag(Vehicle *vehicle, bool isAdmissible)
 		DrawVehicle(vehicle, VehicleType::VehicleError);
 }
 
-void NvgDrawHelper::DrawArrow(glm::vec2 point, glm::vec2 direction)
-{
-	glm::vec2 offset = *this->offset;
-	glm::vec2 drawAreaPosition = *this->drawAreaPosition;
-	float magnificationRatio = (*this->magnificationRatio);
-
-	auto from = drawAreaPosition + point * magnificationRatio + offset;
-	auto to = from + 50.0f * direction;
-
-	nvgBeginPath(vg);
-	nvgMoveTo(vg, from.x, from.y);
-	nvgLineTo(vg, to.x, to.y);
-	nvgFillColor(vg, nvgRGBA(255, 0, 0, 255));
-	nvgFill(vg);
-}
-
 void NvgDrawHelper::DrawPathElement(PathElement * pathElement, bool isSelected)
 {
 	if (dynamic_cast<Line*>(pathElement) != NULL)
@@ -376,14 +368,84 @@ void NvgDrawHelper::DrawTerrain(Terrain * terrain, bool isHover)
 	nvgFill(vg);
 }
 
+void NvgDrawHelper::UpdateSettings()
+{
+	SELECTED_MARKER_SIZE = Settings::getInstance()->GetInt("SELECTED_MARKER_WIDTH");
+	SELECTED_MARKER_COLOR = Settings::getInstance()->GetColor("SELECTED_MARKER_COLOR");
+
+	ACTIVE_BORDER_WIDTH = Settings::getInstance()->GetInt("ACTIVE_BORDER_WIDTH");
+	ACTIVE_GOOD_COLOR = Settings::getInstance()->GetColor("ACTIVE_GOOD_COLOR");
+	ACTIVE_GOOD_BORDER_COLOR = Settings::getInstance()->GetColor("ACTIVE_GOOD_BORDER_COLOR");
+	ACTIVE_BAD_COLOR = Settings::getInstance()->GetColor("ACTIVE_BAD_COLOR");
+	ACTIVE_BAD_BORDER_COLOR = Settings::getInstance()->GetColor("ACTIVE_BAD_BORDER_COLOR");
+
+	MAP_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_BORDER_WIDTH");
+	MAP_COLOR = Settings::getInstance()->GetColor("MAP_COLOR");
+	MAP_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_BORDER_COLOR");
+
+	MAP_ELEMENT_HOVER_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH");
+	MAP_ELEMENT_HOVER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_COLOR");
+	MAP_ELEMENT_HOVER_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_BORDER_COLOR");
+
+	MAP_ELEMENT_SELECTED_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH");
+	MAP_ELEMENT_SELECTED_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_COLOR");
+	MAP_ELEMENT_SELECTED_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_BORDER_COLOR");
+
+	BUILDING_BORDER_WIDTH = Settings::getInstance()->GetInt("BUILDING_BORDER_WIDTH");
+	BUILDING_COLOR = Settings::getInstance()->GetColor("BUILDING_COLOR");
+	BUILDING_BORDER_COLOR = Settings::getInstance()->GetColor("BUILDING_BORDER_COLOR");
+
+	DECORATION_BORDER_WIDTH = Settings::getInstance()->GetInt("DECORATION_BORDER_WIDTH");
+	DECORATION_COLOR = Settings::getInstance()->GetColor("DECORATION_COLOR");
+	DECORATION_BORDER_COLOR = Settings::getInstance()->GetColor("DECORATION_BORDER_COLOR");
+
+	PARKING_SPACE_BORDER_WIDTH = Settings::getInstance()->GetInt("PARKING_SPACE_BORDER_WIDTH");
+	PARKING_SPACE_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_COLOR");
+	PARKING_SPACE_BORDER_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_BORDER_COLOR");
+
+	VEHICLE_BORDER_WIDTH = Settings::getInstance()->GetInt("VEHICLE_BORDER_WIDTH");
+	VEHICLE_COLOR = Settings::getInstance()->GetColor("VEHICLE_COLOR");
+	VEHICLE_BORDER_COLOR = Settings::getInstance()->GetColor("VEHICLE_BORDER_COLOR");
+
+	GRAPH_EDGE_WIDTH = Settings::getInstance()->GetInt("GRAPH_EDGE_WIDTH");
+	GRAPH_EDGE_COLOR = Settings::getInstance()->GetColor("GRAPH_EDGE_COLOR");
+
+	GRAPH_VERTEX_RADIUS = Settings::getInstance()->GetInt("GRAPH_VERTEX_RADIUS");
+	GRAPH_VERTEX_COLOR = Settings::getInstance()->GetColor("GRAPH_VERTEX_COLOR");
+
+	PATH_LINE_WIDTH = Settings::getInstance()->GetInt("PATH_LINE_WIDTH");
+	PATH_LINE_COLOR = Settings::getInstance()->GetColor("PATH_LINE_COLOR");
+
+	PATH_CIRCLE_WIDTH = Settings::getInstance()->GetInt("PATH_CIRCLE_WIDTH");
+	PATH_CIRCLE_COLOR = Settings::getInstance()->GetColor("PATH_CIRCLE_COLOR");
+
+	PATH_BSPLINE_WIDTH = Settings::getInstance()->GetInt("PATH_BSPLINE_WIDTH");
+	PATH_BSPLINE_COLOR = Settings::getInstance()->GetColor("PATH_BSPLINE_COLOR");
+
+	PATH_ELEMENT_SELECTED_WIDTH = Settings::getInstance()->GetInt("PATH_ELEMENT_SELECTED_WIDTH");
+	PATH_ELEMENT_SELECTED_COLOR = Settings::getInstance()->GetColor("PATH_ELEMENT_SELECTED_COLOR");
+
+	POLYGON_BORDER_WIDTH = Settings::getInstance()->GetInt("POLYGON_BORDER_WIDTH");
+	POLYGON_COLOR = Settings::getInstance()->GetColor("POLYGON_COLOR");
+	POLYGON_BORDER_COLOR = Settings::getInstance()->GetColor("POLYGON_BORDER_COLOR");
+
+	TRANSFORM_SHAPE_MOVE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_MOVE_RADIUS");
+	TRANSFORM_SHAPE_ROTATE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_ROTATE_RADIUS");
+	TRANSFORM_SHAPE_ROTATE_WIDTH = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_ROTATE_WIDTH");
+	TRANSFORM_SHAPE_RESIZE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_RESIZE_RADIUS");
+	TRANSFORM_SHAPE_MOVE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_MOVE_COLOR");
+	TRANSFORM_SHAPE_ROTATE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_ROTATE_COLOR");
+	TRANSFORM_SHAPE_RESIZE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_RESIZE_COLOR");
+	TRANSFORM_SHAPE_HOVER_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_HOVER_COLOR");
+
+	TERRAIN_HOVER_COLOR = Settings::getInstance()->GetColor("TERRAIN_HOVER_COLOR");
+
+	meshOnMapSize = 25;
+}
+
 #pragma endregion
 
 #pragma region Private methods.
-
-void NvgDrawHelper::updateDrawAreaProperties()
-{
-
-}
 
 void NvgDrawHelper::drawMapElements(std::vector<MapElement*> mapElements)
 {
@@ -514,9 +576,9 @@ void NvgDrawHelper::drawCircle(Circle *circle, bool isSelected)
 	if (circle->GetAngleFrom() < circle->GetAngleTo())
 	{
 		nvgBeginPath(vg);
-		for (double angle = circle->angleFrom; angle < circle->angleTo; angle += 0.01)
+		for (double angle = circle->GetAngleFrom(); angle < circle->GetAngleTo(); angle += 0.01)
 		{
-			if (angle == circle->angleFrom)
+			if (angle == circle->GetAngleFrom())
 			{
 				auto p = drawAreaPosition + circle->GetPointForAngle(angle) * magnificationRatio + offset;
 				nvgMoveTo(vg, p.x, p.y);
@@ -532,9 +594,9 @@ void NvgDrawHelper::drawCircle(Circle *circle, bool isSelected)
 	else
 	{
 		nvgBeginPath(vg);
-		for (double angle = circle->angleFrom; angle > circle->angleTo; angle -= 0.01)
+		for (double angle = circle->GetAngleFrom(); angle > circle->GetAngleTo(); angle -= 0.01)
 		{
-			if (angle == circle->angleFrom)
+			if (angle == circle->GetAngleFrom())
 			{
 				auto p = drawAreaPosition + circle->GetPointForAngle(angle) * magnificationRatio + offset;
 				nvgMoveTo(vg, p.x, p.y);
@@ -573,11 +635,6 @@ void NvgDrawHelper::drawBSpline(BSpline *bSpline, bool isSelected, bool drawPoly
 	nvgMoveTo(vg, startPoint.x, startPoint.y);
 	for (double t = 0; t < 1; t += 0.01)
 	{
-		if (t < bSpline->knots[bSpline->n] || t > bSpline->knots[bSpline->m - bSpline->n]) continue;
-
-		/*auto x = bSpline->GetPointX(t);
-		auto y = bSpline->GetPointY(t);*/
-
 		auto p = drawAreaPosition + bSpline->GetPoint(t) * magnificationRatio + offset;
 
 		nvgLineTo(vg, p.x, p.y);
@@ -696,80 +753,3 @@ void NvgDrawHelper::drawTransformShapes(MapElement * mapElement)
 }
 
 #pragma endregion
-
-void NvgDrawHelper::UpdateSettings()
-{
-	SELECTED_MARKER_SIZE = Settings::getInstance()->GetInt("SELECTED_MARKER_WIDTH");
-	SELECTED_MARKER_COLOR = Settings::getInstance()->GetColor("SELECTED_MARKER_COLOR");
-
-	ACTIVE_BORDER_WIDTH = Settings::getInstance()->GetInt("ACTIVE_BORDER_WIDTH");
-	ACTIVE_GOOD_COLOR = Settings::getInstance()->GetColor("ACTIVE_GOOD_COLOR");
-	ACTIVE_GOOD_BORDER_COLOR = Settings::getInstance()->GetColor("ACTIVE_GOOD_BORDER_COLOR");
-	ACTIVE_BAD_COLOR = Settings::getInstance()->GetColor("ACTIVE_BAD_COLOR");
-	ACTIVE_BAD_BORDER_COLOR = Settings::getInstance()->GetColor("ACTIVE_BAD_BORDER_COLOR");
-
-	MAP_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_BORDER_WIDTH");
-	MAP_COLOR = Settings::getInstance()->GetColor("MAP_COLOR");
-	MAP_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_BORDER_COLOR");
-
-	MAP_ELEMENT_HOVER_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_HOVER_BORDER_WIDTH");
-	MAP_ELEMENT_HOVER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_COLOR");
-	MAP_ELEMENT_HOVER_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_HOVER_BORDER_COLOR");
-
-	MAP_ELEMENT_SELECTED_BORDER_WIDTH = Settings::getInstance()->GetInt("MAP_ELEMENT_SELECTED_BORDER_WIDTH");
-	MAP_ELEMENT_SELECTED_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_COLOR");
-	MAP_ELEMENT_SELECTED_BORDER_COLOR = Settings::getInstance()->GetColor("MAP_ELEMENT_SELECTED_BORDER_COLOR");
-
-	BUILDING_BORDER_WIDTH = Settings::getInstance()->GetInt("BUILDING_BORDER_WIDTH");
-	BUILDING_COLOR = Settings::getInstance()->GetColor("BUILDING_COLOR");
-	BUILDING_BORDER_COLOR = Settings::getInstance()->GetColor("BUILDING_BORDER_COLOR");
-
-	DECORATION_BORDER_WIDTH = Settings::getInstance()->GetInt("DECORATION_BORDER_WIDTH");
-	DECORATION_COLOR = Settings::getInstance()->GetColor("DECORATION_COLOR");
-	DECORATION_BORDER_COLOR = Settings::getInstance()->GetColor("DECORATION_BORDER_COLOR");
-
-	PARKING_SPACE_BORDER_WIDTH = Settings::getInstance()->GetInt("PARKING_SPACE_BORDER_WIDTH");
-	PARKING_SPACE_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_COLOR");
-	PARKING_SPACE_BORDER_COLOR = Settings::getInstance()->GetColor("PARKING_SPACE_BORDER_COLOR");
-
-	VEHICLE_BORDER_WIDTH = Settings::getInstance()->GetInt("VEHICLE_BORDER_WIDTH");
-	VEHICLE_COLOR = Settings::getInstance()->GetColor("VEHICLE_COLOR");
-	VEHICLE_BORDER_COLOR = Settings::getInstance()->GetColor("VEHICLE_BORDER_COLOR");
-
-	GRAPH_EDGE_WIDTH = Settings::getInstance()->GetInt("GRAPH_EDGE_WIDTH");
-	GRAPH_EDGE_COLOR = Settings::getInstance()->GetColor("GRAPH_EDGE_COLOR");
-
-	GRAPH_VERTEX_RADIUS = Settings::getInstance()->GetInt("GRAPH_VERTEX_RADIUS");
-	GRAPH_VERTEX_COLOR = Settings::getInstance()->GetColor("GRAPH_VERTEX_COLOR");
-
-	PATH_LINE_WIDTH = Settings::getInstance()->GetInt("PATH_LINE_WIDTH");
-	PATH_LINE_COLOR = Settings::getInstance()->GetColor("PATH_LINE_COLOR");
-
-	PATH_CIRCLE_WIDTH = Settings::getInstance()->GetInt("PATH_CIRCLE_WIDTH");
-	PATH_CIRCLE_COLOR = Settings::getInstance()->GetColor("PATH_CIRCLE_COLOR");
-
-	PATH_BSPLINE_WIDTH = Settings::getInstance()->GetInt("PATH_BSPLINE_WIDTH");
-	PATH_BSPLINE_COLOR = Settings::getInstance()->GetColor("PATH_BSPLINE_COLOR");
-
-	PATH_ELEMENT_SELECTED_WIDTH = Settings::getInstance()->GetInt("PATH_ELEMENT_SELECTED_WIDTH");
-	PATH_ELEMENT_SELECTED_COLOR = Settings::getInstance()->GetColor("PATH_ELEMENT_SELECTED_COLOR");
-
-	POLYGON_BORDER_WIDTH = Settings::getInstance()->GetInt("POLYGON_BORDER_WIDTH");
-	POLYGON_COLOR = Settings::getInstance()->GetColor("POLYGON_COLOR");
-	POLYGON_BORDER_COLOR = Settings::getInstance()->GetColor("POLYGON_BORDER_COLOR");
-
-	TRANSFORM_SHAPE_MOVE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_MOVE_RADIUS");
-	TRANSFORM_SHAPE_ROTATE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_ROTATE_RADIUS");
-	TRANSFORM_SHAPE_ROTATE_WIDTH = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_ROTATE_WIDTH");
-	TRANSFORM_SHAPE_RESIZE_RADIUS = Settings::getInstance()->GetInt("TRANSFORM_SHAPE_RESIZE_RADIUS");
-	TRANSFORM_SHAPE_MOVE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_MOVE_COLOR");
-	TRANSFORM_SHAPE_ROTATE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_ROTATE_COLOR");
-	TRANSFORM_SHAPE_RESIZE_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_RESIZE_COLOR");
-	TRANSFORM_SHAPE_HOVER_COLOR = Settings::getInstance()->GetColor("TRANSFORM_SHAPE_HOVER_COLOR");
-
-	TERRAIN_HOVER_COLOR = Settings::getInstance()->GetColor("TERRAIN_HOVER_COLOR");
-
-	meshOnMapSize = 25;
-
-	int lala = 0;
-}
