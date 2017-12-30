@@ -1021,7 +1021,7 @@ Path * PathPlanner::createParkingPath(Vehicle vehicle, ParkingSpace parkingSpace
 			else if (dynamic_cast<Circle*>(pathElements[i]) != NULL)
 			{
 				Circle *circle = dynamic_cast<Circle*>(pathElements[i]);
-				circle->GetCenter() = circle->GetCenter() + pathTranslation;
+				circle->SetCenter(circle->GetCenter() + pathTranslation);
 			}
 		}
 	}

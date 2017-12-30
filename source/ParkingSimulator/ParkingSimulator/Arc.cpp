@@ -51,6 +51,11 @@ void Circle::SetRadius(double radius)
 	this->radius = radius;
 }
 
+void Circle::SetCenter(glm::vec2 center)
+{
+	this->center = center;
+}
+
 glm::vec2 Circle::GetCenter() const
 {
 	return this->center;

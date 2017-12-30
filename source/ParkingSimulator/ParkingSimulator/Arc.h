@@ -18,6 +18,7 @@ public:
 	void SetAngleFrom(double angleFrom);
 	void SetAngleTo(double angleTo);
 	void SetRadius(double radius);
+	void SetCenter(glm::vec2 center);
 	glm::vec2 GetCenter() const;
 	CircleType GetCircleType() const;
 	void SetCircleType(CircleType type);

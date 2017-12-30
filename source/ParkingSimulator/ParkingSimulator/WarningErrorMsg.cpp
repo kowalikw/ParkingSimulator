@@ -10,10 +10,10 @@ WarningErrorMsg::WarningErrorMsg(std::string title, std::string content, Message
 	switch (type)
 	{
 	case Warning:
-		ui.messageIcon->setText(QString("<html><head/><body><img src='Resources/warningIcon.png'/></body></html>"));
+		ui.messageIcon->setText(QString("<html><head/><body><img src='Resources/icons/common/warningIcon.png'/></body></html>"));
 		break;
 	case Error:
-		ui.messageIcon->setText(QString("<html><head/><body><img src='Resources/errorIcon.png'/></body></html>"));
+		ui.messageIcon->setText(QString("<html><head/><body><img src='Resources/icons/common/errorIcon.png'/></body></html>"));
 		break;
 	}
 
